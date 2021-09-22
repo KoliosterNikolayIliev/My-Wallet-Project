@@ -18,8 +18,8 @@ def get_bank_by_id(bank_id):
 
 def create_end_user_agreement(max_historical_days, enduser_id, aspsp_id):
     """
-    Use this step only if you want to specify the length of transaction history you want to retrieve.
-     If you skip this step, by default 90 days of transaction history will be retrieved.
+    Use this if you want to specify the length of transaction history you want to retrieve.
+    If you skip this step, by default 90 days of transaction history will be retrieved.
 
     :param max_historical_days: is the length of the transaction history to be retrieved, default is 90 days
     :param enduser_id: is a unique end-user ID of someone who's using your services. Usually, it's UUID
@@ -67,28 +67,13 @@ def build_link(requisition_id, aspsp_id):
     return response.json()
 
 
-# the user's bank accounts can be listed. Pass the requisition ID to view the accounts.
+# will return user's bank accounts. Pass the requisition ID to view the accounts.
 def list_accounts(requisition_id):
     response = requests.get(f'https://ob.nordigen.com/api/requisitions/{requisition_id}/', headers=headers)
     return response.json()
 
 
-
-"""
-How to use nordigen api:
-step 1: Get Access Token - https://ob.nordigen.com/
-step 2: Choose a Bank - use get_banks_by_country() function to chose available banks.
-step 3: Create an end-user agreement - (optional) if you want more than 90 transaction history days
-use create_end_user_agreement() function
-step 4: Create a requisition - user create_requisition function
-step 5: Build a Link - when you created requisition you can build a link for authentication in ASPSP use
-build_link() function
-step 6: Access accounts - when you connected an account when you use list_accounts() function with the requisition_id
-that you created you should see a accounts id's
-step 7: Now when you connected an bank account you can use the functions bellow to get the data you need.
-"""
-
-
+# these four function can be used when the user has linked bank accounts
 def get_account_metadata(account_id):
     response = requests.get(f'https://ob.nordigen.com/api/accounts/{account_id}/', headers=headers)
     return response.json()
