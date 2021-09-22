@@ -6,10 +6,11 @@ Count number of successful messages from the server.
 
 import cbpro
 import time
+import access_data
 
-api_secret = 'c3rW1IVh/Xp7P8K8IOS9kpW2veTgleBQ+yRV6DA84ZlUfpa8l1nYoDY3POUlE1/kfoDGFSKkbzAF14HSSufoJA=='
-api_key = 'd862aea8a0e5cdcbe01ed3835916f9eb'
-api_pass = '860805'
+api_secret = access_data.api_secret
+api_key = access_data.api_key
+api_pass = access_data.api_pass
 
 
 """ 
@@ -23,7 +24,6 @@ class TextWebSocketClient(cbpro.WebsocketClient):
         self.message_count = 0
 
     def on_message(self, msg):
-        self.message_count += 1
         msg_type = msg.get('type', None)
         if msg_type == 'ticker':
             time_stamp = msg.get('time', ('-'*27))
@@ -32,6 +32,7 @@ class TextWebSocketClient(cbpro.WebsocketClient):
             product_id = msg.get('product_id', None)
 
             print(f"{product_id} / {price:.3f} USD /  channel type:{msg_type} / datestamp: {time_stamp:30} ")
+            self.message_count += 1
 
     def on_close(self):
         print(f"Connection was successfully closed by the script. Total received messages: {self.message_count}")
