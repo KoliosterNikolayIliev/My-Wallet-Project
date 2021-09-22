@@ -77,7 +77,7 @@ json_response = build_link(requisition_id, aspsp_id)
 ```
 
 ## Step 6 - List accounts
-Once the user is redirected back to the link provided in Step 4.1, the user's bank accounts can be listed. Pass the requisition ID to view the accounts.
+Once the user is redirected back to the link provided in Step 4, the user's bank accounts can be listed. Pass the requisition ID to view the accounts.
 
 Use **list_accounts** function
 
