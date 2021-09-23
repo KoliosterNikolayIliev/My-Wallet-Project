@@ -24,8 +24,42 @@ How to use env variables:
 
 import os
 
+from binance.spot import Spot as Client
+import logging
+from binance.lib.utils import config_logging
+
 KEY = os.environ.get('binance_api')
 SECRET = os.environ.get('binance_secret')
-# make logging False if functions need to return JSon data otherwise data will be printed in the console.
-# give function calls as arguments(msg) to logging.info(msg) to obtain which API is used (Test/Real)
+# for real API base_url=https://api.binance.com/api
+SPOT_CLIENT = Client(key=KEY, secret=SECRET, base_url="https://testnet.binance.vision")
+# make DEBUG False if functions need to return JSon data otherwise data will be printed in the console.
+
 DEBUG = True
+if DEBUG:
+    config_logging(logging, logging.DEBUG)
+
+more_info = logging.info
+
+# Used only as a reference. In future can be refactored and used in the code.
+SYMBOLS = {
+    "BNBBUSD": "BNBBUSD",
+    "BTCBUSD": "BTCBUSD",
+    "ETHBUSD": "ETHBUSD",
+    "LTCBUSD": "LTCBUSD",
+    "TRXBUSD": "TRXBUSD",
+    "XRPBUSD": "XRPBUSD",
+    "BNBUSDT": "BNBUSDT",
+    "BTCUSDT": "BTCUSDT",
+    "ETHUSDT": "ETHUSDT",
+    "LTCUSDT": "LTCUSDT",
+    "TRXUSDT": "TRXUSDT",
+    "XRPUSDT": "XRPUSDT",
+    "BNBBTC": "BNBBTC",
+    "ETHBTC": "ETHBTC",
+    "LTCBTC": "LTCBTC",
+    "TRXBTC": "TRXBTC",
+    "XRPBTC": "XRPBTC",
+    "LTCBNB": "LTCBNB",
+    "TRXBNB": "TRXBNB",
+    "XRPBNB": "XRPBNB",
+}

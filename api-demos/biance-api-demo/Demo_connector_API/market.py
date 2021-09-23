@@ -1,40 +1,8 @@
-import logging
-from binance.spot import Spot as Client
-from binance.lib.utils import config_logging
+from testnet_setup import DEBUG, SPOT_CLIENT, more_info
 
-from testnet_setup import KEY, SECRET, DEBUG
-
-# for real API base_url=https://api.binance.com/api
-SPOT_CLIENT = Client(key=KEY, secret=SECRET, base_url="https://testnet.binance.vision")
-
+# give function calls as arguments to more_info(msg) to obtain information on which API is used (Test/Real)
+# DBUG in testnet_setup must be true
 LOGGING_BOOL = DEBUG
-
-if LOGGING_BOOL:
-    config_logging(logging, logging.DEBUG)
-
-# Used only as a reference. In future can be refactored and used in the code.
-SYMBOLS = {
-    "BNBBUSD": "BNBBUSD",
-    "BTCBUSD": "BTCBUSD",
-    "ETHBUSD": "ETHBUSD",
-    "LTCBUSD": "LTCBUSD",
-    "TRXBUSD": "TRXBUSD",
-    "XRPBUSD": "XRPBUSD",
-    "BNBUSDT": "BNBUSDT",
-    "BTCUSDT": "BTCUSDT",
-    "ETHUSDT": "ETHUSDT",
-    "LTCUSDT": "LTCUSDT",
-    "TRXUSDT": "TRXUSDT",
-    "XRPUSDT": "XRPUSDT",
-    "BNBBTC": "BNBBTC",
-    "ETHBTC": "ETHBTC",
-    "LTCBTC": "LTCBTC",
-    "TRXBTC": "TRXBTC",
-    "XRPBTC": "XRPBTC",
-    "LTCBNB": "LTCBNB",
-    "TRXBNB": "TRXBNB",
-    "XRPBNB": "XRPBNB",
-}
 
 
 def get_aggregate_traders(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
@@ -49,7 +17,7 @@ def get_aggregate_traders(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
 
 
 # Example function call - use SYMBOLS dict for reference
-# get_aggregate_traders("BTCUSDT")
+# get_aggregate_traders(symbol)
 
 def get_average_price(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
     return spot_client.avg_price(symbol)
