@@ -8,7 +8,7 @@ Official documentation for Binance API -> https://binance-docs.github.io/apidocs
 ### Step 1 - Create python venv and pip install requirements.txt (or do it in your IDE) :
 
 
-### Step 2 - in the folder biance-api-demo run python manage.py or run the file in your IDE:
+### Step 2 - in the folder biance-api-demo run python main.py or run the file in your IDE:
 Then Follow the instructions in the console.
 ####NOTE: for accessing options 10 and 11 you need to have API_key and API_Secret registered in
 ####system environment variables or assigned to variables KEY and SECRET in testnet_setup.py (not recommended)
