@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import LogInButton from "./LogInButton";
 
 // Landing page to explain our product. Includes a button to log in.
-const Landing = () => {
+const LandingPage = () => {
   const { isLoading } = useAuth0();
 
   //   Return this if Auth0 is still loading. Can be replaced with an animation in the future
@@ -19,4 +19,4 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+export default LandingPage;

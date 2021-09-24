@@ -1,7 +1,7 @@
 import "./App.css";
-import Dashboard from "./components/Dashboard";
-import Profile from "./components/Profile";
-import Landing from "./components/Landing";
+import DashboardPage from "./components/DashboardPage";
+import ProfilePage from "./components/ProfilePage";
+import LandingPage from "./components/LandingPage";
 import {
   BrowserRouter as Router,
   Route,
@@ -21,10 +21,10 @@ function App() {
       <Switch>
         {/* If the user is logged in directly redirect them to the dashboard, otherwise show the landing page */}
         <Route path="/" exact>
-          {isAuthenticated ? <Redirect to="/dashboard" /> : <Landing />}
+          {isAuthenticated ? <Redirect to="/dashboard" /> : <LandingPage />}
         </Route>
-        <Route path="/profile" exact component={Profile} />
-        <Route path="/dashboard" exact component={Dashboard} />
+        <Route path="/profile" exact component={ProfilePage} />
+        <Route path="/dashboard" exact component={DashboardPage} />
       </Switch>
     </Router>
   );

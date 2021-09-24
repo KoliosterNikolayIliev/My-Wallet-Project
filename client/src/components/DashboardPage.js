@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Redirect } from "react-router";
 
 // Dashboard page to be filled in with user account data
-const Dashboard = () => {
+const DashboardPage = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   //   Return this if Auth0 is still loading. Can be replaced with an animation in the future
@@ -25,4 +25,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardPage;
