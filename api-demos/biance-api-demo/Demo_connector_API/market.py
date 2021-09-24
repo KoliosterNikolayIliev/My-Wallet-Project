@@ -26,13 +26,13 @@ def get_average_price(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
 # Example function call - use SYMBOLS dict for reference
 # logging.info(get_average_price("BTCUSDT"))
 
-def book_ticker(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
+def get_book_ticker(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
     return spot_client.book_ticker(symbol)
 
 
-# book_ticker()
+# get_book_ticker()
 
-def depth(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
+def get_depth(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
     """
     spot_client.depth("BTCUSDT", limit=10) - limit (int, optional):
     limit the results. Default 100; valid limits:[5, 10, 20, 50, 100, 500, 1000, 5000]
@@ -40,7 +40,7 @@ def depth(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
     return spot_client.depth(symbol)
 
 
-# depth()
+# get_depth()
 
 def get_exchange_info(symbol="BTCBUSD", symbols=["BTCUSDT", "BNBUSDT"], spot_client=SPOT_CLIENT):
     """Exchange Information
@@ -105,7 +105,7 @@ def get_klines(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
 # get_klines()
 
 
-def ticker_24hr(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
+def get_ticker_24hr(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
     """
         24hr Ticker Price Change Statistics
 
@@ -119,7 +119,7 @@ def ticker_24hr(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
     spot_client.ticker_24hr(symbol)
 
 
-# ticker_24hr()
+# get_ticker_24hr()
 
 def get_ticker_price(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
     """

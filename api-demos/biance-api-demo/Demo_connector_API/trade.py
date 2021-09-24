@@ -1,15 +1,20 @@
-from testnet_setup import DEBUG, SPOT_CLIENT, more_info
+from testnet_setup import DEBUG, SPOT_CLIENT
 
 # give function calls as arguments to more_info(msg) to obtain information on which API is used (Test/Real)
 # DBUG in testnet_setup must be true
 LOGGING_BOOL = DEBUG
 
 
-def return_account_info(symbol="BTCBUSD", client=SPOT_CLIENT):
-    return client.account()
+def return_account_info(client=SPOT_CLIENT):
+    try:
+        return client.account()
+    except AttributeError as e:
+        if LOGGING_BOOL:
+            print(e)
+        return 'KEY/SECRET not valid or not existing'
 
 
-return_account_info(symbol="BTCBUSD", client=SPOT_CLIENT)
+# return_account_info()
 
 
 def get_my_trades(symbol="BTCBUSD", client=SPOT_CLIENT):
@@ -32,4 +37,11 @@ def get_my_trades(symbol="BTCBUSD", client=SPOT_CLIENT):
             limit (int, optional): Default Value: 500; Max Value: 1000
             recvWindow (int, optional): The value cannot be greater than 60000
         """
-    return client.my_trades(symbol)
+    try:
+        return client.my_trades(symbol)
+    except AttributeError as e:
+        if LOGGING_BOOL:
+            print(e)
+        return 'KEY/SECRET not valid or not existing'
+
+# get_my_trades()

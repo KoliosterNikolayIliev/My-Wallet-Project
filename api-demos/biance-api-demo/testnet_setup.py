@@ -3,7 +3,14 @@ KEYS are for testnet ONLY !!! All users registering on the Spot Test Network
 automatically receive a balance in many different assets.
 
 How to generate keys:
-.....
+    1. Register RSA key -> https://testnet.binance.vision/key/register
+    https://testnet.binance.vision/ -> How can I use RSA Keys?
+
+    2. Generate HMAC_SHA256 Key -> https://testnet.binance.vision/key/generate
+
+    3. Save the Generated keys (if you loose the you need to revoke them and create new ones)
+        -the needed keys are API key and Secret key generated in step 2.
+
 How to use env variables:
     - Linux/Mac Terminal:
     export binance_api="your_api_key here in the double quotes"
@@ -34,7 +41,7 @@ SECRET = os.environ.get('binance_secret')
 SPOT_CLIENT = Client(key=KEY, secret=SECRET, base_url="https://testnet.binance.vision")
 # make DEBUG False if functions need to return JSon data otherwise data will be printed in the console.
 
-DEBUG = True
+DEBUG = False
 if DEBUG:
     config_logging(logging, logging.DEBUG)
 
