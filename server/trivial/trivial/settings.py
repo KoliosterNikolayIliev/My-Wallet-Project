@@ -88,6 +88,18 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'your-db-name',
+#         'CLIENT': {
+#            'host': 'your-db-host',
+#         }
+#     }
+# }
+
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
