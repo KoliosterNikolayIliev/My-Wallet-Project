@@ -80,25 +80,27 @@ WSGI_APPLICATION = 'trivial.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# TODO - database usage to be decided
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'your-db-name',
-#         'CLIENT': {
-#            'host': 'your-db-host',
-#         }
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'CLIENT': {
+            'name': '3vial',
+            'host': 'mongodb+srv://trivialAdmin:<password>@3vial.9mih9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+            'username': 'trivialAdmin',
+            'password': 'OZjhinrBmHRGiXHk',
+            'authMechanism': 'SCRAM-SHA-1'
 
+        }
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -135,7 +137,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
