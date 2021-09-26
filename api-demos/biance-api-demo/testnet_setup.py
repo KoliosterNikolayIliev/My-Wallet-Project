@@ -35,8 +35,13 @@ from binance.spot import Spot as Client
 import logging
 from binance.lib.utils import config_logging
 
-KEY = os.environ.get('binance_api')
-SECRET = os.environ.get('binance_secret')
+# when key, secret are stored in environment variables.
+# KEY = os.environ.get('binance_api')
+# SECRET = os.environ.get('binance_secret')
+KEY = "hGLWWbEWRKMLIP5gvo8dbwRWfQmgJRZZT9QBbWCfwGDO0chT3R1W3znALa18kT3B"
+SECRET = "qgve977nb7LuuTUobjkcCUy2WWAcCodgW7GZI8PBYRJRwk33ZbrmRVLouEKkmyEN"
+
+
 # for real API base_url=https://api.binance.com/api
 SPOT_CLIENT = Client(key=KEY, secret=SECRET, base_url="https://testnet.binance.vision")
 # make DEBUG False if functions need to return JSon data otherwise data will be printed in the console.
