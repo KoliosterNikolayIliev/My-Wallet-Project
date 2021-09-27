@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -94,8 +94,12 @@ DATABASES = {
         'CLIENT': {
             'name': '3vial',
             'host': 'mongodb+srv://trivialAdmin:<password>@3vial.9mih9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-            'username': 'trivialAdmin',
-            'password': 'OZjhinrBmHRGiXHk',
+            # username and password for development if environment variables are not set
+            # 'username': 'trivialAdmin',
+            # 'password': 'OZjhinrBmHRGiXHk',
+            # environment variables for username and password
+            'username': os.environ.get('DbUsername'),
+            'password': os.environ.get('DbPassword'),
             'authMechanism': 'SCRAM-SHA-1'
 
         }
