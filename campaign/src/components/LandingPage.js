@@ -1,11 +1,11 @@
 import React from "react";
-import EarlyAccessComponent from "./EarlyAccessComponent";
+import MailchimpFormContainer from "./MailChimpFormContainer";
 // here you can import all other components you need
 
 const LandingPage = () => {
   return (
     <div>
-      <EarlyAccessComponent />
+      <MailchimpFormContainer />
     </div>
   );
 };
