@@ -4,6 +4,14 @@ import { useState, useEffect } from "react";
 const EarlyAccessForm = ({ status, message, onSubmitted }) => {
   const [email, setEmail] = useState("");
 
+  useEffect(() => {
+    if (status === "success") clearFields();
+  }, [status]);
+
+  const clearFields = () => {
+    setEmail("");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     email &&
@@ -15,6 +23,9 @@ const EarlyAccessForm = ({ status, message, onSubmitted }) => {
 
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
+      {status === "sending" && <div>Sending...</div>}
+      {status === "error" && <div>Invalid email</div>}
+      {status === "success" && <div>Thanks for subscribing!</div>}
       <input
         type="email"
         value={email}
