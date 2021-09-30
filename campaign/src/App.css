@@ -1,0 +1,116 @@
+
+body {
+  font-family: 'Brush Script MT', cursive;
+  color: #000000;
+  text-align: center;
+}
+
+
+form {
+  width: 450px;
+  margin: 5% auto;
+}
+
+header {
+  width: 100%;
+}
+
+.header {
+  width: 50%;
+  opacity: .64;
+  font-size: 35px;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  margin-left:10%;
+  text-align: left;
+}
+
+
+.description {
+  width: 50%;
+  font-size: 14px;
+  opacity: .64;
+  letter-spacing: 1px;
+  line-height: 1.3em;
+  margin: 0 60px 30px;
+  text-align: left;
+}
+
+
+.input {
+  display: flex;
+  align-items: center;
+}
+
+
+.button {
+  height: 44px;
+  border: none;
+}
+
+  
+input[type=email] {
+  width: 49%;
+  height: 30px;
+  background: #FDFCFB;
+  font-family: inherit;
+  color: #737373;
+  letter-spacing: 1px;
+  text-indent: 5%;
+  border-radius: 5px 0 0 5px;
+}
+
+
+input[type=submit] {
+  width: 40%;
+  height: 30px;
+  padding:2px 0 0 0;
+  margin: 0 0 0 -2px;
+  background: #e3f545;
+  font-weight: bold;
+  color: inherit;
+  letter-spacing: 1px;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  transition: background .3s ease-in-out;
+}
+  
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 2px #ccc;
+}
+
+
+.message {
+  opacity: .64;
+  margin-bottom: 80px;
+}
+
+
+.col-sm-6 .sub-title{
+  font-size:24px;
+  opacity: .64;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+
+.col-sm-6 .more-info p {
+  font-size: 17px;
+  opacity: .64;
+  margin-left: 10%;
+  text-align: justify;
+}
+
+.col-sm-2 .more-info p {
+  font-size: 17px;
+  opacity: .64;
+  margin-right: 10%;
+  text-align: justify;
+}
+
+
+.col-sm-2 img, .col-sm-6 img{
+  max-width: 600px;
+}
