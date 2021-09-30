@@ -1,17 +1,28 @@
 from flask import (Blueprint, jsonify)
-from twelvedata import TDClient
-import os
+import os, json, requests
 
-
-td = TDClient(apikey=os.environ.get('TD_API_KEY'))
-
+# create blueprint
 bp = Blueprint('stocks', __name__, url_prefix='/stocks')
 
-@bp.route('/test', methods=('GET', 'POST'))
-def test():
-    ts = td.time_series(
-    symbol="AAPL, TSLA, IBM, GME",
-    outputsize=1,
-    interval="1min"
-)   
-    return jsonify(ts.as_json())
+# store latest prices for shortlisted stocks
+prices_store = {}
+
+# fetch real-time price data for shortlisted stocks
+def fetch_price_data(symbols):
+    global prices_store
+    symbols = (',').join(symbols)
+    req = requests.get('https://api.twelvedata.com/price', params={'symbol': symbols, 'apikey': os.environ['TD_API_KEY'], 'interval': '1min'})
+    req = req.json()
+    for res_key, res_value in req.items():
+        prices_store[res_key] = res_value['price']
+
+fetch_price_data(["AAPL", "IBM"])
+
+# microservice endpoint
+@bp.route('/prices', methods=('GET'))
+def prices():
+    if prices_store:
+        return jsonify(prices_store)
+    fetch_price_data(["AAPL", "IBM"])
+    return jsonify(prices_store)
+
