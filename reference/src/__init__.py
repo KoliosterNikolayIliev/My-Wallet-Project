@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from . import stocks
+from . import stocks, crypto
 
 
 def create_app(test_config=None):
@@ -10,7 +10,9 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
     )
 
+    # register blueprints
     app.register_blueprint(stocks.bp)
+    app.register_blueprint(crypto.bp)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
