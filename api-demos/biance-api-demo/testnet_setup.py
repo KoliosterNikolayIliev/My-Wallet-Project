@@ -41,9 +41,6 @@ from binance.lib.utils import config_logging
 test_key = "hGLWWbEWRKMLIP5gvo8dbwRWfQmgJRZZT9QBbWCfwGDO0chT3R1W3znALa18kT3B"
 secret_key = "qgve977nb7LuuTUobjkcCUy2WWAcCodgW7GZI8PBYRJRwk33ZbrmRVLouEKkmyEN"
 
-dimos_key = "bWjaqamFBtw8Rzi0xQ7ixgyvmIpakO9nwrBsfOZ6cbWLUdYFjHbhnhG9sy0k31SN"
-dimos_secret_key = "J0uEwb9fKh1WTGW9P5CWd3XhJ771bWClznOQCv4YVsrvkijXRw0WARLwE6FdIypu"
-
 KEY = test_key
 SECRET = secret_key
 
