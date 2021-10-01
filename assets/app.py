@@ -1,30 +1,10 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
 import nordigen
-import uuid
+from link_accounts import link_accounts_api
 
 app = Flask(__name__)
 api = Api(app)
-
-
-class LinkBankAccount(Resource):
-    def get(self):
-        return nordigen.get_banks_by_country('GB'), 200
-
-    def post(self):
-        requisition_id = request.form.get('requisition_id')
-        user_id = request.form.get('user_id')
-        aspsp_id = request.form.get('aspsp_id')
-
-        if not requisition_id:
-            requisition_id = nordigen.create_requisition(
-                uuid.uuid1(), user_id, 'https://3vial.io', []
-            ).get('id')
-
-            if not requisition_id:
-                return {'detail': 'Client Reference: already exists', 'status_code': 400}, 400
-
-        return {'requisition_id': requisition_id, 'auth_link': nordigen.build_link(requisition_id, aspsp_id)}
 
 
 class GetUserAssets(Resource):
@@ -54,8 +34,8 @@ class GetUserAssets(Resource):
         return data
 
 
-api.add_resource(LinkBankAccount, '/api/link-account/nordigen')
-api.add_resource(GetUserAssets, '/api/user-assets')
+api.add_resource(GetUserAssets, '/user-assets')
+app.register_blueprint(link_accounts_api, url_prefix='/link-accounts')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
