@@ -19,7 +19,7 @@ def fetch_crypto_price_data():
         for res_key, res_value in res_body.items():
             crypto_prices_store[res_key] = res_value
     except:
-        print(f"Error: {req['error']['info']}")
+        print(f"Error: {res['error']['info']}")
     
 
 # fetch price data for crypto the first time the server goes live
