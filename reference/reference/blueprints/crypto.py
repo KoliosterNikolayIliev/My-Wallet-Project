@@ -1,6 +1,6 @@
 from flask import (Blueprint, jsonify)
 import os, requests
-from ..extensions import scheduler
+from ..utils.extensions import scheduler
 
 # store latest prices for crypto
 crypto_prices_store = {}
@@ -31,6 +31,21 @@ scheduler.add_job(func=fetch_crypto_price_data, trigger='interval', seconds=8640
 # microservice endpoint to return the latest prices for crypto
 @bp.route('/prices', methods=(['GET']))
 def prices():
+    """
+    ---
+    get:
+      description: Request latest price data for available cryptocurrencies
+      responses:
+        '200':
+          description: A successful call was made and the results were returned
+          content:
+            application/json:
+              schema: OutputSchema
+              example:
+                ADA: 2.314212
+                BTC: 47039.2419
+    
+    """
     if crypto_prices_store:
         return jsonify(crypto_prices_store)
     fetch_crypto_price_data()

@@ -1,6 +1,6 @@
 from flask import (Blueprint, jsonify)
 import os, requests
-from ..extensions import scheduler
+from ..utils.extensions import scheduler
 
 # shortlisted stocks
 STOCKS_LIST = ["AMZN", "MSFT", "GOOGL", "AMD", "MRNA", "TSLA", "PLTR", "AAPL"]
@@ -35,6 +35,20 @@ scheduler.add_job(func=fetch_stocks_price_data, args=[STOCKS_LIST], trigger='int
 # microservice endpoint to return the latest prices for shortlisted stocks
 @bp.route('/prices', methods=(['GET']))
 def prices():
+    """
+    ---
+    get:
+      description: Request latest price data for available stocks
+      responses:
+        '200':
+          description: A successful call was made and the results were returned
+          content:
+            application/json:
+              schema: OutputSchema
+              example:
+                AAPL: 142.64999
+                AMD: 102.45000
+    """
     if stocks_prices_store:
         return jsonify(stocks_prices_store)
     fetch_stocks_price_data(STOCKS_LIST)
