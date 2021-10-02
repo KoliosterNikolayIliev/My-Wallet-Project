@@ -1,6 +1,6 @@
 from flask import (Blueprint, jsonify)
 import os, requests
-from .extensions import scheduler
+from ..extensions import scheduler
 
 # store latest prices for crypto
 crypto_prices_store = {}

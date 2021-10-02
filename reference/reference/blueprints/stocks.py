@@ -1,6 +1,6 @@
 from flask import (Blueprint, jsonify)
 import os, requests
-from .extensions import scheduler
+from ..extensions import scheduler
 
 # shortlisted stocks
 STOCKS_LIST = ["AMZN", "MSFT", "GOOGL", "AMD", "MRNA", "TSLA", "PLTR", "AAPL"]

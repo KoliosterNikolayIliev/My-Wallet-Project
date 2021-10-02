@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 from .extensions import scheduler
-from . import stocks, crypto
+from .blueprints import stocks, crypto
 
 
 def create_app(test_config=None):
