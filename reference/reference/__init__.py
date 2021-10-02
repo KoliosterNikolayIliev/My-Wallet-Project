@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from .extensions import scheduler
 from . import stocks, crypto
 
 
@@ -9,6 +10,8 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='dev',
     )
+    scheduler.init_app(app)
+    scheduler.start()
 
     # register blueprints
     app.register_blueprint(stocks.bp)
