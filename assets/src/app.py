@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
-import nordigen
-from link_accounts import link_accounts_api
+from utils import nordigen
+from src.blueprints.link_accounts import link_accounts_api
 
 app = Flask(__name__)
 api = Api(app)
@@ -36,6 +36,3 @@ class GetUserAssets(Resource):
 
 api.add_resource(GetUserAssets, '/user-assets')
 app.register_blueprint(link_accounts_api, url_prefix='/link-accounts')
-
-if __name__ == '__main__':
-    app.run(debug=True)
