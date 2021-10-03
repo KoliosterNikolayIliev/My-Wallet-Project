@@ -4,8 +4,8 @@ from flask import request, Blueprint
 from flask_restful import Resource, Api
 from utils import nordigen
 
-link_accounts_api = Blueprint('api', __name__)
-api = Api(link_accounts_api)
+link_accounts = Blueprint('link_accounts', __name__)
+api = Api(link_accounts)
 
 
 class LinkBankAccount(Resource):
