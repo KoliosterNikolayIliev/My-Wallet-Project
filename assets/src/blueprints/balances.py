@@ -21,7 +21,7 @@ class GetBalances(Resource):
                 data['nordigen'] = {}
 
                 for account in accounts:
-                    data['nordigen'][account] = nordigen.get_account_balances(account)
+                    data['nordigen'][account] = nordigen.get_account_balances(account).get('balances')[0]
 
         return data
 
