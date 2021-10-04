@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from .blueprints import stocks, crypto
 
 def create_app(test_config=None):
     # create and configure the app
@@ -20,5 +21,9 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+    
+    # register blueprints
+    app.register_blueprint(stocks.bp)
+    app.register_blueprint(crypto.bp)
 
     return app
