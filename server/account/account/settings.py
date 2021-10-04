@@ -17,6 +17,8 @@ from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from authentication.passwords import DbPassword, DbUsername
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -106,8 +108,8 @@ DATABASES = {
             # 'username': os.environ.get('DbUsername'),
             # 'password': os.environ.get('DbPassword'),
             # username and password for development if environment variables are not set
-            'username': 'trivialAdmin',
-            'password': 'OZjhinrBmHRGiXHk',
+            'username': DbUsername,
+            'password': DbPassword,
             # admin user and pass 3VialSuperAdmin
             # environment variables for username and password
 
