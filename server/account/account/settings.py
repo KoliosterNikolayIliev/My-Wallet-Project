@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+import json
+from six.moves.urllib import request
+from cryptography.x509 import load_pem_x509_certificate
+from cryptography.hazmat.backends import default_backend
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_jwt',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -47,14 +53,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-# TODO Decide auth policy
-# REST_FRAMEWORK = {
-#     # Use Django's standard `django.contrib.auth` permissions,
-#     # or allow read-only access for unauthenticated users.
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-#     ]
-# }
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+}
 
 ROOT_URLCONF = 'account.urls'
 
@@ -91,14 +98,19 @@ WSGI_APPLICATION = 'account.wsgi.application'
 
 DATABASES = {
     'default': {
+        # 'ENFORCE_SCHEMA': True,
         'ENGINE': 'djongo',
         'CLIENT': {
             'name': '3vial',
             'host': 'mongodb+srv://trivialAdmin:<password>@3vial.9mih9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+            # 'username': os.environ.get('DbUsername'),
+            # 'password': os.environ.get('DbPassword'),
             # username and password for development if environment variables are not set
+            'username': 'trivialAdmin',
+            'password': 'OZjhinrBmHRGiXHk',
+            # admin user and pass 3VialSuperAdmin
             # environment variables for username and password
-            'username': os.environ.get('DbUsername'),
-            'password': os.environ.get('DbPassword'),
+
             'authMechanism': 'SCRAM-SHA-1'
 
         }
@@ -145,3 +157,30 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Auth0 settings
+AUTH0_DOMAIN = 'dev-kbl8py41.us.auth0.com'
+API_IDENTIFIER = 'https://dev-kbl8py41.us.auth0.com/api/v2/'
+PUBLIC_KEY = None
+JWT_ISSUER = None
+if AUTH0_DOMAIN:
+    jsonurl = request.urlopen('https://' + AUTH0_DOMAIN + '/.well-known/jwks.json')
+    jwks = json.loads(jsonurl.read().decode('utf-8'))
+    cert = '-----BEGIN CERTIFICATE-----\n' + jwks['keys'][0]['x5c'][0] + '\n-----END CERTIFICATE-----'
+    certificate = load_pem_x509_certificate(cert.encode('utf-8'), default_backend())
+    PUBLIC_KEY = certificate.public_key()
+    JWT_ISSUER = 'https://' + AUTH0_DOMAIN + '/'
+
+
+def jwt_get_username_from_payload_handler(payload):
+    return 'someusername'
+
+
+JWT_AUTH = {
+    'JWT_PAYLOAD_GET_USERNAME_HANDLER': jwt_get_username_from_payload_handler,
+    'JWT_PUBLIC_KEY': PUBLIC_KEY,
+    'JWT_ALGORITHM': 'RS256',
+    'JWT_AUDIENCE': API_IDENTIFIER,
+    'JWT_ISSUER': JWT_ISSUER,
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+}

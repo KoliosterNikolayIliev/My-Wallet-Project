@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Redirect } from "react-router";
+import LogOutButton from "./LogOutButton";
 
 // Dashboard page to be filled in with user account data
 const DashboardPage = () => {
@@ -20,6 +21,8 @@ const DashboardPage = () => {
     isAuthenticated && (
       <div>
         <h2>Hi, {user.name}, this is the dashboard</h2>
+        <span>{user.birthdate},{user.email},{user.gender}</span>
+        <LogOutButton></LogOutButton>
       </div>
     )
   );
