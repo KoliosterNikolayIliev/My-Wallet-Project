@@ -8,20 +8,9 @@ api = Api(transactions)
 
 class GetTransactions(Resource):
     def get(self):
-        data = {}
-        nordigen_key = request.headers.get('nordigen')
-
-        if nordigen_key:
-            accounts = nordigen.list_accounts(nordigen_key).get('accounts')
-
-            if not accounts:
-                data['nordigen'] = 'No bank accounts'
-
-            else:
-                data['nordigen'] = {}
-
-                for account in accounts:
-                    data['nordigen'][account] = nordigen.get_account_transactions(account).get('transactions').get('booked')
+        data = {
+            'nordigen': nordigen.get_account_transactions(request.headers.get('nordigen'))
+        }
 
         return data
 
