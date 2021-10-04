@@ -21,7 +21,7 @@ class GetTransactions(Resource):
                 data['nordigen'] = {}
 
                 for account in accounts:
-                    data['nordigen'][account] = nordigen.get_account_transactions(account)
+                    data['nordigen'][account] = nordigen.get_account_transactions(account).get('transactions').get('booked')
 
         return data
 
