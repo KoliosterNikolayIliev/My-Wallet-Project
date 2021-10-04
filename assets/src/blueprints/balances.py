@@ -10,7 +10,7 @@ api = Api(balances)
 class GetBalances(Resource):
     def get(self):
         data = {}
-        nordigen_key = request.form.get('nordigen')
+        nordigen_key = request.headers.get('nordigen')
 
         if nordigen_key:
             accounts = nordigen.list_accounts(nordigen_key).get('accounts')
