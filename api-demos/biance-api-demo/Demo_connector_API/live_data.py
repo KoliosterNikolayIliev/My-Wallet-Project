@@ -32,7 +32,7 @@ def get_live_account_data(client=SPOT_CLIENT):
     ws_client.stop()
 
 
-def return_combined_data():
+def get_live_combined_data():
     config_logging(logging, logging.DEBUG)
 
     def message_handler(message):
@@ -61,7 +61,7 @@ def return_combined_data():
     my_client.stop()
 
 
-def return_trade_data():
+def get_live_trade_data():
     config_logging(logging, logging.DEBUG)
 
     def message_handler(message):
