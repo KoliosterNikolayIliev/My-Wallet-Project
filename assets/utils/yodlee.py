@@ -24,7 +24,7 @@ import requests, os
 CLIENT_ID = os.environ.get('YODLEE_CLIENT_ID')
 SECRET = os.environ.get('YODLEE_SECRET')
 
-URL = "https://sandbox.api.yodlee.uk/ysl/"
+URL = os.environ.get('YODLEE_SANDBOX_URL')
 
 def get_access_token(loginName):
     # set up x-www-form-urlencoded data and header data for the request
