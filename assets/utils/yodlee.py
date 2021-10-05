@@ -9,6 +9,15 @@ import requests, os
         - in order to generate an access token we need to have developer CLIENT_ID and SECRET which are stored in a .env file
     2. We get information for a user using the access token
         - in order to get information for a user we need to use the access token, placing it in the header as follows: {'Authorization: Bearer someTokenGoesHere'}
+
+    DEVELOPMENT v PRODUCTION:
+    - in development we're using the Sandbox version of Yodlee which means:
+        - we're using the sandbox URL
+        - we're using the sandbox CLIENT_ID and SECRET
+        - we're using the 5 sandbox loginName's that are provided and contain mock data(we can't create more)
+    - for production we'll need to use the production URL
+    - for production we'll need to use the production CLIENT_ID and SECRET
+    - for production we'll need to generate unique loginNames for each user and store them in the DB
 """
 
 # get yodlee developer credentials from .env file
@@ -42,6 +51,22 @@ def get_balances(loginName):
             for account in response.json()['account']:
                 data[account['accountName']] = account['balance']
             return data
+        except:
+            # return an error if it has occured
+            return 'An error occured'
+    else:
+        return 'An error occured'
+
+def get_transactions(loginName):
+    # try to obtain a token and return an error if it fails
+    access_token = get_access_token(loginName)
+    if access_token != 'An error occured':
+        try:
+            # set up header data for the request
+            headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token}
+            # send the request and save the balance for each account
+            response = requests.get(URL + 'transactions', headers=headers)
+            return response.json()
         except:
             # return an error if it has occured
             return 'An error occured'
