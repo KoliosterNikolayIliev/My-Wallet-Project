@@ -39,6 +39,8 @@ def get_access_token(loginName):
         return 'An error occured'
 
 def get_balances(loginName):
+    if not loginName: return 'No loginName was provided'
+
     data = {}
     # try to obtain a token and return an error if it fails
     access_token = get_access_token(loginName)
@@ -58,6 +60,8 @@ def get_balances(loginName):
         return 'An error occured'
 
 def get_transactions(loginName):
+    if not loginName: return 'No loginName was provided'
+
     # try to obtain a token and return an error if it fails
     access_token = get_access_token(loginName)
     if access_token != 'An error occured':
