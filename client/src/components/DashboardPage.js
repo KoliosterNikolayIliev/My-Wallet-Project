@@ -15,12 +15,12 @@ const DashboardPage = () => {
     async function getUserData() {
         const token = await getAccessTokenSilently()
         try {
-            const result = await axios.get('http://localhost:8000/api/account/user/',{
+            const getUser = await axios.get('http://localhost:8000/api/account/user/',{
                 headers:{
-                    authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`
                 }
             })
-            console.log(result)
+            console.log(getUser)
         } catch (error) {
             console.log(error.message)
         }
@@ -35,6 +35,28 @@ const DashboardPage = () => {
                 }
             })
             console.log(serverDelete)
+
+            // console.log(authDelete)
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+    async function editUser() {
+        const token = await getAccessTokenSilently()
+        try {
+            const serverEdit = await axios.put('http://localhost:8000/api/account/user/edit',{
+                headers:{
+                    authorization: `Bearer ${token}`
+                },
+                body:{
+                    base_currency : 'USD',
+                    source_label:'Whatever',
+                    binance_key:'xxx',
+                    binance_secret:'YYY',
+                    yodlee_login_name:''
+                }
+            })
+            await console.log(serverEdit)
 
             // console.log(authDelete)
         } catch (error) {
@@ -58,8 +80,9 @@ const DashboardPage = () => {
         <h2>Hi, {user.name}, this is the dashboard</h2>
         <span>{user.birthdate},{user.email}</span>
           <ul>
-              <li><button onClick={getUserData}>getUserData(create user if not existing)</button></li>
-              <li><button onClick={deleteUser}>deleteUser</button></li>
+              <li><button onClick={getUserData}>Get user data(create user if not existing)</button></li>
+              <li><button onClick={deleteUser}>Delete user</button></li>
+              <li><button onClick={editUser}>Change user data</button></li>
           </ul>
         <LogOutButton/>
       </div>
