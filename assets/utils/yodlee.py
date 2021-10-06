@@ -30,49 +30,49 @@ def get_access_token(loginName):
     # set up x-www-form-urlencoded data and header data for the request
     data = {'clientId': CLIENT_ID, 'secret': SECRET}
     headers = {'Api-Version': '1.1', 'loginName': loginName}
+    # send the request and return the access token
+    response = requests.post(URL + 'auth/token', data=data, headers=headers)
     try:
-        # send the request and return the access token
-        response = requests.post(URL + 'auth/token', data=data, headers=headers)
         return response.json()['token']['accessToken']
     except:
         # return an error if it has occured
-        return 'An error occured'
+        return f"Error: {response.json()['errorCode']}; {response.json()['errorMessage']}"
 
 def get_balances(loginName):
-    if not loginName: return 'No loginName was provided'
+    if not loginName: return 'No Yodlee loginName was provided'
 
     data = {}
     # try to obtain a token and return an error if it fails
     access_token = get_access_token(loginName)
-    if access_token != 'An error occured':
+    if 'Error' not in access_token:
+        # set up header data for the request
+        headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token}
+        # send the request and save the balance for each account
+        response = requests.get(URL + 'accounts', headers=headers)
         try:
-            # set up header data for the request
-            headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token}
-            # send the request and save the balance for each account
-            response = requests.get(URL + 'accounts', headers=headers)
             for account in response.json()['account']:
                 data[account['accountName']] = account['balance']
             return data
         except:
             # return an error if it has occured
-            return 'An error occured'
+            return f"Error: {response.json()['errorCode']}; {response.json()['errorMessage']}"
     else:
-        return 'An error occured'
+        return access_token
 
 def get_transactions(loginName):
-    if not loginName: return 'No loginName was provided'
+    if not loginName: return 'No Yodlee loginName was provided'
 
     # try to obtain a token and return an error if it fails
     access_token = get_access_token(loginName)
-    if access_token != 'An error occured':
+    if 'Error' not in access_token:
+        # set up header data for the request
+        headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token}
+        # send the request and save the balance for each account
+        response = requests.get(URL + 'transactions', headers=headers)
         try:
-            # set up header data for the request
-            headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token}
-            # send the request and save the balance for each account
-            response = requests.get(URL + 'transactions', headers=headers)
             return response.json()
         except:
             # return an error if it has occured
-            return 'An error occured'
+            return f"Error: {response.json()['errorCode']}; {response.json()['errorMessage']}"
     else:
-        return 'An error occured'
+        return access_token
