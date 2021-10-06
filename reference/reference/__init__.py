@@ -1,9 +1,11 @@
 import os
 from flask import Flask, jsonify, redirect
 from .utils.extensions import scheduler
-from .blueprints import stocks, crypto
+from .blueprints import stocks, crypto, mock_stocks, mock_crypto
 from .utils.api_spec import spec
 from .utils.swagger import swagger_ui_blueprint, SWAGGER_URL
+
+MOCK_ENVIRONMENT = os.environ.get('MOCK_ENVIRONMENT', False)
 
 def create_app(test_config=None):
     # create and configure the app
@@ -29,8 +31,12 @@ def create_app(test_config=None):
     scheduler.start()
 
     # register blueprints
-    app.register_blueprint(stocks.bp)
-    app.register_blueprint(crypto.bp)
+    if not MOCK_ENVIRONMENT:
+        app.register_blueprint(stocks.bp)
+        app.register_blueprint(crypto.bp)
+    else:
+        app.register_blueprint(mock_stocks.bp)
+        app.register_blueprint(mock_crypto.bp)
 
     with app.app_context():
         # register all swagger documented functions here
