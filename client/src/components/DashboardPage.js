@@ -11,7 +11,7 @@ import axios from "axios";
 const DashboardPage = () => {
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
 
-    //Print user data in console. User needs to be authenticated
+    //Print user data in console. User needs to be authenticated. Only for testing.
     async function getUserData() {
         const token = await getAccessTokenSilently()
         try {
@@ -25,7 +25,7 @@ const DashboardPage = () => {
             console.log(error.message)
         }
     }
-    //Deletes user.
+    //Deletes user. Only for testing.
     async function deleteUser() {
         const token = await getAccessTokenSilently()
         try {
