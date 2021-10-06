@@ -12,7 +12,7 @@ bp = Blueprint('crypto', __name__, url_prefix='/crypto')
 
 def fetch_crypto_price_data():
     global crypto_prices_store
-    if not MOCK_ENVIRONMENT:
+    if not MOCK_ENVIRONMENT == "True":
       req = requests.get('http://api.coinlayer.com/live', params={'access_key': os.environ['CL_API_KEY']})
       res = req.json()
 

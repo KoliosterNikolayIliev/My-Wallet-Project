@@ -16,7 +16,7 @@ bp = Blueprint('stocks', __name__, url_prefix='/stocks')
 # fetch real-time price data for shortlisted stocks
 def fetch_stocks_price_data(symbols: list):
     global stocks_prices_store
-    if not MOCK_ENVIRONMENT:
+    if not MOCK_ENVIRONMENT == "True":
       symbols = (',').join(symbols)
       req = requests.get('https://api.twelvedata.com/price', params={'symbol': symbols, 'apikey': os.environ['TD_API_KEY'], 'interval': '1min'})
       res = req.json()
