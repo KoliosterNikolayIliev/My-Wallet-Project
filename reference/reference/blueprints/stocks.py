@@ -5,6 +5,8 @@ from ..utils.extensions import scheduler
 # shortlisted stocks
 STOCKS_LIST = ["AMZN", "MSFT", "GOOGL", "AMD", "MRNA", "TSLA", "PLTR", "AAPL"]
 
+MOCK_ENVIRONMENT = os.environ.get('MOCK_ENVIRONMENT')
+
 # store latest prices for shortlisted stocks
 stocks_prices_store = {}
 
@@ -14,16 +16,29 @@ bp = Blueprint('stocks', __name__, url_prefix='/stocks')
 # fetch real-time price data for shortlisted stocks
 def fetch_stocks_price_data(symbols: list):
     global stocks_prices_store
-    symbols = (',').join(symbols)
-    req = requests.get('https://api.twelvedata.com/price', params={'symbol': symbols, 'apikey': os.environ['TD_API_KEY'], 'interval': '1min'})
-    res = req.json()
+    if not MOCK_ENVIRONMENT:
+      symbols = (',').join(symbols)
+      req = requests.get('https://api.twelvedata.com/price', params={'symbol': symbols, 'apikey': os.environ['TD_API_KEY'], 'interval': '1min'})
+      res = req.json()
 
-    # if there is an error, print the error message, else update the stocks_prices_store
-    try:
-        for res_key, res_value in res.items():
-            stocks_prices_store[res_key] = res_value['price']
-    except:
-        print(f"Error: {res['message']}")
+      # if there is an error, print the error message, else update the stocks_prices_store
+      try:
+          for res_key, res_value in res.items():
+              stocks_prices_store[res_key] = res_value['price']
+      except:
+          print(f"Error: {res['message']}")
+    else:
+      stocks_prices_store = {
+        'AAPL': 138.13,
+        'MSFT': 281.24,
+        'PLTR': 23.20,
+        'GOOGL': 2654.24,
+        'AMZN': 3185.66,
+        'MRNA': 325.30,
+        'TSLA': 782.06,
+        'AMD': 100.00,
+    }
+  
         
 
 # fetch price data for shortlisted stocks the first time the server goes live
