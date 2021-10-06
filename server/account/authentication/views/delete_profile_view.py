@@ -7,7 +7,8 @@ from authentication.common_shared.sensitive_data import DELETE_USER, MANAGER_TOK
 from authentication.common_shared.utils import jwt_decode_token
 from authentication.models import UserProfile
 
-
+# Deletes account from Auth0 DB and Account Db
+# Needs research for using REST Generic views
 @csrf_exempt
 def delete_user_account(request):
     if request.method == 'DELETE':
