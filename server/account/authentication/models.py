@@ -3,27 +3,17 @@ from django.db import models
 
 
 class UserProfile(models.Model):
-    CURRENCY_CHOICES = (
-        ("1", "1"),
-        ("2", "2"),
-        ("3", "3"),
-        ("4", "4"),
-        ("5", "5"),
-        ("6", "6"),
-        ("7", "7"),
-        ("8", "8"),
-    )
-    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=False)
-    base_currency = models.CharField(
-        max_length=20,
-        choices=CURRENCY_CHOICES,
-        default='1'
-    )
-    source_label = models.CharField(max_length=20, blank=True)
+    user_identifier = models.CharField(max_length=30, blank=False)
+    base_currency = models.CharField(max_length=20, default='GBP')
+    source_label = models.CharField(max_length=20, default='Not set!')
+    # All of these will be encrypted fields (https://pypi.org/project/django-encrypted-model-fields/)
+    # The rest will be added in future
+    binance_key = models.CharField(max_length=100, blank=False, default='Not set!')
+    binance_secret = models.CharField(max_length=100, blank=False, default='Not set!')
+    yodlee_login_name = models.CharField(max_length=20, blank=False, default='Not set!')
 
-    def save(self, *args, **kwargs):
-        self.id = self.user_id
-        super(UserProfile, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return f'{self.user.username}   |   id = {self.id}'
+    # Unsuccessful attempt to add id due to id length
+    # def save(self, *args, **kwargs):
+    #     ascii_values = [str(ord(character)) for character in self.user_identifier]
+    #     self.id = int(''.join(ascii_values))
+    #     return super(UserProfile, self).save(*args, **kwargs)

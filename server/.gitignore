@@ -132,4 +132,4 @@ dmypy.json
 .pyre/
 
 # passwords
-passwords.py
+sensitive_data.py

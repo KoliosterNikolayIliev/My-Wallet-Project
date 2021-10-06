@@ -11,13 +11,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
-import json
-from six.moves.urllib import request
-from cryptography.x509 import load_pem_x509_certificate
-from cryptography.hazmat.backends import default_backend
+from authentication.common_shared.sensitive_data import DbPassword, DbUsername, DB_HOST, JWT_AUDIENCE, JWT_ISSUER
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-from authentication.passwords import DbPassword, DbUsername
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,12 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+=w8#pg87%b1*iaa9s19rohd7yvi_d2o2agku(k)db78)u2_g)'
+SECRET_KEY = 'JWT_SECURITY_TOKEN'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -43,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_jwt',
+    'corsheaders',
     'authentication',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,6 +51,25 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.auth.middleware.RemoteUserMiddleware',
+]
+
+# cors headers allowed hosts. This enables calls from localhost
+# ALLOWED_HOSTS = []
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.RemoteUserBackend',
 ]
 
 REST_FRAMEWORK = {
@@ -62,6 +78,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ),
 }
 
@@ -100,19 +118,15 @@ WSGI_APPLICATION = 'account.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENFORCE_SCHEMA': True,
         'ENGINE': 'djongo',
         'CLIENT': {
             'name': '3vial',
-            'host': 'mongodb+srv://trivialAdmin:<password>@3vial.9mih9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+            'host': DB_HOST,
             # 'username': os.environ.get('DbUsername'),
             # 'password': os.environ.get('DbPassword'),
             # username and password for development if environment variables are not set
             'username': DbUsername,
             'password': DbPassword,
-            # admin user and pass 3VialSuperAdmin
-            # environment variables for username and password
-
             'authMechanism': 'SCRAM-SHA-1'
 
         }
@@ -160,29 +174,19 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Auth0 settings
-AUTH0_DOMAIN = 'dev-kbl8py41.us.auth0.com'
-API_IDENTIFIER = 'https://dev-kbl8py41.us.auth0.com/api/v2/'
-PUBLIC_KEY = None
-JWT_ISSUER = None
-if AUTH0_DOMAIN:
-    jsonurl = request.urlopen('https://' + AUTH0_DOMAIN + '/.well-known/jwks.json')
-    jwks = json.loads(jsonurl.read().decode('utf-8'))
-    cert = '-----BEGIN CERTIFICATE-----\n' + jwks['keys'][0]['x5c'][0] + '\n-----END CERTIFICATE-----'
-    certificate = load_pem_x509_certificate(cert.encode('utf-8'), default_backend())
-    PUBLIC_KEY = certificate.public_key()
-    JWT_ISSUER = 'https://' + AUTH0_DOMAIN + '/'
 
-
-def jwt_get_username_from_payload_handler(payload):
-    return 'someusername'
-
+"""
+JWT authentication currently using only the admin user in Django 
+Important: Django admin username mus be auth0user
+"""
 
 JWT_AUTH = {
-    'JWT_PAYLOAD_GET_USERNAME_HANDLER': jwt_get_username_from_payload_handler,
-    'JWT_PUBLIC_KEY': PUBLIC_KEY,
+    'JWT_PAYLOAD_GET_USERNAME_HANDLER':
+        'authentication.utils.auth0user',
+    'JWT_DECODE_HANDLER':
+        'authentication.utils.jwt_decode_token',
     'JWT_ALGORITHM': 'RS256',
-    'JWT_AUDIENCE': API_IDENTIFIER,
+    'JWT_AUDIENCE': JWT_AUDIENCE,
     'JWT_ISSUER': JWT_ISSUER,
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 }
