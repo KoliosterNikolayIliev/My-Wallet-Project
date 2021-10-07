@@ -46,10 +46,10 @@ const DashboardPage = () => {
         try {
             const serverEdit = await axios.post('http://localhost:8000/api/account/user/edit',{
                     user_identifier: `${token}`,
-                    base_currency : 'USD',
+                    base_currency : 'BGN',
                     source_label:'Whatever',
-                    binance_key:'xxx',
-                    binance_secret:'YYY',
+                    binance_key:'',
+                    binance_secret:'',
                     yodlee_login_name:''
             })
             await console.log(serverEdit)
