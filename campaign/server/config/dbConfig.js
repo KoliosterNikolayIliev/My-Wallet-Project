@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+const mongoose = require("mongoose");
 const uri =
   "mongodb+srv://trivialAdmin:OZjhinrBmHRGiXHk@3vial.9mih9.mongodb.net/3vial-Campaign?retryWrites=true&w=majority";
 
