@@ -14,7 +14,24 @@ app.use(cors());
 const Questionnaire = require("./models/questionnaire");
 
 app.post("/save-form-data", (req, res) => {
-  console.log(req.body);
+  let author = req.body["author"];
+  let response1 = req.body["response1"];
+  let response2 = req.body["response2"];
+  let response3 = req.body["response3"];
+
+  let questionnaireResponse = new Questionnaire({
+    author,
+    response1,
+    response2,
+    response3,
+  });
+
+  questionnaireResponse.save((err, res) => {
+    if (err) return console.log(err);
+  });
+
+  res.status(201);
+  res.end();
 });
 
 server.listen(5000, () => {
