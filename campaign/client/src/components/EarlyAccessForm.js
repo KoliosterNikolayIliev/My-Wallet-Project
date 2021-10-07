@@ -17,6 +17,22 @@ const customStyles = {
 const EarlyAccessForm = ({ status, message, onSubmitted }) => {
   const [email, setEmail] = useState("");
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [response1, setResponse1] = useState("No response");
+  const [response2, setResponse2] = useState("No response");
+  const [response3, setResponse3] = useState("No response");
+
+  const sendData = async () => {
+    let data = {
+      response1: response1,
+      response2: response2,
+      response3: response3,
+    };
+    await fetch("http://localhost:5000/save-form-data", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+  };
 
   const openModal = () => {
     setIsOpen(true);
@@ -27,8 +43,9 @@ const EarlyAccessForm = ({ status, message, onSubmitted }) => {
   };
 
   const sendAnswers = () => {
-    closeModal();
     // send answers to database
+    sendData();
+    closeModal();
   };
 
   useEffect(() => {
@@ -79,13 +96,25 @@ const EarlyAccessForm = ({ status, message, onSubmitted }) => {
         </p>
         <form>
           <label for="question1">Question 1 (Add a question here)</label>
-          <input type="text" id="question1" />
+          <input
+            type="text"
+            id="question1"
+            onChange={(e) => setResponse1(e.target.value)}
+          />
           <br />
           <label for="question2">Question 2 (Add a question here)</label>
-          <input type="text" id="question2" />
+          <input
+            type="text"
+            id="question2"
+            onChange={(e) => setResponse2(e.target.value)}
+          />
           <br />
           <label for="question3">Question 3 (Add a question here)</label>
-          <input type="text" id="question3" />
+          <input
+            type="text"
+            id="question3"
+            onChange={(e) => setResponse3(e.target.value)}
+          />
         </form>
         <button onClick={sendAnswers}>Submit answers</button>
         <button onClick={closeModal}>I don't want to answer</button>
