@@ -23,6 +23,7 @@ const EarlyAccessForm = ({ status, message, onSubmitted }) => {
 
   const sendData = async () => {
     let data = {
+      author: email,
       response1: response1,
       response2: response2,
       response3: response3,
@@ -45,12 +46,12 @@ const EarlyAccessForm = ({ status, message, onSubmitted }) => {
   const sendAnswers = () => {
     // send answers to database
     sendData();
+    clearFields();
     closeModal();
   };
 
   useEffect(() => {
     if (status === "success") {
-      clearFields();
       openModal();
     }
   }, [status]);
