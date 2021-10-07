@@ -44,17 +44,13 @@ const DashboardPage = () => {
     async function editUser() {
         const token = await getAccessTokenSilently()
         try {
-            const serverEdit = await axios.put('http://localhost:8000/api/account/user/edit',{
-                headers:{
-                    authorization: `Bearer ${token}`
-                },
-                body:{
+            const serverEdit = await axios.post('http://localhost:8000/api/account/user/edit',{
+                    user_identifier: `${token}`,
                     base_currency : 'USD',
                     source_label:'Whatever',
                     binance_key:'xxx',
                     binance_secret:'YYY',
                     yodlee_login_name:''
-                }
             })
             await console.log(serverEdit)
 
