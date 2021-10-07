@@ -85,28 +85,10 @@ class NordigenTests(TestCase):
         expected_result = {'message': 'No bank accounts'}
         self.assertDictEqual(expected_result, result)
 
-    def test_get_account_balances__when_valid_args__expect_dict_with_all_accounts_authorised_balances(self):
+    def test_get_account_balances__when_valid_args__expect_balances_for_all_accounts(self):
         result = nordigen.get_account_balances(self.requisition_id)
-        expected_result = {
-            "1048f194-cb13-4cee-a55c-5ef6d8661341": {
-                "balanceAmount": {
-                    "amount": "1913.12",
-                    "currency": "EUR"
-                },
-                "balanceType": "authorised",
-                "referenceDate": "2021-10-06"
-            },
-            "582a6ea9-81c7-4def-952d-85709d9432cf": {
-                "balanceAmount": {
-                    "amount": "1913.12",
-                    "currency": "EUR"
-                },
-                "balanceType": "authorised",
-                "referenceDate": "2021-10-06"
-            }
-        }
 
-        self.assertDictEqual(expected_result, result)
+        self.assertEqual(2, len(result))
 
     def test_get_account_transactions__when_invalid_requisition_id__expect_dict_error_message(self):
         self.requisition_id = 'invalid_id'
