@@ -5,6 +5,7 @@ from .blueprints import stocks, crypto
 from .utils.api_spec import spec
 from .utils.swagger import swagger_ui_blueprint, SWAGGER_URL
 
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -28,7 +29,6 @@ def create_app(test_config=None):
     scheduler.init_app(app)
     scheduler.start()
 
-    # register blueprints
     app.register_blueprint(stocks.bp)
     app.register_blueprint(crypto.bp)
 
