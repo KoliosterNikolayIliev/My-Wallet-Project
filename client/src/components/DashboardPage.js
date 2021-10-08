@@ -15,7 +15,7 @@ const DashboardPage = () => {
     async function getUserData() {
         const token = await getAccessTokenSilently()
         try {
-            const getUser = await axios.get('http://localhost:8000/api/account/user/',{
+            const getUser = await axios.get('http://localhost:8000/api/account/user',{
                 headers:{
                     Authorization: `Bearer ${token}`
                 }
@@ -29,7 +29,7 @@ const DashboardPage = () => {
     async function deleteUser() {
         const token = await getAccessTokenSilently()
         try {
-            const serverDelete = await axios.delete('http://localhost:8000/api/account/user/delete/',{
+            const serverDelete = await axios.delete('http://localhost:8000/api/account/user/delete',{
                 headers:{
                     authorization: `Bearer ${token}`
                 }
@@ -44,7 +44,7 @@ const DashboardPage = () => {
     async function editUser() {
         const token = await getAccessTokenSilently()
         try {
-            const serverEdit = await axios.post('http://localhost:8000/api/account/user/edit/',{
+            const serverEdit = await axios.post('http://localhost:8000/api/account/user/edit',{
                     user_identifier: `${token}`,
                     base_currency : 'USD',
                     source_label:'Whatever',
