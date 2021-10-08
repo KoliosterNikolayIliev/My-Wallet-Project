@@ -13,7 +13,7 @@ from authentication.serializers import ViewEditUserSerializer
 
 @csrf_exempt
 def edit_user_profile(request):
-    if request.method == 'POST':
+    if request.method == 'PUT':
         # Gets the data from request body and transforms it into python dict
         stream = io.BytesIO(request.body)
         data = JSONParser().parse(stream)
