@@ -1,5 +1,6 @@
 import os
 from flask import Flask, jsonify
+from .blueprints import api
 
 def create_app(test_config=None):
     # create and configure the app
@@ -20,5 +21,7 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    app.register_blueprint(api.bp)
 
     return app
