@@ -1,12 +1,14 @@
-import requests
+import requests, os
+
+URL = os.environ.get("ASSETS_URL")
 
 # fetch all balances using Assets
 def get_balances(headers):
-    res = requests.get("http://127.0.0.1:5000/balances/", headers=headers)
+    res = requests.get(URL + "balances/", headers=headers)
     return res.json()
 
 
 # fetch all transactions using Assets
 def get_transactions(headers):
-    res = requests.get("http://127.0.0.1:5000/transactions/", headers=headers)
+    res = requests.get(URL + "transactions/", headers=headers)
     return res.json()
