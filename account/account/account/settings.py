@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework_jwt',
     'corsheaders',
     'authentication',
 ]
@@ -177,7 +176,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 """
 JWT authentication currently using only the admin user in Django 
-Important: Django admin username mus be auth0user
+Important: Django admin username must be auth0user
 """
 
 JWT_AUTH = {

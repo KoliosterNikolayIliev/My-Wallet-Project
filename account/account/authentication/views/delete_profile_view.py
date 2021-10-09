@@ -14,22 +14,28 @@ from authentication.models import UserProfile
 def delete_user_account(request):
     if request.method == 'DELETE':
         # Get user id
-        user_token = request.headers['Authorization'].split(' ')[1]
-        request_user = jwt_decode_token(user_token).get('sub')
-
-        # Get Manager Token for Authorisation of the delete request
-        payload = MANAGER_TOKEN_PAYLOAD
-        headers_get_token_request = CaseInsensitiveDict()
-        headers_get_token_request['content-type'] = 'application/json'
-        token_request = requests.post(f'{MANAGER_TOKEN_URL}', payload, headers=headers_get_token_request)
-        manger_token = token_request.json()['access_token']
-        token = manger_token
+        try:
+            user_token = request.headers['Authorization'].split(' ')[1]
+            request_user = jwt_decode_token(user_token).get('sub')
+            # Get Manager Token for Authorisation of the delete request
+            payload = MANAGER_TOKEN_PAYLOAD
+            headers_get_token_request = CaseInsensitiveDict()
+            headers_get_token_request['content-type'] = 'application/json'
+            token_request = requests.post(f'{MANAGER_TOKEN_URL}', payload, headers=headers_get_token_request)
+            manger_token = token_request.json()['access_token']
+            token = manger_token
+        except Exception:
+            return JsonResponse('UNAUTHORIZED!', status=401, safe=False)
 
         # Send delete request
         headers_delete_request = CaseInsensitiveDict()
         headers_delete_request['Authorization'] = f'Bearer {token}'
         user_data_url = DELETE_USER
-        delete_request = requests.delete(f'{user_data_url}{request_user}', headers=headers_delete_request, )
+        try:
+            requests.delete(f'{user_data_url}{request_user}', headers=headers_delete_request, )
+        except Exception:
+            return JsonResponse('UNAUTHORIZED!', status=401, safe=False)
+
         # Delete UserAccount from database
         user = UserProfile.objects.filter(user_identifier=request_user)
         if user:
