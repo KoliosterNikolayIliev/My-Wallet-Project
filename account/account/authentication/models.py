@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser, User
 from django.db import models
 
+from encrypted_model_fields.fields import EncryptedCharField
+
 
 class UserProfile(models.Model):
     user_identifier = models.CharField(max_length=40, blank=False)
@@ -10,4 +12,4 @@ class UserProfile(models.Model):
     # The rest will be added in future
     binance_key = models.CharField(max_length=100, blank=True, )
     binance_secret = models.CharField(max_length=100, blank=True)
-    yodlee_login_name = models.CharField(max_length=180, blank=True)
+    yodlee_login_name = EncryptedCharField()

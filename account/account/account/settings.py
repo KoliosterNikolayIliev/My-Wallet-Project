@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
-from authentication.common_shared.sensitive_data import DbPassword, DbUsername, DB_HOST, JWT_AUDIENCE, JWT_ISSUER
+from authentication.common_shared.sensitive_data import DbPassword, DbUsername, DB_HOST, JWT_AUDIENCE, JWT_ISSUER, \
+    FIELD_ENCRYPTION_MODEL_KEY
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'encrypted_model_fields',
     'authentication',
 ]
 
@@ -114,7 +116,8 @@ WSGI_APPLICATION = 'account.wsgi.application'
 #     }
 # }
 
-
+# FIELD_ENCRYPTION_KEY = os.environ.get('FIELD_ENCRYPTION_KEY', '')
+FIELD_ENCRYPTION_KEY = FIELD_ENCRYPTION_MODEL_KEY
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
@@ -172,7 +175,6 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 """
 JWT authentication currently using only the admin user in Django 
