@@ -1,11 +1,11 @@
-import requests
+import requests, os
 
+URL = os.eniron.get("REFERENCE_URL")
 
 def get_crypto_prices():
-    res = requests.get("http://127.0.0.1:5002/crypto/prices")
+    res = requests.get(URL + "crypto/prices")
     return res.json()
 
-
 def get_stocks_prices():
-    res = requests.get("http://127.0.0.1:5002/stocks/prices")
+    res = requests.get(URL + "stocks/prices")
     return res.json()
