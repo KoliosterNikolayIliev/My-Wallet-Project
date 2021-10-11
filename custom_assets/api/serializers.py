@@ -24,3 +24,9 @@ class CreateCryptoAssetSerializer(ModelSerializer):
         crypto_asset_obj.save()
 
         return crypto_asset_obj
+
+
+class ViewCryptoAssetSerializer(ModelSerializer):
+    class Meta:
+        model = CryptoAsset
+        exclude = ('id', 'custom_assets_key')
