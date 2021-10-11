@@ -24,6 +24,7 @@ def delete_user_account(request):
             token_request = requests.post(f'{MANAGER_TOKEN_URL}', payload, headers=headers_get_token_request)
             manger_token = token_request.json()['access_token']
             token = manger_token
+
         except Exception:
             return JsonResponse('UNAUTHORIZED!', status=401, safe=False)
 
