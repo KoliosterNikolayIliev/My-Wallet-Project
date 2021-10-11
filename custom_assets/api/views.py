@@ -1,3 +1,6 @@
-from django.shortcuts import render
+from rest_framework.generics import CreateAPIView
+from api.serializers import CreateCryptoAssetSerializer
 
-# Create your views here.
+
+class CreateCryptoAsset(CreateAPIView):
+    serializer_class = CreateCryptoAssetSerializer
