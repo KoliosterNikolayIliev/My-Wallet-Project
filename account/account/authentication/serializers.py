@@ -12,7 +12,14 @@ class ViewEditUserSerializer(serializers.ModelSerializer):
             'source_label',
             'binance_key',
             'binance_secret',
+            'coinbase_api_secret',
+            'coinbase_api_key',
+            'coinbase_api_pass',
             'yodlee_login_name',
+            'nordigen_requisition',
+            'custom_assets_key',
+            'first_name',
+            'last_name',
         ]
 
 
