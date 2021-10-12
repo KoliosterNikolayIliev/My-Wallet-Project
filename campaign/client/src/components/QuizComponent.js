@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 
 const QuizComponent = ({
+  questionType,
   quizState,
   setQuizState,
   answerSheet,
@@ -24,10 +25,18 @@ const QuizComponent = ({
     e.target.classList.add("selected");
 
     // add the selected answer to the answer sheet
-    setAnswerSheet({
-      ...answerSheet,
-      [question]: e.target.innerText,
-    });
+    if (e.target.type === "text") {
+      setAnswerSheet({
+        ...answerSheet,
+        [question]: e.target.value,
+      });
+    } else {
+      setAnswerSheet({
+        ...answerSheet,
+        [question]: e.target.innerText,
+      });
+    }
+
     setAnswerSelected(true);
   };
 
@@ -44,6 +53,7 @@ const QuizComponent = ({
       <p onClick={selectAnswer}>{answer1}</p>
       <p onClick={selectAnswer}>{answer2}</p>
       <p onClick={selectAnswer}>{answer3}</p>
+      <input type="text" onChange={selectAnswer} />
 
       {/* Show the submit button if this is the last question in the quiz */}
       {answerSelected && quizState === 3 && (
