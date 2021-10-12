@@ -44,14 +44,3 @@ Then Follow the instructions in the console.
     secret = "qgve977nbhLuuTjobjkcCUy2WiAcCodgW7GZI8PBYWJRwk33ZbrmRVLouEKkmyEK"
 
 
-####NOTE - the Demo_connector API is still in development. More information regarding the functionality can be obtained from the DocStrings and comments in the code.
-
-    Real test keys for testing purposes:
-    
-    HMAC_SHA256 Key registered
-    
-    Save these values right now. They won't be shown ever again!
-    
-    API Key: hGLWWbEWRKMLIP5gvo8dbwRWfQmgJRZZT9QBbWCfwGDO0chT3R1W3znALa18kT3B
-    
-    Secret Key: qgve977nb7LuuTUobjkcCUy2WWAcCodgW7GZI8PBYRJRwk33ZbrmRVLouEKkmyEN
