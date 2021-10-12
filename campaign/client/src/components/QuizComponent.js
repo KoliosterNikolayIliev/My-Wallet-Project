@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const QuizComponent = ({
   questionType,
@@ -16,7 +16,13 @@ const QuizComponent = ({
   answer4,
 }) => {
   const [answerSelected, setAnswerSelected] = useState(null);
-  const [answerNumber, setAnswerNumber] = useState(1);
+  const [answer, setAnswer] = useState([]);
+
+  useEffect(() => {
+    setAnswerSheet({ ...answerSheet, [question]: answer });
+    return console.log(answerSheet);
+  }, [answer]);
+
   const selectAnswer = (e) => {
     if (numberOfAnswers) {
       // remove the selected class from all sibling elements
@@ -28,40 +34,17 @@ const QuizComponent = ({
     // add the selected class to the selected answer
     e.target.classList.add("selected");
 
-    // add the selected answer to the answer sheet
-    if (e.target.type === "text") {
-      setAnswerSheet({
-        ...answerSheet,
-        [question]: {
-          [answerNumber]: e.target.value,
-        },
-      });
-      setAnswerNumber(answerNumber + 1);
+    if (numberOfAnswers) {
+      setAnswer([e.target.innerText]);
     } else {
-      if (numberOfAnswers) {
-        setAnswerSheet({
-          ...answerSheet,
-          [question]: e.target.innerText,
-        });
+      if (e.target.type === "text") {
+        setAnswer([...answer, e.target.value]);
       } else {
-        setAnswerSheet({
-          ...answerSheet,
-          [question]: {
-            [answerNumber]: e.target.innerText,
-          },
-        });
-        setAnswerNumber(answerNumber + 1);
+        setAnswer([...answer, e.target.innerText]);
       }
     }
 
     setAnswerSelected(true);
-  };
-
-  // Increment the state of the quiz
-  const previousQuizState = () => {
-    if (quizState > 1) {
-      setQuizState(quizState - 1);
-    }
   };
 
   // Increment the state of the quiz
@@ -71,30 +54,50 @@ const QuizComponent = ({
     }
   };
 
-  return (
-    <div>
-      <h4>{question}</h4>
-      <p onClick={selectAnswer}>{answer1}</p>
-      <p onClick={selectAnswer}>{answer2}</p>
-      <p onClick={selectAnswer}>{answer3}</p>
-      <p onClick={selectAnswer}>{answer4}</p>
-      <input type="text" placeholder={"Other"} onChange={selectAnswer} />
+  if (questionType === "closed")
+    return (
+      <div>
+        <h4>{question}</h4>
+        <p onClick={selectAnswer}>{answer1}</p>
+        <p onClick={selectAnswer}>{answer2}</p>
+        <p onClick={selectAnswer}>{answer3}</p>
+        <p onClick={selectAnswer}>{answer4}</p>
+        <input type="text" onBlur={selectAnswer} />
 
-      {/* Show the submit button if this is the last question in the quiz */}
-      {answerSelected && quizState === 3 && (
-        <div>
-          <button onClick={submitFunction}>Submit</button>
-        </div>
-      )}
+        {/* Show the submit button if this is the last question in the quiz */}
+        {quizState === 3 && (
+          <div>
+            <button onClick={submitFunction}>Submit</button>
+          </div>
+        )}
 
-      {answerSelected && quizState !== 3 && (
-        <div>
-          {quizState > 1 && <button onClick={previousQuizState}>Back</button>}
-          <button onClick={nextQuizState}>Next</button>
-        </div>
-      )}
-    </div>
-  );
+        {answerSelected && quizState !== 3 && (
+          <div>
+            <button onClick={nextQuizState}>Next</button>
+          </div>
+        )}
+      </div>
+    );
+  else if (questionType === "open")
+    return (
+      <div>
+        <h4>{question}</h4>
+        <input type="text" onBlur={selectAnswer} />
+
+        {/* Show the submit button if this is the last question in the quiz */}
+        {answerSelected && quizState === 3 && (
+          <div>
+            <button onClick={submitFunction}>Submit</button>
+          </div>
+        )}
+
+        {answerSelected && quizState !== 3 && (
+          <div>
+            <button onClick={nextQuizState}>Next</button>
+          </div>
+        )}
+      </div>
+    );
 };
 
 export default QuizComponent;
