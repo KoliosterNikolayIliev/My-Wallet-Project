@@ -56,7 +56,7 @@ def get_exchange_info(symbol="BTCBUSD", symbols=["BTCUSDT", "BNBUSDT"], spot_cli
         """
     # logging.info(spot_client.exchange_info())
     # logging.info(spot_client.exchange_info(symbol=symbol))
-    return spot_client.exchange_info(symbols=symbols)
+    return spot_client.exchange_info()
 
 
 # get_exchange_info()
@@ -105,7 +105,7 @@ def get_klines(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
 # get_klines()
 
 
-def get_ticker_24hr(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
+def get_current_price_24h(spot_client=SPOT_CLIENT):
     """
         24hr Ticker Price Change Statistics
 
@@ -116,12 +116,12 @@ def get_ticker_24hr(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
          Args:
              symbol (str, optional): the trading pair
      """
-    spot_client.ticker_24hr(symbol)
+    return spot_client.ticker_24hr()
 
 
 # get_ticker_24hr()
 
-def get_ticker_price(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
+def get_current_price(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
     """
         Symbol Price Ticker
 
@@ -151,6 +151,6 @@ def get_trades(symbol="BTCBUSD", spot_client=SPOT_CLIENT):
         Keyword Args:
             limit (int, optional): limit the results. Default 500; max 1000.
     """
-    return spot_client.trades("BTCUSDT")
+    return spot_client.trades(symbol)
 
 # get_trades()
