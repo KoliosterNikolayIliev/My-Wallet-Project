@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from authentication.models import UserProfile
 from authentication.serializers import UserNewSerializer, ViewEditUserSerializer
-from authentication.common_shared.utils import jwt_decode_token
+from authentication.common_shared.utils import jwt_decode_token, user_does_not_exist
 
 
 # creates user profile if not existing and returns user profile data or returns user profile data
@@ -14,10 +14,11 @@ def get_and_create_user_profile(request):
     """
     # Get and decode token. Catches all possible errors for (wrong, too long, too short, etc.)token
     # If token is ok, passes the user for next operations.
-    # here we could use external validation from Auth0 (https://dev-kbl8py41.us.auth0.com/userinfo )
-    # and not use try/except.
+
     try:
         token = request.headers.get('Authorization').split(' ')[1]
+        if user_does_not_exist(token):
+            return JsonResponse('UNAUTHORIZED!', status=401, safe=False)
         request_user = jwt_decode_token(token).get('sub')
     except Exception:
         return JsonResponse('UNAUTHORIZED!', status=401, safe=False)
