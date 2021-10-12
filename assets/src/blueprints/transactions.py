@@ -2,6 +2,7 @@ from flask import request, Blueprint
 from flask_restful import Resource, Api
 from utils import nordigen, yodlee, coinbase_api
 
+
 transactions = Blueprint('transactions', __name__)
 api = Api(transactions)
 

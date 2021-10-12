@@ -38,12 +38,17 @@ from binance.lib.utils import config_logging
 # when key, secret are stored in environment variables.
 # KEY = os.environ.get('binance_api')
 # SECRET = os.environ.get('binance_secret')
-KEY = "hGLWWbEWRKMLIP5gvo8dbwRWfQmgJRZZT9QBbWCfwGDO0chT3R1W3znALa18kT3B"
-SECRET = "qgve977nb7LuuTUobjkcCUy2WWAcCodgW7GZI8PBYRJRwk33ZbrmRVLouEKkmyEN"
+test_key = "hGLWWbEWRKMLIP5gvo8dbwRWfQmgJRZZT9QBbWCfwGDO0chT3R1W3znALa18kT3B"
+secret_key = "qgve977nb7LuuTUobjkcCUy2WWAcCodgW7GZI8PBYRJRwk33ZbrmRVLouEKkmyEN"
 
+KEY = test_key
+SECRET = secret_key
 
+real_base_url = 'https://api.binance.com'
+test_base_url = 'https://testnet.binance.vision'
 # for real API base_url=https://api.binance.com/api
-SPOT_CLIENT = Client(key=KEY, secret=SECRET, base_url="https://testnet.binance.vision")
+SPOT_CLIENT = Client(key=KEY, secret=SECRET, base_url=test_base_url)
+
 # make DEBUG False if functions need to return JSon data otherwise data will be printed in the console.
 
 DEBUG = False
@@ -75,3 +80,9 @@ SYMBOLS = {
     "TRXBNB": "TRXBNB",
     "XRPBNB": "XRPBNB",
 }
+
+
+'''
+tried pasting directly before row 97 in api.py from binance-connector library as a dirty patch and still the result is the same
+print((requests.get(response.url, headers={'Content-Type':'application/json', 'X-MBX-APIKEY':'hGLWWbEWRKMLIP5gvo8dbwRWfQmgJRZZT9QBbWCfwGDO0chT3R1W3znALa18kT3B'})).json())
+'''

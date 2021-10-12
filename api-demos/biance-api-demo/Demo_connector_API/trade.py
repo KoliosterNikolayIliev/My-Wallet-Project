@@ -1,5 +1,6 @@
 import logging
 
+from binance.api import API
 from binance.error import ClientError
 
 from Demo_connector_API.decorators import require_auth
@@ -11,14 +12,14 @@ LOGGING_BOOL = DEBUG
 
 
 @require_auth
-def return_account_info(client=SPOT_CLIENT):
+def get_account_info(client=SPOT_CLIENT):
     return client.account()
 
 
 # return_account_info()
 
 @require_auth
-def get_my_trades(symbol="BTCBUSD", client=SPOT_CLIENT):
+def get_my_trades(symbol="BNBBUSD", client=SPOT_CLIENT):
     """
         Account Trade List (USER_DATA)
 
@@ -39,7 +40,7 @@ def get_my_trades(symbol="BTCBUSD", client=SPOT_CLIENT):
             recvWindow (int, optional): The value cannot be greater than 60000
         """
 
-    return client.my_trades(symbol)
+    return client.my_trades(symbol, fromId=1)
 
 
 # get_my_trades()
@@ -58,6 +59,3 @@ def get_account_orders(symbol="BTCBUSD", client=SPOT_CLIENT):
                 error.status_code, error.error_code, error.error_message
             )
         )
-
-
-
