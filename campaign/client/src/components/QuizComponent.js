@@ -62,7 +62,7 @@ const QuizComponent = ({
         <p onClick={selectAnswer}>{answer2}</p>
         <p onClick={selectAnswer}>{answer3}</p>
         <p onClick={selectAnswer}>{answer4}</p>
-        <input type="text" onBlur={selectAnswer} />
+        <input type="text" placeholder="Other" onBlur={selectAnswer} />
 
         {/* Show the submit button if this is the last question in the quiz */}
         {quizState === 3 && (
@@ -82,7 +82,7 @@ const QuizComponent = ({
     return (
       <div>
         <h4>{question}</h4>
-        <input type="text" onBlur={selectAnswer} />
+        <input type="text" placeholder="Other" onBlur={selectAnswer} />
 
         {/* Show the submit button if this is the last question in the quiz */}
         {answerSelected && quizState === 3 && (
