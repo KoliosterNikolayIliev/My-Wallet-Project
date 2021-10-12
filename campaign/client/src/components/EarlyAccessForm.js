@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import ReactModal from "react-modal";
+import QuizComponent from "./QuizComponent";
 
 const customStyles = {
   // style the modal here. For example:
@@ -17,16 +18,13 @@ const customStyles = {
 const EarlyAccessForm = ({ status, message, onSubmitted }) => {
   const [email, setEmail] = useState("");
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [response1, setResponse1] = useState("No response");
-  const [response2, setResponse2] = useState("No response");
-  const [response3, setResponse3] = useState("No response");
+  const [quizState, setQuizState] = useState(1);
+  const [answerSheet, setAnswerSheet] = useState([]);
 
   const sendData = async () => {
     let data = {
       author: email,
-      response1: response1,
-      response2: response2,
-      response3: response3,
+      quiz: answerSheet,
     };
     await fetch("http://localhost:5000/save-form-data", {
       method: "POST",
@@ -43,8 +41,10 @@ const EarlyAccessForm = ({ status, message, onSubmitted }) => {
     setIsOpen(false);
   };
 
+  // send answers to database
   const sendAnswers = () => {
-    // send answers to database
+    setQuizState(1);
+    setAnswerSheet([]);
     sendData();
     clearFields();
     closeModal();
@@ -95,30 +95,50 @@ const EarlyAccessForm = ({ status, message, onSubmitted }) => {
           We would really appreciate it if you answered a few questions that can
           help us with the development of the platform.
         </p>
-        <form>
-          <label for="question1">Question 1 (Add a question here)</label>
-          <input
-            type="text"
-            id="question1"
-            onChange={(e) => setResponse1(e.target.value)}
+        {quizState === 1 && (
+          <QuizComponent
+            quizState={quizState}
+            setQuizState={setQuizState}
+            answerSheet={answerSheet}
+            setAnswerSheet={setAnswerSheet}
+            submitFunction={sendAnswers}
+            question={"How do you plan to use this platform?"}
+            answer1={"I plan to use the platform this way"}
+            answer2={"I plan to use the platform another way"}
+            answer3={"I plan to use the platform a third way"}
           />
-          <br />
-          <label for="question2">Question 2 (Add a question here)</label>
-          <input
-            type="text"
-            id="question2"
-            onChange={(e) => setResponse2(e.target.value)}
+        )}
+
+        {quizState === 2 && (
+          <QuizComponent
+            quizState={quizState}
+            setQuizState={setQuizState}
+            answerSheet={answerSheet}
+            setAnswerSheet={setAnswerSheet}
+            submitFunction={sendAnswers}
+            question={"How do you plan to use this platform ....?"}
+            answer1={"I plan to use the platform this way"}
+            answer2={"I plan to use the platform another way"}
+            answer3={"I plan to use the platform a third way"}
           />
-          <br />
-          <label for="question3">Question 3 (Add a question here)</label>
-          <input
-            type="text"
-            id="question3"
-            onChange={(e) => setResponse3(e.target.value)}
+        )}
+
+        {quizState === 3 && (
+          <QuizComponent
+            quizState={quizState}
+            setQuizState={setQuizState}
+            answerSheet={answerSheet}
+            setAnswerSheet={setAnswerSheet}
+            submitFunction={sendAnswers}
+            question={"How do you plan to use this platform !!!!?"}
+            answer1={"I plan to use the platform this way"}
+            answer2={"I plan to use the platform another way"}
+            answer3={"I plan to use the platform a third way"}
           />
-        </form>
-        <button onClick={sendAnswers}>Submit answers</button>
-        <button onClick={closeModal}>I don't want to answer</button>
+        )}
+
+        {/* <button onClick={sendAnswers}>Submit answers</button>
+        <button onClick={closeModal}>I don't want to answer</button> */}
       </ReactModal>
     </div>
   );
