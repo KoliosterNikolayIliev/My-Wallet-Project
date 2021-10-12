@@ -38,8 +38,8 @@ from binance.lib.utils import config_logging
 # when key, secret are stored in environment variables.
 # KEY = os.environ.get('binance_api')
 # SECRET = os.environ.get('binance_secret')
-test_key = "hGLWWbEWRKMLIP5gvo8dbwRWfQmgJRZZT9QBbWCfwGDO0chT3R1W3znALa18kT3B"
-secret_key = "qgve977nb7LuuTUobjkcCUy2WWAcCodgW7GZI8PBYRJRwk33ZbrmRVLouEKkmyEN"
+test_key = ""
+secret_key = ""
 
 KEY = test_key
 SECRET = secret_key
