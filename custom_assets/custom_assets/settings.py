@@ -9,8 +9,12 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,11 +81,17 @@ WSGI_APPLICATION = 'custom_assets.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'default': {
+            'ENGINE': 'djongo',
+            'NAME': os.environ.get('db-name'),
+            'CLIENT': {
+                'host': os.environ.get('db-host'),
+                'username': os.environ.get('db-user'),
+                'password': os.environ.get('db-password'),
+                'authMechanism': 'SCRAM-SHA-1'
+            },
+        }
     }
-}
 
 
 # Password validation
