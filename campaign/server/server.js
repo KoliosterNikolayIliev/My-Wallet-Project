@@ -3,12 +3,15 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mailchimp = require("@mailchimp/mailchimp_marketing");
 require("./config/dbConfig");
+require("dotenv").config();
+
+const MAILCHIMP_KEY = process.env.MAILCHIMP_KEY;
 
 // set up Express app
 const app = express();
 const server = require("http").createServer(app);
 mailchimp.setConfig({
-  apiKey: "df04ee2df072b446f19cd1a6fc3f3f4a-us5",
+  apiKey: MAILCHIMP_KEY,
   server: "us5",
 });
 
