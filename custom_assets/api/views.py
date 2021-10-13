@@ -25,7 +25,11 @@ class GetAssets(APIView):
         if not user_key:
             return Response('User key was not provided', status=400)
 
-        user_assets = UserAssets.objects.get(user_key=user_key)
+        user_assets = UserAssets.objects.filter(user_key=user_key).first()
+
+        if not user_assets:
+            return Response('User does not exist', status=400)
+
         serializer = UserAssetsSerializer(user_assets)
 
         return Response(serializer.data)
