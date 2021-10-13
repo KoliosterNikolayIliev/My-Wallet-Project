@@ -97,43 +97,52 @@ const EarlyAccessForm = ({ status, message, onSubmitted }) => {
         </p>
         {quizState === 1 && (
           <QuizComponent
+            questionType={"closed"}
             quizState={quizState}
             setQuizState={setQuizState}
             answerSheet={answerSheet}
             setAnswerSheet={setAnswerSheet}
             submitFunction={sendAnswers}
-            question={"How do you plan to use this platform?"}
-            answer1={"I plan to use the platform this way"}
-            answer2={"I plan to use the platform another way"}
-            answer3={"I plan to use the platform a third way"}
+            question={
+              "What do you hope Trivial will help you with? (Select all that apply)"
+            }
+            answer1={"Seeing all my investment accounts in one place"}
+            answer2={"Setting clear and meaningful financial goals"}
+            answer3={"Making better financial decisions"}
+            answer4={"Getting my taxes in order"}
           />
         )}
 
         {quizState === 2 && (
           <QuizComponent
+            questionType={"closed"}
+            numberOfAnswers={1}
             quizState={quizState}
             setQuizState={setQuizState}
             answerSheet={answerSheet}
             setAnswerSheet={setAnswerSheet}
             submitFunction={sendAnswers}
-            question={"How do you plan to use this platform ....?"}
-            answer1={"I plan to use the platform this way"}
-            answer2={"I plan to use the platform another way"}
-            answer3={"I plan to use the platform a third way"}
+            question={
+              "What do you use to solve this problem now? (Select only one option)"
+            }
+            answer1={"Nothing"}
+            answer2={"Spreadsheets"}
+            answer3={"I've set up my own API"}
+            answer4={"Financial advisor"}
           />
         )}
 
         {quizState === 3 && (
           <QuizComponent
+            questionType={"open"}
             quizState={quizState}
             setQuizState={setQuizState}
             answerSheet={answerSheet}
             setAnswerSheet={setAnswerSheet}
             submitFunction={sendAnswers}
-            question={"How do you plan to use this platform !!!!?"}
-            answer1={"I plan to use the platform this way"}
-            answer2={"I plan to use the platform another way"}
-            answer3={"I plan to use the platform a third way"}
+            question={
+              "Please list all of the investment platforms you use today?"
+            }
           />
         )}
 
