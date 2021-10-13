@@ -36,3 +36,4 @@ txaio==21.2.1
 urllib3==1.26.7
 Werkzeug==2.0.1
 zope.interface==5.4.0
+coinbase~=2.1.0
