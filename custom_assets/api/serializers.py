@@ -55,7 +55,8 @@ class StockAssetSerializer(serializers.Serializer):
 
 class UserAssetsSerializer(serializers.ModelSerializer):
     crypto_assets = CryptoAssetSerializer(many=True)
+    stock_assets = StockAssetSerializer(many=True)
 
     class Meta:
         model = UserAssets
-        fields = ('crypto_assets',)
+        fields = ('crypto_assets', 'stock_assets')
