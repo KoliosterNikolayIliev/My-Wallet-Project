@@ -3,11 +3,15 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.models import UserAssets
-from api.serializers import CryptoAssetSerializer, UserAssetsSerializer
+from api.serializers import CryptoAssetSerializer, UserAssetsSerializer, StockAssetSerializer
 
 
 class CreateCryptoAsset(CreateAPIView):
     serializer_class = CryptoAssetSerializer
+
+
+class CreateStockAsset(CreateAPIView):
+    serializer_class = StockAssetSerializer
 
 
 class GetAssets(APIView):
