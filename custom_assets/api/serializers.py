@@ -53,10 +53,36 @@ class StockAssetSerializer(serializers.Serializer):
         return validated_data
 
 
+class CurrencyAssetSerializer(serializers.Serializer):
+    type = serializers.CharField(max_length=3)
+    amount = serializers.FloatField()
+
+    def validate(self, attrs):
+        # get user_key from request data, in attrs is only data about serializer fields
+        user_key = self.context['request'].data.get('user-key')
+        validate_user_key(user_key)
+
+        return super().validate(attrs)
+
+    def create(self, validated_data):
+        user_key = self.context['request'].data['user-key']
+        user_assets = UserAssets.objects.get(user_key=user_key)
+
+        # when we create new user asset we pass only user_key so any other field is null
+        if not user_assets.currency_assets:
+            user_assets.currency_assets = []
+
+        user_assets.currency_assets.append(validated_data)
+        user_assets.save()
+
+        return validated_data
+
+
 class UserAssetsSerializer(serializers.ModelSerializer):
     crypto_assets = CryptoAssetSerializer(many=True)
     stock_assets = StockAssetSerializer(many=True)
+    currency_assets = CurrencyAssetSerializer(many=True)
 
     class Meta:
         model = UserAssets
-        fields = ('crypto_assets', 'stock_assets')
+        fields = ('crypto_assets', 'stock_assets', 'currency_assets')
