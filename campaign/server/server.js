@@ -1,17 +1,28 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const mailchimp = require("@mailchimp/mailchimp_marketing");
 require("./config/dbConfig");
 
 // set up Express app
 const app = express();
 const server = require("http").createServer(app);
+mailchimp.setConfig({
+  apiKey: "df04ee2df072b446f19cd1a6fc3f3f4a-us5",
+  server: "us5",
+});
 
 app.use(bodyParser.json());
 app.use(cors());
 
 // import schema
 const Questionnaire = require("./models/questionnaire");
+
+const getLists = async () => {
+  const lists = await mailchimp.lists.getAllLists();
+  console.log(lists["lists"][0]["stats"]);
+  return lists["lists"][0]["stats"]["member_count_since_send"] - 77;
+};
 
 app.post("/save-form-data", (req, res) => {
   let author = req.body["author"];
@@ -28,6 +39,15 @@ app.post("/save-form-data", (req, res) => {
 
   res.status(201);
   res.end();
+});
+
+// return the number of subscribers of the mailing list
+app.get("/subscribers", (req, res) => {
+  const response = getLists().then((data) => {
+    res.json({
+      count: data,
+    });
+  });
 });
 
 server.listen(5000, () => {
