@@ -29,7 +29,7 @@ class CurrencyAsset(models.Model):
 
 class UserAssets(models.Model):
     user_key = models.CharField(
-        max_length=50,
+        max_length=500,
     )
 
     crypto_assets = models.ArrayField(
