@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MailchimpFormContainer from "./MailChimpFormContainer";
 import ContainerComponent from "./ContainerComponent";
 import FooterComponent from "./FooterComponent";
@@ -6,15 +6,17 @@ import HeaderComponent from "./HeaderComponent";
 import MessageComponent from "./MessageComponent";
 
 const LandingPage = () => {
+  const [counter, setCounter] = useState(234);
+
   return (
     <main>
       <HeaderComponent />
 
       <div>
-        <MailchimpFormContainer />
+        <MailchimpFormContainer counter={counter} setCounter={setCounter} />
       </div>
 
-      <MessageComponent />
+      <MessageComponent counter={counter} />
 
       <ContainerComponent
         subtitle="Subititle 1"
@@ -38,7 +40,7 @@ const LandingPage = () => {
       />
 
       <div>
-        <MailchimpFormContainer />
+        <MailchimpFormContainer counter={counter} setCounter={setCounter} />
       </div>
 
       <FooterComponent />

@@ -15,7 +15,13 @@ const customStyles = {
 };
 
 // custom form to use with MailChimpFormContainer
-const EarlyAccessForm = ({ status, message, onSubmitted }) => {
+const EarlyAccessForm = ({
+  counter,
+  setCounter,
+  status,
+  message,
+  onSubmitted,
+}) => {
   const [email, setEmail] = useState("");
   const [modalIsOpen, setIsOpen] = useState(false);
   const [quizState, setQuizState] = useState(1);
@@ -67,6 +73,7 @@ const EarlyAccessForm = ({ status, message, onSubmitted }) => {
       onSubmitted({
         EMAIL: email,
       });
+    setCounter(counter + 1);
   };
 
   return (
