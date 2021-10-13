@@ -21,7 +21,7 @@ class StockAsset(models.Model):
 
 class CurrencyAsset(models.Model):
     type = models.CharField(max_length=3)
-    amount = models.IntegerField()
+    amount = models.FloatField()
 
     class Meta:
         abstract = True
