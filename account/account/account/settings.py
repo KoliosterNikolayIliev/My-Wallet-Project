@@ -183,9 +183,9 @@ Important: Django admin username must be auth0user
 
 JWT_AUTH = {
     'JWT_PAYLOAD_GET_USERNAME_HANDLER':
-        'authentication.utils.auth0user',
+        'authentication.common_shared.utils.auth0user',
     'JWT_DECODE_HANDLER':
-        'authentication.utils.jwt_decode_token',
+        'authentication.common_shared.utils.jwt_decode_token',
     'JWT_ALGORITHM': 'RS256',
     'JWT_AUDIENCE': JWT_AUDIENCE,
     'JWT_ISSUER': JWT_ISSUER,

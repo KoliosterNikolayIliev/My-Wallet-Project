@@ -3,29 +3,34 @@ from rest_framework import serializers
 from authentication.models import UserProfile
 
 
-class ViewEditUserSerializer(serializers.ModelSerializer):
+class NewUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = [
             'user_identifier',
-            'base_currency',
-            'source_label',
-            'binance_key',
-            'binance_secret',
-            'coinbase_api_secret',
-            'coinbase_api_key',
-            'coinbase_api_pass',
-            'yodlee_login_name',
-            'nordigen_requisition',
-            'custom_assets_key',
+        ]
+
+
+class ViewUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = [
             'first_name',
             'last_name',
+            'base_currency',
+            'source_label',
+            'yodlee_login_name',
+            'nordigen_requisition'
         ]
 
 
-class UserNewSerializer(serializers.ModelSerializer):
+class EditUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = [
-            'user_identifier',
-        ]
+        exclude = ['id']
+
+
+class ViewUserSerializerInternal(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
