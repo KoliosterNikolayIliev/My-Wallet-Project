@@ -4,11 +4,13 @@ services:
   custom_assets:
     build:
       context: ./custom_assets
+
     command:
       - python
       - manage.py
       - runserver
       - 0.0.0.0:8000
+
     ports:
       - "8000:8000"
 
@@ -17,3 +19,20 @@ services:
       - db-host=
       - db-user=
       - db-password=
+
+  assets:
+    build:
+      context: ./assets
+
+    command:
+      - python
+      - wsgi.py
+
+    ports:
+      - "5000:5000"
+
+    environment:
+      - YODLEE_CLIENT_ID=
+      - YODLEE_SECRET=
+      - YODLEE_SANDBOX_URL=
+      - nordigen_token=
