@@ -1,6 +1,8 @@
 import requests
+from os import environ
 
-headers = {'Authorization': 'Token 201ad808f1e2dd3136777f56db2568a08fbfc219'}
+token = environ.get('nordigen_token')
+headers = {'Authorization': f'Token {token}'}
 
 
 def validate_requisition(requisition_id):
