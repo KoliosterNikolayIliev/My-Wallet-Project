@@ -1,32 +1,88 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
+from api.models import UserAssets
+from api.utils.serializer_validators import validate_user_key
 
-from api.models import CryptoAsset
 
+class CryptoAssetSerializer(serializers.Serializer):
+    type = serializers.CharField(max_length=5)
+    amount = serializers.FloatField()
 
-class CreateCryptoAssetSerializer(ModelSerializer):
-    class Meta:
-        model = CryptoAsset
-        exclude = ('id',)
+    def validate(self, attrs):
+        # get user_key from request data, in attrs is only data about serializer fields
+        user_key = self.context['request'].data.get('user-key')
+        validate_user_key(user_key)
+
+        return super().validate(attrs)
 
     def create(self, validated_data):
-        # check for crypto asset obj with these asset key and crypto
-        crypto_asset_obj = CryptoAsset.objects.filter(
-            custom_assets_key=validated_data['custom_assets_key'],
-            crypto=validated_data['crypto'],
-        ).first()
+        user_key = self.context['request'].data['user-key']
+        user_assets = UserAssets.objects.get(user_key=user_key)
 
-        # if there is no crypto asset we create one
-        if not crypto_asset_obj:
-            return super().create(validated_data)
+        # when we create new user asset we pass only user_key so any other field is null
+        if not user_assets.crypto_assets:
+            user_assets.crypto_assets = []
 
-        # if there is a crypto asset we increase its amount
-        crypto_asset_obj.amount += validated_data['amount']
-        crypto_asset_obj.save()
+        user_assets.crypto_assets.append(validated_data)
+        user_assets.save()
 
-        return crypto_asset_obj
+        return validated_data
 
 
-class ViewCryptoAssetSerializer(ModelSerializer):
+class StockAssetSerializer(serializers.Serializer):
+    type = serializers.CharField(max_length=5)
+    amount = serializers.IntegerField()
+
+    def validate(self, attrs):
+        # get user_key from request data, in attrs is only data about serializer fields
+        user_key = self.context['request'].data.get('user-key')
+        validate_user_key(user_key)
+
+        return super().validate(attrs)
+
+    def create(self, validated_data):
+        user_key = self.context['request'].data['user-key']
+        user_assets = UserAssets.objects.get(user_key=user_key)
+
+        # when we create new user asset we pass only user_key so any other field is null
+        if not user_assets.stock_assets:
+            user_assets.stock_assets = []
+
+        user_assets.stock_assets.append(validated_data)
+        user_assets.save()
+
+        return validated_data
+
+
+class CurrencyAssetSerializer(serializers.Serializer):
+    type = serializers.CharField(max_length=3)
+    amount = serializers.FloatField()
+
+    def validate(self, attrs):
+        # get user_key from request data, in attrs is only data about serializer fields
+        user_key = self.context['request'].data.get('user-key')
+        validate_user_key(user_key)
+
+        return super().validate(attrs)
+
+    def create(self, validated_data):
+        user_key = self.context['request'].data['user-key']
+        user_assets = UserAssets.objects.get(user_key=user_key)
+
+        # when we create new user asset we pass only user_key so any other field is null
+        if not user_assets.currency_assets:
+            user_assets.currency_assets = []
+
+        user_assets.currency_assets.append(validated_data)
+        user_assets.save()
+
+        return validated_data
+
+
+class UserAssetsSerializer(serializers.ModelSerializer):
+    crypto_assets = CryptoAssetSerializer(many=True)
+    stock_assets = StockAssetSerializer(many=True)
+    currency_assets = CurrencyAssetSerializer(many=True)
+
     class Meta:
-        model = CryptoAsset
-        exclude = ('id', 'custom_assets_key')
+        model = UserAssets
+        fields = ('crypto_assets', 'stock_assets', 'currency_assets')

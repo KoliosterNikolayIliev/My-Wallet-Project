@@ -2,23 +2,34 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.serializers import CreateCryptoAssetSerializer
-from api.utils.get_assets import get_crypto_assets
+from api.models import UserAssets
+from api.serializers import CryptoAssetSerializer, UserAssetsSerializer, StockAssetSerializer, CurrencyAssetSerializer
 
 
 class CreateCryptoAsset(CreateAPIView):
-    serializer_class = CreateCryptoAssetSerializer
+    serializer_class = CryptoAssetSerializer
+
+
+class CreateStockAsset(CreateAPIView):
+    serializer_class = StockAssetSerializer
+
+
+class CreateCurrencyAsset(CreateAPIView):
+    serializer_class = CurrencyAssetSerializer
 
 
 class GetAssets(APIView):
     def get(self, request):
-        custom_assets_key = request.headers.get('custom_assets_key')
+        user_key = request.headers.get('user-key')
 
-        if not custom_assets_key:
-            return Response('Custom assets key was not provided', status=400)
+        if not user_key:
+            return Response('User key was not provided', status=400)
 
-        data = {
-            'crypto assets': get_crypto_assets(custom_assets_key)
-        }
+        user_assets = UserAssets.objects.filter(user_key=user_key).first()
 
-        return Response(data)
+        if not user_assets:
+            return Response('User does not exist', status=400)
+
+        serializer = UserAssetsSerializer(user_assets)
+
+        return Response(serializer.data)
