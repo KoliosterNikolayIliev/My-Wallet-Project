@@ -119,7 +119,7 @@ WSGI_APPLICATION = 'account.wsgi.application'
 # }
 
 
-# FIELD_ENCRYPTION_KEY = os.environ.get('FIELD_ENCRYPTION_KEY', '')
+# FIELD_ENCRYPTION_KEY = os.environ.get('FIELD_ENCRYPTION_KEY')
 FIELD_ENCRYPTION_KEY = FIELD_ENCRYPTION_MODEL_KEY
 DATABASES = {
     'default': {
