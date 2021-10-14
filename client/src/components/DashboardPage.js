@@ -47,7 +47,7 @@ const DashboardPage = () => {
     async function deleteUser() {
         const token = await getAccessTokenSilently()
         try {
-            const serverDelete = await axios.delete('http://localhost:8000/api/account/user/delete', {
+            const serverDelete = await axios.delete('http://localhost:8000/api/account/user', {
                 headers: {
                     authorization: `Bearer ${token}`
                 }
@@ -62,7 +62,7 @@ const DashboardPage = () => {
     async function editUser() {
         const token = await getAccessTokenSilently()
         try {
-            const serverEdit = await axios.put('http://localhost:8000/api/account/user/edit', {
+            const serverEdit = await axios.put('http://localhost:8000/api/account/user', {
                 base_currency: 'USD',
                 first_name: 'Pesho',
                 last_name: 'Peshev',
