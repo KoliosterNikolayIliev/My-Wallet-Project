@@ -6,7 +6,7 @@ headers = {'Authorization': 'Token 201ad808f1e2dd3136777f56db2568a08fbfc219'}
 def validate_requisition(requisition_id):
     if not requisition_id:
         # return error message with false variable to say validation failed
-        return {'message': 'Nordigen requisition key was not provided'}, False
+        return 'Error: Nordigen requisition key was not provided', False
 
     response = requests.get(f'https://ob.nordigen.com/api/requisitions/{requisition_id}/', headers=headers)
 
@@ -36,7 +36,7 @@ def get_bank_accounts(requisition_id):
 
     if not accounts:
         # if user don't have accounts returns message with false variable to say user don't have accounts
-        return {'message': 'No bank accounts'}, False
+        return 'Error: no bank accounts', False
 
     # return all user account with true variable to say that he has accounts
     return accounts, True
