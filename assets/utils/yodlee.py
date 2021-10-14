@@ -30,6 +30,7 @@ def get_access_token(loginName):
     # set up x-www-form-urlencoded data and header data for the request
     data = {'clientId': CLIENT_ID, 'secret': SECRET}
     headers = {'Api-Version': '1.1', 'loginName': loginName}
+
     # send the request and return the access token
     response = requests.post(URL + 'auth/token', data=data, headers=headers)
     try:
@@ -47,11 +48,13 @@ def get_balances(loginName):
     if access_token['status'] == 'success':
         # set up header data for the request
         headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
+
         # send the request and save the balance for each account
         response = requests.get(URL + 'accounts', headers=headers)
         try:
             for account in response.json()['account']:
-                data[account['accountName']] = account['balance']
+                data[account['id']] = {"providerName": account["providerName"], "balanceData": account["balance"]}
+
             return {'status': 'success', 'content': data}
         except:
             # return an error if it has occured
@@ -67,6 +70,7 @@ def get_transactions(loginName):
     if access_token['status'] == 'success':
         # set up header data for the request
         headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
+        
         # send the request and save the balance for each account
         response = requests.get(URL + 'transactions', headers=headers)
         try:
