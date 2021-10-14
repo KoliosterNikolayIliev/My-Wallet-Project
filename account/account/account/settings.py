@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'encrypted_model_fields',
     'authentication',
+    'coverage',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +83,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
 ROOT_URLCONF = 'account.urls'
@@ -116,6 +118,7 @@ WSGI_APPLICATION = 'account.wsgi.application'
 #     }
 # }
 
+
 # FIELD_ENCRYPTION_KEY = os.environ.get('FIELD_ENCRYPTION_KEY', '')
 FIELD_ENCRYPTION_KEY = FIELD_ENCRYPTION_MODEL_KEY
 DATABASES = {
@@ -134,6 +137,14 @@ DATABASES = {
         }
     }
 }
+# DB for testing
+import sys
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
