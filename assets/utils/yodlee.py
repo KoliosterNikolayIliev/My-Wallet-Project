@@ -70,7 +70,7 @@ def get_transactions(loginName):
         # send the request and save the balance for each account
         response = requests.get(URL + 'transactions', headers=headers)
         try:
-            return response.json()
+            return {'status': 'success', 'content': response.json()}
         except:
             # return an error if it has occured
             return {'status': 'failed', 'content': f"Error: {response.json()['errorMessage']}"}
