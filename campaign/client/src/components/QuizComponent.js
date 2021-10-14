@@ -49,6 +49,13 @@ const QuizComponent = ({
     setAnswerSelected(true);
   };
 
+  // Decrement the state of the quiz
+  const previousQuizState = () => {
+    if (quizState > 1) {
+      setQuizState(quizState - 1);
+    }
+  };
+
   // Increment the state of the quiz
   const nextQuizState = () => {
     if (quizState < 3) {
@@ -70,12 +77,16 @@ const QuizComponent = ({
         {/* Show the submit button if this is the last question in the quiz */}
         {quizState === 3 && (
           <div>
+            <button onClick={previousQuizState}>Back</button>
             <button onClick={submitFunction}>Submit</button>
           </div>
         )}
 
         {answerSelected && quizState !== 3 && (
           <div>
+            {quizState !== 1 && (
+              <button onClick={previousQuizState}>Back</button>
+            )}
             <button onClick={nextQuizState}>Next</button>
           </div>
         )}
