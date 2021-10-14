@@ -5,10 +5,8 @@ def validate_api_key_and_api_secret(api_key, api_secret):
     if not api_key or not api_secret:
         # return false bool to say the validation failed and the error message
         return False, {'status': 'failed', 'content': 'Error: API key or API secret was not provided'}
-    try:
-        client = Spot(api_key, api_secret)
-    except:
-        return False, {'status': 'failed', 'content': 'Error: API key or API secret is invalid'}
+    
+    client = Spot(api_key, api_secret)
 
     # try to make a request and if it fails it means the api key or api secret is invalid
     try:
@@ -42,4 +40,4 @@ def get_balances(api_key, api_secret):
             # save crypto type with balance
             data[balance['asset']] = balance['free']
 
-    return {'status': 'failed', 'content': data}
+    return {'status': 'success', 'content': data}
