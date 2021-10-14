@@ -4,9 +4,11 @@ from binance.spot import Spot
 def validate_api_key_and_api_secret(api_key, api_secret):
     if not api_key or not api_secret:
         # return false bool to say the validation failed and the error message
-        return False, 'Api key or api secret was not provided'
-
-    client = Spot(api_key, api_secret)
+        return False, 'Error: API key or API secret was not provided'
+    try:
+        client = Spot(api_key, api_secret)
+    except:
+        return False, 'Error: API key or API secret is invalid'
 
     # try to make a request and if it fails it means the api key or api secret is invalid
     try:
@@ -14,7 +16,7 @@ def validate_api_key_and_api_secret(api_key, api_secret):
 
     except:
         # return false bool to say the validation failed and the error message
-        return False, 'Api key or api secret is invalid'
+        return False, 'Error: API key or API secret is invalid'
 
     # return true bool with comma to make it tuple
     return True,
