@@ -70,10 +70,8 @@ def get_put_create_delete_user_profile(request):
         headers_delete_request = CaseInsensitiveDict()
         headers_delete_request['Authorization'] = f'Bearer {manger_token}'
         user_data_url = DELETE_USER
-        try:
-            requests.delete(f'{user_data_url}{request_user}', headers=headers_delete_request, )
-        except Exception:
-            return Response('UNAUTHORIZED!', status=status.HTTP_401_UNAUTHORIZED)
+        # delete request to Auth0
+        requests.delete(f'{user_data_url}{request_user}', headers=headers_delete_request, )
 
         # Delete UserAccount from database
         user = UserProfile.objects.filter(user_identifier=request_user)
@@ -103,4 +101,3 @@ def get_put_create_delete_user_profile(request):
             serializer = ViewUserSerializer(user)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
