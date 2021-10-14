@@ -1,5 +1,4 @@
-from django.contrib.auth.models import AbstractUser, User
-from django.db import models
+from djongo import models
 
 from encrypted_model_fields.fields import EncryptedCharField
 
