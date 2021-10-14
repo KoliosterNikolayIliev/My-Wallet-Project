@@ -39,7 +39,7 @@ def get_access_token(loginName):
         return f"Error: {response.json()['errorCode']}; {response.json()['errorMessage']}"
 
 def get_balances(loginName):
-    if not loginName: return 'No Yodlee loginName was provided'
+    if not loginName: return 'Error: no Yodlee loginName was provided'
 
     data = {}
     # try to obtain a token and return an error if it fails
