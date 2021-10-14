@@ -52,7 +52,7 @@ def get_balances(loginName):
         try:
             for account in response.json()['account']:
                 data[account['accountName']] = account['balance']
-            return data
+            return {'status': 'success', 'content': data}
         except:
             # return an error if it has occured
             return {'status': 'failed', 'content': f"Error: {response.json()['errorMessage']}"}
