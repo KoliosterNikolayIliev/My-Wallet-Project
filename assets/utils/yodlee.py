@@ -36,7 +36,7 @@ def get_access_token(loginName):
         return response.json()['token']['accessToken']
     except:
         # return an error if it has occured
-        return f"Error: {response.json()['errorCode']}; {response.json()['errorMessage']}"
+        return f"Error: {response.json()['errorMessage']}"
 
 def get_balances(loginName):
     if not loginName: return 'Error: no Yodlee loginName was provided'
@@ -55,7 +55,7 @@ def get_balances(loginName):
             return data
         except:
             # return an error if it has occured
-            return f"Error: {response.json()['errorCode']}; {response.json()['errorMessage']}"
+            return f"Error: {response.json()['errorMessage']}"
     else:
         return access_token
 
@@ -73,6 +73,6 @@ def get_transactions(loginName):
             return response.json()
         except:
             # return an error if it has occured
-            return f"Error: {response.json()['errorCode']}; {response.json()['errorMessage']}"
+            return f"Error: {response.json()['errorMessage']}"
     else:
         return access_token
