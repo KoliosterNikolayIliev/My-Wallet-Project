@@ -2,8 +2,16 @@ from coinbase.wallet.client import Client
 
 
 def get_account_balances(api_key, api_secret):
-    client = Client(api_key, api_secret)
-    client_accounts = client.get_accounts()
+    try:
+        client = Client(api_key, api_secret)
+    except Exception as e:
+        return f"Error: {e}"
+    
+    try:
+        client_accounts = client.get_accounts()
+    except Exception as e:
+        return f"Error: {e.message}"
+    
     data = []
     for account in client_accounts["data"]:
         data.append({"balance": account["balance"].amount, "currency": account["balance"].currency})
