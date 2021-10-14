@@ -13,7 +13,7 @@ def validate_requisition(requisition_id):
     # Check if requisition exist
     if response.status_code != 200:
         # return response error message with false variable to say validation failed
-        return response.json(), False
+        return 'Error: Nordigen requisition key is invalid', False
 
     # return json response with true variable to say validation is success
     return response.json(), True
