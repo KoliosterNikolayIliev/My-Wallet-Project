@@ -3,6 +3,17 @@ import requests
 headers = {'Authorization': 'Token 201ad808f1e2dd3136777f56db2568a08fbfc219'}
 
 
+def get_bank_name(account_id):
+    # get the bank identifier from nordigen
+    account_response = requests.get(f'https://ob.nordigen.com/api/accounts/{account_id}/', headers=headers)
+    identifier = account_response.json()["aspsp_identifier"]
+
+    # get the bank name using the identifier
+    bank_response = requests.get(f'https://ob.nordigen.com/api/aspsps/{identifier}/', headers=headers)
+    
+    return bank_response.json()["name"]
+
+
 def validate_requisition(requisition_id):
     if not requisition_id:
         # return error message with false variable to say validation failed
@@ -58,10 +69,14 @@ def get_account_balances(requisition_id):
 
     # loop through all user bank accounts
     for account in accounts:
+        # get the name of the bank that the account belongs to
+        bank_name = get_bank_name(account)
+
         # request to get account balance data
         response = requests.get(f'https://ob.nordigen.com/api/accounts/{account}/balances/', headers=headers)
+
         # save only authorised balance
-        data[account] = response.json().get('balances')[0]
+        data[account] = {"providerName": bank_name, "balanceData": response.json()["balances"][0]["balanceAmount"]}
 
     # return saved data
     return {'status': 'success', 'content': data}
@@ -80,11 +95,22 @@ def get_account_transactions(requisition_id):
     accounts = accounts[0]['content']
 
     data = {}
+    transaction_data = {}
     for account in accounts:
+        # get the name of the bank that the account belongs to
+        bank_name = get_bank_name(account)
+
         # request to get account transaction history data
         response = requests.get(f'https://ob.nordigen.com/api/accounts/{account}/transactions/', headers=headers)
+
         # save only booked transactions
-        data[account] = response.json().get('transactions').get('booked')
+        transactions = response.json().get('transactions').get('booked')
+
+        # add each transaction to the data
+        for transaction in transactions:
+            transaction_data[transaction["transactionId"]] = transaction["transactionAmount"]
+
+        data[bank_name] = transaction_data
 
     # return saved data
     return {'status': 'success', 'content': data}
