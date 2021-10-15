@@ -71,6 +71,25 @@ services:
     environment:
       - FLASK_APP=portfolio
       - FLASK_ENV=development
-      - REFERENCE_URL=
+      - REFERENCE_URL=http://127.0.0.1:5002/
       - ASSETS_URL=http://127.0.0.1:5000/
       - ACCOUNT_URL=
+
+  reference:
+    build:
+      context: ./reference
+
+    command:
+      - flask
+      - run
+      - --host=0.0.0.0
+      - --port=5002
+
+    ports:
+      - "5002:5002"
+
+    environment:
+      - FLASK_APP=reference
+      - FLASK_ENV=development
+      - TD_API_KEY=
+      - CL_API_KEY=
