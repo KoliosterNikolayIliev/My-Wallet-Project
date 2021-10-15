@@ -2,12 +2,16 @@ import React from "react";
 
 const MessageComponent = () => {
   return (
-    <article class="message">
-      <p>
-        Join the <strong>824</strong> people that have signed up for our early
-        January launch.
-      </p>
-      <p>Only 5.000 spots available!</p>
+    <article>
+      <div class="message">
+        <p>
+          Join the <span class="purple">824</span> people that have signed up
+          for our early January launch.
+        </p>
+        <p>
+          Only <span class="purple">5.000</span> spots available!
+        </p>
+      </div>
     </article>
   );
 };
