@@ -73,7 +73,7 @@ services:
       - FLASK_ENV=development
       - REFERENCE_URL=http://127.0.0.1:5002/
       - ASSETS_URL=http://127.0.0.1:5000/
-      - ACCOUNT_URL=
+      - ACCOUNT_URL=http://127.0.0.1:8001/
 
   reference:
     build:
@@ -93,3 +93,27 @@ services:
       - FLASK_ENV=development
       - TD_API_KEY=
       - CL_API_KEY=
+
+  account:
+    build:
+      context: ./account/account
+
+    command:
+      - python
+      - manage.py
+      - runserver
+      - 0.0.0.0:8001
+
+    ports:
+      - "8001:8001"
+
+    environment:
+      - FIELD_ENCRYPTION_KEY=
+      - DB_HOST=
+      - DB_USERNAME=
+      - DB_PASSWORD=
+      - JWT_AUDIENCE=
+      - JWT_ISSUER=
+      - DELETE_USER=
+      - MANAGER_TOKEN_PAYLOAD=
+      - MANAGER_TOKEN_URL=
