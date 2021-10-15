@@ -40,13 +40,16 @@ services:
       context: ./assets
 
     command:
-      - python
-      - wsgi.py
+      - flask
+      - run
+      - --host=0.0.0.0
 
     ports:
       - "5000:5000"
 
     environment:
+      - FLASK_APP=wsgi.py
+      - FLASK_ENV=development
       - YODLEE_CLIENT_ID=
       - YODLEE_SECRET=
       - YODLEE_SANDBOX_URL=
