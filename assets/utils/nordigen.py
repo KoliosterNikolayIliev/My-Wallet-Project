@@ -1,7 +1,7 @@
 import requests
 from os import environ
 
-token = environ.get('nordigen_token')
+token = environ.get('NORDIGEN_TOKEN')
 headers = {'Authorization': f'Token {token}'}
 
 
