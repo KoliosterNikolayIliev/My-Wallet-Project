@@ -116,7 +116,7 @@ WSGI_APPLICATION = 'account.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-
+# uncomment to create test database
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -127,6 +127,7 @@ WSGI_APPLICATION = 'account.wsgi.application'
 
 # FIELD_ENCRYPTION_KEY = os.environ.get('FIELD_ENCRYPTION_KEY')
 FIELD_ENCRYPTION_KEY = FIELD_ENCRYPTION_MODEL_KEY
+# comment current DB settings to create test DB
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
