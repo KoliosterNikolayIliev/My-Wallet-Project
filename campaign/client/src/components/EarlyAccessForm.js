@@ -70,7 +70,7 @@ const EarlyAccessForm = ({ status, message, onSubmitted }) => {
   };
 
   return (
-    <div>
+    <article>
       <form onSubmit={(e) => handleSubmit(e)}>
         {status === "sending" && <div>Sending...</div>}
         {status === "error" && <div>Invalid email</div>}
@@ -149,7 +149,7 @@ const EarlyAccessForm = ({ status, message, onSubmitted }) => {
         {/* <button onClick={sendAnswers}>Submit answers</button>
         <button onClick={closeModal}>I don't want to answer</button> */}
       </ReactModal>
-    </div>
+    </article>
   );
 };
 

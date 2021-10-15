@@ -8,13 +8,15 @@ const MailchimpFormContainer = (props) => {
     <MailchimpSubscribe
       url={postUrl}
       render={({ subscribe, status, message }) => (
-        <div class="subscribe">
-          <EarlyAccessForm
-            status={status}
-            message={message}
-            onSubmitted={(formData) => subscribe(formData)}
-          />
-        </div>
+        <article>
+          <div class="subscribe">
+            <EarlyAccessForm
+              status={status}
+              message={message}
+              onSubmitted={(formData) => subscribe(formData)}
+            />
+          </div>
+        </article>
       )}
     />
   );
