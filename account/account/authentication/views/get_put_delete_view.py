@@ -1,4 +1,6 @@
 import io
+import os
+
 import requests
 from requests.structures import CaseInsensitiveDict
 from rest_framework import status
@@ -7,8 +9,12 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from authentication.common_shared.sensitive_data import MANAGER_TOKEN_PAYLOAD, MANAGER_TOKEN_URL, DELETE_USER
 from authentication.models import UserProfile
-from authentication.serializers import NewUserSerializer, ViewUserSerializer, ViewUserSerializerInternal, \
+from authentication.serializers import (
+    NewUserSerializer,
+    ViewUserSerializer,
+    ViewUserSerializerInternal,
     EditUserSerializer
+)
 from authentication.common_shared.utils import jwt_decode_token, user_does_not_exist, is_internal_request
 
 
@@ -59,6 +65,8 @@ def get_put_create_delete_user_profile(request):
         try:
             # Get Manager Token for Authorisation of the delete request
             payload = MANAGER_TOKEN_PAYLOAD
+            # payload = os.environ.get('MANAGER_TOKEN_PAYLOAD')
+            # MANAGER_TOKEN_URL = os.environ.get('MANAGER_TOKEN_URL')
             headers_get_token_request = CaseInsensitiveDict()
             headers_get_token_request['content-type'] = 'application/json'
             token_request = requests.post(f'{MANAGER_TOKEN_URL}', payload, headers=headers_get_token_request)
@@ -70,10 +78,9 @@ def get_put_create_delete_user_profile(request):
         headers_delete_request = CaseInsensitiveDict()
         headers_delete_request['Authorization'] = f'Bearer {manger_token}'
         user_data_url = DELETE_USER
-        try:
-            requests.delete(f'{user_data_url}{request_user}', headers=headers_delete_request, )
-        except Exception:
-            return Response('UNAUTHORIZED!', status=status.HTTP_401_UNAUTHORIZED)
+        # user_data_url = os.environ.get('DELETE_USER')
+        # delete request to Auth0
+        requests.delete(f'{user_data_url}{request_user}', headers=headers_delete_request, )
 
         # Delete UserAccount from database
         user = UserProfile.objects.filter(user_identifier=request_user)
@@ -103,4 +110,3 @@ def get_put_create_delete_user_profile(request):
             serializer = ViewUserSerializer(user)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-

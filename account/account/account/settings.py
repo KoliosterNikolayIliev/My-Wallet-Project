@@ -11,8 +11,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
-from authentication.common_shared.sensitive_data import DbPassword, DbUsername, DB_HOST, JWT_AUDIENCE, JWT_ISSUER, \
+from authentication.common_shared.sensitive_data import (
+    DbPassword,
+    DbUsername,
+    DB_HOST,
+    JWT_AUDIENCE,
+    JWT_ISSUER,
     FIELD_ENCRYPTION_MODEL_KEY
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -41,6 +47,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'encrypted_model_fields',
     'authentication',
+    'coverage',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +89,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
 ROOT_URLCONF = 'account.urls'
@@ -108,7 +116,7 @@ WSGI_APPLICATION = 'account.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-
+# uncomment to create test database
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -116,14 +124,17 @@ WSGI_APPLICATION = 'account.wsgi.application'
 #     }
 # }
 
-# FIELD_ENCRYPTION_KEY = os.environ.get('FIELD_ENCRYPTION_KEY', '')
+
+# FIELD_ENCRYPTION_KEY = os.environ.get('FIELD_ENCRYPTION_KEY')
 FIELD_ENCRYPTION_KEY = FIELD_ENCRYPTION_MODEL_KEY
+# comment current DB settings to create test DB
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'CLIENT': {
             'name': '3vial',
             'host': DB_HOST,
+            # 'host': os.environ.get('DB_HOST'),
             # 'username': os.environ.get('DbUsername'),
             # 'password': os.environ.get('DbPassword'),
             # username and password for development if environment variables are not set
@@ -134,6 +145,14 @@ DATABASES = {
         }
     }
 }
+# DB for testing
+import sys
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -188,6 +207,8 @@ JWT_AUTH = {
         'authentication.common_shared.utils.jwt_decode_token',
     'JWT_ALGORITHM': 'RS256',
     'JWT_AUDIENCE': JWT_AUDIENCE,
+    # 'JWT_AUDIENCE: os.environ.get('JWT_AUDIENCE')'
     'JWT_ISSUER': JWT_ISSUER,
+    # 'JWT_ISSUER': os.environ.get('JWT_ISSUER'),
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 }

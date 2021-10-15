@@ -3,16 +3,25 @@ import React from "react";
 const HeaderComponent = () => {
   return (
     <header>
-      <div class="header">
-        <p>Managing your investments should be trivial</p>
-      </div>
-      <div class="description">
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestias
-          aut, repellat ipsum facere voluptate dicta obcaecati deserunt nobis
-          suscipit eaque?
-        </p>
-      </div>
+      <article>
+        <img src="/images/logo.png" alt="logo"></img>
+      </article>
+      <nav>
+        <div className="top-nav-menu">
+          <ul>
+            <li>
+              <a href="#">Home</a>
+            </li>
+            <li>
+              <a href="#">Features</a>
+            </li>
+            <li>
+              <a href="#">Contact</a>
+            </li>
+          </ul>
+          <div class="top-nav-btn">Get early access</div>
+        </div>
+      </nav>
     </header>
   );
 };

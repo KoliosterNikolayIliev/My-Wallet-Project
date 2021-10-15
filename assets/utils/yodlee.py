@@ -76,3 +76,25 @@ def get_transactions(loginName):
             return f"Error: {response.json()['errorCode']}; {response.json()['errorMessage']}"
     else:
         return access_token
+
+def get_holdings(loginName):
+    if not loginName: return {'status': 'failed', 'content':'Error: no Yodlee loginName was provided'}
+
+    data = {}
+
+    # try to obtain a token and return an error if it fails
+    access_token = get_access_token(loginName)
+    if access_token['status'] == 'success':
+        # set up header data for the request
+        headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
+        # send the request and save the balance for each account
+        response = requests.get(URL + 'holdings', headers=headers)
+        try:
+            for holding in response.json()['holding']:
+                data[holding['symbol']] = {'quantity': holding['quantity'], 'value': holding['value']}
+            return {'status': 'success', 'content': data}
+        except:
+            # return an error if it has occured
+            return {'status': 'failed', 'content': f"Error: {response.json()['errorMessage']}"}
+    else:
+        return access_token
