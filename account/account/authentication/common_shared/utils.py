@@ -5,10 +5,8 @@ import requests
 
 from django.contrib.auth import authenticate
 
+
 # Returns Auth0 id to be saved as username to Django user. Currently not used
-from django.http import JsonResponse
-
-
 def jwt_get_username_from_payload_handler(payload):
     username = payload.get('sub').replace('|', '.')
     authenticate(remote_user=username)
@@ -41,6 +39,14 @@ def jwt_decode_token(token):
 def user_does_not_exist(token):
     user_exists = requests.get('https://dev-kbl8py41.us.auth0.com/userinfo',
                                headers={'Authorization': f'Bearer {token}'})
-    if user_exists.status_code is not 200:
+    if user_exists.status_code != 200:
+        return True
+    return False
+
+
+# checks if request is internal
+def is_internal_request(request):
+    path = request.get_full_path_info()
+    if 'internal' in path:
         return True
     return False

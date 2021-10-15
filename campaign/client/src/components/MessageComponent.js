@@ -1,11 +1,11 @@
 import React from "react";
 
-const MessageComponent = () => {
+const MessageComponent = ({ counter }) => {
   return (
     <article>
       <div class="message">
         <p>
-          Join the <span class="purple">824</span> people that have signed up
+          Join the <span class="purple">{counter}</span> people that have signed up
           for our early January launch.
         </p>
         <p>

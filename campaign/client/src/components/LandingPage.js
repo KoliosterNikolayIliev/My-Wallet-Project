@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import MailchimpFormContainer from "./MailChimpFormContainer";
 import ContainerComponent from "./ContainerComponent";
 import FooterComponent from "./FooterComponent";
@@ -7,15 +7,24 @@ import TopBodyComponent from "./TopBodyComponent";
 import MessageComponent from "./MessageComponent";
 
 const LandingPage = () => {
+  const [counter, setCounter] = useState(0);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/subscribers").then((response) =>
+      response.json().then((data) => setCounter(data["count"]))
+    );
+  }, [counter]);
+
   return (
     <main>
       <HeaderComponent />
 
+
       <TopBodyComponent />
 
-      <MailchimpFormContainer />
+      <MailchimpFormContainer counter={counter} setCounter={setCounter}/>
 
-      <MessageComponent />
+      <MessageComponent counter={counter} />
 
       <article>
         <div class="main-content">
@@ -41,7 +50,7 @@ const LandingPage = () => {
 
       <article>
         <div class="last-subscribtion">
-          <MailchimpFormContainer />
+          <MailchimpFormContainer counter={counter} setCounter={setCounter}/>
         </div>
       </article>
 
