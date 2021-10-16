@@ -94,8 +94,10 @@ def get_holdings(loginName):
         # send the request and save the balance for each account
         response = requests.get(URL + 'holdings', headers=headers)
         try:
+            if not response.json().get('holding'):
+                return {'status': 'failed', 'content': "Error: no holdings found"}
             for holding in response.json()['holding']:
-                data[holding['symbol']] = {'quantity': holding['quantity'], 'value': holding['value']}
+                data[holding['id']] = {'symbol': holding['symbol'], 'quantity': holding['quantity'], 'value': holding['value']}
             return {'status': 'success', 'content': data}
         except:
             # return an error if it has occured
