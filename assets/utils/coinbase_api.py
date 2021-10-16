@@ -12,9 +12,10 @@ def get_account_balances(api_key, api_secret):
     except Exception as e:
         return {'status': 'failed', 'content': f"Error: {e.message}"}
     
-    data = []
+    data = {}
     for account in client_accounts["data"]:
-        data.append({"balance": account["balance"].amount, "currency": account["balance"].currency})
+        if float(account["balance"].amount) > 0:
+            data[account["id"]] = ({"symbol": account["balance"].currency, "quantity": account["balance"].amount, "value": account["native_balance"]})
     return {'status': 'success', 'content': data}
 
 

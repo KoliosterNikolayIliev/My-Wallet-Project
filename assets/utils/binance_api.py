@@ -1,4 +1,5 @@
 from binance.spot import Spot
+import uuid
 
 
 def validate_api_key_and_api_secret(api_key, api_secret):
@@ -35,9 +36,10 @@ def get_balances(api_key, api_secret):
     data = {}
 
     for balance in balances:
+        id = uuid.uuid4().int
         # check where the current user balance is more than 0
         if float(balance['free']) > 0:
             # save crypto type with balance
-            data[balance['asset']] = balance['free']
+            data[id] = {"symbol": balance["asset"], "quantity": balance['free']}
 
     return {'status': 'success', 'content': data}
