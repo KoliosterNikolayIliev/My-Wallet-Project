@@ -12,8 +12,6 @@ class GetBalances(Resource):
         data = {
             'nordigen': nordigen.get_account_balances(request.headers.get('nordigen_key')),
             'yodlee': yodlee.get_balances(request.headers.get('yodlee_loginName')),
-            'binance': binance_api.get_balances(request.headers.get('binance_key'), request.headers.get('binance_secret')),
-            'coinbase': coinbase_api.get_account_balances(request.headers.get('coinbase_key'), request.headers.get('coinbase_secret'))
         }
 
         return data
