@@ -12,3 +12,8 @@ def get_balances(headers):
 def get_transactions(headers):
     res = requests.get(URL + "transactions/", headers=headers)
     return res.json()
+
+# fetch all holdings using Assets
+def get_holdings(headers):
+    res = requests.get(URL + "holdings/", headers=headers)
+    return res.json()
