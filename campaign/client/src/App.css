@@ -9,8 +9,10 @@ body {
 
 header {
   width: 100%;
+  margin-left: 10%;
+  padding-right: 10%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   height: 72px;
   background-color: #fff;
   box-shadow: 0px 1px 0px #e5e9f2;
@@ -101,7 +103,12 @@ header {
   flex-direction: row;
   align-items: center;
   padding: 12px 32px;
+  cursor: pointer;
 }
+
+  .top-nav-btn:hover {
+    background-color: #B768F5;
+  }
 
 /*      Subscription Form     */
 
@@ -123,7 +130,7 @@ input[type="email"] {
   border-radius: 6px;
   padding: 10px;
   margin-right: 5px;
-  color: #bbbbbb;
+  color: #1d1d1d;
 }
 
 input[type="submit"] {
@@ -190,6 +197,7 @@ input:focus {
 
 .col-sm-6 {
   margin-top: 50px;
+  /* z-index: 10; */
 }
 
 .col-sm-6 .sub-title {
@@ -260,3 +268,59 @@ article {
   color: #d9dbe1;
   background-color: #0b0d17;
 }
+
+
+.heading-text {
+  font-size:28px;
+  padding:20px;
+}
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 1100px) {
+  .top-body-image {
+    display: none;
+  }
+
+  .top-nav-menu {
+    padding-right: 0px;
+  }
+
+  .top-nav-menu ul li {
+    font-size: 10px;
+    padding-right: 30px;
+  }
+
+  .top-nav-btn {
+    width: 115px;
+    font-size: 10px;
+  }
+
+  .top-body h1 {
+    font-size: 35px;
+  }
+
+  .top-body-text p {
+    width: 80%;
+  }
+
+  .top-body-text {
+    margin-top: 0px;
+  }
+
+  form {
+    width: 400px;
+  }
+
+  .col-sm-2 {
+    padding-left: 0;
+  }
+}
+
+

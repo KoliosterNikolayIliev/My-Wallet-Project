@@ -3,6 +3,8 @@ import ReactModal from "react-modal";
 import QuizComponent from "./QuizComponent";
 
 const customStyles = {
+
+  content: {background: '#fff' , backroundColor: 'black', zIndex: '100' }
   // style the modal here. For example:
   // content: {
   //   top: '50%',
@@ -97,7 +99,7 @@ const EarlyAccessForm = ({
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <div>Thank you for subscribing!</div>
+        <div className="heading-text">Thank you for subscribing!</div>
         <p>
           We would really appreciate it if you answered a few questions that can
           help us with the development of the platform.

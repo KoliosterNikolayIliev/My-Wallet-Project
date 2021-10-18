@@ -8,6 +8,8 @@ const HeaderComponent = () => {
       </article>
       <nav>
         <div className="top-nav-menu">
+          {/* 
+          Removed
           <ul>
             <li>
               <a href="#">Home</a>
@@ -18,7 +20,7 @@ const HeaderComponent = () => {
             <li>
               <a href="#">Contact</a>
             </li>
-          </ul>
+          </ul> */}
           <div class="top-nav-btn">Get early access</div>
         </div>
       </nav>
