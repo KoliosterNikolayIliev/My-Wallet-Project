@@ -1,6 +1,6 @@
 from flask import request, Blueprint
 from flask_restful import Resource, Api
-from utils import nordigen, yodlee, coinbase_api
+from utils import nordigen, yodlee_api, coinbase_api
 
 
 transactions = Blueprint('transactions', __name__)
@@ -11,7 +11,7 @@ class GetTransactions(Resource):
     def get(self):
         data = {
             'nordigen': nordigen.get_account_transactions(request.headers.get('nordigen_key')),
-            'yodlee': yodlee.get_transactions(request.headers.get('yodlee_loginName')),
+            'yodlee': yodlee_api.get_transactions(request.headers.get('yodlee_loginName')),
             'coinbase': coinbase_api.get_transactions(request.headers.get('coinbase_key'), request.headers.get('coinbase_secret'))
         }
 
