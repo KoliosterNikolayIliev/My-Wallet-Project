@@ -42,7 +42,7 @@ def get_access_token(loginName):
 
 
 def get_balances(loginName):
-    if os.environ.get('USE_MOCK'):
+    if os.environ.get('USE_MOCK') == 'True':
         return {
             "status": "success",
             "content": {
