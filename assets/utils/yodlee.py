@@ -26,6 +26,7 @@ SECRET = os.environ.get('YODLEE_SECRET')
 
 URL = os.environ.get('YODLEE_SANDBOX_URL')
 
+
 def get_access_token(loginName):
     # set up x-www-form-urlencoded data and header data for the request
     data = {'clientId': CLIENT_ID, 'secret': SECRET}
@@ -39,8 +40,113 @@ def get_access_token(loginName):
         # return an error if it has occured
         return {'status': 'failed', 'content': f"Error: {response.json()['errorMessage']}"}
 
+
 def get_balances(loginName):
-    if not loginName: return {'status': 'failed', 'content':'Error: no Yodlee loginName was provided'}
+    if os.environ.get('USE_MOCK'):
+        return {
+            "status": "success",
+            "content": {
+                "10017278": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 23156.71
+                    }
+                },
+                "10017277": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 120180.5
+                    }
+                },
+                "10017276": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 21847.55
+                    }
+                },
+                "10017275": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 487866.84
+                    }
+                },
+                "10017274": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 697978.56
+                    }
+                },
+                "10017273": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 94582.58
+                    }
+                },
+                "10017272": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 330101.25
+                    }
+                },
+                "10017271": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 9793.63
+                    }
+                },
+                "10017270": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 49778.07
+                    }
+                },
+                "10017269": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 161801.27
+                    }
+                },
+                "10017268": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 168561.81
+                    }
+                },
+                "10017261": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 1636.44
+                    }
+                },
+                "10017260": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 9044.78
+                    }
+                },
+                "10017259": {
+                    "providerName": "Dag Site",
+                    "balanceData": {
+                        "currency": "USD",
+                        "amount": 44.78
+                    }
+                }
+            }
+        }
+    if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
 
     data = {}
     # try to obtain a token and return an error if it fails
@@ -62,8 +168,9 @@ def get_balances(loginName):
     else:
         return access_token
 
+
 def get_transactions(loginName):
-    if not loginName: return {'status': 'failed', 'content':'Error: no Yodlee loginName was provided'}
+    if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
 
     # try to obtain a token and return an error if it fails
     access_token = get_access_token(loginName)
@@ -71,7 +178,7 @@ def get_transactions(loginName):
         # set up header data and query parameters for the request
         headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
         params = {'top': 10}
-        
+
         # send the request and save the balance for each account
         response = requests.get(URL + 'transactions', headers=headers, params=params)
         try:
@@ -98,8 +205,9 @@ def get_transactions(loginName):
     else:
         return access_token
 
+
 def get_holdings(loginName):
-    if not loginName: return {'status': 'failed', 'content':'Error: no Yodlee loginName was provided'}
+    if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
 
     data = {}
 
@@ -114,7 +222,8 @@ def get_holdings(loginName):
             if not response.json().get('holding'):
                 return {'status': 'failed', 'content': "Error: no holdings found"}
             for holding in response.json()['holding']:
-                data[holding['id']] = {'symbol': holding['symbol'], 'quantity': holding['quantity'], 'value': holding['value']}
+                data[holding['id']] = {'symbol': holding['symbol'], 'quantity': holding['quantity'],
+                                       'value': holding['value']}
             return {'status': 'success', 'content': data}
         except:
             # return an error if it has occured
