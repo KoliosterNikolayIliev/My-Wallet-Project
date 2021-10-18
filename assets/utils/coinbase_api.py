@@ -30,10 +30,19 @@ def get_transactions(api_key, api_secret):
     except Exception as e:
         return {'status':'failed', 'content': f"Error: {e.message}"}
 
-    data = []
-    for each_wallet in client_accounts["data"]:
-        wallet_id = each_wallet.id
-        transactions = client.get_transactions(wallet_id)
-        data.append(transactions)
+    data = {}
+    for wallet in client_accounts["data"]:
+        transactions = client.get_transactions(wallet.id, limit=10)
+
+        # check if there are any transactions for this wallet
+        if transactions["data"]:
+            transaction_data = {}
+            for transaction in transactions["data"]:
+                # return only the completed transactions
+                if transaction["status"] == "completed":
+                    transaction_data[transaction["id"]] = transaction['amount']
+            
+            data[wallet.name] = transaction_data
+
     return {'status': 'success', 'content': data}
 
