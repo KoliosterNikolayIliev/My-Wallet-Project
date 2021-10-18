@@ -1,3 +1,5 @@
+import os
+
 import requests
 from os import environ
 
@@ -12,7 +14,7 @@ def get_bank_name(account_id):
 
     # get the bank name using the identifier
     bank_response = requests.get(f'https://ob.nordigen.com/api/aspsps/{identifier}/', headers=headers)
-    
+
     return bank_response.json()["name"]
 
 
@@ -56,6 +58,26 @@ def get_bank_accounts(requisition_id):
 
 
 def get_account_balances(requisition_id):
+    if os.environ.get('USE_MOCK') == 'True':
+        return {
+            "status": "success",
+            "content": {
+                "582a6ea9-81c7-4def-952d-85709d9432cf": {
+                    "providerName": "Sandbox Finance",
+                    "balanceData": {
+                        "amount": "1913.12",
+                        "currency": "EUR"
+                    }
+                },
+                "1048f194-cb13-4cee-a55c-5ef6d8661341": {
+                    "providerName": "Sandbox Finance",
+                    "balanceData": {
+                        "amount": "1913.12",
+                        "currency": "EUR"
+                    }
+                }
+            }
+        }
     # get user bank accounts from requisition
     accounts = get_bank_accounts(requisition_id)
 
@@ -98,7 +120,7 @@ def get_account_transactions(requisition_id):
 
     data = {}
     for account in accounts:
-        transaction_data = {}   
+        transaction_data = {}
         # get the name of the bank that the account belongs to
         bank_name = get_bank_name(account)
 
