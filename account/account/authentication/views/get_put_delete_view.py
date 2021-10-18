@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
-from authentication.common_shared.sensitive_data import MANAGER_TOKEN_PAYLOAD, MANAGER_TOKEN_URL, DELETE_USER
+# from authentication.common_shared.sensitive_data import MANAGER_TOKEN_PAYLOAD, MANAGER_TOKEN_URL, DELETE_USER
 from authentication.models import UserProfile
 from authentication.serializers import (
     NewUserSerializer,
@@ -64,9 +64,9 @@ def get_put_create_delete_user_profile(request):
     if request.method == 'DELETE':
         try:
             # Get Manager Token for Authorisation of the delete request
-            payload = MANAGER_TOKEN_PAYLOAD
-            # payload = os.environ.get('MANAGER_TOKEN_PAYLOAD')
-            # MANAGER_TOKEN_URL = os.environ.get('MANAGER_TOKEN_URL')
+            # payload = MANAGER_TOKEN_PAYLOAD
+            payload = os.environ.get('MANAGER_TOKEN_PAYLOAD')
+            MANAGER_TOKEN_URL = os.environ.get('MANAGER_TOKEN_URL')
             headers_get_token_request = CaseInsensitiveDict()
             headers_get_token_request['content-type'] = 'application/json'
             token_request = requests.post(f'{MANAGER_TOKEN_URL}', payload, headers=headers_get_token_request)
@@ -77,8 +77,8 @@ def get_put_create_delete_user_profile(request):
         # Send delete request
         headers_delete_request = CaseInsensitiveDict()
         headers_delete_request['Authorization'] = f'Bearer {manger_token}'
-        user_data_url = DELETE_USER
-        # user_data_url = os.environ.get('DELETE_USER')
+        # user_data_url = DELETE_USER
+        user_data_url = os.environ.get('DELETE_USER')
         # delete request to Auth0
         requests.delete(f'{user_data_url}{request_user}', headers=headers_delete_request, )
 

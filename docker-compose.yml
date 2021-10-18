@@ -1,0 +1,119 @@
+version: "3.8"
+
+services:
+  client:
+    build:
+      context: ./client
+
+    command:
+      - npm
+      - start
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      - REACT_APP_AUTH0_DOMAIN=
+      - REACT_APP_AUTH0_CLIENT_ID=
+
+  custom_assets:
+    build:
+      context: ./custom_assets
+
+    command:
+      - python
+      - manage.py
+      - runserver
+      - 0.0.0.0:8000
+
+    ports:
+      - "8000:8000"
+
+    environment:
+      - DB_NAME=
+      - DB_HOST=
+      - DB_USER=
+      - DB_PASSWORD=
+
+  assets:
+    build:
+      context: ./assets
+
+    command:
+      - flask
+      - run
+      - --host=0.0.0.0
+
+    ports:
+      - "5000:5000"
+
+    environment:
+      - FLASK_APP=wsgi.py
+      - FLASK_ENV=development
+      - YODLEE_CLIENT_ID=
+      - YODLEE_SECRET=
+      - YODLEE_SANDBOX_URL=
+      - NORDIGEN_TOKEN=
+
+  portfolio:
+    build:
+      context: ./portfolio
+
+    command:
+      - flask
+      - run
+      - --host=0.0.0.0
+      - --port=5001
+
+    ports:
+      - "5001:5001"
+
+    environment:
+      - FLASK_APP=portfolio
+      - FLASK_ENV=development
+      - REFERENCE_URL=http://127.0.0.1:5002/
+      - ASSETS_URL=http://127.0.0.1:5000/
+      - ACCOUNT_URL=http://127.0.0.1:8001/
+
+  reference:
+    build:
+      context: ./reference
+
+    command:
+      - flask
+      - run
+      - --host=0.0.0.0
+      - --port=5002
+
+    ports:
+      - "5002:5002"
+
+    environment:
+      - FLASK_APP=reference
+      - FLASK_ENV=development
+      - TD_API_KEY=
+      - CL_API_KEY=
+
+  account:
+    build:
+      context: ./account/account
+
+    command:
+      - python
+      - manage.py
+      - runserver
+      - 0.0.0.0:8001
+
+    ports:
+      - "8001:8001"
+
+    environment:
+      - FIELD_ENCRYPTION_KEY=
+      - DB_HOST=
+      - DB_USERNAME=
+      - DB_PASSWORD=
+      - JWT_AUDIENCE=
+      - JWT_ISSUER=
+      - DELETE_USER=
+      - MANAGER_TOKEN_PAYLOAD=
+      - MANAGER_TOKEN_URL=

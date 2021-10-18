@@ -11,14 +11,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
-from authentication.common_shared.sensitive_data import (
-    DbPassword,
-    DbUsername,
-    DB_HOST,
-    JWT_AUDIENCE,
-    JWT_ISSUER,
-    FIELD_ENCRYPTION_MODEL_KEY
-)
+# from authentication.common_shared.sensitive_data import (
+#     DbPassword,
+#     DbUsername,
+#     DB_HOST,
+#     JWT_AUDIENCE,
+#     JWT_ISSUER,
+#     FIELD_ENCRYPTION_MODEL_KEY
+# )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -125,21 +125,21 @@ WSGI_APPLICATION = 'account.wsgi.application'
 # }
 
 
-# FIELD_ENCRYPTION_KEY = os.environ.get('FIELD_ENCRYPTION_KEY')
-FIELD_ENCRYPTION_KEY = FIELD_ENCRYPTION_MODEL_KEY
+FIELD_ENCRYPTION_KEY = os.environ.get('FIELD_ENCRYPTION_KEY')
+# FIELD_ENCRYPTION_KEY = FIELD_ENCRYPTION_MODEL_KEY
 # comment current DB settings to create test DB
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'CLIENT': {
             'name': '3vial',
-            'host': DB_HOST,
-            # 'host': os.environ.get('DB_HOST'),
-            # 'username': os.environ.get('DbUsername'),
-            # 'password': os.environ.get('DbPassword'),
+            # 'host': DB_HOST,
+            'host': os.environ.get('DB_HOST'),
+            'username': os.environ.get('DB_USERNAME'),
+            'password': os.environ.get('DB_PASSWORD'),
             # username and password for development if environment variables are not set
-            'username': DbUsername,
-            'password': DbPassword,
+            # 'username': DbUsername,
+            # 'password': DbPassword,
             'authMechanism': 'SCRAM-SHA-1'
 
         }
@@ -206,9 +206,9 @@ JWT_AUTH = {
     'JWT_DECODE_HANDLER':
         'authentication.common_shared.utils.jwt_decode_token',
     'JWT_ALGORITHM': 'RS256',
-    'JWT_AUDIENCE': JWT_AUDIENCE,
-    # 'JWT_AUDIENCE: os.environ.get('JWT_AUDIENCE')'
-    'JWT_ISSUER': JWT_ISSUER,
-    # 'JWT_ISSUER': os.environ.get('JWT_ISSUER'),
+    # 'JWT_AUDIENCE': JWT_AUDIENCE,
+    'JWT_AUDIENCE': os.environ.get('JWT_AUDIENCE'),
+    # 'JWT_ISSUER': JWT_ISSUER,
+    'JWT_ISSUER': os.environ.get('JWT_ISSUER'),
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 }
