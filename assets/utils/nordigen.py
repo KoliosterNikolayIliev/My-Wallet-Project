@@ -97,8 +97,8 @@ def get_account_transactions(requisition_id):
     accounts = accounts[0]['content']
 
     data = {}
-    transaction_data = {}
     for account in accounts:
+        transaction_data = {}   
         # get the name of the bank that the account belongs to
         bank_name = get_bank_name(account)
 

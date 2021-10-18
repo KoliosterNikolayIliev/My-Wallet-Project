@@ -68,12 +68,29 @@ def get_transactions(loginName):
     # try to obtain a token and return an error if it fails
     access_token = get_access_token(loginName)
     if access_token['status'] == 'success':
-        # set up header data for the request
+        # set up header data and query parameters for the request
         headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
+        params = {'top': 10}
         
         # send the request and save the balance for each account
-        response = requests.get(URL + 'transactions', headers=headers)
+        response = requests.get(URL + 'transactions', headers=headers, params=params)
         try:
+            try:
+                transactions = response.json()['transaction']
+            except:
+                return {'status': 'failed', 'content': "Error: no transactions found"}
+            data = {}
+
+            for transaction in transactions:
+                # check if other transactions for this merchant are already in the data object
+                transaction_parent = data.get(transaction['merchant']['name'], {})
+                transaction_data = {}
+
+                # add only the completed transactions
+                if transaction['status'] == 'POSTED':
+                    transaction_data[transaction['id']] = transaction['price']
+                    data[transaction_parent] += transaction_data
+
             return {'status': 'success', 'content': response.json()}
         except:
             # return an error if it has occured
@@ -94,8 +111,10 @@ def get_holdings(loginName):
         # send the request and save the balance for each account
         response = requests.get(URL + 'holdings', headers=headers)
         try:
+            if not response.json().get('holding'):
+                return {'status': 'failed', 'content': "Error: no holdings found"}
             for holding in response.json()['holding']:
-                data[holding['symbol']] = {'quantity': holding['quantity'], 'value': holding['value']}
+                data[holding['id']] = {'symbol': holding['symbol'], 'quantity': holding['quantity'], 'value': holding['value']}
             return {'status': 'success', 'content': data}
         except:
             # return an error if it has occured
