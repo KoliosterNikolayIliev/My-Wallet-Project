@@ -3,18 +3,18 @@ import React from "react";
 const ContainerComponent = ({ imagePath, paragraphOne, subtitle }) => {
   return (
     <article>
-      <div class="col-sm-6">
-        <div class="sub-title">{subtitle}</div>
-        <span class="more-info">
+      <div className="col-sm-6">
+        <div className="sub-title">{subtitle}</div>
+        <span className="more-info">
           <p>{paragraphOne}</p>
         </span>
-        <div class="start">
+        <div className="start">
           <a href="#">Get started -- </a>
         </div>
       </div>
 
-      <div class="col-sm-2">
-        <img src={imagePath} alt="Marketing"></img>
+      <div className="col-sm-2">
+        <img src={imagePath} alt="Marketing"/>
       </div>
     </article>
   );

@@ -3,8 +3,8 @@ import React from "react";
 const TopBodyComponent = () => {
   return (
     <article>
-      <div class="top-body">
-        <div class="top-body-text">
+      <div className="top-body">
+        <div className="top-body-text">
           <h1>Unleash your wealth</h1>
           <p>
             New-age wealth builders constantly juggle with multiple investment
@@ -17,8 +17,8 @@ const TopBodyComponent = () => {
           </p>
         </div>
 
-        <div class="top-body-image">
-          <img src="/images/img-1.jpg"></img>
+        <div className="top-body-image">
+          <img src="/images/img-1.jpg"/>
         </div>
       </div>
     </article>
