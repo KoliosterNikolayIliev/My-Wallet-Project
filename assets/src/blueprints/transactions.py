@@ -10,9 +10,9 @@ api = Api(transactions)
 class GetTransactions(Resource):
     def get(self):
         data = {
-            'nordigen': nordigen.get_account_transactions(request.headers.get('nordigen')),
+            'nordigen': nordigen.get_account_transactions(request.headers.get('nordigen_key')),
             'yodlee': yodlee.get_transactions(request.headers.get('yodlee_loginName')),
-            'coinbase': coinbase_api.get_transactions(request.headers.get('c_key'), request.headers.get('c_secret'))
+            'coinbase': coinbase_api.get_transactions(request.headers.get('coinbase_key'), request.headers.get('coinbase_secret'))
         }
 
         return data
