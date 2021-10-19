@@ -22,6 +22,10 @@ def get_bank_name(account_id):
 
 
 def validate_requisition(requisition_id):
+    if not requisition_id:
+        # return error message with false variable to say validation failed
+        return {'status': 'failed', 'content': 'Error: Nordigen requisition key was not provided'}, False
+
     if os.environ.get('USE_MOCK') == 'True':
         mock_requisition = {
             "id": "c0ad1b3e-28e1-4628-b8b1-f6009df3c27f",
@@ -39,10 +43,6 @@ def validate_requisition(requisition_id):
             "enduser_id": "test"
         }
         return {'status': 'success', 'content': mock_requisition}, True
-
-    if not requisition_id:
-        # return error message with false variable to say validation failed
-        return {'status': 'failed', 'content': 'Error: Nordigen requisition key was not provided'}, False
 
     response = requests.get(f'https://ob.nordigen.com/api/requisitions/{requisition_id}/', headers=headers)
 
