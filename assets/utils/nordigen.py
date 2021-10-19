@@ -131,351 +131,6 @@ def get_account_balances(requisition_id):
 
 
 def get_account_transactions(requisition_id):
-    if os.environ.get('USE_MOCK') == 'True':
-        return {
-            "status": "success",
-            "content": {
-                "Sandbox Finance": {
-                    "2021101702698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101702698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101702698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101702698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101702698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101702698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101602698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101602698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101602698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101602698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101602698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101602698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101502698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101502698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101502698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101502698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101502698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101502698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101402698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101402698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101402698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101402698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101402698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101402698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101302698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101302698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101302698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101302698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101302698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101302698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101202698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101202698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101202698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101202698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101202698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101202698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101102698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101102698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101102698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101102698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101102698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101102698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101002698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101002698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101002698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101002698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021101002698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021101002698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100902698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100902698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100902698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100902698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100902698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100902698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100802698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100802698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100802698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100802698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100802698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100802698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100702698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100702698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100702698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100702698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100702698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100702698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100602698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100602698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100602698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100602698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100602698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100602698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100502698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100502698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100502698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100502698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100502698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100502698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100402698005-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100402698004-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100402698008-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    },
-                    "2021100402698007-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100402698001-1": {
-                        "amount": "45.00",
-                        "currency": "EUR"
-                    },
-                    "2021100402698002-1": {
-                        "amount": "-15.00",
-                        "currency": "EUR"
-                    }
-                }
-            }
-        }
-
     # get user bank accounts from requisition
     accounts = get_bank_accounts(requisition_id)
 
@@ -494,10 +149,71 @@ def get_account_transactions(requisition_id):
         bank_name = get_bank_name(account)
 
         # request to get account transaction history data
-        response = requests.get(f'https://ob.nordigen.com/api/accounts/{account}/transactions/', headers=headers)
+        if not os.environ.get('USE_MOCK'):
+            response = requests.get(f'https://ob.nordigen.com/api/accounts/{account}/transactions/',
+                                    headers=headers).json()
+
+        else:
+            response = {
+                "transactions": {
+                    "booked": [
+                        {
+                            "bankTransactionCode": "PMNT",
+                            "bookingDate": "2021-10-08",
+                            "debtorAccount": {
+                                "iban": "GL11SAFI05510125926"
+                            },
+                            "debtorName": "MON MOTHMA",
+                            "remittanceInformationUnstructured": "For the support of Restoration of the Republic foundation",
+                            "transactionAmount": {
+                                "amount": "45.00",
+                                "currency": "EUR"
+                            },
+                            "transactionId": "2021100802749507-1",
+                            "valueDate": "2021-10-08"
+                        },
+                        {
+                            "bankTransactionCode": "PMNT",
+                            "bookingDate": "2021-10-08",
+                            "debtorAccount": {
+                                "iban": "GL11SAFI05510125926"
+                            },
+                            "debtorName": "MON MOTHMA",
+                            "remittanceInformationUnstructured": "For the support of Restoration of the Republic foundation",
+                            "transactionAmount": {
+                                "amount": "45.00",
+                                "currency": "EUR"
+                            },
+                            "transactionId": "2021100802749501-1",
+                            "valueDate": "2021-10-08"
+                        },
+                        {
+                            "bankTransactionCode": "PMNT",
+                            "bookingDate": "2021-10-08",
+                            "remittanceInformationUnstructured": "PAYMENT Alderaan Coffe",
+                            "transactionAmount": {
+                                "amount": "-15.00",
+                                "currency": "EUR"
+                            },
+                            "transactionId": "2021100802749505-1",
+                            "valueDate": "2021-10-08"
+                        }
+                    ],
+                    "pending": [
+                        {
+                            "valueDate": "2021-10-17",
+                            "transactionAmount": {
+                                "amount": "10.00",
+                                "currency": "EUR"
+                            },
+                            "remittanceInformationUnstructured": "Reserved PAYMENT Emperor's Burgers"
+                        }
+                    ]
+                }
+            }
 
         # save only booked transactions
-        transactions = response.json().get('transactions').get('booked')
+        transactions = response.get('transactions').get('booked')
 
         # add each transaction to the data
         for transaction in transactions:
