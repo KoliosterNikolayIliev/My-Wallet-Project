@@ -28,7 +28,7 @@ URL = os.environ.get('YODLEE_SANDBOX_URL')
 
 
 def get_access_token(loginName):
-    if os.environ.get('USE_MOCK'):
+    if os.environ.get('USE_MOCK') == 'True':
         return {'status': 'success', 'content': 'token'}
 
     # set up x-www-form-urlencoded data and header data for the request
