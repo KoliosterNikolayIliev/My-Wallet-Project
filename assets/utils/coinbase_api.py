@@ -4,6 +4,21 @@ from coinbase.wallet.client import Client
 
 
 def get_account_balances(api_key, api_secret):
+    if os.environ.get('USE_MOCK') == 'True':
+        return {
+            "status": "success",
+            "content": {
+                "ea1afd10-87cc-5301-9445-14bc36ce4d8d": {
+                    "symbol": "DOGE",
+                    "quantity": "9800.00000000",
+                    "value": {
+                        "amount": "1764.49",
+                        "currency": "GBP"
+                    }
+                }
+            }
+        }
+
     try:
         client = Client(api_key, api_secret)
     except Exception as e:
