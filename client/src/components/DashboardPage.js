@@ -1,121 +1,65 @@
-import React from "react";
-import {useAuth0} from "@auth0/auth0-react";
-import {Redirect} from "react-router";
+import React, { useState, useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Redirect } from "react-router";
+
 import LogOutButton from "./LogOutButton";
-import axios from "axios";
+import getBalances from "../utils/portfolio";
 
 // Dashboard page to be filled in with user account data
-
-
 const DashboardPage = () => {
-    const {user, isAuthenticated, isLoading, getAccessTokenSilently} = useAuth0();
+  const [balances, setBalances] = useState({});
+  const [loading, setLoading] = useState(false);
 
-    //Print user data in console. User needs to be authenticated. Only for testing.
-    async function getUserData() {
-        const token = await getAccessTokenSilently()
+  const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
+    useAuth0();
 
+  const getBalanceData = async () => {
+    setLoading(true);
+    const token = await getAccessTokenSilently();
+    const data = await getBalances(token);
+    setBalances(data);
+    setLoading(false);
+  };
 
-        try {
-            const getUser = await axios.get('http://localhost:8000/api/account/user', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            console.log(getUser)
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
-    //Print user data in console if request is made by Portfolio. User needs to be authenticated. Only for testing.
-    async function getUserDataPortfolio() {
-        const token = await getAccessTokenSilently()
+  useEffect(() => {
+    getBalanceData();
+  }, []);
 
+  const renderBalances = (providers) => {
+    Object.values(providers).forEach((provider) => {
+      if (provider["status"] === "success") {
+        Object.values(provider["content"]).forEach((balance) => {
+          console.log(balance);
+        });
+      }
+    });
+  };
 
-        try {
-            const getUser = await axios.get('http://localhost:8000/api/account/internal/user', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            console.log(getUser)
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
+  //   Return this if Auth0 is still loading. Can be replaced with an animation in the future
+  if (isLoading || loading) {
+    return <div>Loading ...</div>;
+  }
 
-    //Deletes user. Only for testing.
-    async function deleteUser() {
-        const token = await getAccessTokenSilently()
-        try {
-            const serverDelete = await axios.delete('http://localhost:8000/api/account/user', {
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            })
-            console.log(serverDelete)
+  // Redirect the user to the landing page if the user is not logged in
+  if (!isAuthenticated) {
+    return <Redirect to={"/"} />;
+  }
 
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
+  return (
+    isAuthenticated && (
+      <div>
+        <h2>Hi, {user.name}, this is the dashboard</h2>
 
-    async function editUser() {
-        const token = await getAccessTokenSilently()
-        try {
-            const serverEdit = await axios.put('http://localhost:8000/api/account/user', {
-                base_currency: 'USD',
-                first_name: 'Pesho',
-                last_name: 'Peshev',
-                // source_label:'Whatever',
-                // binance_key:'',
-                // binance_secret:'',
-                // yodlee_login_name:'Pesho'
-            },{
-                headers: {
-                    authorization: `Bearer ${token}`
-                },
-            })
-            console.log(serverEdit)
+        <h1>Balances</h1>
+        {/* <button onClick={getBalanceData}>Get balances</button> */}
+        <button onClick={() => renderBalances(balances)}>
+          Render balances
+        </button>
 
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
-
-    //   Return this if Auth0 is still loading. Can be replaced with an animation in the future
-    if (isLoading) {
-        return <div>Loading ...</div>;
-    }
-
-    // Redirect the user to the landing page if the user is not logged in
-    if (!isAuthenticated) {
-        return <Redirect to={"/"}/>;
-    }
-
-    return (
-        isAuthenticated && (
-            <div>
-                <h2>Hi, {user.name}, this is the dashboard</h2>
-                <span>{user.birthdate},{user.email}</span>
-                <ul>
-                    <li>
-                        <button onClick={getUserData}>Get user data(create user if not existing)</button>
-                    </li>
-                    <li>
-                        <button onClick={getUserDataPortfolio}>Get user data from Portfolio</button>
-                    </li>
-                    <li>
-                        <button onClick={deleteUser}>Delete user</button>
-                    </li>
-                    <li>
-                        <button onClick={editUser}>Change user data</button>
-                    </li>
-
-                </ul>
-                <LogOutButton/>
-            </div>
-        )
-    );
+        <LogOutButton />
+      </div>
+    )
+  );
 };
 
 export default DashboardPage;
