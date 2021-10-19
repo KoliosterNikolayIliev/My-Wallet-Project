@@ -70,31 +70,33 @@ def get_transactions(loginName):
     if access_token['status'] == 'success':
         # set up header data and query parameters for the request
         headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
-        params = {'top': 10}
+        params = {'top': 10, 'fromDate': '2013-12-12'}
         
         # send the request and save the balance for each account
         response = requests.get(URL + 'transactions', headers=headers, params=params)
         try:
-            try:
-                transactions = response.json()['transaction']
-            except:
-                return {'status': 'failed', 'content': "Error: no transactions found"}
-            data = {}
-
-            for transaction in transactions:
-                # check if other transactions for this merchant are already in the data object
-                transaction_parent = data.get(transaction['merchant']['name'], {})
-                transaction_data = {}
-
-                # add only the completed transactions
-                if transaction['status'] == 'POSTED':
-                    transaction_data[transaction['id']] = transaction['price']
-                    data[transaction_parent] += transaction_data
-
-            return {'status': 'success', 'content': response.json()}
+            transactions = response.json()["transaction"]
         except:
-            # return an error if it has occured
-            return {'status': 'failed', 'content': f"Error: {response.json()['errorMessage']}"}
+            return {'status': 'failed', 'content': "Error: no transactions found"}
+        data = {}
+        transaction_data = {}
+
+        for transaction in transactions:
+            # check if other transactions for this merchant are already in the data object
+            if transaction.get('merchant'):
+                source = transaction['merchant']['source']
+            else:
+                source = 'unknown'
+            if not transaction_data.get(source):
+                transaction_data[source] = {}
+
+            #    add only the completed transactions
+            if transaction['status'] == 'POSTED':
+                transaction_data[source][transaction["id"]] = transaction['amount']
+        
+        data = transaction_data
+
+        return {'status': 'success', 'content': data}
     else:
         return access_token
 
