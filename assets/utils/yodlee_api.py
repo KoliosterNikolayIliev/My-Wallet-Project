@@ -120,10 +120,10 @@ def get_holdings(loginName):
                 return {'status': 'failed', 'content': "Error: no holdings found"}
 
             for holding in response['holding']:
-                if holding.get('symbol'):
-                    data[holding['id']] = {'symbol': holding['symbol'], 'quantity': holding['quantity']}
+                if holding.get('symbol') and holding.get('value'):
+                    data[holding['id']] = {'symbol': holding['symbol'], 'quantity': holding['quantity'], 'value': holding['value']}
             return {'status': 'success', 'content': data}
-            
+
         except:
             # return an error if it has occured
             return {'status': 'failed', 'content': f"Error: {response['errorMessage']}"}
