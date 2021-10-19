@@ -200,10 +200,29 @@ def get_holdings(loginName):
 
     if access_token['status'] == 'success':
         # set up header data for the request
-        headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
+        if os.environ.get('USE_MOCK') != 'True':
+            headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
 
-        # send the request and save the balance for each account
-        response = requests.get(URL + 'holdings', headers=headers).json()
+            # send the request and save the balance for each account
+            response = requests.get(URL + 'holdings', headers=headers).json()
+
+        else:
+            response = {'holding': [
+                {'id': 10010734, 'holdingType': 'bond', 'providerAccountId': 10012100, 'accountId': 10017272,
+                 'createdDate': '2021-09-22T13:10:06Z', 'lastUpdated': '2021-10-18T23:21:44Z',
+                 'description': 'NEW YORK N Y GO BDS FISCAL GO DATED 10/04/07 DUE 10/01/22 5.00% PAR CALL 10/01/',
+                 'optionType': 'unknown', 'price': {'amount': 101.14, 'currency': 'USD'}, 'quantity': 5,
+                 'value': {'amount': 5.05, 'currency': 'USD'}},
+                {'id': 10010800, 'holdingType': 'moneyMarketFund', 'providerAccountId': 10012100, 'accountId': 10017274,
+                 'createdDate': '2021-09-22T13:10:07Z', 'lastUpdated': '2021-10-18T23:21:44Z',
+                 'description': 'FDIC INSURED DEPOSIT AT FIFTH THIRD IRA NOT COVERED BY SIPC', 'optionType': 'unknown',
+                 'price': {'amount': 1.0, 'currency': 'USD'}, 'quantity': 54.99, 'symbol': 'QPIKQ',
+                 'value': {'amount': 54.99, 'currency': 'USD'}},
+                {'id': 10010733, 'holdingType': 'moneyMarketFund', 'providerAccountId': 10012100, 'accountId': 10017272,
+                 'createdDate': '2021-09-22T13:10:06Z', 'lastUpdated': '2021-10-18T23:21:44Z',
+                 'description': 'FDIC INSURED DEPOSIT AT FIFTH THIRD IRA NOT COVERED BY SIPC', 'optionType': 'unknown',
+                 'price': {'amount': 1.0, 'currency': 'USD'}, 'quantity': 37612.44, 'symbol': 'QPIKQ',
+                 'value': {'amount': 37612.44, 'currency': 'USD'}}]}
 
         try:
             if not response.get('holding'):
