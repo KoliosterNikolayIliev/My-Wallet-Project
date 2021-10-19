@@ -18,7 +18,7 @@ def get_assets_balances():
     user_data = validated_token[1]
 
     # get balances data(done via Assets)
-    headers = {'yodlee_loginName':user_data[0]['yodlee_login_name'], 'nordigen_key': user_data[0]['nordigen_requisition']}
+    headers = {'yodlee_loginName':user_data['yodlee_login_name'], 'nordigen_key': user_data['nordigen_requisition']}
     response = jsonify(get_balances(headers))
     return response, 200
 
