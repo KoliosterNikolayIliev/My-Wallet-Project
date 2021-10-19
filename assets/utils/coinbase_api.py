@@ -4,36 +4,47 @@ from coinbase.wallet.client import Client
 
 
 def get_account_balances(api_key, api_secret):
-    if os.environ.get('USE_MOCK') == 'True':
-        return {
-            "status": "success",
-            "content": {
-                "ea1afd10-87cc-5301-9445-14bc36ce4d8d": {
-                    "symbol": "DOGE",
-                    "quantity": "9800.00000000",
-                    "value": {
-                        "amount": "1764.49",
-                        "currency": "GBP"
-                    }
-                }
-            }
-        }
-
     try:
         client = Client(api_key, api_secret)
     except Exception as e:
         return {'status': 'failed', 'content': f"Error: {e}"}
 
-    try:
-        client_accounts = client.get_accounts()
-    except Exception as e:
-        return {'status': 'failed', 'content': f"Error: {e.message}"}
+    if os.environ.get('USE_MOCK') != 'True':
+        try:
+            client_accounts = client.get_accounts()
+        except Exception as e:
+            return {'status': 'failed', 'content': f"Error: {e.message}"}
+
+    else:
+        client_accounts = {
+            'data': [{
+                "allow_deposits": True,
+                "allow_withdrawals": True,
+                "balance": {
+                    "amount": "9800.00000000",
+                    "currency": "DOGE"
+                },
+                "created_at": "2021-09-15T16:00:09Z",
+                "currency": "DOGE",
+                "id": "ea1afd10-87cc-5301-9445-14bc36ce4d8d",
+                "name": "DOGE Wallet",
+                "native_balance": {
+                    "amount": "1737.54",
+                    "currency": "GBP"
+                },
+                "primary": False,
+                "resource": "account",
+                "resource_path": "/v2/accounts/ea1afd10-87cc-5301-9445-14bc36ce4d8d",
+                "type": "wallet",
+                "updated_at": "2021-09-26T19:27:25Z"
+            }]
+        }
 
     data = {}
     try:
         for account in client_accounts["data"]:
-            if float(account["balance"].amount) > 0:
-                data[account["id"]] = ({"symbol": account["balance"].currency, "quantity": account["balance"].amount,
+            if float(account["balance"]['amount']) > 0:
+                data[account["id"]] = ({"symbol": account["balance"]['currency'], "quantity": account["balance"]['amount'],
                                         "value": account["native_balance"]})
     except:
         return {'status': 'failed', 'content': f"Error: unknown error"}
