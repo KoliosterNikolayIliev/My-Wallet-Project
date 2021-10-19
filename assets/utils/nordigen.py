@@ -8,6 +8,9 @@ headers = {'Authorization': f'Token {token}'}
 
 
 def get_bank_name(account_id):
+    if os.environ.get('USE_MOCK'):
+        return 'Sandbox Finance'
+
     # get the bank identifier from nordigen
     account_response = requests.get(f'https://ob.nordigen.com/api/accounts/{account_id}/', headers=headers)
     identifier = account_response.json()["aspsp_identifier"]
@@ -19,6 +22,24 @@ def get_bank_name(account_id):
 
 
 def validate_requisition(requisition_id):
+    if os.environ.get('USE_MOCK') == 'True':
+        mock_requisition = {
+            "id": "c0ad1b3e-28e1-4628-b8b1-f6009df3c27f",
+            "created": "2021-10-06T22:21:31.216413Z",
+            "redirect": "https://test.com",
+            "status": "LN",
+            "agreements": [
+                "f658eddc-2c4b-4f53-8c0d-1fb1995f327c"
+            ],
+            "accounts": [
+                "1048f194-cb13-4cee-a55c-5ef6d8661341",
+                "582a6ea9-81c7-4def-952d-85709d9432cf"
+            ],
+            "reference": "test",
+            "enduser_id": "test"
+        }
+        return {'status': 'success', 'content': mock_requisition}, True
+
     if not requisition_id:
         # return error message with false variable to say validation failed
         return {'status': 'failed', 'content': 'Error: Nordigen requisition key was not provided'}, False
@@ -58,26 +79,6 @@ def get_bank_accounts(requisition_id):
 
 
 def get_account_balances(requisition_id):
-    if os.environ.get('USE_MOCK') == 'True':
-        return {
-            "status": "success",
-            "content": {
-                "582a6ea9-81c7-4def-952d-85709d9432cf": {
-                    "providerName": "Sandbox Finance",
-                    "balanceData": {
-                        "amount": "1913.12",
-                        "currency": "EUR"
-                    }
-                },
-                "1048f194-cb13-4cee-a55c-5ef6d8661341": {
-                    "providerName": "Sandbox Finance",
-                    "balanceData": {
-                        "amount": "1913.12",
-                        "currency": "EUR"
-                    }
-                }
-            }
-        }
     # get user bank accounts from requisition
     accounts = get_bank_accounts(requisition_id)
 
@@ -97,10 +98,33 @@ def get_account_balances(requisition_id):
         bank_name = get_bank_name(account)
 
         # request to get account balance data
-        response = requests.get(f'https://ob.nordigen.com/api/accounts/{account}/balances/', headers=headers)
+        if os.environ.get('USE_MOCK'):
+            response = {
+                "balances": [
+                    {
+                        "balanceAmount": {
+                            "amount": "1913.12",
+                            "currency": "EUR"
+                        },
+                        "balanceType": "authorised",
+                        "referenceDate": "2021-10-19"
+                    },
+                    {
+                        "balanceAmount": {
+                            "amount": "1913.12",
+                            "currency": "EUR"
+                        },
+                        "balanceType": "interimAvailable",
+                        "referenceDate": "2021-10-19"
+                    }
+                ]
+            }
+
+        else:
+            response = requests.get(f'https://ob.nordigen.com/api/accounts/{account}/balances/', headers=headers).json()
 
         # save only authorised balance
-        data[account] = {"providerName": bank_name, "balanceData": response.json()["balances"][0]["balanceAmount"]}
+        data[account] = {"providerName": bank_name, "balanceData": response["balances"][0]["balanceAmount"]}
 
     # return saved data
     return {'status': 'success', 'content': data}
