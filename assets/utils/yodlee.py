@@ -28,6 +28,9 @@ URL = os.environ.get('YODLEE_SANDBOX_URL')
 
 
 def get_access_token(loginName):
+    if os.environ.get('USE_MOCK'):
+        return {'status': 'success', 'content': 'token'}
+
     # set up x-www-form-urlencoded data and header data for the request
     data = {'clientId': CLIENT_ID, 'secret': SECRET}
     headers = {'Api-Version': '1.1', 'loginName': loginName}
@@ -42,110 +45,6 @@ def get_access_token(loginName):
 
 
 def get_balances(loginName):
-    if os.environ.get('USE_MOCK') == 'True':
-        return {
-            "status": "success",
-            "content": {
-                "10017278": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 23156.71
-                    }
-                },
-                "10017277": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 120180.5
-                    }
-                },
-                "10017276": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 21847.55
-                    }
-                },
-                "10017275": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 487866.84
-                    }
-                },
-                "10017274": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 697978.56
-                    }
-                },
-                "10017273": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 94582.58
-                    }
-                },
-                "10017272": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 330101.25
-                    }
-                },
-                "10017271": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 9793.63
-                    }
-                },
-                "10017270": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 49778.07
-                    }
-                },
-                "10017269": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 161801.27
-                    }
-                },
-                "10017268": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 168561.81
-                    }
-                },
-                "10017261": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 1636.44
-                    }
-                },
-                "10017260": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 9044.78
-                    }
-                },
-                "10017259": {
-                    "providerName": "Dag Site",
-                    "balanceData": {
-                        "currency": "USD",
-                        "amount": 44.78
-                    }
-                }
-            }
-        }
     if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
 
     data = {}
@@ -153,18 +52,62 @@ def get_balances(loginName):
     access_token = get_access_token(loginName)
     if access_token['status'] == 'success':
         # set up header data for the request
-        headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
+        if not os.environ.get('USE_MOCK'):
+            headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
 
-        # send the request and save the balance for each account
-        response = requests.get(URL + 'accounts', headers=headers)
+            # send the request and save the balance for each account
+            response = requests.get(URL + 'accounts', headers=headers).json()
+
+        else:
+            response = {'account': [
+                {'CONTAINER': 'creditCard', 'providerAccountId': 10011819, 'accountName': 'CREDIT CARD',
+                 'accountStatus': 'ACTIVE', 'accountNumber': 'xxxx8614', 'aggregationSource': 'USER', 'isAsset': False,
+                 'balance': {'currency': 'USD', 'amount': 1636.44}, 'id': 10017310, 'includeInNetWorth': True,
+                 'providerId': '16441', 'providerName': 'Dag Site', 'isManual': False, 'accountType': 'OTHER',
+                 'createdDate': '2021-09-22T10:41:58Z', 'apr': 29.99, 'cashApr': 29.99,
+                 'availableCash': {'currency': 'USD', 'amount': 600.0},
+                 'availableCredit': {'currency': 'USD', 'amount': 1363.0},
+                 'lastPaymentAmount': {'currency': 'USD', 'amount': 250.0}, 'lastPaymentDate': '2014-01-17',
+                 'lastUpdated': '2021-10-18T22:17:33Z', 'runningBalance': {'currency': 'USD', 'amount': 1636.44},
+                 'totalCashLimit': {'currency': 'USD', 'amount': 600.0},
+                 'totalCreditLine': {'currency': 'USD', 'amount': 3000.0}, 'dataset': [
+                    {'name': 'BASIC_AGG_DATA', 'additionalStatus': 'AVAILABLE_DATA_RETRIEVED',
+                     'updateEligibility': 'ALLOW_UPDATE', 'lastUpdated': '2021-10-18T22:17:33Z',
+                     'lastUpdateAttempt': '2021-10-18T22:17:33Z', 'nextUpdateScheduled': '2021-10-20T05:33:52Z'}]},
+                {'CONTAINER': 'bank', 'providerAccountId': 10011819, 'accountName': 'TESTDATA1',
+                 'accountStatus': 'ACTIVE', 'accountNumber': 'xxxx3xxx', 'aggregationSource': 'USER', 'isAsset': True,
+                 'balance': {'currency': 'USD', 'amount': 9044.78}, 'id': 10017309, 'includeInNetWorth': True,
+                 'providerId': '16441', 'providerName': 'Dag Site', 'isManual': False,
+                 'availableBalance': {'currency': 'USD', 'amount': 65454.78},
+                 'currentBalance': {'currency': 'USD', 'amount': 9044.78}, 'accountType': 'SAVINGS',
+                 'displayedName': 'accountHolder', 'createdDate': '2021-09-22T10:41:57Z',
+                 'lastUpdated': '2021-10-18T22:17:28Z', 'dataset': [
+                    {'name': 'BASIC_AGG_DATA', 'additionalStatus': 'AVAILABLE_DATA_RETRIEVED',
+                     'updateEligibility': 'ALLOW_UPDATE', 'lastUpdated': '2021-10-18T22:17:28Z',
+                     'lastUpdateAttempt': '2021-10-18T22:17:28Z', 'nextUpdateScheduled': '2021-10-19T20:10:42Z'}]},
+                {'CONTAINER': 'bank', 'providerAccountId': 10011819, 'accountName': 'TESTDATA',
+                 'accountStatus': 'ACTIVE', 'accountNumber': 'xxxx3xxx', 'aggregationSource': 'USER', 'isAsset': True,
+                 'balance': {'currency': 'USD', 'amount': 44.78}, 'id': 10017308, 'includeInNetWorth': True,
+                 'providerId': '16441', 'providerName': 'Dag Site', 'isManual': False,
+                 'availableBalance': {'currency': 'USD', 'amount': 54.78},
+                 'currentBalance': {'currency': 'USD', 'amount': 44.78}, 'accountType': 'CHECKING',
+                 'displayedName': 'accountHolder', 'createdDate': '2021-09-22T10:41:57Z', 'classification': 'PERSONAL',
+                 'lastUpdated': '2021-10-18T22:17:28Z', 'dataset': [
+                    {'name': 'BASIC_AGG_DATA', 'additionalStatus': 'AVAILABLE_DATA_RETRIEVED',
+                     'updateEligibility': 'ALLOW_UPDATE', 'lastUpdated': '2021-10-18T22:17:28Z',
+                     'lastUpdateAttempt': '2021-10-18T22:17:28Z', 'nextUpdateScheduled': '2021-10-19T20:10:42Z'},
+                    {'name': 'BASIC_AGG_DATA', 'additionalStatus': 'LOGIN_IN_PROGRESS',
+                     'updateEligibility': 'DISALLOW_UPDATE', 'lastUpdated': '2021-09-22T10:41:58Z',
+                     'lastUpdateAttempt': '2021-09-22T10:41:58Z', 'nextUpdateScheduled': '2021-10-19T20:10:42Z'}]}]}
+
         try:
-            for account in response.json()['account']:
+            for account in response['account']:
                 data[account['id']] = {"providerName": account["providerName"], "balanceData": account["balance"]}
 
             return {'status': 'success', 'content': data}
         except:
             # return an error if it has occured
-            return {'status': 'failed', 'content': f"Error: {response.json()['errorMessage']}"}
+            return {'status': 'failed', 'content': f"Error: {response['errorMessage']}"}
     else:
         return access_token
 
