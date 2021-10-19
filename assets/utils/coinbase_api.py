@@ -41,12 +41,12 @@ def get_account_balances(api_key, api_secret):
 
 
 def get_transactions(api_key, api_secret):
-    if not os.environ.get('USE_MOCK'):
-        try:
-            client = Client(api_key, api_secret)
-        except Exception as e:
-            return {'status': 'failed', 'content': f"Error: {e}"}
+    try:
+        client = Client(api_key, api_secret)
+    except Exception as e:
+        return {'status': 'failed', 'content': f"Error: {e}"}
 
+    if not os.environ.get('USE_MOCK'):
         try:
             client_accounts = client.get_accounts()
         except Exception as e:
