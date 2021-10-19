@@ -118,14 +118,53 @@ def get_transactions(loginName):
     # try to obtain a token and return an error if it fails
     access_token = get_access_token(loginName)
     if access_token['status'] == 'success':
-        # set up header data and query parameters for the request
-        headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
-        params = {'top': 10, 'fromDate': '2013-12-12'}
+        if not os.environ.get('USE_MOCK'):
+            # set up header data and query parameters for the request
+            headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
+            params = {'top': 10, 'fromDate': '2013-12-12'}
 
-        # send the request and save the balance for each account
-        response = requests.get(URL + 'transactions', headers=headers, params=params)
+            # send the request and save the balance for each account
+            response = requests.get(URL + 'transactions', headers=headers, params=params).json()
+
+        else:
+            response = {'transaction': [
+                {'CONTAINER': 'bank', 'id': 10302155, 'amount': {'amount': 59.69, 'currency': 'USD'},
+                 'baseType': 'DEBIT', 'categoryType': 'EXPENSE', 'categoryId': 20, 'category': 'Personal/Family',
+                 'detailCategoryId': 1527, 'categorySource': 'SYSTEM', 'highLevelCategoryId': 10000010,
+                 'createdDate': '2021-09-22T13:09:56Z', 'lastUpdated': '2021-09-22T13:09:56Z',
+                 'description': {'original': '#7 DELLARIA SALONS  S BROOKLINE MA',
+                                 'simple': '#7 DELLARIA SALONS S BROOKLINE MA'}, 'type': 'PURCHASE',
+                 'subType': 'PURCHASE', 'isManual': False, 'sourceType': 'AGGREGATED', 'date': '2021-08-25',
+                 'transactionDate': '2021-08-25', 'postDate': '2021-08-25', 'status': 'POSTED', 'accountId': 10017268,
+                 'runningBalance': {'amount': 167757.58, 'currency': 'USD'}, 'checkNumber': '998',
+                 'merchant': {'id': '10015393', 'source': 'YODLEE', 'categoryLabel': ['Retail', ' Department Stores'],
+                              'address': {'country': 'UK'}}},
+                {'CONTAINER': 'bank', 'id': 10302170, 'amount': {'amount': 1303.76, 'currency': 'USD'},
+                 'baseType': 'CREDIT', 'categoryType': 'INCOME', 'categoryId': 227, 'category': 'Refunds/Adjustments',
+                 'detailCategoryId': 1188, 'categorySource': 'SYSTEM', 'highLevelCategoryId': 10000019,
+                 'createdDate': '2021-09-22T13:09:56Z', 'lastUpdated': '2021-09-22T13:09:56Z',
+                 'description': {'original': 'XXX15 - GREENWAY SEL CHICAGO IL REF# XXXXXXXXX XXXXXX2000',
+                                 'simple': 'XX15 - GREENWAY SEL CHICAGO IL REF# XX2000'}, 'type': 'REFUND',
+                 'subType': 'REFUND', 'isManual': False, 'sourceType': 'AGGREGATED', 'date': '2021-08-24',
+                 'transactionDate': '2021-08-24', 'postDate': '2021-08-24', 'status': 'POSTED', 'accountId': 10017269,
+                 'runningBalance': {'amount': 161056.7, 'currency': 'USD'}, 'checkNumber': '998',
+                 'merchant': {'id': '10015393', 'source': 'YODLEE', 'categoryLabel': ['Retail', ' Department Stores'],
+                              'address': {'country': 'UK'}}},
+                {'CONTAINER': 'bank', 'id': 10302169, 'amount': {'amount': 144.51, 'currency': 'USD'},
+                 'baseType': 'DEBIT', 'categoryType': 'EXPENSE', 'categoryId': 23, 'category': 'Travel',
+                 'detailCategoryId': 1686, 'categorySource': 'SYSTEM', 'highLevelCategoryId': 10000011,
+                 'createdDate': '2021-09-22T13:09:56Z', 'lastUpdated': '2021-09-22T13:09:56Z',
+                 'description': {'original': '1256 DOWNEAST PARK CIT PARK CITY UT',
+                                 'simple': '1256 DOWNEAST PARK CIT PARK CITY UT'}, 'type': 'PURCHASE',
+                 'subType': 'PURCHASE', 'isManual': False, 'sourceType': 'AGGREGATED', 'date': '2021-08-24',
+                 'transactionDate': '2021-08-24', 'postDate': '2021-08-24', 'status': 'POSTED', 'accountId': 10017269,
+                 'runningBalance': {'amount': 159752.94, 'currency': 'USD'}, 'checkNumber': '998',
+                 'merchant': {'id': '10017962', 'source': 'YODLEE',
+                              'categoryLabel': ['Retail', ' Fashion', ' Clothing and Accessories'],
+                              'address': {'city': 'Garden City', 'country': 'UK'}}}]}
+
         try:
-            transactions = response.json()["transaction"]
+            transactions = response["transaction"]
         except:
             return {'status': 'failed', 'content': "Error: no transactions found"}
         data = {}
