@@ -8,7 +8,7 @@ headers = {'Authorization': f'Token {token}'}
 
 
 def get_bank_name(account_id):
-    if os.environ.get('USE_MOCK'):
+    if os.environ.get('USE_MOCK') == 'True':
         return 'Sandbox Finance'
 
     # get the bank identifier from nordigen
@@ -98,7 +98,7 @@ def get_account_balances(requisition_id):
         bank_name = get_bank_name(account)
 
         # request to get account balance data
-        if os.environ.get('USE_MOCK'):
+        if os.environ.get('USE_MOCK') == 'True':
             response = {
                 "balances": [
                     {
@@ -149,7 +149,7 @@ def get_account_transactions(requisition_id):
         bank_name = get_bank_name(account)
 
         # request to get account transaction history data
-        if not os.environ.get('USE_MOCK'):
+        if os.environ.get('USE_MOCK') != 'True':
             response = requests.get(f'https://ob.nordigen.com/api/accounts/{account}/transactions/',
                                     headers=headers).json()
 

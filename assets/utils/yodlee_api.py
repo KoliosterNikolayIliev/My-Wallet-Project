@@ -52,7 +52,7 @@ def get_balances(loginName):
     access_token = get_access_token(loginName)
     if access_token['status'] == 'success':
         # set up header data for the request
-        if not os.environ.get('USE_MOCK'):
+        if os.environ.get('USE_MOCK') != 'True':
             headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
 
             # send the request and save the balance for each account
@@ -118,7 +118,7 @@ def get_transactions(loginName):
     # try to obtain a token and return an error if it fails
     access_token = get_access_token(loginName)
     if access_token['status'] == 'success':
-        if not os.environ.get('USE_MOCK'):
+        if os.environ.get('USE_MOCK') != 'True':
             # set up header data and query parameters for the request
             headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
             params = {'top': 10, 'fromDate': '2013-12-12'}

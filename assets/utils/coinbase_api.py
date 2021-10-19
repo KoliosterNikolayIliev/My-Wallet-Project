@@ -46,7 +46,7 @@ def get_transactions(api_key, api_secret):
     except Exception as e:
         return {'status': 'failed', 'content': f"Error: {e}"}
 
-    if not os.environ.get('USE_MOCK'):
+    if os.environ.get('USE_MOCK') != 'True':
         try:
             client_accounts = client.get_accounts()
         except Exception as e:
@@ -80,7 +80,7 @@ def get_transactions(api_key, api_secret):
     data = {}
     try:
         for wallet in client_accounts["data"]:
-            if not os.environ.get('USE_MOCK'):
+            if os.environ.get('USE_MOCK') != 'True':
                 transactions = client.get_transactions(wallet['id'], limit=10)
 
             else:
