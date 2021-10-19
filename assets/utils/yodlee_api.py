@@ -107,19 +107,25 @@ def get_holdings(loginName):
 
     # try to obtain a token and return an error if it fails
     access_token = get_access_token(loginName)
+
     if access_token['status'] == 'success':
         # set up header data for the request
         headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
+
         # send the request and save the balance for each account
-        response = requests.get(URL + 'holdings', headers=headers)
+        response = requests.get(URL + 'holdings', headers=headers).json()
+
         try:
-            if not response.json().get('holding'):
+            if not response.get('holding'):
                 return {'status': 'failed', 'content': "Error: no holdings found"}
-            for holding in response.json()['holding']:
-                data[holding['id']] = {'symbol': holding['symbol'], 'quantity': holding['quantity'], 'value': holding['value']}
+
+            for holding in response['holding']:
+                if holding.get('symbol'):
+                    data[holding['id']] = {'symbol': holding['symbol'], 'quantity': holding['quantity']}
             return {'status': 'success', 'content': data}
+            
         except:
             # return an error if it has occured
-            return {'status': 'failed', 'content': f"Error: {response.json()['errorMessage']}"}
+            return {'status': 'failed', 'content': f"Error: {response['errorMessage']}"}
     else:
         return access_token
