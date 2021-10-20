@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import LogOutButton from "./LogOutButton";
+import LogOutButton from "../Buttons/LogOutButton";
 import { Redirect } from "react-router";
 
 // Profile component to display user information.

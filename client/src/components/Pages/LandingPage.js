@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import LogInButton from "./LogInButton";
+import LogInButton from "../Buttons/LogInButton";
 
 // Landing page to explain our product. Includes a button to log in.
 const LandingPage = () => {
