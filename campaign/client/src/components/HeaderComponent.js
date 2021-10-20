@@ -21,7 +21,7 @@ const HeaderComponent = () => {
               <a href="#">Contact</a>
             </li>
           </ul> */}
-          <div class="top-nav-btn">Get early access</div>
+          <div className="top-nav-btn">Get early access</div>
         </div>
       </nav>
     </header>

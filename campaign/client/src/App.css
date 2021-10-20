@@ -9,8 +9,7 @@ body {
 
 header {
   width: 100%;
-  margin-left: 10%;
-  padding-right: 10%;
+
   display: flex;
   justify-content: space-between;
   height: 72px;
@@ -27,10 +26,11 @@ header {
 .top-body {
   display: flex;
   margin-left: 10%;
+  justify-content: space-between;
 }
 
 .top-body h1 {
-  font-family: Inter;
+  font-family: Inter, ui-serif;
   font-style: normal;
   font-weight: 800;
   font-size: 62px;
@@ -42,9 +42,10 @@ header {
 }
 
 .top-body-text {
+  max-width: 40%;
   margin-top: 100px;
-  padding-right: 140px;
 }
+
 
 .top-body-text p {
   text-align: left;
@@ -53,7 +54,7 @@ header {
   font-weight: normal;
   font-size: 18px;
   line-height: 32px;
-  font-feature-settings: "salt" on, "liga" off;
+  font-feature-settings: "salt" on, "liga" on;
   color: #18191f;
 }
 
@@ -271,8 +272,14 @@ article {
 
 
 .heading-text {
-  font-size:28px;
-  padding:20px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  flex-basis: 20%;
+}
+.heading{
+display: flex;
+  padding-bottom: 2%;
 }
 
 
@@ -323,4 +330,166 @@ article {
   }
 }
 
+.question-answer-container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex-basis: 70%;
+}
+.submit-text-area{
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-content: center;
+}
+.submit-text-area>textarea{
+  width: 80%;
+  height: 200px;
+  resize: none;
+  color: #0b0d17;
+  border: 1px solid #000000;
+  border-radius: 30px;
+  padding: 2%;
+  font-family: Inter;
+  text-align: left;
+}
+.submit-page-btn-holder{
+  display: flex;
+  justify-content: center;
+}
+.submit-form-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 70%;
+}
 
+.answer{
+  width: 60%;
+  border: 1px solid #000000;
+  border-radius: 30px;
+  padding: 2%;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+  margin-left: 10%;
+  margin-top: 1%;
+
+}
+.answer:hover{
+  cursor: pointer;
+}
+
+
+.question{
+  font-family: Inter;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: 0em;
+  text-align: left;
+  margin-top: 3%;
+  margin-left: 5%;
+
+}
+
+.Modal {
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  right: 20%;
+  bottom: 15%;
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+justify-content: center;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.6);
+}
+
+
+
+
+
+.modal-close-button{
+  border: none;
+  color: transparent;
+  background: none;
+  padding-bottom: 3%;
+}
+.modal-footer{
+  margin-top: 1%;
+  margin-bottom: -7%;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #C5C5C5;
+}
+.btn-holder{
+  display: flex;
+}
+
+.modal-btn{
+  height: 38px;
+  width: 90px;
+  left: 1147px;
+  top: 883px;
+  border-radius: 4px;
+  padding: 9px 26px 9px 26px;
+  background: rgba(0,0,0,0.1);
+  color: white;
+  margin-right: 2%;
+  box-shadow: none;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+.back-btn{
+  background: white;
+  color:rgba(0,0,0,0.1);
+}
+
+.modalHeading{
+  flex-basis: 96%;
+  font-family: Inter;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 34px;
+  letter-spacing: 0em;
+  text-align: center;
+  margin-top: 3%;
+
+}
+
+.modal-border-container{
+  display: flex;
+  margin-left: 2.5%;
+  max-width: 95%;
+  justify-content: space-evenly;
+}
+.purple-modal-border {
+  border-bottom: 5px solid #8C30F5;
+  width: 25%;
+}
+.grey-modal-border {
+  border-bottom: 5px solid rgba(140, 48, 245, 0.1);
+  width: 25%;
+}
+
+.selected{
+  color: #8C30F5;
+}
+input.selected{
+  color: #0b0d17;
+}
