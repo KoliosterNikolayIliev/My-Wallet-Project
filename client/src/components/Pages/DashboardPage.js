@@ -23,30 +23,21 @@ const DashboardPage = () => {
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
     useAuth0();
 
-  const getAssetsData = async () => {
+  const getData = async () => {
     setLoading(true);
     const token = await getAccessTokenSilently();
-    const data = await getAssets(token);
+    const assetsData = await getAssets(token);
+    const transactionsData = await getTransactions(token);
 
-    setBalances(data.balances);
-    setHoldings(data.holdings);
-
-    setLoading(false);
-  };
-
-  const getTransactionsData = async () => {
-    setLoading(true);
-    const token = await getAccessTokenSilently();
-    const data = await getTransactions(token);
-
-    setTransactions(data);
+    setBalances(assetsData.balances);
+    setHoldings(assetsData.holdings);
+    setTransactions(transactionsData);
 
     setLoading(false);
   };
 
   useEffect(() => {
-    getAssetsData();
-    getTransactionsData();
+    getData();
   }, []);
 
   //   Return this if Auth0 is still loading. Can be replaced with an animation in the future
