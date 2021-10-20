@@ -6,14 +6,6 @@ from ..utils.account import validate_auth_header
 bp = Blueprint('api', __name__)
 CORS(bp)
 
-    # headers = {'yodlee_loginName':user_data['yodlee_login_name'], 'nordigen_key': user_data['nordigen_requisition']}
-    # response = jsonify(get_balances(headers))
-    # return response, 200
-
-    # headers = {'yodlee_loginName':user_data[0]['yodlee_login_name'], 'binance_key':user_data[0]['binance_key'], 'binance_secret':user_data[0]['binance_secret'], 'coinbase_key': user_data[0]['coinbase_api_key'], 'coinbase_secret': user_data[0]['coinbase_api_secret']}
-    # response = jsonify(get_holdings(headers))
-
-
 @bp.route('/api/assets', methods=(['GET']))
 async def get_assets():
     # check if a token was passed in the Authorization header
