@@ -4,7 +4,8 @@ URL = os.environ.get("ACCOUNT_URL")
 
 def validate_token(token):
     headers = {'Authorization': token}
-    res = requests.get("http://localhost:8001/api/account/internal/user", headers=headers)
+    print(URL)
+    res = requests.get(URL + "api/account/internal/user", headers=headers)
     if res.status_code == 200:
         return res.json()
     return False
