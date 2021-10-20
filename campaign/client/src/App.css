@@ -404,6 +404,8 @@ display: flex;
   left: 20%;
   right: 20%;
   bottom: 15%;
+  min-width: 50%;
+  min-height: 82%;
   background-color: #FFFFFF;
   border-radius: 4px;
   display: flex;
