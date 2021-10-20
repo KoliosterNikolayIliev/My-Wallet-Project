@@ -5,6 +5,8 @@ import { Redirect } from "react-router";
 import LogOutButton from "../Buttons/LogOutButton";
 import getAssets from "../../utils/portfolio";
 
+import BalancesContainerComponent from "../Other/BalancesContainerComponent";
+
 // Dashboard page to be filled in with user account data
 const DashboardPage = () => {
   const [balances, setBalances] = useState({});
@@ -30,10 +32,6 @@ const DashboardPage = () => {
     getAssetsData();
   }, []);
 
-  // const renderBalances = (providers) => {
-
-  // };
-
   //   Return this if Auth0 is still loading. Can be replaced with an animation in the future
   if (isLoading || loading) {
     return <div>Loading ...</div>;
@@ -51,6 +49,7 @@ const DashboardPage = () => {
 
         <div>
           <h1>Balances</h1>
+          <BalancesContainerComponent data={balances} />
         </div>
 
         <div>
