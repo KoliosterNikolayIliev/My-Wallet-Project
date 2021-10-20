@@ -6,6 +6,7 @@ import LogOutButton from "../Buttons/LogOutButton";
 import getAssets from "../../utils/portfolio";
 
 import BalancesContainerComponent from "../Other/BalancesContainerComponent";
+import HoldingsContainerComponent from "../Other/HoldingsContainerComponent";
 
 // Dashboard page to be filled in with user account data
 const DashboardPage = () => {
@@ -54,6 +55,7 @@ const DashboardPage = () => {
 
         <div>
           <h1>Holdings</h1>
+          <HoldingsContainerComponent data={holdings} />
         </div>
 
         <LogOutButton />
