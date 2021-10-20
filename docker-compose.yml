@@ -54,6 +54,7 @@ services:
       - YODLEE_SECRET=
       - YODLEE_SANDBOX_URL=
       - NORDIGEN_TOKEN=
+      - CUSTOM_ASSETS_URL=http://custom_assets:8000
 
   portfolio:
     build:
