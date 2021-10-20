@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 body {
   color: #000000;
 
   font-size: 15px;
   line-height: 24px;
-  width: 80%;
+
   alignment: center;
   margin: auto;
 }
@@ -39,7 +41,7 @@ nav{
 }
 
 .top-body h1 {
-  font-family: Inter, ui-serif;
+  font-family: "Inter", "sans-serif";
   font-style: normal;
   font-weight: 800;
   font-size: 62px;
@@ -58,7 +60,7 @@ nav{
 
 .top-body-text p {
   text-align: left;
-  font-family: Inter;
+  font-family: "Inter", "sans-serif";
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
@@ -132,7 +134,7 @@ input[type="submit"] {
 /*      Message    */
 
 .message {
-  font-family: Inter;
+  font-family: "Inter", "sans-serif";
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
@@ -148,7 +150,7 @@ input[type="submit"] {
 }
 
 .description {
-  font-family: Inter;
+  font-family: "Inter", "sans-serif";
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
@@ -186,7 +188,7 @@ input:focus {
 }
 
 .col-sm-6 .sub-title {
-  font-family: Inter;
+  font-family: "Inter", "sans-serif";
   font-style: normal;
   font-weight: 800;
   font-size: 40px;
@@ -198,7 +200,7 @@ input:focus {
 }
 
 .col-sm-6 .more-info p {
-  font-family: Inter;
+  font-family: "Inter", "sans-serif";
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
@@ -229,7 +231,7 @@ article:last-child .col-sm-6 {
 }
 
 article {
-  font-family: Inter;
+  font-family: "Inter", "sans-serif";
   font-size: 16px;
   line-height: 24px;
 }
@@ -244,7 +246,7 @@ article {
 
 .footer {
   margin-top: 100px;
-  font-family: Inter;
+  font-family: "Inter", "sans-serif";
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -274,7 +276,6 @@ article {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  flex-basis: 20%;
 }
 .heading{
 display: flex;
@@ -332,25 +333,29 @@ display: flex;
 .question-answer-container{
   display: flex;
   flex-direction: column;
-  width: 100%;
-  flex-basis: 70%;
+
 }
+.sub-heading{
+  text-align: center;
+}
+
 .submit-text-area{
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: column;
-  align-content: center;
-}
-.submit-text-area>textarea{
-  width: 80%;
+  width: 65%;
   height: 200px;
   resize: none;
   color: #0b0d17;
   border: 1px solid #000000;
   border-radius: 30px;
   padding: 2%;
-  font-family: Inter;
+  font-family: "Inter", "sans-serif";
   text-align: left;
+  margin-left: 10%;
+}
+.submit-text-area.selected{
+  color: #0b0d17;
+}
+.additional-info{
+  margin-left: 5%;
 }
 .submit-page-btn-holder{
   display: flex;
@@ -364,11 +369,10 @@ display: flex;
 }
 
 .answer{
-  width: 60%;
   border: 1px solid #000000;
   border-radius: 30px;
-  padding: 2%;
-  font-family: Inter;
+  padding: 1em;
+  font-family: "Inter", "sans-serif";
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -377,6 +381,7 @@ display: flex;
   text-align: left;
   margin-left: 10%;
   margin-top: 1%;
+  max-width: 42%;
 
 }
 .answer:hover{
@@ -385,7 +390,7 @@ display: flex;
 
 
 .question{
-  font-family: Inter;
+  font-family: "Inter", "sans-serif";
   font-size: 17px;
   font-style: normal;
   font-weight: 400;
@@ -399,17 +404,21 @@ display: flex;
 
 .Modal {
   position: absolute;
-  top: 15%;
-  left: 20%;
-  right: 20%;
-  bottom: 15%;
-  min-width: 50%;
-  min-height: 82%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  /*min-height: 90%;*/
   background-color: #FFFFFF;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-justify-content: center;
+  flex-wrap: wrap;
+  flex: auto;
+  width: auto;
+  height: auto;
+  min-width: 60%;
+  min-height: 70%;
+/*justify-content: center;*/
 }
 
 .Overlay {
@@ -431,24 +440,28 @@ justify-content: center;
   background: none;
   padding-bottom: 3%;
 }
-.modal-footer{
-  margin-top: 1%;
-  margin-bottom: -7%;
-  display: flex;
-  justify-content: flex-end;
-  border-top: 1px solid #C5C5C5;
-}
+/*.modal-footer{*/
+/*  margin-top: 1%;*/
+/*  margin-bottom: -7%;*/
+/*  display: flex;*/
+/*  justify-content: flex-end;*/
+/*  border-top: 1px solid #C5C5C5;*/
+/*}*/
 .btn-holder{
   display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #C5C5C5;
+  width: 100%;
+  padding: 1.5% 1%;
+  justify-content: flex-end;
 }
 
 .modal-btn{
-  height: 38px;
-  width: 90px;
-  left: 1147px;
-  top: 883px;
+
   border-radius: 4px;
-  padding: 9px 26px 9px 26px;
+  padding: 5px 26px 5px 26px;
   background: rgba(0,0,0,0.1);
   color: white;
   margin-right: 2%;
@@ -459,10 +472,18 @@ justify-content: center;
   background: white;
   color:rgba(0,0,0,0.1);
 }
+.active-next{
+  background: #8C30F5;
+}
+.active-back{
+  background: white;
+  color:#18191F;
+  border: 1px solid #18191F;
+}
 
 .modalHeading{
   flex-basis: 96%;
-  font-family: Inter;
+  font-family: "Inter", "sans-serif";
   font-size: 28px;
   font-style: normal;
   font-weight: 600;

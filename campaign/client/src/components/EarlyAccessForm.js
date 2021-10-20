@@ -95,7 +95,7 @@ const EarlyAccessForm = ({
                     <button className="modal-close-button" onClick={closeModal}><img alt={'missing'} src={cross}/>
                     </button>
                     </div>
-                    <p>
+                    <p className="sub-heading">
                         We would really appreciate it if you answered a few questions that can
                         help us with the development of the platform.
                     </p>
@@ -106,9 +106,6 @@ const EarlyAccessForm = ({
                         <span className="grey-modal-border"/>
                     </div>
                 </div>
-
-
-
 
                 {quizState === 1 && (
                     <QuizComponent

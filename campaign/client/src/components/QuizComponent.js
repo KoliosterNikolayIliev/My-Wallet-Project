@@ -1,5 +1,6 @@
 import React from "react";
 import {useState, useEffect} from "react";
+import Container from '@material-ui/core/Container';
 
 const QuizComponent = ({
                            questionType,
@@ -68,60 +69,63 @@ const QuizComponent = ({
     // render the quiz if the question is closed-answer
     if (questionType === "closed")
         return (
-            <div className="question-answer-container">
-                <h4 className="question">{question}</h4>
-                <p className="answer" onClick={selectAnswer}>{answer1}</p>
-                <p className="answer" onClick={selectAnswer}>{answer2}</p>
-                <p className="answer" onClick={selectAnswer}>{answer3}</p>
-                <p className="answer" onClick={selectAnswer}>{answer4}</p>
-                <input className="answer" type="text" placeholder="Other (Please specify):" onFocus={selectAnswer}/>
-                {/* Show the submit button if this is the last question in the quiz */}
-                <div className="modal-footer">
-                    {quizState === 3 && (
-                        <div className="btn-holder">
-                            <button className="modal-btn back-btn" onClick={previousQuizState}>Back</button>
-                            <button onClick={submitFunction}>Submit</button>
-                        </div>
-                    )}
-
-                    {answerSelected && quizState !== 3 && (
-                        <div className="btn-holder">
-                            {quizState !== 1 && (
-                                <button className="modal-btn back-btn" onClick={previousQuizState}>Back</button>
-                            )}
-
-                            <button className="modal-btn" onClick={nextQuizState}>Next</button>
-                        </div>
-                    )}
+            <Container>
+                <div className="question-answer-container">
+                    <h4 className="question">{question}</h4>
+                    <p className="answer" onClick={selectAnswer}>{answer1}</p>
+                    <p className="answer" onClick={selectAnswer}>{answer2}</p>
+                    <p className="answer" onClick={selectAnswer}>{answer3}</p>
+                    <p className="answer" onClick={selectAnswer}>{answer4}</p>
+                    <input className="answer" type="text" placeholder="Other (Please specify):" onFocus={selectAnswer}/>
+                    {/* Show the submit button if this is the last question in the quiz */}
                 </div>
-            </div>
+                <div className="btn-holder">
+                    <button className={quizState !== 1 ? "active-back modal-btn" : "modal-btn back-btn"}
+                        disabled={quizState === 1}
+                            onClick={previousQuizState}>Back
+                    </button>
+                    <button className={answerSelected ? "active-next modal-btn" : "modal-btn"} onClick={nextQuizState}
+                            disabled={!answerSelected}>Next
+                    </button>
+                </div>
+            </Container>
         );
     // render the quiz if the question is open-answer
     else if (questionType === "open")
         return (
-            <div className="submit-form-container">
-
-                <div className="submit-text-area">
-                    <h4>{question}</h4>
-                    <textarea placeholder="Other" onFocus={selectAnswer}/>
+            <Container>
+                <div className="question-answer-container">
+                    <h4 className="question">{question}</h4>
+                    <p className="additional-info">(some examples for the types of platforms: Traditional banks, Neobanks, Stock brokers, Crypto exchanges and others)</p>
+                    <textarea className="submit-text-area" placeholder="...." onFocus={selectAnswer}/>
                 </div>
-                {/* Show the submit button if this is the last question in the quiz */}
-                <div className="submit-page-btn-holder">
-                    {answerSelected && quizState === 3 && (
-                        <div className="btn-holder">
-                            <button className="modal-btn back-btn" onClick={previousQuizState}>Back</button>
-                            <button className="modal-btn" onClick={submitFunction}>Submit</button>
-                        </div>
-                    )}
-
-                    {/* Show the next button if this isn't the last element */}
-                    {answerSelected && quizState !== 3 && (
-                        <div className="btn-holder">
-                            <button className="modal-btn" onClick={nextQuizState}>Next</button>
-                        </div>
-                    )}
+                <div className="btn-holder">
+                    <button className={quizState !== 1 ? "active-back modal-btn" : "modal-btn back-btn"}
+                            onClick={previousQuizState}>Back
+                    </button>
+                    <button className={answerSelected ? "active-next modal-btn" : "modal-btn"}
+                            onClick={submitFunction}>Finish
+                    </button>
                 </div>
-            </div>
+            </Container>
+        );
+    else if (questionType === "open")
+        return (
+            <Container>
+                <div className="question-answer-container">
+                    <h4 className="question">{question}</h4>
+                    <p className="additional-info">(some examples for the types of platforms: Traditional banks, Neobanks, Stock brokers, Crypto exchanges and others)</p>
+                    <textarea className="submit-text-area" placeholder="...." onFocus={selectAnswer}/>
+                </div>
+                <div className="btn-holder">
+                    <button className={quizState !== 1 ? "active-back modal-btn" : "modal-btn back-btn"}
+                            onClick={previousQuizState}>Back
+                    </button>
+                    <button className={answerSelected ? "active-next modal-btn" : "modal-btn"}
+                            onClick={submitFunction}>Finish
+                    </button>
+                </div>
+            </Container>
         );
 };
 
