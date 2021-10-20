@@ -1,5 +1,5 @@
-const getBalances = async (token) => {
-  const response = await fetch("http://localhost:5001/api/balances", {
+const getAssets = async (token) => {
+  const response = await fetch("http://localhost:5001/api/assets", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -8,4 +8,14 @@ const getBalances = async (token) => {
   return response.json();
 };
 
-export default getBalances;
+const getTransactions = async (token) => {
+  const response = await fetch("http://localhost:5001/api/transactions", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.json();
+};
+
+export { getAssets, getTransactions };
