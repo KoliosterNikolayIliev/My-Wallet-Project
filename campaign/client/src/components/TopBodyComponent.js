@@ -1,4 +1,5 @@
 import React from "react";
+import circle from "../images/Screenshot from 2021-10-20 13-31-42.png"
 
 const TopBodyComponent = () => {
   return (
@@ -18,7 +19,7 @@ const TopBodyComponent = () => {
         </div>
 
         <div className="top-body-image">
-          <img src="/images/img-1.jpg"/>
+          <img src={circle} alt="circle"/>
         </div>
       </div>
     </article>

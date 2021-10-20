@@ -1,20 +1,29 @@
 body {
   color: #000000;
-  text-align: center;
+
   font-size: 15px;
   line-height: 24px;
+  width: 80%;
+  alignment: center;
+  margin: auto;
 }
 
 /*   Header     */
 
 header {
-  width: 100%;
-
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   height: 72px;
   background-color: #fff;
   box-shadow: 0px 1px 0px #e5e9f2;
+}
+nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
 }
 
 .header {
@@ -63,48 +72,23 @@ header {
 }
 
 .top-body-image img {
-  width: 500px;
+  object-fit: cover;
+  width: 600px;
 }
 
 /*      Navigation     */
 
-.top-nav-menu {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-end;
-  padding-top: 12px;
-  padding-right: 100px;
-}
 
-.top-nav-menu ul {
-  display: flex;
-  list-style: none;
-}
-
-.top-nav-menu ul li {
-  padding-top: 15px;
-  padding-right: 55px;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 15px;
-  line-height: 20px;
-  letter-spacing: -0.468947px;
-  color: #696871;
-}
 
 .top-nav-btn {
-  padding-right: 100px;
   background-color: #7000ff;
   height: 48px;
   width: 194px;
   color: #fff;
   border-radius: 6px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   padding: 12px 32px;
   cursor: pointer;
+  text-align: center;
 }
 
   .top-nav-btn:hover {
@@ -268,8 +252,23 @@ article {
   font-feature-settings: "salt" on, "liga" off;
   color: #d9dbe1;
   background-color: #0b0d17;
+  display: flex;
+  justify-content: center;
 }
-
+.footer-content{
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  align-items: center;
+}
+.fa-icons li{
+  display: inline;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+.fa-icons{
+  margin: 0;
+}
 
 .heading-text {
   display: flex;

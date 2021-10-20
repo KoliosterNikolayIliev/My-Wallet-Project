@@ -27,7 +27,7 @@ const LandingPage = () => {
       <MessageComponent counter={counter} />
 
       <article>
-        <div class="main-content">
+        <div className="main-content">
           <ContainerComponent
             subtitle="Seamless live feed from all your accounts"
             paragraphOne="No more manual inputs. Connect to your bank, stock brokerage and crypto platforms once and get live updates with the latest state of your portfolio."
@@ -49,7 +49,7 @@ const LandingPage = () => {
       </article>
 
       <article>
-        <div class="last-subscribtion">
+        <div className="last-subscribtion">
           <MailchimpFormContainer counter={counter} setCounter={setCounter}/>
         </div>
       </article>

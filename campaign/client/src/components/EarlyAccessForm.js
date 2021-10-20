@@ -73,7 +73,7 @@ const EarlyAccessForm = ({
                 {status === "sending" && <div>Sending...</div>}
                 {status === "error" && <div>Invalid email</div>}
                 {status === "success" && <div>Thanks for subscribing!</div>}
-                <input
+                <input id="get_early_access"
                     type="email"
                     value={email}
                     placeholder="Your email..."
