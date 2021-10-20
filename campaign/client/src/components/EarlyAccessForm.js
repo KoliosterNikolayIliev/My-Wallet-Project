@@ -44,8 +44,12 @@ const EarlyAccessForm = ({
         setAnswerSheet([]);
         sendData();
         clearFields();
-        closeModal();
+        // closeModal();
+        congratulate()
     };
+    const congratulate = () =>{
+        setQuizState(4);
+    }
 
     useEffect(() => {
         if (status === "success") {
@@ -89,12 +93,12 @@ const EarlyAccessForm = ({
                 overlayClassName="Overlay"
                 contentLabel="Example Modal"
             >
-                <div className="heading-text">
-                    <div className="heading">
+                { quizState!==4 ?
+                <div className="heading-text" >
                     <span className="modalHeading">Thank you for subscribing!</span>
                     <button className="modal-close-button" onClick={closeModal}><img alt={'missing'} src={cross}/>
                     </button>
-                    </div>
+
                     <p className="sub-heading">
                         We would really appreciate it if you answered a few questions that can
                         help us with the development of the platform.
@@ -105,7 +109,10 @@ const EarlyAccessForm = ({
                         <span className={quizState > 2 ? "purple-modal-border" : "grey-modal-border"}/>
                         <span className="grey-modal-border"/>
                     </div>
-                </div>
+                </div> :
+                        <button className="modal-close-button" onClick={closeModal}><img alt={'missing'} src={cross}/>
+                        </button>
+                    }
 
                 {quizState === 1 && (
                     <QuizComponent
@@ -154,6 +161,19 @@ const EarlyAccessForm = ({
                         submitFunction={sendAnswers}
                         question={
                             "Please list all of the investment platforms you use today?"
+                        }
+                    />
+                )}
+                {quizState === 4 && (
+                    <QuizComponent
+                        questionType={"end"}
+                        quizState={quizState}
+                        setQuizState={setQuizState}
+                        answerSheet={answerSheet}
+                        setAnswerSheet={setAnswerSheet}
+                        submitFunction={sendAnswers}
+                        question={
+                            "end"
                         }
                     />
                 )}

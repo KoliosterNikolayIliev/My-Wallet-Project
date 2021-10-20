@@ -1,6 +1,9 @@
 import React from "react";
 import {useState, useEffect} from "react";
 import Container from '@material-ui/core/Container';
+import Logo from "../images/Logo.svg";
+import {faTwitter} from "@fortawesome/free-brands-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const QuizComponent = ({
                            questionType,
@@ -61,7 +64,7 @@ const QuizComponent = ({
 
     // Increment the state of the quiz
     const nextQuizState = () => {
-        if (quizState < 3) {
+        if (quizState < 4) {
             setQuizState(quizState + 1);
         }
     };
@@ -109,23 +112,19 @@ const QuizComponent = ({
                 </div>
             </Container>
         );
-    else if (questionType === "open")
+    else if (questionType === "end")
         return (
-            <Container>
-                <div className="question-answer-container">
-                    <h4 className="question">{question}</h4>
-                    <p className="additional-info">(some examples for the types of platforms: Traditional banks, Neobanks, Stock brokers, Crypto exchanges and others)</p>
-                    <textarea className="submit-text-area" placeholder="...." onFocus={selectAnswer}/>
-                </div>
-                <div className="btn-holder">
-                    <button className={quizState !== 1 ? "active-back modal-btn" : "modal-btn back-btn"}
-                            onClick={previousQuizState}>Back
-                    </button>
-                    <button className={answerSelected ? "active-next modal-btn" : "modal-btn"}
-                            onClick={submitFunction}>Finish
+                <div className="end-questionnaire-container">
+                    <div className="modal-close">
+                        <img src={Logo} alt=""/>
+                    </div>
+                    <h4 className="modalHeading">Thanks for supporting us!</h4>
+                    <p className="reminder">Don’t forget to tell your friends and keep your eyes peeled for the launch! 🚀</p>
+                    <button className="follow-btn">
+                        <FontAwesomeIcon className="twitter-button" icon={faTwitter} size="1x" inverse/>
+                        Follow us on Twitter
                     </button>
                 </div>
-            </Container>
         );
 };
 
