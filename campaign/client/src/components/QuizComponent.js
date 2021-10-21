@@ -79,8 +79,8 @@ const QuizComponent = ({
                     <p className="answer" onClick={selectAnswer}>{answer2}</p>
                     <p className="answer" onClick={selectAnswer}>{answer3}</p>
                     <p className="answer" onClick={selectAnswer}>{answer4}</p>
-                    <input className="answer" type="text" placeholder="Other (Please specify):" onFocus={selectAnswer}/>
-                    {/* Show the submit button if this is the last question in the quiz */}
+                    <input className="answer" type="text" placeholder="Other (Please specify):" onMouseOut={selectAnswer}/>
+
                 </div>
                 <div className="btn-holder">
                     <button className={quizState !== 1 ? "active-back modal-btn" : "modal-btn back-btn"}
@@ -100,13 +100,14 @@ const QuizComponent = ({
                 <div className="question-answer-container">
                     <h4 className="question">{question}</h4>
                     <p className="additional-info">(some examples for the types of platforms: Traditional banks, Neobanks, Stock brokers, Crypto exchanges and others)</p>
-                    <textarea className="submit-text-area" placeholder="...." onFocus={selectAnswer}/>
+                    <input className="submit-text-area" type="text" placeholder="...." onMouseOut={selectAnswer}/>
                 </div>
                 <div className="btn-holder">
                     <button className={quizState !== 1 ? "active-back modal-btn" : "modal-btn back-btn"}
                             onClick={previousQuizState}>Back
                     </button>
                     <button className={answerSelected ? "active-next modal-btn" : "modal-btn"}
+                            disabled={!answerSelected}
                             onClick={submitFunction}>Finish
                     </button>
                 </div>

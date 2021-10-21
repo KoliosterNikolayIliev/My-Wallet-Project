@@ -135,7 +135,7 @@ const EarlyAccessForm = ({
                 {quizState === 2 && (
                     <QuizComponent
                         questionType={"closed"}
-                        numberOfAnswers={1}
+                        // numberOfAnswers={1}
                         quizState={quizState}
                         setQuizState={setQuizState}
                         answerSheet={answerSheet}
@@ -171,7 +171,7 @@ const EarlyAccessForm = ({
                         setQuizState={setQuizState}
                         answerSheet={answerSheet}
                         setAnswerSheet={setAnswerSheet}
-                        submitFunction={sendAnswers}
+                        // submitFunction={sendAnswers}
                         question={
                             "end"
                         }
