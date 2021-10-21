@@ -5,6 +5,8 @@ import cross from "../images/Vector.svg"
 import Logo from "../images/Logo.svg";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTwitter} from "@fortawesome/free-brands-svg-icons";
+import Container from "@material-ui/core/Container";
+import CongratulateComponent from "./CongratulateComponent";
 
 
 // custom form to use with MailChimpFormContainer
@@ -78,10 +80,10 @@ const EarlyAccessForm = ({
                 {status === "error" && <div>Invalid email</div>}
                 {status === "success" && <div>Thanks for subscribing!</div>}
                 <input id="get_early_access"
-                    type="email"
-                    value={email}
-                    placeholder="Your email..."
-                    onChange={(e) => setEmail(e.target.value)}
+                       type="email"
+                       value={email}
+                       placeholder="Your email..."
+                       onChange={(e) => setEmail(e.target.value)}
                 />
                 <input type="submit" value="Get early access"/>
             </form>
@@ -93,26 +95,26 @@ const EarlyAccessForm = ({
                 overlayClassName="Overlay"
                 contentLabel="Example Modal"
             >
-                { quizState!==4 ?
-                <div className="heading-text" >
-                    <span className="modalHeading">Thank you for subscribing!</span>
-                    <button className="modal-close-button" onClick={closeModal}><img alt={'missing'} src={cross}/>
-                    </button>
-
-                    <p className="sub-heading">
-                        We would really appreciate it if you answered a few questions that can
-                        help us with the development of the platform.
-                    </p>
-                    <div className="modal-border-container">
-                        <span className="purple-modal-border"/>
-                        <span className={quizState > 1 ? "purple-modal-border" : "grey-modal-border"}/>
-                        <span className={quizState > 2 ? "purple-modal-border" : "grey-modal-border"}/>
-                        <span className="grey-modal-border"/>
-                    </div>
-                </div> :
+                {quizState !== 4 ?
+                    <div className="heading-text">
+                        <span className="modalHeading">Thank you for subscribing!</span>
                         <button className="modal-close-button" onClick={closeModal}><img alt={'missing'} src={cross}/>
                         </button>
-                    }
+
+                        <p className="sub-heading">
+                            We would really appreciate it if you answered a few questions that can
+                            help us with the development of the platform.
+                        </p>
+                        <div className="modal-border-container">
+                            <span className="purple-modal-border"/>
+                            <span className={quizState > 1 ? "purple-modal-border" : "grey-modal-border"}/>
+                            <span className={quizState > 2 ? "purple-modal-border" : "grey-modal-border"}/>
+                            <span className="grey-modal-border"/>
+                        </div>
+                    </div> :
+                    <button className="modal-close-button" onClick={closeModal}><img alt={'missing'} src={cross}/>
+                    </button>
+                }
 
                 {quizState === 1 && (
                     <QuizComponent
@@ -165,17 +167,7 @@ const EarlyAccessForm = ({
                     />
                 )}
                 {quizState === 4 && (
-                    <div className="end-questionnaire-container">
-                        <div className="modal-close">
-                            <img src={Logo} alt=""/>
-                        </div>
-                        <h4 className="modalHeading">Thanks for supporting us!</h4>
-                        <p className="reminder">Don’t forget to tell your friends and keep your eyes peeled for the launch! 🚀</p>
-                        <button className="follow-btn">
-                            <FontAwesomeIcon className="twitter-button" icon={faTwitter} size="1x" inverse/>
-                            Follow us on Twitter
-                        </button>
-                    </div>
+                    <CongratulateComponent/>
                 )}
 
                 {/* <button onClick={sendAnswers}>Submit answers</button>

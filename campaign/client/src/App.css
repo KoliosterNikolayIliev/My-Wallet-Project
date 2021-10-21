@@ -284,6 +284,7 @@ article {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+    width: 100%;
 }
 
 
@@ -330,11 +331,15 @@ article {
 .question-answer-container {
     display: flex;
     flex-direction: column;
+    flex: 2 1 auto;
 
 }
 
 .sub-heading {
     text-align: center;
+    align-self: center;
+    padding-left: 1%;
+    padding-right: 1%;
 }
 
 .submit-text-area {
@@ -348,6 +353,7 @@ article {
     font-family: "Inter", "sans-serif";
     text-align: left;
     margin-left: 10%;
+    margin-bottom: 11.5%;
 }
 
 .submit-text-area.selected {
@@ -383,7 +389,7 @@ article {
     text-align: left;
     margin-left: 10%;
     margin-top: 1%;
-    max-width: 42%;
+    max-width: 50%;
 
 }
 
@@ -417,7 +423,7 @@ article {
     flex-direction: column;
     flex-wrap: wrap;
     flex: auto;
-    width: auto;
+    width: 50%;
     height: auto;
     min-width: 60%;
     min-height: 70%;
@@ -445,12 +451,13 @@ article {
 
 .btn-holder {
     display: flex;
-    position: absolute;
+    /*position: absolute;*/
     bottom: 0;
     left: 0;
     border-top: 1px solid #C5C5C5;
+    margin-top: 1%;
     width: 100%;
-    padding: 1.5% 1%;
+    padding: 1.5% 0;
     justify-content: flex-end;
 }
 
