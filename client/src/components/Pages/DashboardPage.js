@@ -26,12 +26,15 @@ const DashboardPage = () => {
   const getData = async () => {
     setLoading(true);
     const token = await getAccessTokenSilently();
-    const assetsData = await getAssets(token);
-    const transactionsData = await getTransactions(token);
 
-    setBalances(assetsData.balances);
-    setHoldings(assetsData.holdings);
-    setTransactions(transactionsData);
+    await Promise.all([
+      (async () => {
+        const assets = await getAssets(token);
+        setBalances(assets[0]);
+        setHoldings(assets[1]);
+      })(),
+      (async () => setTransactions(await getTransactions(token)))(),
+    ]);
 
     setLoading(false);
   };

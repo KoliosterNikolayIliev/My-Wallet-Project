@@ -12,7 +12,6 @@ const TransactionsContainerComponent = ({ data }) => {
                 return (
                   <div>
                     <h3>{key}</h3>
-                    {console.log(value)}
                     <ul>
                       {Object.entries(value).map(([key, value]) => {
                         return (
