@@ -1,7 +1,7 @@
 import "./App.css";
-import DashboardPage from "./components/DashboardPage";
-import ProfilePage from "./components/ProfilePage";
-import LandingPage from "./components/LandingPage";
+import DashboardPage from "./components/Pages/DashboardPage";
+import ProfilePage from "./components/Pages/ProfilePage";
+import LandingPage from "./components/Pages/LandingPage";
 import {
   BrowserRouter as Router,
   Route,
