@@ -39,8 +39,12 @@ const QuizComponent = ({
         e.target.classList.add("selected");
 
         if (numberOfAnswers) {
-            // update the answer state if the question has only one answer
-            setAnswer([e.target.innerText]);
+            if (e.target.type === "text") {
+                setAnswer([e.target.value]);
+                // update the answer state if the question has only one answer
+            }else{
+                setAnswer([e.target.innerText]);
+            }
         } else {
             // update the answer state if the question has more than one answers
             if (e.target.type === "text") {
@@ -113,20 +117,20 @@ const QuizComponent = ({
                 </div>
             </Container>
         );
-    else if (questionType === "end")
-        return (
-                <div className="end-questionnaire-container">
-                    <div className="modal-close">
-                        <img src={Logo} alt=""/>
-                    </div>
-                    <h4 className="modalHeading">Thanks for supporting us!</h4>
-                    <p className="reminder">Don’t forget to tell your friends and keep your eyes peeled for the launch! 🚀</p>
-                    <button className="follow-btn">
-                        <FontAwesomeIcon className="twitter-button" icon={faTwitter} size="1x" inverse/>
-                        Follow us on Twitter
-                    </button>
-                </div>
-        );
+    // else if (questionType === "end")
+    //     return (
+    //             <div className="end-questionnaire-container">
+    //                 <div className="modal-close">
+    //                     <img src={Logo} alt=""/>
+    //                 </div>
+    //                 <h4 className="modalHeading">Thanks for supporting us!</h4>
+    //                 <p className="reminder">Don’t forget to tell your friends and keep your eyes peeled for the launch! 🚀</p>
+    //                 <button className="follow-btn">
+    //                     <FontAwesomeIcon className="twitter-button" icon={faTwitter} size="1x" inverse/>
+    //                     Follow us on Twitter
+    //                 </button>
+    //             </div>
+    //     );
 };
 
 export default QuizComponent;
