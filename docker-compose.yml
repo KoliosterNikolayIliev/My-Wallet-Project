@@ -54,6 +54,7 @@ services:
       - YODLEE_SECRET=
       - YODLEE_SANDBOX_URL=
       - NORDIGEN_TOKEN=
+      - CUSTOM_ASSETS_URL=http://custom_assets:8000/api/
 
   portfolio:
     build:
@@ -71,9 +72,9 @@ services:
     environment:
       - FLASK_APP=portfolio
       - FLASK_ENV=development
-      - REFERENCE_URL=http://127.0.0.1:5002/
-      - ASSETS_URL=http://127.0.0.1:5000/
-      - ACCOUNT_URL=http://127.0.0.1:8001/
+      - REFERENCE_URL=http://reference:5002/
+      - ASSETS_URL=http://assets:5000/
+      - ACCOUNT_URL=http://account:8001/
 
   reference:
     build:
