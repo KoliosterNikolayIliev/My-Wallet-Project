@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify, redirect
 from .utils.extensions import scheduler
-from .blueprints import stocks, crypto
+from .blueprints import stocks, crypto, currencies
 from .utils.api_spec import spec
 from .utils.swagger import swagger_ui_blueprint, SWAGGER_URL
 
@@ -31,6 +31,7 @@ def create_app(test_config=None):
 
     app.register_blueprint(stocks.bp)
     app.register_blueprint(crypto.bp)
+    app.register_blueprint(currencies.bp)
 
     with app.app_context():
         # register all swagger documented functions here
