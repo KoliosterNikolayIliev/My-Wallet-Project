@@ -5,7 +5,7 @@ from ..utils.extensions import scheduler
 # store latest prices for crypto
 crypto_prices_store = {}
 
-USE_MOCK_ENVIRONMENT = os.environ.get('MOCK_ENVIRONMENT')
+USE_MOCK_ENVIRONMENT = os.environ.get('REFERENCE_USE_MOCK')
 
 # create blueprint
 bp = Blueprint('crypto', __name__, url_prefix='/crypto')
@@ -13,7 +13,7 @@ bp = Blueprint('crypto', __name__, url_prefix='/crypto')
 def fetch_crypto_price_data():
     global crypto_prices_store
     if not USE_MOCK_ENVIRONMENT == "True":
-      req = requests.get('http://api.coinlayer.com/live', params={'access_key': os.environ['CL_API_KEY']})
+      req = requests.get('http://api.coinlayer.com/live', params={'access_key': os.environ['REFERENCE_CL_API_KEY']})
       res = req.json()
 
       # if there is an error, print the error message, else update the crypto_prices_store

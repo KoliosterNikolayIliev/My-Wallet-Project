@@ -86,8 +86,9 @@ services:
     environment:
       - FLASK_APP=reference
       - FLASK_ENV=development
-      - TD_API_KEY=
-      - CL_API_KEY=
+
+    env_file:
+      - data.env
 
   account:
     build:

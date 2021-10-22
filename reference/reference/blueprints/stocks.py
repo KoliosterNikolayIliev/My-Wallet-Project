@@ -5,7 +5,7 @@ from ..utils.extensions import scheduler
 # shortlisted stocks
 STOCKS_LIST = ["AMZN", "MSFT", "GOOGL", "AMD", "MRNA", "TSLA", "PLTR", "AAPL"]
 
-USE_MOCK_ENVIRONMENT = os.environ.get('MOCK_ENVIRONMENT')
+USE_MOCK_ENVIRONMENT = os.environ.get('REFERENCE_USE_MOCK')
 
 # store latest prices for shortlisted stocks
 stocks_prices_store = {}
@@ -18,7 +18,7 @@ def fetch_stocks_price_data(symbols: list):
     global stocks_prices_store
     if not USE_MOCK_ENVIRONMENT == "True":
       symbols = (',').join(symbols)
-      req = requests.get('https://api.twelvedata.com/price', params={'symbol': symbols, 'apikey': os.environ['TD_API_KEY'], 'interval': '1min'})
+      req = requests.get('https://api.twelvedata.com/price', params={'symbol': symbols, 'apikey': os.environ['REFERENCE_TD_API_KEY'], 'interval': '1min'})
       res = req.json()
 
       # if there is an error, print the error message, else update the stocks_prices_store

@@ -24,7 +24,7 @@ def prices(base):
                     "ALL": 121.542845,
         """
 
-    if os.environ.get('MOCK_ENVIRONMENT') != 'True':
+    if os.environ.get('REFERENCE_USE_MOCK') != 'True':
         response = requests.get('https://api.exchangerate.host/latest/', params={'base': base}).json()
         if response['base'].lower() != base.lower():
             return jsonify({'Error': 'symbol not found'}), 400
