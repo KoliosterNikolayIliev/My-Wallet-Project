@@ -46,11 +46,9 @@ services:
     environment:
       - FLASK_APP=wsgi.py
       - FLASK_ENV=development
-      - YODLEE_CLIENT_ID=
-      - YODLEE_SECRET=
-      - YODLEE_SANDBOX_URL=
-      - NORDIGEN_TOKEN=
-      - CUSTOM_ASSETS_URL=http://custom_assets:8000/api/
+
+    env_file:
+      - data.env
 
   portfolio:
     build:

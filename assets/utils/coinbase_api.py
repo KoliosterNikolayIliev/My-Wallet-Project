@@ -2,6 +2,8 @@ import os
 
 from coinbase.wallet.client import Client
 
+USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
+
 
 def get_account_balances(api_key, api_secret):
     try:
@@ -9,7 +11,7 @@ def get_account_balances(api_key, api_secret):
     except Exception as e:
         return {'status': 'failed', 'content': f"Error: {e}"}
 
-    if os.environ.get('USE_MOCK') != 'True':
+    if USE_MOCK != 'True':
         try:
             client_accounts = client.get_accounts()
         except Exception as e:
@@ -57,7 +59,7 @@ def get_transactions(api_key, api_secret):
     except Exception as e:
         return {'status': 'failed', 'content': f"Error: {e}"}
 
-    if os.environ.get('USE_MOCK') != 'True':
+    if USE_MOCK != 'True':
         try:
             client_accounts = client.get_accounts()
         except Exception as e:
@@ -91,7 +93,7 @@ def get_transactions(api_key, api_secret):
     data = {}
     try:
         for wallet in client_accounts["data"]:
-            if os.environ.get('USE_MOCK') != 'True':
+            if USE_MOCK != 'True':
                 transactions = client.get_transactions(wallet['id'], limit=10)
 
             else:

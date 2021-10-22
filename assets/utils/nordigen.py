@@ -1,14 +1,13 @@
-import os
-
 import requests
 from os import environ
 
 token = environ.get('NORDIGEN_TOKEN')
+USE_MOCK = environ.get('ASSETS_USE_MOCK')
 headers = {'Authorization': f'Token {token}'}
 
 
 def get_bank_name(account_id):
-    if os.environ.get('USE_MOCK') == 'True':
+    if USE_MOCK == 'True':
         return 'Sandbox Finance'
 
     # get the bank identifier from nordigen
@@ -26,7 +25,7 @@ def validate_requisition(requisition_id):
         # return error message with false variable to say validation failed
         return {'status': 'failed', 'content': 'Error: Nordigen requisition key was not provided'}, False
 
-    if os.environ.get('USE_MOCK') == 'True':
+    if USE_MOCK == 'True':
         mock_requisition = {
             "id": "c0ad1b3e-28e1-4628-b8b1-f6009df3c27f",
             "created": "2021-10-06T22:21:31.216413Z",
@@ -98,7 +97,7 @@ def get_account_balances(requisition_id):
         bank_name = get_bank_name(account)
 
         # request to get account balance data
-        if os.environ.get('USE_MOCK') == 'True':
+        if USE_MOCK == 'True':
             response = {
                 "balances": [
                     {
@@ -149,7 +148,7 @@ def get_account_transactions(requisition_id):
         bank_name = get_bank_name(account)
 
         # request to get account transaction history data
-        if os.environ.get('USE_MOCK') != 'True':
+        if USE_MOCK != 'True':
             response = requests.get(f'https://ob.nordigen.com/api/accounts/{account}/transactions/',
                                     headers=headers).json()
 

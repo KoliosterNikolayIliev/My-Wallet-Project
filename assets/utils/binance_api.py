@@ -4,12 +4,14 @@ from binance.spot import Spot
 import uuid
 
 
+USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
+
 def validate_api_key_and_api_secret(api_key, api_secret):
     if not api_key or not api_secret:
         # return false bool to say the validation failed and the error message
         return False, {'status': 'failed', 'content': 'Error: API key or API secret was not provided'}
 
-    if os.environ.get('USE_MOCK') == 'True':
+    if USE_MOCK == 'True':
         return True,
 
     client = Spot(api_key, api_secret)
@@ -34,7 +36,7 @@ def get_balances(api_key, api_secret):
         # if validation failed we return the error message
         return validation[1]
 
-    if os.environ.get('USE_MOCK') != 'True':
+    if USE_MOCK != 'True':
         client = Spot(api_key, api_secret)
         # gets all balances assets
         balances = client.account().get('balances')

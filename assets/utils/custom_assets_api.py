@@ -1,6 +1,7 @@
 import uuid, os, requests
 
-URL = os.environ.get('CUSTOM_ASSETS_URL')
+URL = os.environ.get('ASSETS_CUSTOM_ASSETS_URL')
+USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
 
 
 def get_holdings(user_key):
@@ -9,7 +10,7 @@ def get_holdings(user_key):
 
     headers = {'user-key': user_key}
 
-    if os.environ.get('USE_MOCK') != 'True':
+    if USE_MOCK != 'True':
         try:
             response = requests.get(URL, headers=headers)
         except:
