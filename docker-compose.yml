@@ -15,7 +15,7 @@ services:
     env_file:
       - data.env
 
-  custom_assets:
+  custom-assets:
     build:
       context: ./custom_assets
 
@@ -28,11 +28,8 @@ services:
     ports:
       - "8000:8000"
 
-    environment:
-      - DB_NAME=
-      - DB_HOST=
-      - DB_USER=
-      - DB_PASSWORD=
+    env_file:
+      - data.env
 
   assets:
     build:
