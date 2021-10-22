@@ -66,9 +66,9 @@ services:
     environment:
       - FLASK_APP=portfolio
       - FLASK_ENV=development
-      - REFERENCE_URL=http://reference:5002/
-      - ASSETS_URL=http://assets:5000/
-      - ACCOUNT_URL=http://account:8001/
+
+    env_file:
+      - data.env
 
   reference:
     build:

@@ -1,6 +1,6 @@
 import requests, os
 
-URL = os.environ.get("ACCOUNT_URL")
+URL = os.environ.get("PORTFOLIO_ACCOUNT_URL")
 
 def validate_token(token):
     headers = {'Authorization': token}

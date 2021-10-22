@@ -1,6 +1,6 @@
 import requests, os
 
-URL = os.environ.get("ASSETS_URL")
+URL = os.environ.get("PORTFOLIO_ASSETS_URL")
 
 # fetch all balances using Assets
 async def get_balances(headers):
