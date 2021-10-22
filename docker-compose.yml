@@ -12,11 +12,10 @@ services:
     ports:
       - "3000:3000"
 
-    environment:
-      - REACT_APP_AUTH0_DOMAIN=
-      - REACT_APP_AUTH0_CLIENT_ID=
+    env_file:
+      - data.env
 
-  custom_assets:
+  custom-assets:
     build:
       context: ./custom_assets
 
@@ -29,11 +28,8 @@ services:
     ports:
       - "8000:8000"
 
-    environment:
-      - DB_NAME=
-      - DB_HOST=
-      - DB_USER=
-      - DB_PASSWORD=
+    env_file:
+      - data.env
 
   assets:
     build:
@@ -50,11 +46,9 @@ services:
     environment:
       - FLASK_APP=wsgi.py
       - FLASK_ENV=development
-      - YODLEE_CLIENT_ID=
-      - YODLEE_SECRET=
-      - YODLEE_SANDBOX_URL=
-      - NORDIGEN_TOKEN=
-      - CUSTOM_ASSETS_URL=http://custom_assets:8000/api/
+
+    env_file:
+      - data.env
 
   portfolio:
     build:
@@ -72,9 +66,9 @@ services:
     environment:
       - FLASK_APP=portfolio
       - FLASK_ENV=development
-      - REFERENCE_URL=http://reference:5002/
-      - ASSETS_URL=http://assets:5000/
-      - ACCOUNT_URL=http://account:8001/
+
+    env_file:
+      - data.env
 
   reference:
     build:
@@ -92,8 +86,9 @@ services:
     environment:
       - FLASK_APP=reference
       - FLASK_ENV=development
-      - TD_API_KEY=
-      - CL_API_KEY=
+
+    env_file:
+      - data.env
 
   account:
     build:
@@ -108,13 +103,5 @@ services:
     ports:
       - "8001:8001"
 
-    environment:
-      - FIELD_ENCRYPTION_KEY=
-      - DB_HOST=
-      - DB_USERNAME=
-      - DB_PASSWORD=
-      - JWT_AUDIENCE=
-      - JWT_ISSUER=
-      - DELETE_USER=
-      - MANAGER_TOKEN_PAYLOAD=
-      - MANAGER_TOKEN_URL=
+    env_file:
+      - data.env

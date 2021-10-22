@@ -21,14 +21,14 @@ import requests, os
 """
 
 # get yodlee developer credentials from .env file
-CLIENT_ID = os.environ.get('YODLEE_CLIENT_ID')
-SECRET = os.environ.get('YODLEE_SECRET')
-
-URL = os.environ.get('YODLEE_SANDBOX_URL')
+CLIENT_ID = os.environ.get('ASSETS_YODLEE_CLIENT_ID')
+SECRET = os.environ.get('ASSETS_YODLEE_SECRET')
+URL = os.environ.get('ASSETS_YODLEE_SANDBOX_URL')
+USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
 
 
 def get_access_token(loginName):
-    if os.environ.get('USE_MOCK') == 'True':
+    if USE_MOCK == 'True':
         return {'status': 'success', 'content': 'token'}
 
     # set up x-www-form-urlencoded data and header data for the request
@@ -52,7 +52,7 @@ def get_balances(loginName):
     access_token = get_access_token(loginName)
     if access_token['status'] == 'success':
         # set up header data for the request
-        if os.environ.get('USE_MOCK') != 'True':
+        if USE_MOCK != 'True':
             headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
 
             # send the request and save the balance for each account
@@ -118,7 +118,7 @@ def get_transactions(loginName):
     # try to obtain a token and return an error if it fails
     access_token = get_access_token(loginName)
     if access_token['status'] == 'success':
-        if os.environ.get('USE_MOCK') != 'True':
+        if USE_MOCK != 'True':
             # set up header data and query parameters for the request
             headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
             params = {'top': 10, 'fromDate': '2013-12-12'}
@@ -200,7 +200,7 @@ def get_holdings(loginName):
 
     if access_token['status'] == 'success':
         # set up header data for the request
-        if os.environ.get('USE_MOCK') != 'True':
+        if USE_MOCK != 'True':
             headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
 
             # send the request and save the balance for each account

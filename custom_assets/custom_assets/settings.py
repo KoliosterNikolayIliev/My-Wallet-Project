@@ -83,11 +83,11 @@ WSGI_APPLICATION = 'custom_assets.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'djongo',
-            'NAME': os.environ.get('DB_NAME'),
+            'NAME': os.environ.get('CUSTOM_ASSETS_DB_NAME'),
             'CLIENT': {
-                'host': os.environ.get('DB_HOST'),
-                'username': os.environ.get('DB_USER'),
-                'password': os.environ.get('DB_PASSWORD'),
+                'host': os.environ.get('CUSTOM_ASSETS_DB_HOST'),
+                'username': os.environ.get('CUSTOM_ASSETS_DB_USERNAME'),
+                'password': os.environ.get('CUSTOM_ASSETS_DB_PASSWORD'),
                 'authMechanism': 'SCRAM-SHA-1'
             },
         }

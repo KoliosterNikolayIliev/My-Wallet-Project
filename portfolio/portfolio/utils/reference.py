@@ -1,6 +1,6 @@
 import requests, os
 
-URL = os.eniron.get("REFERENCE_URL")
+URL = os.environ.get("PORTFOLIO_REFERENCE_URL")
 
 def get_crypto_prices():
     res = requests.get(URL + "crypto/prices")
