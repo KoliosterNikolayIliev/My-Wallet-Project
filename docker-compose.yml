@@ -103,13 +103,5 @@ services:
     ports:
       - "8001:8001"
 
-    environment:
-      - FIELD_ENCRYPTION_KEY=
-      - DB_HOST=
-      - DB_USERNAME=
-      - DB_PASSWORD=
-      - JWT_AUDIENCE=
-      - JWT_ISSUER=
-      - DELETE_USER=
-      - MANAGER_TOKEN_PAYLOAD=
-      - MANAGER_TOKEN_URL=
+    env_file:
+      - data.env
