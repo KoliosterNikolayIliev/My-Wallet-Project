@@ -1,11 +1,7 @@
 import React, {useState, useEffect} from "react";
 import ReactModal from "react-modal";
 import QuizComponent from "./QuizComponent";
-import cross from "../images/Vector.svg"
-import Logo from "../images/Logo.svg";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTwitter} from "@fortawesome/free-brands-svg-icons";
-import Container from "@material-ui/core/Container";
+import cross from "../images/cross.svg"
 import CongratulateComponent from "./CongratulateComponent";
 
 
@@ -41,6 +37,7 @@ const EarlyAccessForm = ({
     const closeModal = () => {
         setIsOpen(false);
         setQuizState(1)
+
     };
 
     // send answers to database
@@ -51,6 +48,11 @@ const EarlyAccessForm = ({
         clearFields();
         // closeModal();
         setQuizState(4);
+    };
+    const statusMessage = {
+        "success":"Thanks for subscribing!",
+        "error": "Invalid email",
+        "sending":"Sending..."
     };
 
     useEffect(() => {
@@ -76,17 +78,21 @@ const EarlyAccessForm = ({
     return (
         <article>
             <form onSubmit={(e) => handleSubmit(e)}>
-                {status === "sending" && <div>Sending...</div>}
-                {status === "error" && <div>Invalid email</div>}
-                {status === "success" && <div>Thanks for subscribing!</div>}
-                <input id="get_early_access"
+
+                <input
                        type="email"
                        value={email}
-                       placeholder="Your email..."
+                       placeholder={status===null?"Your email...":statusMessage[status]}
                        onChange={(e) => setEmail(e.target.value)}
                 />
                 <input type="submit" value="Get early access"/>
+
             </form>
+            <p style={{display:"block"}}>
+                {status === "sending" && <span>Sending...</span>}
+                {status === "error" && <span style={{color:"red"}}>Invalid email</span>}
+                {/*{status === "success" && <span>Thanks for subscribing!</span>}*/}
+            </p>
 
             <ReactModal
                 isOpen={modalIsOpen}
@@ -94,6 +100,7 @@ const EarlyAccessForm = ({
                 className="Modal"
                 overlayClassName="Overlay"
                 contentLabel="Example Modal"
+                ariaHideApp={false}
             >
                 {quizState !== 4 ?
                     <div className="heading-text">

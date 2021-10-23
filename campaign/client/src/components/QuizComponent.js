@@ -1,9 +1,7 @@
 import React from "react";
 import {useState, useEffect} from "react";
 import Container from '@material-ui/core/Container';
-import Logo from "../images/Logo.svg";
-import {faTwitter} from "@fortawesome/free-brands-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+
 
 const QuizComponent = ({
                            questionType,
@@ -39,7 +37,7 @@ const QuizComponent = ({
         e.target.classList.add("selected");
 
         if (numberOfAnswers) {
-            if (e.target.type === "text") {
+            if (e.target.type === "text" || e.target.type === "textarea") {
                 setAnswer([e.target.value]);
                 // update the answer state if the question has only one answer
             }else{
@@ -47,7 +45,7 @@ const QuizComponent = ({
             }
         } else {
             // update the answer state if the question has more than one answers
-            if (e.target.type === "text") {
+            if (e.target.type === "text" || e.target.type === "textarea") {
                 setAnswer([...answer, e.target.value]);
             } else {
                 setAnswer([...answer, e.target.innerText]);
@@ -104,7 +102,7 @@ const QuizComponent = ({
                 <div className="question-answer-container">
                     <h4 className="question">{question}</h4>
                     <p className="additional-info">(some examples for the types of platforms: Traditional banks, Neobanks, Stock brokers, Crypto exchanges and others)</p>
-                    <input className="submit-text-area" type="text" placeholder="...." onMouseOut={selectAnswer}/>
+                    <textarea className="submit-text-area" type="text" placeholder="...." onMouseOut={selectAnswer}/>
                 </div>
                 <div className="btn-holder">
                     <button className={quizState !== 1 ? "active-back modal-btn" : "modal-btn back-btn"}
