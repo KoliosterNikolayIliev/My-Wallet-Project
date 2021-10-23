@@ -34,7 +34,7 @@ async def get_holdings():
         tasks = []
         tasks.append(asyncio.ensure_future(get_yodlee_holdings(request.headers.get('yodlee_loginName'), session=session)))
         tasks.append(asyncio.ensure_future(get_custom_assets_holdings(request.headers.get('custom_assets_key'), session=session)))
-        tasks.append(get_binance_holdings(request.headers.get('binance_key'), request.headers.get('binance_secret')))
+        tasks.append(asyncio.ensure_future(get_binance_holdings(request.headers.get('binance_key'), request.headers.get('binance_secret'), session=session)))
         tasks.append(get_coinbase_holdings(request.headers.get('coinbase_key'), request.headers.get('coinbase_secret')))
 
         responses = await asyncio.gather(*tasks)
