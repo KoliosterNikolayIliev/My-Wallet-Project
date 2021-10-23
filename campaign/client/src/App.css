@@ -557,10 +557,13 @@ input.selected {
     margin-right: 6px;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 550px) {
+
     .top-nav-btn{
-        font-size: 20px;
+        font-size: 15px;
+        padding: 4% 6%;
         width: fit-content;
+        height: fit-content;
     }
     .section-content-text-and-image{
         flex-direction: column-reverse;
@@ -655,10 +658,10 @@ input.selected {
     }
     .footer-content{
        flex-direction: column-reverse;
-        font-size: 20px;
+        font-size: 15px;
     }
     .footer{
-        height: 90px;
+        height: 10em;
     }
     .footer-content ul{
         display: flex;
@@ -667,7 +670,7 @@ input.selected {
         width: 100%;
     }
     .footer-content li{
-        margin: 0
+        margin: 5% 0 0;
     }
     .footer-content span{
         padding-bottom: 10px;
