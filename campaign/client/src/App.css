@@ -444,8 +444,6 @@ article {
 
 .btn-holder {
     display: flex;
-    bottom: 0;
-    left: 0;
     border-top: 1px solid #C5C5C5;
     margin-top: 1%;
     width: 100%;
@@ -559,42 +557,84 @@ input.selected {
     margin-right: 6px;
 }
 
-/*@media only screen and (max-width: 1100px) {*/
-/*    .top-body-image {*/
-/*        display: none;*/
-/*    }*/
+@media only screen and (max-width: 500px) {
+    .section-content-text-and-image{
+        flex-direction: column-reverse;
+        align-items: center;
+        max-width: 100%;
+        display: flex;
+        align-self: unset;
+    }
+    .section-content-image img{
+        max-width: 70%;
+    }
+    .section-content-image{
+        display: flex;
+        justify-content: flex-end;
+    }
+    .section-text{
+        max-width: 90%;
+    }
+    .section-text h1{
+        width: 100%;
+        text-align: center;
+        font-size: 60px;
+        line-height: 54px;
+    }
+    .section-content{
+        align-self: center;
+        width: 100%;
+    }
+    input[type="submit"]{
+        width: 100%;
+    }
+    input[type="email"]{
+        width: 100%;
+    }
+    form{
+        flex-direction: column;
+    }
+    .mail-info{
+        width: 100%;
+    }
+    .last-subscription{
+        display: none;
+    }
+    .footer{
+        font-size: 9px;
+    }
+    .Modal{
+        width: 100%;
+        height: 100%;
+    }
+    .answer{
+        max-width: 100%;
+        margin-left: 0;
+        height: 70px;
+    }
+    .question-answer-container{
+        max-height: 100%;
+    }
+    .btn-holder{
+        justify-content: center;
+        border: none;
+    }
+    .modal-btn{
+        width: 50%;
+        height: 30%;
+        font-size: 20px;
+        margin-top: 10%;
+    }
+    .modalHeading{
+        margin-top: 20%;
+    }
+    .sub-heading{
+        width: 95%;
+        margin-bottom: 15%;
+    }
+    .submit-text-area{
+        width: 90%;
+        margin: 10% auto 0;
+    }
+}
 
-/*    .top-nav-menu {*/
-/*        padding-right: 0px;*/
-/*    }*/
-
-/*    .top-nav-menu ul li {*/
-/*        font-size: 10px;*/
-/*        padding-right: 30px;*/
-/*    }*/
-
-/*    .top-nav-btn {*/
-/*        width: 115px;*/
-/*        font-size: 10px;*/
-/*    }*/
-
-/*    .top-body h1 {*/
-/*        font-size: 35px;*/
-/*    }*/
-
-/*    .top-body-text p {*/
-/*        width: 80%;*/
-/*    }*/
-
-/*    .top-body-text {*/
-/*        margin-top: 0px;*/
-/*    }*/
-
-/*    form {*/
-/*        width: 400px;*/
-/*    }*/
-
-/*    .col-sm-2 {*/
-/*        padding-left: 0;*/
-/*    }*/
-/*}*/
