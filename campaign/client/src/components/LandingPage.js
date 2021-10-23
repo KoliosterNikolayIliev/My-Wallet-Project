@@ -15,7 +15,7 @@ const LandingPage = () => {
             <div className="section-content">
                 <TopBodyComponent show={true}/>
             </div>
-            <div className="section-content">
+            <div className="section-content body-section">
                 <ContainerComponent
                     subtitle="Seamless live feed from all your accounts"
                     paragraphOne="No more manual inputs. Connect to your bank, stock brokerage and crypto platforms once and get live updates with the latest state of your portfolio."
@@ -24,7 +24,7 @@ const LandingPage = () => {
                     imageClass="left-image"
                 />
             </div>
-            <div className="section-content">
+            <div className="section-content body-section">
                 <ContainerComponent
                     subtitle="Secure, Private, Yours"
                     paragraphOne="Trivial will never sell or use your financial data for advertising. Your accounts and data are private, protected and encrypted at rest and in transit."
@@ -33,7 +33,7 @@ const LandingPage = () => {
                     imageClass="right-image"
                 />
             </div>
-            <div className="section-content">
+            <div className="section-content body-section">
                 <ContainerComponent
                     subtitle="Unlock the power of your data"
                     paragraphOne="With all your financial data in one place, you can make better decisions to achieve your wealth goals. We will continue bringing features to help you reach financial milestones quicker, safer and smoother."
@@ -42,7 +42,7 @@ const LandingPage = () => {
                     imageClass="left-image"
                 />
             </div>
-            <div className="section-content">
+            <div className="section-content body-section">
                 <ContainerComponent
                     subtitle="Feature Headline"
                     paragraphOne="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Condimentum diam orci pretium a pharetra, feugiat cursus. Dictumst risus, sem egestas odio cras adipiscing vulputate. Nisi, risus in suscipit non. Non commodo volutpat, pharetra, vel."

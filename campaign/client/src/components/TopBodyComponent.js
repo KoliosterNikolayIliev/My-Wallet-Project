@@ -7,7 +7,7 @@ const TopBodyComponent = ({show}) => {
         <div className="section-content-text-and-image">
             <div className="section-text">
                 <h1>Unleash your wealth</h1>
-                <p id="get_early_access">
+                <p id="get-early-access">
                     New-age wealth builders constantly juggle with multiple investment
                     platforms. Making sense of the big picture is arduous when it really
                     shouldn’t be.

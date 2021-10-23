@@ -17,7 +17,7 @@ const MailchimpFormContainer = ({show}) => {
     <MailchimpSubscribe counter={counter} setCounter={setCounter}
       url={postUrl}
       render={({ subscribe, status, message }) => (
-          <div className="subscribe">
+          <div>
             <EarlyAccessForm
               counter={counter}
               setCounter={setCounter}

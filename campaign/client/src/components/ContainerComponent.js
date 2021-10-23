@@ -10,7 +10,7 @@ const ContainerComponent = ({ image, paragraphOne, subtitle, articleClasses, ima
           <p>{paragraphOne}</p>
         </span>
         <div className="start">
-          <a id="get_started" href="#get_early_access">Get started <img style={{marginLeft:5}} src={arrow} alt=""/></a>
+          <a id="get-started" href="#get-early-access">Get started <img style={{marginLeft:5}} src={arrow} alt=""/></a>
         </div>
       </div>
 
