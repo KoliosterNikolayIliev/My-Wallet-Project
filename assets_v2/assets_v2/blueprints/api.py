@@ -1,4 +1,4 @@
-import re
+import os
 from flask import Blueprint, request, jsonify
 import aiohttp, asyncio
 
@@ -7,6 +7,7 @@ from ..utils.yodlee_api import get_holdings as get_yodlee_holdings
 from ..utils.yodlee_api import get_transactions as get_yodlee_transactions
 from ..utils.nordigen import get_all_account_balances as get_nordigen_balances
 from ..utils.nordigen import get_account_transactions as get_nordigen_transactions
+from ..utils.nordigen import get_single_account_balance as get_nordigen_balance
 from ..utils.binance_api import get_balances as get_binance_holdings
 from ..utils.coinbase_api import get_account_balances as get_coinbase_holdings
 from ..utils.custom_assets_api import get_holdings as get_custom_assets_holdings
@@ -18,13 +19,14 @@ async def get_balances():
     results = {}
     async with aiohttp.ClientSession() as session:
             tasks = []
+            nordigen_tasks = []
             tasks.append(asyncio.ensure_future(get_yodlee_balances(request.headers.get('yodlee_loginName'), session=session)))
-            tasks.append(asyncio.ensure_future(get_nordigen_balances(request.headers.get('nordigen_key'), session=session)))
+            tasks.append(asyncio.ensure_future(get_nordigen_balances(request.headers.get('nordigen_key'), session=session, tasks=nordigen_tasks)))
 
             responses = await asyncio.gather(*tasks)
             results['yodlee'] = responses[0]
             results['nordigen'] = responses[1]
-            
+
     return jsonify(results)
 
 @bp.route('/holdings', methods=(['GET']))
@@ -50,8 +52,9 @@ async def get_transactions():
     results = {}
     async with aiohttp.ClientSession() as session:
         tasks = []
+        nordigen_tasks = []
         tasks.append(asyncio.ensure_future(get_yodlee_transactions(request.headers.get('yodlee_loginName'), session=session)))
-        tasks.append(asyncio.ensure_future(get_nordigen_transactions(request.headers.get('nordigen_key'), session=session)))
+        tasks.append(asyncio.ensure_future(get_nordigen_transactions(request.headers.get('nordigen_key'), session=session, tasks=nordigen_tasks)))
 
         responses = await asyncio.gather(*tasks)
         results['yodlee'] = responses[0]
