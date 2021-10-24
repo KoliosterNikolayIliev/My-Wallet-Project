@@ -27,7 +27,7 @@ def format_balances_response(balances):
 async def get_balances(api_key, api_secret, session):
     if not api_key or not api_secret:
         # return false bool to say the validation failed and the error message
-        return False, {'status': 'failed', 'content': 'Error: API key or API secret was not provided'}
+        return {'status': 'failed', 'content': 'Error: API key or API secret was not provided'}
 
     if os.environ.get('USE_MOCK') != 'True':
         # gets all balances assets
