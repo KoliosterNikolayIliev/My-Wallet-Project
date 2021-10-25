@@ -4,6 +4,7 @@ MOCK_ASSETS_DATA = {'crypto_assets': [{'type': 'BTC', 'amount': 2.0}], 'stock_as
                     'currency_assets': [{'type': 'BGN', 'amount': 20.0}, {'type': 'EUR', 'amount': 20.0}]}
 
 URL = os.environ.get('CUSTOM_ASSETS_URL')
+USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
 
 def format_holdings_response(response):
     data = {}
@@ -24,7 +25,7 @@ async def get_holdings(user_key, session):
 
     headers = {'user-key': user_key}
 
-    if os.environ.get('USE_MOCK') != 'True':
+    if USE_MOCK != 'True':
         try:
             async with session.get(URL, headers=headers) as response:
                 awaited = await response.json()

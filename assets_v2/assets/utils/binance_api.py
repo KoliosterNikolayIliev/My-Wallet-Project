@@ -2,6 +2,8 @@ import os
 from binance.spot import Spot
 import uuid, hmac, time, hashlib
 
+USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
+
 MOCK_BALANCES_DATA = [{'asset': 'BTC', 'free': '0.00069389', 'locked': '0.00000000'},
                     {'asset': 'LTC', 'free': '0.00000000', 'locked': '0.00000000'},
                     {'asset': 'ETH', 'free': '0.00590000', 'locked': '0.00000000'},
@@ -29,7 +31,7 @@ async def get_balances(api_key, api_secret, session):
         # return false bool to say the validation failed and the error message
         return {'status': 'failed', 'content': 'Error: API key or API secret was not provided'}
 
-    if os.environ.get('USE_MOCK') != 'True':
+    if USE_MOCK != 'True':
         # gets all balances assets
         timestamp = int(time.time() * 1000)
         signature = hmac.new(api_secret.encode(), f'timestamp={timestamp}'.encode(), hashlib.sha256).hexdigest()

@@ -1,8 +1,9 @@
 import asyncio
 import os
-import aiohttp
-import requests
-from os import environ
+
+TOKEN = os.environ.get('NORDIGEN_TOKEN')
+USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
+
 
 MOCK_REQUISITION_DATA = {
             "id": "c0ad1b3e-28e1-4628-b8b1-f6009df3c27f",
@@ -99,11 +100,10 @@ MOCK_TRANSACTIONS_DATA = {
                 }
             }
 
-token = environ.get('NORDIGEN_TOKEN')
-headers = {'Authorization': f'Token {token}'}
+headers = {'Authorization': f'Token {TOKEN}'}
 
 async def get_bank_name(account_id, session):
-    if os.environ.get('USE_MOCK') == 'True':
+    if USE_MOCK == 'True':
         return 'Sandbox Finance'
 
     async with session.get(f'https://ob.nordigen.com/api/accounts/{account_id}/', headers=headers) as response:
@@ -119,7 +119,7 @@ async def validate_requisition(requisition_id, session):
         # return error message with false variable to say validation failed
         return {'status': 'failed', 'content': 'Error: Nordigen requisition key was not provided'}, False
 
-    if os.environ.get('USE_MOCK') == 'True':
+    if USE_MOCK == 'True':
         mock_requisition = MOCK_REQUISITION_DATA
 
         return {'status': 'success', 'content': mock_requisition}, True
@@ -191,20 +191,21 @@ async def get_all_account_balances(requisition_id, session, tasks):
     accounts = accounts[0]['content']
 
     data = {}
-    for account in accounts:
-        tasks.append(asyncio.ensure_future(get_single_account_balance(account, headers, session)))
-            
-    responses = await asyncio.gather(*tasks)
-    for response in responses:
-        data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"]}
+    if USE_MOCK == 'True':
+        for account in accounts:
+            response = MOCK_BALANCES_DATA
+            data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"]}
+    else:
+        for account in accounts:
+            tasks.append(asyncio.ensure_future(get_single_account_balance(account, headers, session)))
+                
+        responses = await asyncio.gather(*tasks)
+        for response in responses:
+            data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"]}
 
     return {"status": "success", "content": data}
 
     # # loop through all user bank accounts
-    # for account in accounts:
-    #     # request to get account balance data
-    #     if os.environ.get('USE_MOCK') == 'True':
-    #         response = MOCK_BALANCES_DATA
 
 
 
@@ -223,15 +224,17 @@ async def get_account_transactions(requisition_id, session, tasks):
     data = {}
     for account in accounts:
         # request to get account transaction history data
-        if os.environ.get('USE_MOCK') != 'True':
+        if USE_MOCK != 'True':
             tasks.append(asyncio.ensure_future(get_single_account_transactions(account, headers, session)))
 
         else:
             response = MOCK_TRANSACTIONS_DATA
+            data[response["bankName"]] = response["transactions"]
     
-    responses = await asyncio.gather(*tasks)
-    for response in responses:
-        data[response["bankName"]] = response["transactions"]
+    if USE_MOCK != 'True':
+        responses = await asyncio.gather(*tasks)
+        for response in responses:
+            data[response["bankName"]] = response["transactions"]
 
     # return saved data
     return {'status': 'success', 'content': data}
