@@ -26,40 +26,7 @@ SECRET = os.environ.get('ASSETS_YODLEE_SECRET')
 URL = os.environ.get('ASSETS_YODLEE_SANDBOX_URL')
 USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
 
-
-def get_access_token(loginName):
-    if USE_MOCK == 'True':
-        return {'status': 'success', 'content': 'token'}
-
-    # set up x-www-form-urlencoded data and header data for the request
-    data = {'clientId': CLIENT_ID, 'secret': SECRET}
-    headers = {'Api-Version': '1.1', 'loginName': loginName}
-
-    # send the request and return the access token
-    response = requests.post(URL + 'auth/token', data=data, headers=headers)
-    try:
-        return {'status': 'success', 'content': response.json()['token']['accessToken']}
-    except:
-        # return an error if it has occured
-        return {'status': 'failed', 'content': f"Error: {response.json()['errorMessage']}"}
-
-
-def get_balances(loginName):
-    if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
-
-    data = {}
-    # try to obtain a token and return an error if it fails
-    access_token = get_access_token(loginName)
-    if access_token['status'] == 'success':
-        # set up header data for the request
-        if USE_MOCK != 'True':
-            headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
-
-            # send the request and save the balance for each account
-            response = requests.get(URL + 'accounts', headers=headers).json()
-
-        else:
-            response = {'account': [
+BALANCES_MOCK_DATA = {'account': [
                 {'CONTAINER': 'creditCard', 'providerAccountId': 10011819, 'accountName': 'CREDIT CARD',
                  'accountStatus': 'ACTIVE', 'accountNumber': 'xxxx8614', 'aggregationSource': 'USER', 'isAsset': False,
                  'balance': {'currency': 'USD', 'amount': 1636.44}, 'id': 10017310, 'includeInNetWorth': True,
@@ -100,34 +67,26 @@ def get_balances(loginName):
                      'updateEligibility': 'DISALLOW_UPDATE', 'lastUpdated': '2021-09-22T10:41:58Z',
                      'lastUpdateAttempt': '2021-09-22T10:41:58Z', 'nextUpdateScheduled': '2021-10-19T20:10:42Z'}]}]}
 
-        try:
-            for account in response['account']:
-                data[account['id']] = {"providerName": account["providerName"], "balanceData": account["balance"]}
 
-            return {'status': 'success', 'content': data}
-        except:
-            # return an error if it has occured
-            return {'status': 'failed', 'content': f"Error: {response['errorMessage']}"}
-    else:
-        return access_token
+HOLDINGS_MOCK_DATA = {'holding': [
+                {'id': 10010734, 'holdingType': 'bond', 'providerAccountId': 10012100, 'accountId': 10017272,
+                 'createdDate': '2021-09-22T13:10:06Z', 'lastUpdated': '2021-10-18T23:21:44Z',
+                 'description': 'NEW YORK N Y GO BDS FISCAL GO DATED 10/04/07 DUE 10/01/22 5.00% PAR CALL 10/01/',
+                 'optionType': 'unknown', 'price': {'amount': 101.14, 'currency': 'USD'}, 'quantity': 5,
+                 'value': {'amount': 5.05, 'currency': 'USD'}},
+                {'id': 10010800, 'holdingType': 'moneyMarketFund', 'providerAccountId': 10012100, 'accountId': 10017274,
+                 'createdDate': '2021-09-22T13:10:07Z', 'lastUpdated': '2021-10-18T23:21:44Z',
+                 'description': 'FDIC INSURED DEPOSIT AT FIFTH THIRD IRA NOT COVERED BY SIPC', 'optionType': 'unknown',
+                 'price': {'amount': 1.0, 'currency': 'USD'}, 'quantity': 54.99, 'symbol': 'QPIKQ',
+                 'value': {'amount': 54.99, 'currency': 'USD'}},
+                {'id': 10010733, 'holdingType': 'moneyMarketFund', 'providerAccountId': 10012100, 'accountId': 10017272,
+                 'createdDate': '2021-09-22T13:10:06Z', 'lastUpdated': '2021-10-18T23:21:44Z',
+                 'description': 'FDIC INSURED DEPOSIT AT FIFTH THIRD IRA NOT COVERED BY SIPC', 'optionType': 'unknown',
+                 'price': {'amount': 1.0, 'currency': 'USD'}, 'quantity': 37612.44, 'symbol': 'QPIKQ',
+                 'value': {'amount': 37612.44, 'currency': 'USD'}}]}
 
 
-def get_transactions(loginName):
-    if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
-
-    # try to obtain a token and return an error if it fails
-    access_token = get_access_token(loginName)
-    if access_token['status'] == 'success':
-        if USE_MOCK != 'True':
-            # set up header data and query parameters for the request
-            headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
-            params = {'top': 10, 'fromDate': '2013-12-12'}
-
-            # send the request and save the balance for each account
-            response = requests.get(URL + 'transactions', headers=headers, params=params).json()
-
-        else:
-            response = {'transaction': [
+TRANSACTIONS_MOCK_DATA = {'transaction': [
                 {'CONTAINER': 'bank', 'id': 10302155, 'amount': {'amount': 59.69, 'currency': 'USD'},
                  'baseType': 'DEBIT', 'categoryType': 'EXPENSE', 'categoryId': 20, 'category': 'Personal/Family',
                  'detailCategoryId': 1527, 'categorySource': 'SYSTEM', 'highLevelCategoryId': 10000010,
@@ -163,37 +122,128 @@ def get_transactions(loginName):
                               'categoryLabel': ['Retail', ' Fashion', ' Clothing and Accessories'],
                               'address': {'city': 'Garden City', 'country': 'UK'}}}]}
 
-        try:
-            transactions = response["transaction"]
-        except:
-            return {'status': 'failed', 'content': "Error: no transactions found"}
-        data = {}
-        transaction_data = {}
+def format_balances_response(response):
+    data = {}
 
-        for transaction in transactions:
-            # check if other transactions for this merchant are already in the data object
-            if transaction.get('merchant'):
-                source = transaction['merchant']['source']
-            else:
-                source = 'unknown'
-            if not transaction_data.get(source):
-                transaction_data[source] = {}
-
-            #    add only the completed transactions
-            if transaction['status'] == 'POSTED':
-                transaction_data[source][transaction["id"]] = transaction['amount']
-
-        data = transaction_data
+    try:
+        for account in response['account']:
+            data[account['id']] = {"providerName": account["providerName"], "balanceData": account["balance"]}
 
         return {'status': 'success', 'content': data}
+    except:
+        # return an error if it has occured
+        return {'status': 'failed', 'content': f"Error: {response['errorMessage']}"}
+
+
+def format_holdings_response(response):
+    data = {}
+
+    try:
+        if not response.get('holding'):
+            return {'status': 'failed', 'content': "Error: no holdings found"}
+
+        for holding in response['holding']:
+            if holding.get('symbol') and holding.get('value'):
+                data[holding['id']] = {'symbol': holding['symbol'], 'quantity': holding['quantity'],
+                                        'value': holding['value']}
+        return {'status': 'success', 'content': data}
+
+    except:
+        # return an error if it has occured
+        return {'status': 'failed', 'content': f"Error: {response['errorMessage']}"}
+
+
+def format_transactions_response(response):
+    try:
+        transactions = response["transaction"]
+    except:
+        return {'status': 'failed', 'content': "Error: no transactions found"}
+    data = {}
+    transaction_data = {}
+
+    for transaction in transactions:
+        # check if other transactions for this merchant are already in the data object
+        if transaction.get('merchant'):
+            source = transaction['merchant']['source']
+        else:
+            source = 'unknown'
+        if not transaction_data.get(source):
+            transaction_data[source] = {}
+
+        #    add only the completed transactions
+        if transaction['status'] == 'POSTED':
+            transaction_data[source][transaction["id"]] = transaction['amount']
+
+    data = transaction_data
+
+    return {'status': 'success', 'content': data}
+
+def get_access_token(loginName):
+    if USE_MOCK == 'True':
+        return {'status': 'success', 'content': 'token'}
+
+    # set up x-www-form-urlencoded data and header data for the request
+    data = {'clientId': CLIENT_ID, 'secret': SECRET}
+    headers = {'Api-Version': '1.1', 'loginName': loginName}
+
+    # send the request and return the access token
+    response = requests.post(URL + 'auth/token', data=data, headers=headers)
+    try:
+        return {'status': 'success', 'content': response.json()['token']['accessToken']}
+    except:
+        # return an error if it has occured
+        return {'status': 'failed', 'content': f"Error: {response.json()['errorMessage']}"}
+
+
+async def get_balances(loginName, session):
+    if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
+
+    # try to obtain a token and return an error if it fails
+    access_token = get_access_token(loginName)
+    if access_token['status'] == 'success':
+        # set up header data for the request
+        if USE_MOCK != 'True':
+            headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
+
+            # send the request and save the balance for each account
+            async with session.get(URL + 'accounts', headers=headers, ssl=False) as resp:
+                awaited = await resp.json()
+                return format_balances_response(awaited)
+
+        else:
+            response = BALANCES_MOCK_DATA
+            return format_balances_response(response)
+
     else:
         return access_token
 
 
-def get_holdings(loginName):
+async def get_transactions(loginName, session):
     if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
 
-    data = {}
+    # try to obtain a token and return an error if it fails
+    access_token = get_access_token(loginName)
+    if access_token['status'] == 'success':
+        if USE_MOCK != 'True':
+            # set up header data and query parameters for the request
+            headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
+            params = {'top': 10, 'fromDate': '2013-12-12'}
+
+            # send the request and save the balance for each account
+            async with session.get(URL + 'transactions', headers=headers, params=params, ssl=False) as resp:
+                awaited = await resp.json()
+                return format_transactions_response(awaited)
+
+        else:
+            response = TRANSACTIONS_MOCK_DATA
+            return format_transactions_response(response)
+        
+    else:
+        return access_token
+
+
+async def get_holdings(loginName, session):
+    if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
 
     # try to obtain a token and return an error if it fails
     access_token = get_access_token(loginName)
@@ -204,38 +254,13 @@ def get_holdings(loginName):
             headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
 
             # send the request and save the balance for each account
-            response = requests.get(URL + 'holdings', headers=headers).json()
+            async with session.get(URL + 'holdings', headers=headers, ssl=False) as resp:
+                awaited = await resp.json()
+                return format_holdings_response(awaited)
 
         else:
-            response = {'holding': [
-                {'id': 10010734, 'holdingType': 'bond', 'providerAccountId': 10012100, 'accountId': 10017272,
-                 'createdDate': '2021-09-22T13:10:06Z', 'lastUpdated': '2021-10-18T23:21:44Z',
-                 'description': 'NEW YORK N Y GO BDS FISCAL GO DATED 10/04/07 DUE 10/01/22 5.00% PAR CALL 10/01/',
-                 'optionType': 'unknown', 'price': {'amount': 101.14, 'currency': 'USD'}, 'quantity': 5,
-                 'value': {'amount': 5.05, 'currency': 'USD'}},
-                {'id': 10010800, 'holdingType': 'moneyMarketFund', 'providerAccountId': 10012100, 'accountId': 10017274,
-                 'createdDate': '2021-09-22T13:10:07Z', 'lastUpdated': '2021-10-18T23:21:44Z',
-                 'description': 'FDIC INSURED DEPOSIT AT FIFTH THIRD IRA NOT COVERED BY SIPC', 'optionType': 'unknown',
-                 'price': {'amount': 1.0, 'currency': 'USD'}, 'quantity': 54.99, 'symbol': 'QPIKQ',
-                 'value': {'amount': 54.99, 'currency': 'USD'}},
-                {'id': 10010733, 'holdingType': 'moneyMarketFund', 'providerAccountId': 10012100, 'accountId': 10017272,
-                 'createdDate': '2021-09-22T13:10:06Z', 'lastUpdated': '2021-10-18T23:21:44Z',
-                 'description': 'FDIC INSURED DEPOSIT AT FIFTH THIRD IRA NOT COVERED BY SIPC', 'optionType': 'unknown',
-                 'price': {'amount': 1.0, 'currency': 'USD'}, 'quantity': 37612.44, 'symbol': 'QPIKQ',
-                 'value': {'amount': 37612.44, 'currency': 'USD'}}]}
+            response = HOLDINGS_MOCK_DATA
+            return format_holdings_response(response)
 
-        try:
-            if not response.get('holding'):
-                return {'status': 'failed', 'content': "Error: no holdings found"}
-
-            for holding in response['holding']:
-                if holding.get('symbol') and holding.get('value'):
-                    data[holding['id']] = {'symbol': holding['symbol'], 'quantity': holding['quantity'],
-                                           'value': holding['value']}
-            return {'status': 'success', 'content': data}
-
-        except:
-            # return an error if it has occured
-            return {'status': 'failed', 'content': f"Error: {response['errorMessage']}"}
     else:
         return access_token

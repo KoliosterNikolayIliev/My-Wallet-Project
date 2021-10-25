@@ -3,6 +3,8 @@ from flask_cors import CORS
 from ..utils.assets import get_balances, get_transactions, get_holdings
 from ..utils.account import validate_auth_header
 
+import aiohttp, asyncio
+
 bp = Blueprint('api', __name__)
 CORS(bp)
 
@@ -20,11 +22,18 @@ async def get_assets():
     balances_headers = {'yodlee_loginName':user_data['yodlee_login_name'], 'nordigen_key': user_data['nordigen_requisition']}
     holdings_headers = {'yodlee_loginName':user_data['yodlee_login_name'], 'binance_key':user_data['binance_key'], 'binance_secret':user_data['binance_secret'], 'coinbase_key': user_data['coinbase_api_key'], 'coinbase_secret': user_data['coinbase_api_secret']}
 
-    balances_response = await get_balances(balances_headers)
-    holdings_response = await get_holdings(holdings_headers)
+    results = []
 
-    response = {'balances': balances_response, 'holdings': holdings_response}
-    return jsonify(response), 200
+    async with aiohttp.ClientSession() as session:
+        tasks = []
+        tasks.append(asyncio.ensure_future(get_balances(headers=balances_headers, session=session)))
+        tasks.append(asyncio.ensure_future(get_holdings(headers=holdings_headers, session=session)))
+
+        responses = await asyncio.gather(*tasks)
+        for response in responses:
+            results.append(response)
+
+    return jsonify(results), 200
 
 @bp.route('/api/transactions', methods=(['GET']))
 def get_assets_transactions():

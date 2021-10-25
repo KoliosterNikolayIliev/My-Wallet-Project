@@ -26,16 +26,24 @@ const DashboardPage = () => {
   const getData = async () => {
     setLoading(true);
     const token = await getAccessTokenSilently();
-    const assetsData = await getAssets(token);
-    const transactionsData = await getTransactions(token);
 
-    setBalances(assetsData.balances);
-    setHoldings(assetsData.holdings);
-    setTransactions(transactionsData);
+    // fetch all of the data in parllel using Promise.all
+    await Promise.all([
+      (async () => {
+        const assets = await getAssets(token);
+        setBalances(assets[0]);
+        setHoldings(assets[1]);
+      })(),
+      (async () => {
+        const transactions = await getTransactions(token);
+        setTransactions(transactions);
+      })(),
+    ]);
 
     setLoading(false);
   };
 
+  // fetch all data on first render
   useEffect(() => {
     getData();
   }, []);

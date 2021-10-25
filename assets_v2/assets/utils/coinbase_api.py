@@ -1,24 +1,9 @@
 import os
-
 from coinbase.wallet.client import Client
 
 USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
 
-
-def get_account_balances(api_key, api_secret):
-    try:
-        client = Client(api_key, api_secret)
-    except Exception as e:
-        return {'status': 'failed', 'content': f"Error: {e}"}
-
-    if USE_MOCK != 'True':
-        try:
-            client_accounts = client.get_accounts()
-        except Exception as e:
-            return {'status': 'failed', 'content': f"Error: {e.message}"}
-
-    else:
-        client_accounts = {
+MOCK_ACCOUNTS_DATA = {
             'data': [{
                 "allow_deposits": True,
                 "allow_withdrawals": True,
@@ -42,62 +27,7 @@ def get_account_balances(api_key, api_secret):
             }]
         }
 
-    data = {}
-    try:
-        for account in client_accounts["data"]:
-            if float(account["balance"]['amount']) > 0:
-                data[account["id"]] = ({"symbol": account["balance"]['currency'], "quantity": account["balance"]['amount'],
-                                        "value": account["native_balance"]})
-    except:
-        return {'status': 'failed', 'content': f"Error: unknown error"}
-    return {'status': 'success', 'content': data}
-
-
-def get_transactions(api_key, api_secret):
-    try:
-        client = Client(api_key, api_secret)
-    except Exception as e:
-        return {'status': 'failed', 'content': f"Error: {e}"}
-
-    if USE_MOCK != 'True':
-        try:
-            client_accounts = client.get_accounts()
-        except Exception as e:
-            return {'status': 'failed', 'content': f"Error: {e.message}"}
-
-    else:
-        client_accounts = {
-            'data': [{
-                "allow_deposits": True,
-                "allow_withdrawals": True,
-                "balance": {
-                    "amount": "9800.00000000",
-                    "currency": "DOGE"
-                },
-                "created_at": "2021-09-15T16:00:09Z",
-                "currency": "DOGE",
-                "id": "ea1afd10-87cc-5301-9445-14bc36ce4d8d",
-                "name": "DOGE Wallet",
-                "native_balance": {
-                    "amount": "1737.54",
-                    "currency": "GBP"
-                },
-                "primary": False,
-                "resource": "account",
-                "resource_path": "/v2/accounts/ea1afd10-87cc-5301-9445-14bc36ce4d8d",
-                "type": "wallet",
-                "updated_at": "2021-09-26T19:27:25Z"
-            }]
-        }
-
-    data = {}
-    try:
-        for wallet in client_accounts["data"]:
-            if USE_MOCK != 'True':
-                transactions = client.get_transactions(wallet['id'], limit=10)
-
-            else:
-                transactions = {
+MOCK_TRANSACTIONS_DATA = {
                     "data": [
                         {
                             "amount": {
@@ -201,6 +131,60 @@ def get_transactions(api_key, api_secret):
                         }
                     ]
                 }
+
+def format_balances_response(client_accounts):
+    data = {}
+    try:
+        for account in client_accounts["data"]:
+            if float(account["balance"]['amount']) > 0:
+                data[account["id"]] = ({"symbol": account["balance"]['currency'], "quantity": account["balance"]['amount']})
+    except:
+        return {'status': 'failed', 'content': f"Error: unknown error"}
+    return data
+
+async def get_account_balances(api_key, api_secret):
+    try:
+        client = Client(api_key, api_secret)
+    except Exception as e:
+        return {'status': 'failed', 'content': f"Error: {e}"}
+
+    if USE_MOCK != 'True':
+        try:
+            client_accounts = client.get_accounts()
+        except Exception as e:
+            return {'status': 'failed', 'content': f"Error: {e.message}"}
+
+    else:
+        client_accounts = MOCK_ACCOUNTS_DATA
+
+    data = format_balances_response(client_accounts)
+    
+    return {'status': 'success', 'content': data}
+
+
+def get_transactions(api_key, api_secret):
+    try:
+        client = Client(api_key, api_secret)
+    except Exception as e:
+        return {'status': 'failed', 'content': f"Error: {e}"}
+
+    if USE_MOCK != 'True':
+        try:
+            client_accounts = client.get_accounts()
+        except Exception as e:
+            return {'status': 'failed', 'content': f"Error: {e.message}"}
+
+    else:
+        client_accounts = MOCK_ACCOUNTS_DATA
+
+    data = {}
+    try:
+        for wallet in client_accounts["data"]:
+            if USE_MOCK != 'True':
+                transactions = client.get_transactions(wallet['id'], limit=10)
+
+            else:
+                transactions = MOCK_TRANSACTIONS_DATA
 
             # check if there are any transactions for this wallet
             if transactions["data"]:
