@@ -1,20 +1,21 @@
 import React from "react";
+import arrow from "../images/Vector.svg"
 
-const ContainerComponent = ({ imagePath, paragraphOne, subtitle }) => {
+const ContainerComponent = ({ image, paragraphOne, subtitle, articleClasses, imageClass}) => {
   return (
-    <article>
-      <div class="col-sm-6">
-        <div class="sub-title">{subtitle}</div>
-        <span class="more-info">
+    <article className={articleClasses}>
+      <div className="section-text">
+        <div className="sub-title">{subtitle}</div>
+        <span className="more-info">
           <p>{paragraphOne}</p>
         </span>
-        <div class="start">
-          <a href="#">Get started -- </a>
+        <div className="start">
+          <a id="get-started" href="#get-early-access">Get started <img style={{marginLeft:5}} src={arrow} alt=""/></a>
         </div>
       </div>
 
-      <div class="col-sm-2">
-        <img src={imagePath} alt="Marketing"></img>
+      <div className={imageClass}>
+        <img className="marketing-image" src={image} alt="Marketing"/>
       </div>
     </article>
   );

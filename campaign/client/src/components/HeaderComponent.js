@@ -1,13 +1,14 @@
 import React from "react";
+import Logo from "../images/Logo.svg"
 
 const HeaderComponent = () => {
   return (
     <header>
-      <article>
-        <img src="/images/logo.png" alt="logo"></img>
-      </article>
       <nav>
-        <div className="top-nav-menu">
+          <article>
+              <img src={Logo} alt="logo"/>
+          </article>
+
           {/* 
           Removed
           <ul>
@@ -21,8 +22,7 @@ const HeaderComponent = () => {
               <a href="#">Contact</a>
             </li>
           </ul> */}
-          <div class="top-nav-btn">Get early access</div>
-        </div>
+          <a href="#get-early-access" className="top-nav-btn">Get early access</a>
       </nav>
     </header>
   );
