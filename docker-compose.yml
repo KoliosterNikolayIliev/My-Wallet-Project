@@ -33,7 +33,7 @@ services:
 
   assets:
     build:
-      context: ./assets
+      context: ./assets_v2
 
     command:
       - flask
@@ -44,7 +44,7 @@ services:
       - "5000:5000"
 
     environment:
-      - FLASK_APP=assets.py
+      - FLASK_APP=assets
       - FLASK_ENV=development
 
     env_file:
