@@ -102,7 +102,7 @@ const QuizComponent = ({
                 <div className="question-answer-container">
                     <h4 className="question">{question}</h4>
                     <p className="additional-info">(some examples for the types of platforms: Traditional banks, Neobanks, Stock brokers, Crypto exchanges and others)</p>
-                    <textarea className="submit-text-area" type="text" placeholder="...." onMouseOut={selectAnswer}/>
+                    <textarea className="submit-text-area" placeholder="...." onMouseOut={selectAnswer} onTouchEnd={selectAnswer}/>
                 </div>
                 <div className="btn-holder">
                     <button className={quizState !== 1 ? "active-back modal-btn" : "modal-btn back-btn"}

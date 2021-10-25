@@ -463,7 +463,8 @@ article {
     height: 35px;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
-.modal-btn:hover{
+
+.modal-btn:hover {
     cursor: pointer;
 }
 
@@ -557,95 +558,137 @@ input.selected {
     margin-right: 6px;
 }
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-height: 700px) {
+    .Modal{
+        min-width: 80%;
+    }
+    .answer{
+        max-width: 100%;
+        margin: 0.5%;
+    }
+    .submit-text-area{
+        margin-bottom: 4%;
+    }
+}
+@media only screen and (max-width: 800px) {
+    .submit-text-area{
+        margin: 10% auto;
+    }
+    .answer{
+        max-width: 100%;
+        margin-top: 0;
+        margin-left: 0;
+    }
+}
+@media only screen and (max-width: 539px) {
 
-    .top-nav-btn{
+    .top-nav-btn {
         font-size: 15px;
         padding: 4% 6%;
         width: fit-content;
         height: fit-content;
     }
-    .section-content-text-and-image{
+
+    .section-content-text-and-image {
         flex-direction: column-reverse;
         align-items: center;
         max-width: 100%;
         display: flex;
         align-self: unset;
     }
-    .section-content-image img{
+
+    .section-content-image img {
         max-width: 70%;
     }
-    .section-content-image{
+
+    .section-content-image {
         display: flex;
         justify-content: flex-end;
     }
-    .section-text{
+
+    .section-text {
         max-width: 90%;
     }
-    .section-text h1{
+
+    .section-text h1 {
         width: 100%;
         text-align: center;
         font-size: 60px;
         line-height: 54px;
     }
-    .section-content{
+
+    .section-content {
         align-self: center;
         width: 100%;
     }
-    input[type="submit"]{
+
+    input[type="submit"] {
         width: 100%;
         font-size: 20px;
     }
-    input[type="email"]{
+
+    input[type="email"] {
         width: 100%;
         font-size: 20px
     }
-    form{
+
+    form {
         flex-direction: column;
     }
-    .mail-info{
+
+    .mail-info {
         width: 100%;
     }
-    .last-subscription{
+
+    .last-subscription {
         display: none;
     }
-    .footer{
+
+    .footer {
         font-size: 9px;
     }
-    .Modal{
+
+    .Modal {
         width: 100%;
         height: 100%;
     }
-    .answer{
+
+    .answer {
         max-width: 100%;
         margin-left: 0;
-        height: 70px;
     }
-    .question-answer-container{
+
+    .question-answer-container {
         max-height: 100%;
     }
-    .btn-holder{
+
+    .btn-holder {
         justify-content: center;
         border: none;
     }
-    .modal-btn{
+
+    .modal-btn {
         width: 50%;
         height: 30%;
         font-size: 20px;
         margin-top: 10%;
     }
-    .modalHeading{
+
+    .modalHeading {
         margin-top: 20%;
     }
-    .sub-heading{
+
+    .sub-heading {
         width: 95%;
         margin-bottom: 15%;
     }
-    .submit-text-area{
+
+    .submit-text-area {
         width: 90%;
         margin: 10% auto 0;
     }
-    .start{
+
+    .start {
         border: 1px solid #7000ff;
         text-align: center;
         font-size: 20px;
@@ -653,27 +696,95 @@ input.selected {
         padding-bottom: 4px;
         border-radius: 6px;
     }
-    .start img{
+
+    .start img {
         display: none;
     }
-    .footer-content{
-       flex-direction: column-reverse;
+
+    .footer-content {
+        flex-direction: column-reverse;
         font-size: 15px;
     }
-    .footer{
+
+    .footer {
         height: 10em;
     }
-    .footer-content ul{
+
+    .footer-content ul {
         display: flex;
         justify-content: space-evenly;
         padding: 0;
         width: 100%;
     }
-    .footer-content li{
+
+    .footer-content li {
         margin: 5% 0 0;
     }
-    .footer-content span{
+
+    .footer-content span {
         padding-bottom: 10px;
     }
 }
 
+@media only screen and (max-width: 420px) {
+    /*Modal*/
+
+    .answer {
+        font-size: 80%;
+        margin: 2% 0 0;
+        height: auto;
+
+    }
+
+    .question {
+        margin-bottom: 0;
+        font-size: 90%;
+    }
+
+    .btn-holder {
+        margin-top: 5%;
+    }
+
+    .modal-btn {
+        margin-top: 1%;
+    }
+
+    .sub-heading {
+        margin-bottom: 1%;
+    }
+
+    .submit-text-area {
+        margin:4% auto 0;
+    }
+
+    .additional-info {
+        margin-bottom: 0;
+        margin-top:0;
+        font-size: 90%;
+    }
+}
+
+@media only screen and (max-width: 370px) {
+    /*Modal*/
+    .modalHeading {
+        margin-top: 1%;
+    }
+}
+@media only screen and (max-width: 340px) {
+    /*Modal*/
+    .modalHeading {
+        margin-top: 1%;
+    }
+    .sub-heading{
+        margin: 0;
+    }
+    .additional-info{
+        font-size: 80%;
+    }
+    .answer{
+        font-size: 70%;
+    }
+}
+@media only screen and (max-width: 300px) {
+    .top-nav-btn{font-size: 10px}
+}
