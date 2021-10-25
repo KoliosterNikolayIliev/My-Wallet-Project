@@ -11,15 +11,15 @@ const FooterComponent = () => {
                 <div className="footer-content">
                     <span>© 2021 Trivial. All rights reserved</span>
                     <ul className="fa-icons">
+                        {/*<li>*/}
+                        {/*    <a href="#"><FontAwesomeIcon icon={faInstagram} size="2x" inverse/></a>*/}
+                        {/*</li>*/}
                         <li>
-                            <a href="#"><FontAwesomeIcon icon={faInstagram} size="2x" inverse/></a>
+                            <a href="https://twitter.com/joinTrivial?ref_src=twsrc%5Etfw" data-show-count="false"><FontAwesomeIcon icon={faTwitter} size="2x" inverse/></a>
                         </li>
-                        <li>
-                            <a href="#"><FontAwesomeIcon icon={faTwitter} size="2x" inverse/></a>
-                        </li>
-                        <li>
-                            <a href="#"><FontAwesomeIcon icon={faFacebook} size="2x" inverse/></a>
-                        </li>
+                        {/*<li>*/}
+                        {/*    <a href="#"><FontAwesomeIcon icon={faFacebook} size="2x" inverse/></a>*/}
+                        {/*</li>*/}
                     </ul>
                 </div>
             </div>
