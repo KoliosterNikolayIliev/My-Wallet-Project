@@ -49,10 +49,12 @@ async def get_holdings():
 
 @bp.route('/transactions', methods=(['GET']))
 async def get_transactions():
-    results = {}
     async with aiohttp.ClientSession() as session:
         if request.headers.get('provider') == 'nordigen':
             results = await get_nordigen_transactions(request.headers.get('account'), session)
+
+        elif request.headers.get('provider') == 'yodlee':
+            results = await get_yodlee_transactions(request.headers.get('yodlee_loginName'), session, request.headers.get('account'))
 
         else:
             return {'status': 'failed', 'content': 'provider is not valid or missing'}
