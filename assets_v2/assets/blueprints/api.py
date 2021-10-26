@@ -51,7 +51,10 @@ async def get_holdings():
 async def get_transactions():
     results = {}
     async with aiohttp.ClientSession() as session:
-        if request.args.get('provider') == 'nordigen':
+        if request.headers.get('provider') == 'nordigen':
             results = await get_nordigen_transactions(request.headers.get('account'), session)
+
+        else:
+            return {'status': 'failed', 'content': 'provider is not valid or missing'}
     
     return jsonify(results)
