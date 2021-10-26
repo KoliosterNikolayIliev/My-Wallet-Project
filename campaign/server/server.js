@@ -23,7 +23,6 @@ const Questionnaire = require("./models/questionnaire");
 
 const getLists = async () => {
   const lists = await mailchimp.lists.getAllLists();
-  console.log(lists["lists"][0]["stats"]);
   return lists["lists"][0]["stats"]["member_count_since_send"];
 };
 
