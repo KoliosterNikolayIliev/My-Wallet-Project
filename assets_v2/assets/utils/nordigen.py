@@ -163,9 +163,13 @@ async def get_bank_accounts(requisition_id, session):
 async def get_single_account_balance(account, headers, session):
     bank_name = await get_bank_name(account, session)
 
-    async with session.get(f'https://ob.nordigen.com/api/accounts/{account}/balances/', headers=headers) as response:
-        awaited = await response.json()
-        return {"id": account, "providerName": bank_name, "balanceData": awaited["balances"][0]["balanceAmount"]}
+    if USE_MOCK != 'True':
+        async with session.get(f'https://ob.nordigen.com/api/accounts/{account}/balances/', headers=headers) as response:
+            balance_data = await response.json()
+    else:
+        balance_data = MOCK_BALANCES_DATA
+
+    return {"id": account, "providerName": bank_name, "balanceData": balance_data["balances"][0]["balanceAmount"]}
 
 async def get_single_account_transactions(account, headers, session):
     bank_name = await get_bank_name(account, session)
@@ -202,17 +206,13 @@ async def get_all_account_balances(requisition_id, session, tasks):
     accounts = accounts[0]['content']
 
     data = {}
-    if USE_MOCK == 'True':
-        for account in accounts:
-            response = MOCK_BALANCES_DATA
-            data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"]}
-    else:
-        for account in accounts:
-            tasks.append(asyncio.ensure_future(get_single_account_balance(account, headers, session)))
-                
-        responses = await asyncio.gather(*tasks)
-        for response in responses:
-            data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"]}
+
+    for account in accounts:
+        tasks.append(asyncio.ensure_future(get_single_account_balance(account, headers, session)))
+
+    responses = await asyncio.gather(*tasks)
+    for response in responses:
+        data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"]}
 
     return {"status": "success", "content": data}
 
