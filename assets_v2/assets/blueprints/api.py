@@ -51,13 +51,7 @@ async def get_holdings():
 async def get_transactions():
     results = {}
     async with aiohttp.ClientSession() as session:
-        tasks = []
-        nordigen_tasks = []
-        tasks.append(asyncio.ensure_future(get_yodlee_transactions(request.headers.get('yodlee_loginName'), session=session)))
-        tasks.append(asyncio.ensure_future(get_nordigen_transactions(request.headers.get('nordigen_key'), session=session, tasks=nordigen_tasks)))
-
-        responses = await asyncio.gather(*tasks)
-        results['yodlee'] = responses[0]
-        results['nordigen'] = responses[1]
+        if request.args.get('provider') == 'nordigen':
+            results = await get_nordigen_transactions(request.headers.get('account'), session)
     
     return jsonify(results)

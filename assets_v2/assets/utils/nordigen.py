@@ -107,6 +107,9 @@ async def get_bank_name(account_id, session):
         return 'Sandbox Finance'
 
     async with session.get(f'https://ob.nordigen.com/api/accounts/{account_id}/', headers=headers) as response:
+        if response.status != 200:
+            return False
+
         awaited = await response.json()
         identifier = awaited["aspsp_identifier"]
         async with session.get(f'https://ob.nordigen.com/api/aspsps/{identifier}/', headers=headers) as response:
@@ -166,6 +169,9 @@ async def get_single_account_balance(account, headers, session):
 
 async def get_single_account_transactions(account, headers, session):
     bank_name = await get_bank_name(account, session)
+    if not bank_name:
+        return False
+
     transaction_data = {}
 
     if USE_MOCK != 'True':
@@ -214,25 +220,14 @@ async def get_all_account_balances(requisition_id, session, tasks):
 
 
 
-async def get_account_transactions(requisition_id, session, tasks):
-    # get user bank accounts from requisition
-    accounts = await get_bank_accounts(requisition_id, session)
-
-    # check requisition validation and check if user has bank accounts
-    if not accounts[1]:
-        # return error message
-        return accounts[0]
-
-    # if requisition is valid and user has bank accounts we take his accounts
-    accounts = accounts[0]['content']
-
+async def get_account_transactions(account, session):
     data = {}
-    for account in accounts:
-        # request to get account transaction history data
-        tasks.append(asyncio.ensure_future(get_single_account_transactions(account, headers, session)))
+    response = await get_single_account_transactions(account, headers, session)
 
-    responses = await asyncio.gather(*tasks)
-    for response in responses:
+    if not response:
+        return {'status': 'failed', 'content': 'invalid account'}
+
+    else:
         data[response["bankName"]] = response["transactions"]
 
     # return saved data
