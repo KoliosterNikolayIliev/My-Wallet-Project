@@ -168,14 +168,19 @@ async def get_single_account_transactions(account, headers, session):
     bank_name = await get_bank_name(account, session)
     transaction_data = {}
 
-    async with session.get(f'https://ob.nordigen.com/api/accounts/{account}/transactions/', headers=headers) as response:
-        awaited = await response.json()
-        transactions = awaited.get('transactions').get('booked')
+    if USE_MOCK != 'True':
+        async with session.get(f'https://ob.nordigen.com/api/accounts/{account}/transactions/', headers=headers) as response:
+            transactions = await response.json()
 
-        for transaction in transactions:
-            transaction_data[transaction["transactionId"]] = transaction["transactionAmount"]
+    else:
+        transactions = MOCK_TRANSACTIONS_DATA
 
-        return {"bankName": bank_name, "transactions": transaction_data}
+    transactions = transactions.get('transactions').get('booked')
+
+    for transaction in transactions:
+        transaction_data[transaction["transactionId"]] = transaction["transactionAmount"]
+
+    return {"bankName": bank_name, "transactions": transaction_data}
 
 
 async def get_all_account_balances(requisition_id, session, tasks):
@@ -224,17 +229,11 @@ async def get_account_transactions(requisition_id, session, tasks):
     data = {}
     for account in accounts:
         # request to get account transaction history data
-        if USE_MOCK != 'True':
-            tasks.append(asyncio.ensure_future(get_single_account_transactions(account, headers, session)))
+        tasks.append(asyncio.ensure_future(get_single_account_transactions(account, headers, session)))
 
-        else:
-            response = MOCK_TRANSACTIONS_DATA
-            data[response["bankName"]] = response["transactions"]
-    
-    if USE_MOCK != 'True':
-        responses = await asyncio.gather(*tasks)
-        for response in responses:
-            data[response["bankName"]] = response["transactions"]
+    responses = await asyncio.gather(*tasks)
+    for response in responses:
+        data[response["bankName"]] = response["transactions"]
 
     # return saved data
     return {'status': 'success', 'content': data}
