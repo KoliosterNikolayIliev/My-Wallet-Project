@@ -1,7 +1,7 @@
 import asyncio
 import os
 
-TOKEN = os.environ.get('NORDIGEN_TOKEN')
+TOKEN = os.environ.get('ASSETS_NORDIGEN_TOKEN')
 USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
 
 
