@@ -162,39 +162,29 @@ async def get_account_balances(api_key, api_secret):
     return {'status': 'success', 'content': data}
 
 
-def get_transactions(api_key, api_secret):
+async def get_transactions(api_key, api_secret, account):
     try:
         client = Client(api_key, api_secret)
     except Exception as e:
         return {'status': 'failed', 'content': f"Error: {e}"}
 
-    if USE_MOCK != 'True':
-        try:
-            client_accounts = client.get_accounts()
-        except Exception as e:
-            return {'status': 'failed', 'content': f"Error: {e.message}"}
-
-    else:
-        client_accounts = MOCK_ACCOUNTS_DATA
-
     data = {}
     try:
-        for wallet in client_accounts["data"]:
-            if USE_MOCK != 'True':
-                transactions = client.get_transactions(wallet['id'], limit=10)
+        if USE_MOCK != 'True':
+            transactions = client.get_transactions(account, limit=10)
 
-            else:
-                transactions = MOCK_TRANSACTIONS_DATA
+        else:
+            transactions = MOCK_TRANSACTIONS_DATA
 
-            # check if there are any transactions for this wallet
-            if transactions["data"]:
-                transaction_data = {}
-                for transaction in transactions["data"]:
-                    # return only the completed transactions
-                    if transaction["status"] == "completed":
-                        transaction_data[transaction["id"]] = transaction['amount']
+        # check if there are any transactions for this wallet
+        if transactions["data"]:
+            transaction_data = {}
+            for transaction in transactions["data"]:
+                # return only the completed transactions
+                if transaction["status"] == "completed":
+                    transaction_data[transaction["id"]] = transaction['amount']
 
-                data[wallet['name']] = transaction_data
+            data = transaction_data
     except:
         return {'status': 'failed', 'content': f"Error: unknown error"}
 
