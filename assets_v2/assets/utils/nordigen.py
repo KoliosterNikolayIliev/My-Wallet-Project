@@ -188,14 +188,14 @@ async def get_single_account_balance(account, headers, session):
 
 
 async def get_single_account_transactions(account, headers, session):
-    bank_name = await get_bank_name(account, session)
+    bank_name = await get_bank_name(account, session, headers)
     if not bank_name:
         return False
 
     transaction_data = {}
 
     if USE_MOCK != 'True':
-        async with session.get(f'https://ob.nordigen.com/api/accounts/{account}/transactions/',
+        async with session.get(URL + f'accounts/{account}/transactions/',
                                headers=headers) as response:
             transactions = await response.json()
 
@@ -244,6 +244,13 @@ async def get_all_account_balances(requisition_id, session, tasks):
 
 
 async def get_account_transactions(account, session):
+    response = get_access_token()
+
+    if response['status'] != 'success':
+        return response
+
+    headers = {'Authorization': f'Bearer {response["content"]}'}
+
     data = {}
     response = await get_single_account_transactions(account, headers, session)
 
