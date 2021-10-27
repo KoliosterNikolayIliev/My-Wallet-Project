@@ -186,29 +186,6 @@ async def get_single_account_balance(account, headers, session):
     return {"id": account, "providerName": bank_name, "balanceData": balance_data["balances"][0]["balanceAmount"]}
 
 
-async def get_single_account_transactions(account, headers, session):
-    bank_name = await get_bank_name(account, session, headers)
-    if not bank_name:
-        return False
-
-    transaction_data = {}
-
-    if USE_MOCK != 'True':
-        async with session.get(URL + f'accounts/{account}/transactions/',
-                               headers=headers) as response:
-            transactions = await response.json()
-
-    else:
-        transactions = MOCK_TRANSACTIONS_DATA
-
-    transactions = transactions.get('transactions').get('booked')
-
-    for transaction in transactions:
-        transaction_data[transaction["transactionId"]] = transaction["transactionAmount"]
-
-    return {"bankName": bank_name, "transactions": transaction_data}
-
-
 async def get_all_account_balances(requisition_id, session, tasks):
     response = get_access_token()
 
@@ -250,14 +227,26 @@ async def get_account_transactions(account, session):
 
     headers = {'Authorization': f'Bearer {response["content"]}'}
 
-    data = {}
-    response = await get_single_account_transactions(account, headers, session)
-
-    if not response:
+    bank_name = await get_bank_name(account, session, headers)
+    if not bank_name:
         return {'status': 'failed', 'content': 'invalid account'}
 
+    transaction_data = {}
+
+    if USE_MOCK != 'True':
+        async with session.get(URL + f'accounts/{account}/transactions/',
+                               headers=headers) as response:
+            transactions = await response.json()
+
     else:
-        data[response["bankName"]] = response["transactions"]
+        transactions = MOCK_TRANSACTIONS_DATA
+
+    transactions = transactions.get('transactions').get('booked')
+
+    for transaction in transactions:
+        transaction_data[transaction["transactionId"]] = transaction["transactionAmount"]
+
+    data = {"bankName": bank_name, "transactions": transaction_data}
 
     # return saved data
     return {'status': 'success', 'content': data}
