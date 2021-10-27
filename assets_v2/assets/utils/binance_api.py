@@ -42,8 +42,7 @@ async def get_balances(api_key, api_secret, session):
 
         async with session.get(URL, headers=headers, params=params) as response:
             awaited = await response.json()
-            data = format_balances_response(awaited)
-            return data
+            balances = awaited
 
     else:
         balances = MOCK_BALANCES_DATA
