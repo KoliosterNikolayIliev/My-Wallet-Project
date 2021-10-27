@@ -9,19 +9,18 @@ USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
 URL = 'https://ob.nordigen.com/api/v2/'
 
 MOCK_REQUISITION_DATA = {
-    "id": "c0ad1b3e-28e1-4628-b8b1-f6009df3c27f",
-    "created": "2021-10-06T22:21:31.216413Z",
-    "redirect": "https://test.com",
+    "id": "0b998971-3726-4bc9-991a-d38dfe3be60e",
+    "created": "2021-10-27T09:01:54.145314Z",
+    "redirect": "https://google.com",
     "status": "LN",
-    "agreements": [
-        "f658eddc-2c4b-4f53-8c0d-1fb1995f327c"
-    ],
+    "institution_id": "SANDBOXFINANCE_SFIN0000",
+    "agreement": "0a871d7c-6131-45b5-80cb-12b863df8a43",
+    "reference": "0b998971-3726-4bc9-991a-d38dfe3be60e",
     "accounts": [
         "1048f194-cb13-4cee-a55c-5ef6d8661341",
         "582a6ea9-81c7-4def-952d-85709d9432cf"
     ],
-    "reference": "test",
-    "enduser_id": "test"
+    "link": "https://ob.nordigen.com/psd2/start/0b998971-3726-4bc9-991a-d38dfe3be60e/SANDBOXFINANCE_SFIN0000"
 }
 
 MOCK_BALANCES_DATA = {
@@ -50,44 +49,44 @@ MOCK_TRANSACTIONS_DATA = {
         "booked": [
             {
                 "bankTransactionCode": "PMNT",
-                "bookingDate": "2021-10-08",
-                "debtorAccount": {
-                    "iban": "GL11SAFI05510125926"
-                },
-                "debtorName": "MON MOTHMA",
-                "remittanceInformationUnstructured": "For the support of Restoration of the Republic foundation",
-                "transactionAmount": {
-                    "amount": "45.00",
-                    "currency": "EUR"
-                },
-                "transactionId": "2021100802749507-1",
-                "valueDate": "2021-10-08"
-            },
-            {
-                "bankTransactionCode": "PMNT",
-                "bookingDate": "2021-10-08",
-                "debtorAccount": {
-                    "iban": "GL11SAFI05510125926"
-                },
-                "debtorName": "MON MOTHMA",
-                "remittanceInformationUnstructured": "For the support of Restoration of the Republic foundation",
-                "transactionAmount": {
-                    "amount": "45.00",
-                    "currency": "EUR"
-                },
-                "transactionId": "2021100802749501-1",
-                "valueDate": "2021-10-08"
-            },
-            {
-                "bankTransactionCode": "PMNT",
-                "bookingDate": "2021-10-08",
+                "bookingDate": "2021-10-26",
                 "remittanceInformationUnstructured": "PAYMENT Alderaan Coffe",
                 "transactionAmount": {
                     "amount": "-15.00",
                     "currency": "EUR"
                 },
-                "transactionId": "2021100802749505-1",
-                "valueDate": "2021-10-08"
+                "transactionId": "2021102602749508-1",
+                "valueDate": "2021-10-26"
+            },
+            {
+                "bankTransactionCode": "PMNT",
+                "bookingDate": "2021-10-26",
+                "debtorAccount": {
+                    "iban": "GL11SAFI05510125926"
+                },
+                "debtorName": "MON MOTHMA",
+                "remittanceInformationUnstructured": "For the support of Restoration of the Republic foundation",
+                "transactionAmount": {
+                    "amount": "45.00",
+                    "currency": "EUR"
+                },
+                "transactionId": "2021102602749501-1",
+                "valueDate": "2021-10-26"
+            },
+            {
+                "bankTransactionCode": "PMNT",
+                "bookingDate": "2021-10-26",
+                "debtorAccount": {
+                    "iban": "GL11SAFI05510125926"
+                },
+                "debtorName": "MON MOTHMA",
+                "remittanceInformationUnstructured": "For the support of Restoration of the Republic foundation",
+                "transactionAmount": {
+                    "amount": "45.00",
+                    "currency": "EUR"
+                },
+                "transactionId": "2021102602749507-1",
+                "valueDate": "2021-10-26"
             }
         ],
         "pending": [
