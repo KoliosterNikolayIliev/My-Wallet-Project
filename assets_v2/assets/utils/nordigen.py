@@ -119,7 +119,7 @@ async def get_bank_name(account_id, session, headers):
     async with session.get(URL + f'accounts/{account_id}/', headers=headers) as response:
         awaited = await response.json()
 
-        if response.status != 200:
+        if awaited.get('status_code'):
             return False
 
     identifier = awaited["institution_id"]
@@ -142,7 +142,7 @@ async def validate_requisition(requisition_id, session, headers):
         awaited = await response.json()
 
         # Check if requisition exist
-        if response.status != 200:
+        if awaited.get('status_code'):
             # return response error message with false variable to say validation failed
             return {'status': 'failed', 'content': 'Error: Nordigen requisition key is invalid'}, False
 
