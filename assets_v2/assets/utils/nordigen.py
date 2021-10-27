@@ -1,7 +1,7 @@
 import asyncio
 import os
 
-TOKEN = os.environ.get('NORDIGEN_TOKEN')
+TOKEN = os.environ.get('ASSETS_NORDIGEN_TOKEN')
 USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
 
 
@@ -107,6 +107,9 @@ async def get_bank_name(account_id, session):
         return 'Sandbox Finance'
 
     async with session.get(f'https://ob.nordigen.com/api/accounts/{account_id}/', headers=headers) as response:
+        if response.status != 200:
+            return False
+
         awaited = await response.json()
         identifier = awaited["aspsp_identifier"]
         async with session.get(f'https://ob.nordigen.com/api/aspsps/{identifier}/', headers=headers) as response:
@@ -160,22 +163,34 @@ async def get_bank_accounts(requisition_id, session):
 async def get_single_account_balance(account, headers, session):
     bank_name = await get_bank_name(account, session)
 
-    async with session.get(f'https://ob.nordigen.com/api/accounts/{account}/balances/', headers=headers) as response:
-        awaited = await response.json()
-        return {"id": account, "providerName": bank_name, "balanceData": awaited["balances"][0]["balanceAmount"]}
+    if USE_MOCK != 'True':
+        async with session.get(f'https://ob.nordigen.com/api/accounts/{account}/balances/', headers=headers) as response:
+            balance_data = await response.json()
+    else:
+        balance_data = MOCK_BALANCES_DATA
+
+    return {"id": account, "providerName": bank_name, "balanceData": balance_data["balances"][0]["balanceAmount"]}
 
 async def get_single_account_transactions(account, headers, session):
     bank_name = await get_bank_name(account, session)
+    if not bank_name:
+        return False
+
     transaction_data = {}
 
-    async with session.get(f'https://ob.nordigen.com/api/accounts/{account}/transactions/', headers=headers) as response:
-        awaited = await response.json()
-        transactions = awaited.get('transactions').get('booked')
+    if USE_MOCK != 'True':
+        async with session.get(f'https://ob.nordigen.com/api/accounts/{account}/transactions/', headers=headers) as response:
+            transactions = await response.json()
 
-        for transaction in transactions:
-            transaction_data[transaction["transactionId"]] = transaction["transactionAmount"]
+    else:
+        transactions = MOCK_TRANSACTIONS_DATA
 
-        return {"bankName": bank_name, "transactions": transaction_data}
+    transactions = transactions.get('transactions').get('booked')
+
+    for transaction in transactions:
+        transaction_data[transaction["transactionId"]] = transaction["transactionAmount"]
+
+    return {"bankName": bank_name, "transactions": transaction_data}
 
 
 async def get_all_account_balances(requisition_id, session, tasks):
@@ -191,17 +206,13 @@ async def get_all_account_balances(requisition_id, session, tasks):
     accounts = accounts[0]['content']
 
     data = {}
-    if USE_MOCK == 'True':
-        for account in accounts:
-            response = MOCK_BALANCES_DATA
-            data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"]}
-    else:
-        for account in accounts:
-            tasks.append(asyncio.ensure_future(get_single_account_balance(account, headers, session)))
-                
-        responses = await asyncio.gather(*tasks)
-        for response in responses:
-            data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"]}
+
+    for account in accounts:
+        tasks.append(asyncio.ensure_future(get_single_account_balance(account, headers, session)))
+
+    responses = await asyncio.gather(*tasks)
+    for response in responses:
+        data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"]}
 
     return {"status": "success", "content": data}
 
@@ -209,32 +220,15 @@ async def get_all_account_balances(requisition_id, session, tasks):
 
 
 
-async def get_account_transactions(requisition_id, session, tasks):
-    # get user bank accounts from requisition
-    accounts = await get_bank_accounts(requisition_id, session)
-
-    # check requisition validation and check if user has bank accounts
-    if not accounts[1]:
-        # return error message
-        return accounts[0]
-
-    # if requisition is valid and user has bank accounts we take his accounts
-    accounts = accounts[0]['content']
-
+async def get_account_transactions(account, session):
     data = {}
-    for account in accounts:
-        # request to get account transaction history data
-        if USE_MOCK != 'True':
-            tasks.append(asyncio.ensure_future(get_single_account_transactions(account, headers, session)))
+    response = await get_single_account_transactions(account, headers, session)
 
-        else:
-            response = MOCK_TRANSACTIONS_DATA
-            data[response["bankName"]] = response["transactions"]
-    
-    if USE_MOCK != 'True':
-        responses = await asyncio.gather(*tasks)
-        for response in responses:
-            data[response["bankName"]] = response["transactions"]
+    if not response:
+        return {'status': 'failed', 'content': 'invalid account'}
+
+    else:
+        data[response["bankName"]] = response["transactions"]
 
     # return saved data
     return {'status': 'success', 'content': data}
