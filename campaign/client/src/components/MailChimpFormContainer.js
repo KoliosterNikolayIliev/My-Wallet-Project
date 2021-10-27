@@ -1,22 +1,24 @@
 import MailchimpSubscribe from "react-mailchimp-subscribe";
 import EarlyAccessForm from "./EarlyAccessForm";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import MessageComponent from "./MessageComponent";
 
-const MailchimpFormContainer = ({show}) => {
-  const postUrl = `https://gmail.us5.list-manage.com/subscribe/post?u=8ae517b7914a1084896fca77c&id=f2cc0739a0`;
-    const [counter, setCounter] = useState(0);
+const MailchimpFormContainer = ({ show }) => {
+  const postUrl = `https://gmail.us5.list-manage.com/subscribe/post?u=f813380dbeb308d67ea08fca7&id=3052096cd5`;
+  const [counter, setCounter] = useState(0);
 
-    useEffect(() => {
-        fetch("http://localhost:5000/subscribers").then((response) =>
-            response.json().then((data) => setCounter(data["count"]))
-        );
-    }, [counter]);
+  useEffect(() => {
+    fetch("http://localhost:5000/subscribers").then((response) =>
+      response.json().then((data) => setCounter(data["count"]))
+    );
+  }, [counter]);
   return (
     <div className="mail-info">
-    <MailchimpSubscribe counter={counter} setCounter={setCounter}
-      url={postUrl}
-      render={({ subscribe, status, message }) => (
+      <MailchimpSubscribe
+        counter={counter}
+        setCounter={setCounter}
+        url={postUrl}
+        render={({ subscribe, status, message }) => (
           <div>
             <EarlyAccessForm
               counter={counter}
@@ -26,9 +28,9 @@ const MailchimpFormContainer = ({show}) => {
               onSubmitted={(formData) => subscribe(formData)}
             />
           </div>
-      )}
-    />
-        {show?<MessageComponent counter={counter}/>:null}
+        )}
+      />
+      {show ? <MessageComponent counter={counter} /> : null}
     </div>
   );
 };
