@@ -52,14 +52,36 @@ def is_internal_request(request):
     return False
 
 
-def register_yodlee_login_name():
-    payload = {'clientId': 'nMBh2VpFUf1s8KW3s4RQqCrQHrAOCnIW', 'secret': 'VnASgLDozoiY4WgP'}
-    headers = {'Api-Version': '1.1', 'loginName': 'e918afdd-e759-410b-9e3a-124279032910_ADMIN'}
+def register_yodlee_login_name(yodlee_login_name):
+    payload = {
+        'clientId': 'nMBh2VpFUf1s8KW3s4RQqCrQHrAOCnIW',
+        'secret': 'VnASgLDozoiY4WgP'
+    }
+    headers = {
+        'Api-Version': '1.1',
+        'loginName': 'e918afdd-e759-410b-9e3a-124279032910_ADMIN'
+    }
     managers_token = requests.post('https://development.api.yodlee.uk/ysl/auth/token', payload, headers=headers)
+    token_dict = managers_token.json()
+    token = token_dict.get('token').get('accessToken')
 
-    # register_at_yodlee = requests.post(f'https://developer.yodlee.com/user/register', payload,
-    #                                    headers={'content-type': 'application/json'})
-    print(managers_token.json())
+    registry_headers = {
+        'Api-Version': '1.1',
+        'Content-Type': 'application/json',
+        'clientId': 'nMBh2VpFUf1s8KW3s4RQqCrQHrAOCnIW',
+        'cobrand-Name': '{cobrandName}',
+        'Authorization': f'Bearer {token}'
+
+    }
+    registry_payload = json.dumps({'user': {'loginName': f'{yodlee_login_name}'}})
+
+    register_at_yodlee = requests.post('https://development.api.yodlee.uk/ysl/user/register', registry_payload,
+                                       headers=registry_headers)
+
+    # the possible error codes are (200,400,401). All of them are important to our application and not the end user
+    # I suppose in this case logging is better than error handling. 400 is for user that already exists
+    # 401 is if we have problems with our credentials
+    print(register_at_yodlee.json())
 
 
-register_yodlee_login_name()
+register_yodlee_login_name('google-oauth2|11474973646491801459018')

@@ -28,8 +28,9 @@ class UserProfile(models.Model):
     # Custom Assets
     custom_assets_key = EncryptedCharField(max_length=500, blank=True)
 
+# Maybe it will be better bellow logic to be moved to views !
     def save(self, *args, **kwargs):
-        self.nordigen_requisition = str(self.id) + self.user_identifier
+        # self.nordigen_requisition = str(self.id) + self.user_identifier
         self.yodlee_login_name = self.user_identifier + str(self.id)
         self.custom_assets_key = str(self.id) + self.user_identifier + str(self.id)
         super(UserProfile, self).save(*args, **kwargs)

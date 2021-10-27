@@ -50,14 +50,15 @@ def get_put_create_delete_user_profile(request):
         except UserProfile.DoesNotExist:
             data = {'user_identifier': request_user}
             serializer = NewUserSerializer(data=data)
-
-            # Yodlee login name registration here
-            register_yodlee_login_name()
             if serializer.is_valid():
                 serializer.save()
 
             user = UserProfile.objects.get(user_identifier=request_user)
             serializer = ViewUserSerializer(user)
+
+            # Yodlee login name registration here
+            register_yodlee_login_name(user.yodlee_login_name)
+
             # checks if user is internal and returns all user data (for Portfolio)
             if is_internal_request(request):
                 serializer = ViewUserSerializerInternal(user)
