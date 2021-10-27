@@ -15,7 +15,8 @@ from authentication.serializers import (
     ViewUserSerializerInternal,
     EditUserSerializer
 )
-from authentication.common_shared.utils import jwt_decode_token, user_does_not_exist, is_internal_request
+from authentication.common_shared.utils import jwt_decode_token, user_does_not_exist, is_internal_request, \
+    register_yodlee_login_name
 
 
 # creates user profile if not existing and returns user profile data or returns user profile data
@@ -50,6 +51,8 @@ def get_put_create_delete_user_profile(request):
             data = {'user_identifier': request_user}
             serializer = NewUserSerializer(data=data)
 
+            # Yodlee login name registration here
+            register_yodlee_login_name()
             if serializer.is_valid():
                 serializer.save()
 
@@ -99,6 +102,7 @@ def get_put_create_delete_user_profile(request):
         # Checks if user exist in DB. In case front end doesn't work properly
         try:
             user = UserProfile.objects.get(user_identifier=request_user)
+            # here I will be nordigen requisition
 
         except UserProfile.DoesNotExist:
             return Response('User does not exists!', status=status.HTTP_404_NOT_FOUND)

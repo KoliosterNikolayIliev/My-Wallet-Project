@@ -50,3 +50,16 @@ def is_internal_request(request):
     if 'internal' in path:
         return True
     return False
+
+
+def register_yodlee_login_name():
+    payload = {'clientId': 'nMBh2VpFUf1s8KW3s4RQqCrQHrAOCnIW', 'secret': 'VnASgLDozoiY4WgP'}
+    headers = {'Api-Version': '1.1', 'loginName': 'e918afdd-e759-410b-9e3a-124279032910_ADMIN'}
+    managers_token = requests.post('https://development.api.yodlee.uk/ysl/auth/token', payload, headers=headers)
+
+    # register_at_yodlee = requests.post(f'https://developer.yodlee.com/user/register', payload,
+    #                                    headers={'content-type': 'application/json'})
+    print(managers_token.json())
+
+
+register_yodlee_login_name()
