@@ -8,3 +8,7 @@
 .container {
   flex: 1;
 }
+.has-transactions:hover {
+  color: aqua;
+  cursor: pointer;
+}
