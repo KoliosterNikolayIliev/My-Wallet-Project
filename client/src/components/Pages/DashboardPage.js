@@ -40,9 +40,11 @@ const DashboardPage = () => {
   };
 
   const getAccountTransactions = async (provider, account) => {
+    setLoading(true)
     const token = await getAccessTokenSilently();
     const transactions = await getTransactions(token, provider, account)
     setTransactions({transactions})
+    setLoading(false)
   }
   // fetch all data on first render
   useEffect(() => {
