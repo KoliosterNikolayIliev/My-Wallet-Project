@@ -34,15 +34,15 @@ const DashboardPage = () => {
         setBalances(assets[0]);
         setHoldings(assets[1]);
       })(),
-      (async () => {
-        const transactions = await getTransactions(token);
-        setTransactions(transactions);
-      })(),
     ]);
 
     setLoading(false);
   };
 
+  const getAccountTransactions = async (provider, account) => {
+    const token = await getAccessTokenSilently();
+    const transactions = getTransactions(token, provider, account)
+  }
   // fetch all data on first render
   useEffect(() => {
     getData();
