@@ -12,3 +12,7 @@
   color: aqua;
   cursor: pointer;
 }
+
+.has-transactions {
+  color: brown;
+}
