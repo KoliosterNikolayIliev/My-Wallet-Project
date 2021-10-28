@@ -75,7 +75,7 @@ const DashboardPage = () => {
 
           <div className="container">
             <h1>Holdings</h1>
-            <HoldingsContainerComponent data={holdings} />
+            <HoldingsContainerComponent data={holdings} getTransactionsFunc={getAccountTransactions} />
           </div>
 
           <div className="container">
