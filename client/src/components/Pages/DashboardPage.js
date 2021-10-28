@@ -41,7 +41,8 @@ const DashboardPage = () => {
 
   const getAccountTransactions = async (provider, account) => {
     const token = await getAccessTokenSilently();
-    const transactions = getTransactions(token, provider, account)
+    const transactions = await getTransactions(token, provider, account)
+    console.log(transactions)
   }
   // fetch all data on first render
   useEffect(() => {
@@ -67,7 +68,7 @@ const DashboardPage = () => {
         <div className="dashboard-container">
           <div className="container">
             <h1>Balances</h1>
-            <BalancesContainerComponent data={balances} />
+            <BalancesContainerComponent data={balances} getTransactionsFunc={getAccountTransactions} />
           </div>
 
           <div className="container">

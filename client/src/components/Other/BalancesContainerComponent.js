@@ -1,14 +1,18 @@
 import React from "react";
 import BalanceComponent from "./BalanceComponent";
 
-const BalancesContainerComponent = ({ data }) => {
+const BalancesContainerComponent = ({ data, getTransactionsFunc }) => {
+  let provider;
+  let account;
   return (
     <div>
       {Object.entries(data).map(([key, value]) => {
         if (value.status === "success") {
+          provider = key;
           return (
             <ul>
               {Object.entries(value.content).map(([key, value]) => {
+                account = key;
                 return (
                   <li>
                     <BalanceComponent
@@ -16,6 +20,9 @@ const BalancesContainerComponent = ({ data }) => {
                       providerName={value.providerName}
                       amount={value.balanceData.amount}
                       currency={value.balanceData.currency}
+                      provider={provider}
+                      account={account}
+                      getTransactionsFunc={getTransactionsFunc}
                     />
                   </li>
                 );
