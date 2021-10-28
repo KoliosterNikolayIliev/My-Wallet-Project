@@ -36,7 +36,7 @@ async def get_assets():
     return jsonify(results), 200
 
 @bp.route('/api/transactions', methods=(['GET']))
-def get_assets_transactions():
+def get_account_transactions():
     # check if a token was passed in the Authorization header
     received_token = request.headers.get('Authorization')
     validated_token = validate_auth_header(received_token)
@@ -47,6 +47,14 @@ def get_assets_transactions():
     user_data = validated_token[1]
     
     # get transactions data(done via Assets)
-    headers = {'yodlee_loginName':user_data['yodlee_login_name'], 'nordigen_key': user_data['nordigen_requisition'],'binance_key':user_data['binance_key'], 'binance_secret':user_data['binance_secret'], 'coinbase_key': user_data['coinbase_api_key'], 'coinbase_secret': user_data['coinbase_api_secret']}
+    headers = {
+        'provider': request.headers.get('provider'),
+        'account': request.headers.get('account'),
+        'yodlee_loginName':user_data['yodlee_login_name'],
+        'binance_key':user_data['binance_key'],
+        'binance_secret':user_data['binance_secret'],
+        'coinbase_key': user_data['coinbase_api_key'],
+        'coinbase_secret': user_data['coinbase_api_secret']
+    }
     response = jsonify(get_transactions(headers))
     return response, 200
