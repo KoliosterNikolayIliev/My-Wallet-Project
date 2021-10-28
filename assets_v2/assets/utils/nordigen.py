@@ -246,7 +246,7 @@ async def get_account_transactions(account, session):
     for transaction in transactions:
         transaction_data[transaction["transactionId"]] = transaction["transactionAmount"]
 
-    data = {"bankName": bank_name, "transactions": transaction_data}
+    data = {bank_name: transaction_data}
 
     # return saved data
     return {'status': 'success', 'content': data}
