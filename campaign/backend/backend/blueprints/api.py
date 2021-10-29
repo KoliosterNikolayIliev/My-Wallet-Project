@@ -6,7 +6,9 @@ import os, pymongo
 bp = Blueprint('api', __name__)
 CORS(bp)
 
-client = pymongo.MongoClient("mongodb+srv://trivialAdmin:OZjhinrBmHRGiXHk@3vial.9mih9.mongodb.net/3vial-Campaign?retryWrites=true&w=majority")
+MONGO_PASS = os.environ.get('MONGO_PASS')
+
+client = pymongo.MongoClient(f"mongodb+srv://trivialAdmin:{MONGO_PASS}@3vial.9mih9.mongodb.net/3vial-Campaign?retryWrites=true&w=majority")
 db = client.get_database("3vial-Campaign")
 
 client = mailchimp_marketing.Client()
