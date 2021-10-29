@@ -22,7 +22,7 @@ const EarlyAccessForm = ({
       author: email,
       quiz: answerSheet,
     };
-    await fetch("http://localhost:5000/save-form-data", {
+    await fetch("http://api.jointrivial.com/save-form-data", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
