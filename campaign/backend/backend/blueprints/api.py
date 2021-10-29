@@ -1,15 +1,10 @@
 from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 import mailchimp_marketing
-import os, pymongo
+import os, csv
 
 bp = Blueprint('api', __name__)
 CORS(bp)
-
-MONGO_PASS = os.environ.get('MONGO_PASS')
-
-client = pymongo.MongoClient(f"mongodb+srv://trivialAdmin:{MONGO_PASS}@3vial.9mih9.mongodb.net/3vial-Campaign?retryWrites=true&w=majority")
-db = client.get_database("3vial-Campaign")
 
 client = mailchimp_marketing.Client()
 client.set_config({
@@ -33,5 +28,11 @@ def save_form_data():
         "author": author,
         "quiz": quiz
     }
-    db.questionnaires.insert_one(data)
+
+    with open('data.csv', 'a+', encoding='UTF8') as f:
+        writer = csv.DictWriter(f, ["author", "quiz"])
+        if os.stat('data.csv').st_size == 0:
+            writer.writeheader()
+        writer.writerow(data)
+
     return jsonify({'status': 'success'})
