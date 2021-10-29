@@ -31,6 +31,5 @@ def save_form_data():
         "author": author,
         "quiz": quiz
     }
-
     db.questionnaires.insert_one(data)
     return jsonify({'status': 'success'})
