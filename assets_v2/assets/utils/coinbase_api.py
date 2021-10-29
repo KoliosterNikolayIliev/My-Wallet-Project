@@ -152,7 +152,7 @@ async def get_account_balances(api_key, api_secret):
         try:
             client_accounts = client.get_accounts()
         except Exception as e:
-            return {'status': 'failed', 'content': f"Error: {e.message}"}
+            return {'status': 'failed', 'content': f"Error: {e}"}
 
     else:
         client_accounts = MOCK_ACCOUNTS_DATA
@@ -168,13 +168,14 @@ async def get_transactions(api_key, api_secret, account):
     except Exception as e:
         return {'status': 'failed', 'content': f"Error: {e}"}
 
-    data = {}
     try:
         if USE_MOCK != 'True':
+            account_name = client.get_account(account)['name']
             transactions = client.get_transactions(account, limit=10)
 
         else:
             transactions = MOCK_TRANSACTIONS_DATA
+            account_name = MOCK_ACCOUNTS_DATA['name']
 
         # check if there are any transactions for this wallet
         if transactions["data"]:
@@ -184,7 +185,7 @@ async def get_transactions(api_key, api_secret, account):
                 if transaction["status"] == "completed":
                     transaction_data[transaction["id"]] = transaction['amount']
 
-            data = transaction_data
+            data = {account_name: transaction_data}
     except:
         return {'status': 'failed', 'content': f"Error: unknown error"}
 

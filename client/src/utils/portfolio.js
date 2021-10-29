@@ -8,10 +8,12 @@ const getAssets = async (token) => {
   return response.json();
 };
 
-const getTransactions = async (token) => {
+const getTransactions = async (token, provider, account) => {
   const response = await fetch("http://localhost:5001/api/transactions", {
     headers: {
       Authorization: `Bearer ${token}`,
+      provider: provider,
+      account: account
     },
   });
 

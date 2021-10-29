@@ -34,15 +34,18 @@ const DashboardPage = () => {
         setBalances(assets[0]);
         setHoldings(assets[1]);
       })(),
-      (async () => {
-        const transactions = await getTransactions(token);
-        setTransactions(transactions);
-      })(),
     ]);
 
     setLoading(false);
   };
 
+  const getAccountTransactions = async (provider, account) => {
+    setLoading(true)
+    const token = await getAccessTokenSilently();
+    const transactions = await getTransactions(token, provider, account)
+    setTransactions({transactions})
+    setLoading(false)
+  }
   // fetch all data on first render
   useEffect(() => {
     getData();
@@ -67,12 +70,12 @@ const DashboardPage = () => {
         <div className="dashboard-container">
           <div className="container">
             <h1>Balances</h1>
-            <BalancesContainerComponent data={balances} />
+            <BalancesContainerComponent data={balances} getTransactionsFunc={getAccountTransactions} />
           </div>
 
           <div className="container">
             <h1>Holdings</h1>
-            <HoldingsContainerComponent data={holdings} />
+            <HoldingsContainerComponent data={holdings} getTransactionsFunc={getAccountTransactions} />
           </div>
 
           <div className="container">
