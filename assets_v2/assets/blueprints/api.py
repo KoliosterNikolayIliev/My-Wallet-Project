@@ -10,6 +10,7 @@ from ..utils.nordigen import get_account_transactions as get_nordigen_transactio
 from ..utils.nordigen import get_single_account_balance as get_nordigen_balance
 from ..utils.binance_api import get_balances as get_binance_holdings
 from ..utils.coinbase_api import get_account_balances as get_coinbase_holdings
+from ..utils.coinbase_api import get_transactions as get_coinbase_transactions
 from ..utils.custom_assets_api import get_holdings as get_custom_assets_holdings
 
 bp = Blueprint('api', __name__)
@@ -49,15 +50,19 @@ async def get_holdings():
 
 @bp.route('/transactions', methods=(['GET']))
 async def get_transactions():
-    results = {}
     async with aiohttp.ClientSession() as session:
-        tasks = []
-        nordigen_tasks = []
-        tasks.append(asyncio.ensure_future(get_yodlee_transactions(request.headers.get('yodlee_loginName'), session=session)))
-        tasks.append(asyncio.ensure_future(get_nordigen_transactions(request.headers.get('nordigen_key'), session=session, tasks=nordigen_tasks)))
+        if request.headers.get('provider') == 'nordigen':
+            results = await get_nordigen_transactions(request.headers.get('account'), session)
 
-        responses = await asyncio.gather(*tasks)
-        results['yodlee'] = responses[0]
-        results['nordigen'] = responses[1]
+        elif request.headers.get('provider') == 'yodlee':
+            results = await get_yodlee_transactions(request.headers.get('yodlee_loginName'), session, request.headers.get('account'))
+
+        elif request.headers.get('provider') == 'coinbase':
+            results = await get_coinbase_transactions(request.headers.get('coinbase_key'),
+                                                      request.headers.get('coinbase_secret'),
+                                                      request.headers.get('account'))
+
+        else:
+            return {'status': 'failed', 'content': 'provider is not valid or missing'}
     
     return jsonify(results)

@@ -4,12 +4,13 @@ import uuid, hmac, time, hashlib
 
 USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
 
-MOCK_BALANCES_DATA = [{'asset': 'BTC', 'free': '0.00069389', 'locked': '0.00000000'},
-                    {'asset': 'LTC', 'free': '0.00000000', 'locked': '0.00000000'},
-                    {'asset': 'ETH', 'free': '0.00590000', 'locked': '0.00000000'},
-                    {'asset': 'NEO', 'free': '0.00000000', 'locked': '0.00000000'},
-                    {'asset': 'BNB', 'free': '0.00238492', 'locked': '0.00000000'},
-                    ]
+MOCK_BALANCES_DATA = {'balances': [{'asset': 'BTC', 'free': '0.00069389', 'locked': '0.00000000'},
+                                   {'asset': 'LTC', 'free': '0.00000000', 'locked': '0.00000000'},
+                                   {'asset': 'ETH', 'free': '0.00590000', 'locked': '0.00000000'},
+                                   {'asset': 'NEO', 'free': '0.00000000', 'locked': '0.00000000'},
+                                   {'asset': 'BNB', 'free': '0.00238492', 'locked': '0.00000000'},
+                                   ]}
+
 
 def format_balances_response(balances):
     data = {}
@@ -41,8 +42,7 @@ async def get_balances(api_key, api_secret, session):
 
         async with session.get(URL, headers=headers, params=params) as response:
             awaited = await response.json()
-            data = format_balances_response(awaited)
-            return data
+            balances = awaited
 
     else:
         balances = MOCK_BALANCES_DATA

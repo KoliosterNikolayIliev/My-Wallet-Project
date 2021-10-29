@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import MessageComponent from "./MessageComponent";
 
 const MailchimpFormContainer = ({ show }) => {
-  const postUrl = `https://gmail.us5.list-manage.com/subscribe/post?u=f813380dbeb308d67ea08fca7&id=3052096cd5`;
+  const postUrl = `https://jointrivial.us5.list-manage.com/subscribe/post?u=f813380dbeb308d67ea08fca7&id=3052096cd5`;
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
