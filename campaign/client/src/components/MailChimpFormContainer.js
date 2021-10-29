@@ -8,7 +8,7 @@ const MailchimpFormContainer = ({ show }) => {
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
-    fetch("http://api.jointrivial.com/subscribers").then((response) =>
+    fetch("http://server.jointrivial.com/subscribers").then((response) =>
       response.json().then((data) => setCounter(data["count"]))
     );
   }, [counter]);
