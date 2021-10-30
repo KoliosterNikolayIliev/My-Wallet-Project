@@ -16,7 +16,7 @@ from authentication.serializers import (
     EditUserSerializer
 )
 from authentication.common_shared.utils import jwt_decode_token, user_does_not_exist, is_internal_request, \
-    register_yodlee_login_name
+    register_or_delete_yodlee_login_name, create_nordigen_requisition
 
 
 # creates user profile if not existing and returns user profile data or returns user profile data
@@ -57,7 +57,7 @@ def get_put_create_delete_user_profile(request):
             serializer = ViewUserSerializer(user)
 
             # Yodlee login name registration here
-            register_yodlee_login_name(user.yodlee_login_name)
+            register_or_delete_yodlee_login_name(user.user_identifier)
 
             # checks if user is internal and returns all user data (for Portfolio)
             if is_internal_request(request):
@@ -88,6 +88,7 @@ def get_put_create_delete_user_profile(request):
 
         # Delete UserAccount from database
         user = UserProfile.objects.filter(user_identifier=request_user)
+        register_or_delete_yodlee_login_name(user.user_identifier, delete=True)
         if user:
             user.delete()
         # Returns Success
@@ -104,6 +105,7 @@ def get_put_create_delete_user_profile(request):
         try:
             user = UserProfile.objects.get(user_identifier=request_user)
             # here I will be nordigen requisition
+            create_nordigen_requisition()
 
         except UserProfile.DoesNotExist:
             return Response('User does not exists!', status=status.HTTP_404_NOT_FOUND)

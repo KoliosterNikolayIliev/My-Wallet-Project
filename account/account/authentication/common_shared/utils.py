@@ -1,4 +1,5 @@
 import json
+import os
 
 import jwt
 import requests
@@ -52,36 +53,53 @@ def is_internal_request(request):
     return False
 
 
-def register_yodlee_login_name(yodlee_login_name):
+def register_or_delete_yodlee_login_name(yodlee_login_name, delete=False, ):
+    admin_login_name = os.environ.get('YODLEE_ADMIN_LOGIN_NAME')
+    client_id = os.environ.get('ASSETS_YODLEE_CLIENT_ID')
+    client_secret = os.environ.get('ASSETS_YODLEE_SECRET')
+    managers_token_url = os.environ.get('YODLEE_GET_MANAGERS_TOKEN_URL')
+    register_user_url = os.environ.get('YODLEE_REGISTER_USER_URL')
+    delete_user_url = os.environ.get('YODLEE_DELETE_USER_URL')
+
     payload = {
-        'clientId': 'nMBh2VpFUf1s8KW3s4RQqCrQHrAOCnIW',
-        'secret': 'VnASgLDozoiY4WgP'
+        'clientId': client_id,
+        'secret': client_secret
     }
     headers = {
         'Api-Version': '1.1',
-        'loginName': 'e918afdd-e759-410b-9e3a-124279032910_ADMIN'
+        'loginName': admin_login_name if not delete else yodlee_login_name
     }
-    managers_token = requests.post('https://development.api.yodlee.uk/ysl/auth/token', payload, headers=headers)
-    token_dict = managers_token.json()
+    response = requests.post(managers_token_url, payload, headers=headers)
+    token_dict = response.json()
     token = token_dict.get('token').get('accessToken')
 
-    registry_headers = {
+    registry_delete_headers = {
         'Api-Version': '1.1',
         'Content-Type': 'application/json',
-        'clientId': 'nMBh2VpFUf1s8KW3s4RQqCrQHrAOCnIW',
-        'cobrand-Name': '{cobrandName}',
+        'clientId': client_id,
         'Authorization': f'Bearer {token}'
 
     }
     registry_payload = json.dumps({'user': {'loginName': f'{yodlee_login_name}'}})
 
-    register_at_yodlee = requests.post('https://development.api.yodlee.uk/ysl/user/register', registry_payload,
-                                       headers=registry_headers)
+    if delete:
+        return requests.delete(delete_user_url, headers=registry_delete_headers)
+
+    return requests.post(register_user_url, registry_payload,
+                         headers=registry_delete_headers)
 
     # the possible error codes are (200,400,401). All of them are important to our application and not the end user
     # I suppose in this case logging is better than error handling. 400 is for user that already exists
     # 401 is if we have problems with our credentials
-    print(register_at_yodlee.json())
 
 
-register_yodlee_login_name('google-oauth2|11474973646491801459018')
+# print(register_or_delete_yodlee_login_name('google-oauth2|1147497364649180145901821').json())
+
+
+# print(register_or_delete_yodlee_login_name('google-oauth2|1147497364649180145901821', delete=True))
+
+
+def create_nordigen_requisition():
+    # secret_id = os.environ.get
+    # secret_key
+    pass
