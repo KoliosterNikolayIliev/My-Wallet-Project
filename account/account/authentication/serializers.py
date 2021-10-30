@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from authentication.models import UserProfile
+from authentication.models import UserProfile, NordigenRequisition
 
 
 class NewUserSerializer(serializers.ModelSerializer):
@@ -12,6 +12,8 @@ class NewUserSerializer(serializers.ModelSerializer):
 
 
 class ViewUserSerializer(serializers.ModelSerializer):
+    nordigen_requisition = serializers.PrimaryKeyRelatedField(many=True, queryset=NordigenRequisition.objects.all())
+
     class Meta:
         model = UserProfile
         fields = [
@@ -19,8 +21,7 @@ class ViewUserSerializer(serializers.ModelSerializer):
             'last_name',
             'base_currency',
             'source_label',
-            'yodlee_login_name',
-            'nordigen_requisition'
+            'nordigen_requisition',
         ]
 
 
@@ -31,6 +32,14 @@ class EditUserSerializer(serializers.ModelSerializer):
 
 
 class ViewUserSerializerInternal(serializers.ModelSerializer):
+    Nordigen_requisitions = TrackSerializer(many=True, read_only=True)
+
     class Meta:
         model = UserProfile
         fields = '__all__'
+
+
+class NordigenRequisitionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NordigenRequisition
+        exclude = ['user']

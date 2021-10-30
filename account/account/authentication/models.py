@@ -22,24 +22,24 @@ class UserProfile(models.Model):
 
 
 class NordigenRequisition(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    """
+    Trigger function for Mongo DB:
+    Needed for creating ID for the model
+    how to setup trigger in mongo DB Atlas: https://www.mongodb.com/basics/mongodb-auto-increment
+    Trigger name: nordigenRequisitionId
+
+    exports = async function(changeEvent) {
+        var docId = changeEvent.fullDocument._id;
+
+        const countercollection = context.services.get("3vial").db(changeEvent.ns.db).collection("counters");
+        const authentication_nordigenrequisition = context.services.get("3vial").db(changeEvent.ns.db).collection(changeEvent.ns.coll);
+
+        var counter = await countercollection.findOneAndUpdate({_id: changeEvent.ns },{ $inc: { seq_value: 1 }}, { returnNewDocument: true, upsert : true});
+        var updateRes = await authentication_nordigenrequisition.updateOne({_id : docId},{ $set : {id : counter.seq_value}});
+
+        console.log(`Updated ${JSON.stringify(changeEvent.ns)} with counter ${counter.seq_value} result : ${JSON.stringify(updateRes)}`);
+        };
+    """
+    user = models.ForeignKey(UserProfile,related_name='nordigen_requisition', on_delete=models.CASCADE)
     institution_id = EncryptedCharField(max_length=100, blank=True)
     requisition_id = EncryptedCharField(max_length=100, blank=True)
-
-
-"""
-Triger function for Mongo DB:
-Triger name: nordigenRequisitionId
-
-exports = async function(changeEvent) {
-    var docId = changeEvent.fullDocument._id;
-    
-    const countercollection = context.services.get("3vial").db(changeEvent.ns.db).collection("counters");
-    const authentication_nordigenrequisition = context.services.get("3vial").db(changeEvent.ns.db).collection(changeEvent.ns.coll);
-    
-    var counter = await countercollection.findOneAndUpdate({_id: changeEvent.ns },{ $inc: { seq_value: 1 }}, { returnNewDocument: true, upsert : true});
-    var updateRes = await authentication_nordigenrequisition.updateOne({_id : docId},{ $set : {id : counter.seq_value}});
-    
-    console.log(`Updated ${JSON.stringify(changeEvent.ns)} with counter ${counter.seq_value} result : ${JSON.stringify(updateRes)}`);
-    };
-"""

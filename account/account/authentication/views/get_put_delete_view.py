@@ -8,12 +8,12 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 # from authentication.common_shared.sensitive_data import MANAGER_TOKEN_PAYLOAD, MANAGER_TOKEN_URL, DELETE_USER
-from authentication.models import UserProfile
+from authentication.models import UserProfile, NordigenRequisition
 from authentication.serializers import (
     NewUserSerializer,
     ViewUserSerializer,
     ViewUserSerializerInternal,
-    EditUserSerializer
+    EditUserSerializer, NordigenRequisitionSerializer
 )
 from authentication.common_shared.utils import jwt_decode_token, user_does_not_exist, is_internal_request, \
     register_or_delete_yodlee_login_name, create_nordigen_requisition
@@ -100,12 +100,17 @@ def get_put_create_delete_user_profile(request):
         stream = io.BytesIO(request.body)
         data = JSONParser().parse(stream)
         data['user_identifier'] = request_user
+        # nordigen_institution_id = data['institution_id']
 
         # Checks if user exist in DB. In case front end doesn't work properly
         try:
             user = UserProfile.objects.get(user_identifier=request_user)
-            # here I will be nordigen requisition
-            create_nordigen_requisition()
+            # Nordigen Requisition
+            requisition = NordigenRequisition.objects.get(user_id=user.id)
+            nordigen_data = create_nordigen_requisition('12444444443roki')
+            nordigen_serializer = NordigenRequisitionSerializer(requisition, data=nordigen_data)
+            if nordigen_serializer.is_valid():
+                nordigen_serializer.save()
 
         except UserProfile.DoesNotExist:
             return Response('User does not exists!', status=status.HTTP_404_NOT_FOUND)

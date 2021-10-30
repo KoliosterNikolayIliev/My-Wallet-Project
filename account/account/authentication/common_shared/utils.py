@@ -99,7 +99,6 @@ def register_or_delete_yodlee_login_name(yodlee_login_name, delete=False, ):
 # print(register_or_delete_yodlee_login_name('google-oauth2|1147497364649180145901821', delete=True))
 
 
-def create_nordigen_requisition():
-    # secret_id = os.environ.get
-    # secret_key
-    pass
+def create_nordigen_requisition(nordigen_institution_id):
+    return {'institution_id': nordigen_institution_id,
+            'requisition_id': 222}
