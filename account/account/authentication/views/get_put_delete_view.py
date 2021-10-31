@@ -13,10 +13,13 @@ from authentication.serializers import (
     NewUserSerializer,
     ViewUserSerializer,
     ViewUserSerializerInternal,
-    EditUserSerializer, NordigenRequisitionSerializer
+    EditUserSerializer,
 )
-from authentication.common_shared.utils import jwt_decode_token, user_does_not_exist, is_internal_request, \
-    register_or_delete_yodlee_login_name, create_nordigen_requisition
+from authentication.common_shared.utils import (
+    is_internal_request,
+    register_or_delete_yodlee_login_name,
+    return_request_user,
+)
 
 
 # creates user profile if not existing and returns user profile data or returns user profile data
@@ -28,12 +31,9 @@ def get_put_create_delete_user_profile(request):
     -Deletes profile
     -Edits profile
     """
-    # Get and decode token.
-    token = request.headers.get('Authorization').split(' ')[1]
-    # check if user exists in Aut0 DB. Important check if user is deleted and same token is used in get or put request
-    if user_does_not_exist(token):
+    request_user = return_request_user(request)
+    if not request_user:
         return Response('UNAUTHORIZED!', status=status.HTTP_401_UNAUTHORIZED)
-    request_user = jwt_decode_token(token).get('sub')
 
     if request.method == 'GET':
         # Checks if the user profile is already in the DB and returns it if True
@@ -70,10 +70,10 @@ def get_put_create_delete_user_profile(request):
             # Get Manager Token for Authorisation of the delete request
             # payload = MANAGER_TOKEN_PAYLOAD
             payload = os.environ.get('MANAGER_TOKEN_PAYLOAD')
-            MANAGER_TOKEN_URL = os.environ.get('MANAGER_TOKEN_URL')
+            manager_token_url = os.environ.get('MANAGER_TOKEN_URL')
             headers_get_token_request = CaseInsensitiveDict()
             headers_get_token_request['content-type'] = 'application/json'
-            token_request = requests.post(f'{MANAGER_TOKEN_URL}', payload, headers=headers_get_token_request)
+            token_request = requests.post(f'{manager_token_url}', payload, headers=headers_get_token_request)
             manger_token = token_request.json()['access_token']
         except Exception:
             return Response('UNAUTHORIZED!', status=status.HTTP_401_UNAUTHORIZED)
@@ -87,9 +87,9 @@ def get_put_create_delete_user_profile(request):
         requests.delete(f'{user_data_url}{request_user}', headers=headers_delete_request, )
 
         # Delete UserAccount from database
-        user = UserProfile.objects.filter(user_identifier=request_user)
-        register_or_delete_yodlee_login_name(user.user_identifier, delete=True)
+        user = UserProfile.objects.filter(user_identifier=request_user)[0]
         if user:
+            register_or_delete_yodlee_login_name(user.user_identifier, delete=True)
             user.delete()
         # Returns Success
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -100,17 +100,10 @@ def get_put_create_delete_user_profile(request):
         stream = io.BytesIO(request.body)
         data = JSONParser().parse(stream)
         data['user_identifier'] = request_user
-        # nordigen_institution_id = data['institution_id']
 
         # Checks if user exist in DB. In case front end doesn't work properly
         try:
             user = UserProfile.objects.get(user_identifier=request_user)
-            # Nordigen Requisition
-            requisition = NordigenRequisition.objects.get(user_id=user.id)
-            nordigen_data = create_nordigen_requisition('12444444443roki')
-            nordigen_serializer = NordigenRequisitionSerializer(requisition, data=nordigen_data)
-            if nordigen_serializer.is_valid():
-                nordigen_serializer.save()
 
         except UserProfile.DoesNotExist:
             return Response('User does not exists!', status=status.HTTP_404_NOT_FOUND)

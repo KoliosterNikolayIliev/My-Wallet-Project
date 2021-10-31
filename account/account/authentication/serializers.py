@@ -12,8 +12,6 @@ class NewUserSerializer(serializers.ModelSerializer):
 
 
 class ViewUserSerializer(serializers.ModelSerializer):
-    nordigen_requisition = serializers.PrimaryKeyRelatedField(many=True, queryset=NordigenRequisition.objects.all())
-
     class Meta:
         model = UserProfile
         fields = [
@@ -21,7 +19,6 @@ class ViewUserSerializer(serializers.ModelSerializer):
             'last_name',
             'base_currency',
             'source_label',
-            'nordigen_requisition',
         ]
 
 
@@ -32,8 +29,6 @@ class EditUserSerializer(serializers.ModelSerializer):
 
 
 class ViewUserSerializerInternal(serializers.ModelSerializer):
-    Nordigen_requisitions = TrackSerializer(many=True, read_only=True)
-
     class Meta:
         model = UserProfile
         fields = '__all__'
@@ -42,4 +37,5 @@ class ViewUserSerializerInternal(serializers.ModelSerializer):
 class NordigenRequisitionSerializer(serializers.ModelSerializer):
     class Meta:
         model = NordigenRequisition
-        exclude = ['user']
+        fields = ['user', 'institution_id', 'requisition_id']
+

@@ -40,6 +40,6 @@ class NordigenRequisition(models.Model):
         console.log(`Updated ${JSON.stringify(changeEvent.ns)} with counter ${counter.seq_value} result : ${JSON.stringify(updateRes)}`);
         };
     """
-    user = models.ForeignKey(UserProfile,related_name='nordigen_requisition', on_delete=models.CASCADE)
-    institution_id = EncryptedCharField(max_length=100, blank=True)
-    requisition_id = EncryptedCharField(max_length=100, blank=True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    institution_id = models.CharField(max_length=100, blank=True)
+    requisition_id = models.CharField(max_length=100, blank=True)

@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate
 
 
 # Returns Auth0 id to be saved as username to Django user. Currently not used
+
+
 def jwt_get_username_from_payload_handler(payload):
     username = payload.get('sub').replace('|', '.')
     authenticate(remote_user=username)
@@ -94,11 +96,22 @@ def register_or_delete_yodlee_login_name(yodlee_login_name, delete=False, ):
 
 
 # print(register_or_delete_yodlee_login_name('google-oauth2|1147497364649180145901821').json())
-
-
 # print(register_or_delete_yodlee_login_name('google-oauth2|1147497364649180145901821', delete=True))
 
 
 def create_nordigen_requisition(nordigen_institution_id):
     return {'institution_id': nordigen_institution_id,
             'requisition_id': 222}
+
+
+def delete_nordigen_requisition(something):
+    pass
+
+
+def return_request_user(request):
+    # Get and decode token.
+    token = request.headers.get('Authorization').split(' ')[1]
+    # check if user exists in Aut0 DB. Important check if user is deleted and same token is used in get or put request
+    if user_does_not_exist(token):
+        return False
+    return jwt_decode_token(token).get('sub')
