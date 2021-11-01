@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Redirect } from "react-router";
 
 import LogOutButton from "../Buttons/LogOutButton";
+import ProfileButton from "../Buttons/ProfileButton";
 
 import { getAssets, getTransactions } from "../../utils/portfolio";
 
@@ -40,12 +41,12 @@ const DashboardPage = () => {
   };
 
   const getAccountTransactions = async (provider, account) => {
-    setLoading(true)
+    setLoading(true);
     const token = await getAccessTokenSilently();
-    const transactions = await getTransactions(token, provider, account)
-    setTransactions({transactions})
-    setLoading(false)
-  }
+    const transactions = await getTransactions(token, provider, account);
+    setTransactions({ transactions });
+    setLoading(false);
+  };
   // fetch all data on first render
   useEffect(() => {
     getData();
@@ -66,16 +67,23 @@ const DashboardPage = () => {
       <div className="main">
         <h2>Hi, {user.name}, this is the dashboard</h2>
         <LogOutButton />
+        <ProfileButton />
 
         <div className="dashboard-container">
           <div className="container">
             <h1>Balances</h1>
-            <BalancesContainerComponent data={balances} getTransactionsFunc={getAccountTransactions} />
+            <BalancesContainerComponent
+              data={balances}
+              getTransactionsFunc={getAccountTransactions}
+            />
           </div>
 
           <div className="container">
             <h1>Holdings</h1>
-            <HoldingsContainerComponent data={holdings} getTransactionsFunc={getAccountTransactions} />
+            <HoldingsContainerComponent
+              data={holdings}
+              getTransactionsFunc={getAccountTransactions}
+            />
           </div>
 
           <div className="container">
