@@ -82,9 +82,7 @@ def register_or_delete_yodlee_login_name(yodlee_login_name, delete=False, ):
 
     registry_delete_headers = {
         'Api-Version': '1.1',
-        'Content-Type': 'application/json',
-        'clientId': client_id,
-        'Authorization': f'Bearer {token}'
+        'Authorization': f'Bearer {token}',
 
     }
     registry_payload = json.dumps({'user': {'loginName': f'{yodlee_login_name}'}})
@@ -92,8 +90,7 @@ def register_or_delete_yodlee_login_name(yodlee_login_name, delete=False, ):
     if delete:
         return requests.delete(delete_user_url, headers=registry_delete_headers)
 
-    return requests.post(register_user_url, registry_payload,
-                         headers=registry_delete_headers)
+    return requests.post(register_user_url, registry_payload, headers=registry_delete_headers)
 
 
 def create_delete_nordigen_requisition(nordigen_institution_id=None, requisition_id=None):
