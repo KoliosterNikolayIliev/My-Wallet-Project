@@ -56,6 +56,11 @@ def is_internal_request(request):
 
 
 def register_or_delete_yodlee_login_name(yodlee_login_name, delete=False, ):
+    """
+    The possible error codes are (200,400,401). All of them are important to our application and not the end user.
+    I suppose in this case logging is better than error handling. 400 is for user that already exists
+    401 is if we have problems with our credentials
+    """
     admin_login_name = os.environ.get('YODLEE_ADMIN_LOGIN_NAME')
     client_id = os.environ.get('ASSETS_YODLEE_CLIENT_ID')
     client_secret = os.environ.get('ASSETS_YODLEE_SECRET')
@@ -89,14 +94,6 @@ def register_or_delete_yodlee_login_name(yodlee_login_name, delete=False, ):
 
     return requests.post(register_user_url, registry_payload,
                          headers=registry_delete_headers)
-
-    # the possible error codes are (200,400,401). All of them are important to our application and not the end user
-    # I suppose in this case logging is better than error handling. 400 is for user that already exists
-    # 401 is if we have problems with our credentials
-
-
-# print(register_or_delete_yodlee_login_name('google-oauth2|1147497364649180145901821').json())
-# print(register_or_delete_yodlee_login_name('google-oauth2|1147497364649180145901821', delete=True))
 
 
 def create_delete_nordigen_requisition(nordigen_institution_id=None, requisition_id=None):
