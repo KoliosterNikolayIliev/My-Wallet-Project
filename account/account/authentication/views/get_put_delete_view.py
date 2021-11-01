@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 # from authentication.common_shared.sensitive_data import MANAGER_TOKEN_PAYLOAD, MANAGER_TOKEN_URL, DELETE_USER
-from authentication.models import UserProfile, NordigenRequisition
+from authentication.models import UserProfile
 from authentication.serializers import (
     NewUserSerializer,
     ViewUserSerializer,
