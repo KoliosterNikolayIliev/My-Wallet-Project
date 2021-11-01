@@ -89,7 +89,7 @@ def get_put_create_delete_user_profile(request):
         # Delete UserAccount from database
         user = UserProfile.objects.filter(user_identifier=request_user)[0]
         if user:
-            register_or_delete_yodlee_login_name(user.user_identifier, delete=True)
+            register_or_delete_yodlee_login_name(user.user_identifier, end_user=True)
             user.delete()
         # Returns Success
         return Response(status=status.HTTP_204_NO_CONTENT)
