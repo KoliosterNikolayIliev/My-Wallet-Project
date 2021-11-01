@@ -26,11 +26,13 @@ def save_form_data():
     quiz = request.json['quiz']
     data = {
         "author": author,
-        "quiz": quiz
+        "What do you hope Trivial will help you with? (Select all that apply)": ', '.join(quiz['What do you hope Trivial will help you with? (Select all that apply)']),
+        "What do you use to solve this problem now? (Select only one option)": quiz['What do you use to solve this problem now? (Select only one option)'][0],
+        "Please list all of the investment platforms you use today?": quiz['Please list all of the investment platforms you use today?'][0],
     }
 
     with open('data.csv', 'a+', encoding='UTF8') as f:
-        writer = csv.DictWriter(f, ["author", "quiz"])
+        writer = csv.DictWriter(f, ["author", "What do you hope Trivial will help you with? (Select all that apply)", "What do you use to solve this problem now? (Select only one option)", "Please list all of the investment platforms you use today?"])
         if os.stat('data.csv').st_size == 0:
             writer.writeheader()
         writer.writerow(data)
