@@ -13,6 +13,16 @@ const Profile = () => {
   const [key, setKey] = useState(null);
   const [secret, setSecret] = useState(null);
 
+  const selectProvider = (e) => {
+    if (provider) {
+      e.target.parentElement.childNodes.forEach((node) => {
+        node.classList.remove("active");
+      });
+    }
+    e.target.classList.add("active");
+    setProvider(e.target.innerText);
+  };
+
   const saveChanges = async (provider) => {
     let data = {};
     const token = await getAccessTokenSilently();
@@ -43,10 +53,10 @@ const Profile = () => {
       <div>
         <h2>Hi, {user.name}, this is the profile page</h2>
         <ul>
-          <li onClick={(e) => setProvider(e.target.innerText)}>Binance</li>
-          <li onClick={(e) => setProvider(e.target.innerText)}>Coinbase</li>
-          <li onClick={(e) => setProvider(e.target.innerText)}>Yodlee</li>
-          <li onClick={(e) => setProvider(e.target.innerText)}>Nordigen</li>
+          <li onClick={(e) => selectProvider(e)}>Binance</li>
+          <li onClick={(e) => selectProvider(e)}>Coinbase</li>
+          <li onClick={(e) => selectProvider(e)}>Yodlee</li>
+          <li onClick={(e) => selectProvider(e)}>Nordigen</li>
         </ul>
 
         {!provider && <p>Select a provider on the right</p>}
@@ -83,6 +93,10 @@ const Profile = () => {
               placeholder={"API Secret goes here"}
             />
           </form>
+        )}
+
+        {(provider === "Yodlee" || provider === "Nordigen") && (
+          <p>Coming soon!</p>
         )}
 
         <button onClick={() => saveChanges(provider)}>
