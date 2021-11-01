@@ -56,7 +56,7 @@ class CreateDeleteNordigenRequisition(mixins.ListModelMixin, mixins.CreateModelM
         request_user = return_request_user(request)
         stream = io.BytesIO(request.body)
         request_data = JSONParser().parse(stream)
-        requisition_id = request_data.get('requisition_id')
+        institution_id = request_data.get('institution_id')
         if not request_user:
             return Response('UNAUTHORIZED!', status=status.HTTP_401_UNAUTHORIZED)
         try:
@@ -64,9 +64,10 @@ class CreateDeleteNordigenRequisition(mixins.ListModelMixin, mixins.CreateModelM
         except UserProfile.DoesNotExist:
             return Response('UNAUTHORIZED OR USER NOT SET!', status=status.HTTP_401_UNAUTHORIZED)
         try:
-            instance = user.nordigenrequisition_set.get(requisition_id=requisition_id)
+            instance = user.nordigenrequisition_set.get(institution_id=institution_id)
+            requisition_id = instance.requisition_id
         except NordigenRequisition.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         self.perform_destroy(instance)
-        create_delete_nordigen_requisition(requisition_id=requisition_id)
+        create_delete_nordigen_requisition(nordigen_institution_id=institution_id, requisition_id=requisition_id)
         return Response(status=status.HTTP_204_NO_CONTENT)
