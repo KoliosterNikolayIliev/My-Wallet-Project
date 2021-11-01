@@ -20,6 +20,9 @@ const Profile = () => {
     if (provider === "Binance") {
       data["binance_key"] = key;
       data["binance_secret"] = secret;
+    } else if (provider === "Coinbase") {
+      data["coinbase_api_key"] = key;
+      data["coinbase_api_secret"] = secret;
     }
 
     updateUser(token, data);
@@ -46,9 +49,26 @@ const Profile = () => {
           <li onClick={(e) => setProvider(e.target.innerText)}>Nordigen</li>
         </ul>
 
-        {!provider && <p>Ello</p>}
+        {!provider && <p>Select a provider on the right</p>}
 
         {provider === "Binance" && (
+          <form>
+            <label>API Key</label>
+            <input
+              type={"text"}
+              onChange={(e) => setKey(e.target.value)}
+              placeholder={"API Key goes here"}
+            />
+            <label>API Secret</label>
+            <input
+              type={"text"}
+              onChange={(e) => setSecret(e.target.value)}
+              placeholder={"API Secret goes here"}
+            />
+          </form>
+        )}
+
+        {provider === "Coinbase" && (
           <form>
             <label>API Key</label>
             <input
