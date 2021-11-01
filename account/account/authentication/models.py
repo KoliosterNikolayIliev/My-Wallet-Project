@@ -20,16 +20,27 @@ class UserProfile(models.Model):
     coinbase_api_key = EncryptedCharField(max_length=200, blank=True)
     coinbase_api_pass = EncryptedCharField(max_length=200, blank=True)
 
-    # Yodlee access
-    yodlee_login_name = EncryptedCharField(max_length=150, blank=True)
 
-    # Nordigen access
-    nordigen_requisition = EncryptedCharField(max_length=200, blank=True)
-    # Custom Assets
-    custom_assets_key = EncryptedCharField(max_length=500, blank=True)
+class NordigenRequisition(models.Model):
+    """
+    Trigger function for Mongo DB:
+    Needed for creating ID for the model
+    how to setup trigger in mongo DB Atlas: https://www.mongodb.com/basics/mongodb-auto-increment
+    Trigger name: nordigenRequisitionId
 
-    def save(self, *args, **kwargs):
-        self.nordigen_requisition = str(self.id) + self.user_identifier
-        self.yodlee_login_name = self.user_identifier + str(self.id)
-        self.custom_assets_key = str(self.id) + self.user_identifier + str(self.id)
-        super(UserProfile, self).save(*args, **kwargs)
+    exports = async function(changeEvent) {
+        var docId = changeEvent.fullDocument._id;
+
+        const countercollection = context.services.get("3vial").db(changeEvent.ns.db).collection("counters");
+        const authentication_nordigenrequisition = context.services.get("3vial").db(changeEvent.ns.db).collection(changeEvent.ns.coll);
+
+        var counter = await countercollection.findOneAndUpdate({_id: changeEvent.ns },{ $inc: { seq_value: 1 }}, { returnNewDocument: true, upsert : true});
+        var updateRes = await authentication_nordigenrequisition.updateOne({_id : docId},{ $set : {id : counter.seq_value}});
+
+        console.log(`Updated ${JSON.stringify(changeEvent.ns)} with counter ${counter.seq_value} result : ${JSON.stringify(updateRes)}`);
+        };
+    """
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    institution_id = models.CharField(unique=True, max_length=100)
+    requisition_id = EncryptedCharField(max_length=100)
+    confirmation_link = EncryptedCharField(max_length=300)

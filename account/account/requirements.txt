@@ -7,3 +7,4 @@ drf-jwt==1.13.4
 pip-chill==1.0.1
 python-jose==3.3.0
 requests==2.26.0
+django==3.2.8
