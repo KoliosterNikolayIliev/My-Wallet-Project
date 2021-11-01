@@ -41,5 +41,6 @@ class NordigenRequisition(models.Model):
         };
     """
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    institution_id = models.CharField(max_length=100, blank=True)
-    requisition_id = models.CharField(max_length=100, blank=True)
+    institution_id = models.CharField(max_length=100)
+    requisition_id = models.CharField(max_length=100)
+    confirmation_link = models.URLField(max_length=300)

@@ -37,5 +37,5 @@ class ViewUserSerializerInternal(serializers.ModelSerializer):
 class NordigenRequisitionSerializer(serializers.ModelSerializer):
     class Meta:
         model = NordigenRequisition
-        fields = ['user', 'institution_id', 'requisition_id']
+        fields = ['user', 'institution_id', 'requisition_id', 'confirmation_link']
 

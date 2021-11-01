@@ -99,13 +99,37 @@ def register_or_delete_yodlee_login_name(yodlee_login_name, delete=False, ):
 # print(register_or_delete_yodlee_login_name('google-oauth2|1147497364649180145901821', delete=True))
 
 
-def create_nordigen_requisition(nordigen_institution_id):
-    return {'institution_id': nordigen_institution_id,
-            'requisition_id': 222}
+def create_delete_nordigen_requisition(nordigen_institution_id=None, requisition_id=None):
+    secret_id = os.environ.get('ASSETS_NORDIGEN_ID')
+    secret_key = os.environ.get('ASSETS_NORDIGEN_KEY')
+    get_token_url = os.environ.get('NORDIGEN_GET_TOKEN_URL')
+    nordigen_create_requisition_url = os.environ.get('NORDIGEN_CREATE_REQUISITION_URL')
+    nordigen_redirect_url = os.environ.get('NORDIGEN_REDIRECT_HOMEPAGE')
+    payload = json.dumps({
+        'secret_id': secret_id,
+        'secret_key': secret_key,
+    })
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+    response = requests.post(get_token_url, payload, headers=headers)
+    token = response.json().get('access')
 
-
-def delete_nordigen_requisition(something):
-    pass
+    headers['Authorization'] = f'Bearer {token}'
+    if requisition_id:
+        return requests.delete(nordigen_create_requisition_url + requisition_id + '/', headers=headers)
+    payload = json.dumps({
+        'redirect': nordigen_redirect_url,
+        'institution_id': nordigen_institution_id,
+    })
+    response = requests.post(nordigen_create_requisition_url, payload, headers=headers)
+    result = response.json()
+    return {
+        'institution_id': nordigen_institution_id,
+        'requisition_id': result.get('id'),
+        'confirmation_link': result.get('link'),
+    }
 
 
 def return_request_user(request):
