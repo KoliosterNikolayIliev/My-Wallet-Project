@@ -19,8 +19,8 @@ async def get_assets():
     
     user_data = validated_token[1]
 
-    balances_headers = {'yodlee_loginName':user_data['yodlee_login_name'], 'nordigen_key': user_data['nordigen_requisition']}
-    holdings_headers = {'yodlee_loginName':user_data['yodlee_login_name'], 'binance_key':user_data['binance_key'], 'binance_secret':user_data['binance_secret'], 'coinbase_key': user_data['coinbase_api_key'], 'coinbase_secret': user_data['coinbase_api_secret']}
+    balances_headers = {'yodlee_loginName':user_data['user_identifier'], 'nordigen_key': user_data['user_identifier']}
+    holdings_headers = {'yodlee_loginName':user_data['user_identifier'], 'binance_key':user_data['binance_key'], 'binance_secret':user_data['binance_secret'], 'coinbase_key': user_data['coinbase_api_key'], 'coinbase_secret': user_data['coinbase_api_secret']}
 
     results = []
 
