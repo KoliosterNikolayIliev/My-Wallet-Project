@@ -1,3 +1,5 @@
+import json
+
 from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 from ..utils.assets import get_balances, get_transactions, get_holdings
@@ -8,6 +10,7 @@ import aiohttp, asyncio
 bp = Blueprint('api', __name__)
 CORS(bp)
 
+
 @bp.route('/api/assets', methods=(['GET']))
 async def get_assets():
     # check if a token was passed in the Authorization header
@@ -16,11 +19,15 @@ async def get_assets():
 
     if not validated_token[0]:
         return jsonify(validated_token[1]), 401
-    
-    user_data = validated_token[1]
 
-    balances_headers = {'yodlee_loginName':user_data['user_identifier'], 'nordigen_key': user_data['user_identifier']}
-    holdings_headers = {'yodlee_loginName':user_data['user_identifier'], 'binance_key':user_data['binance_key'], 'binance_secret':user_data['binance_secret'], 'coinbase_key': user_data['coinbase_api_key'], 'coinbase_secret': user_data['coinbase_api_secret']}
+    user_data = validated_token[1]
+    nordigen_requisitions = json.dumps([x['requisition_id'] for x in user_data['nordigenrequisition_set']])
+
+    balances_headers = {'yodlee_loginName': user_data['user_identifier'],
+                        'nordigen_requisitions': nordigen_requisitions}
+    holdings_headers = {'yodlee_loginName': user_data['user_identifier'], 'binance_key': user_data['binance_key'],
+                        'binance_secret': user_data['binance_secret'], 'coinbase_key': user_data['coinbase_api_key'],
+                        'coinbase_secret': user_data['coinbase_api_secret']}
 
     results = []
 
@@ -35,6 +42,7 @@ async def get_assets():
 
     return jsonify(results), 200
 
+
 @bp.route('/api/transactions', methods=(['GET']))
 def get_account_transactions():
     # check if a token was passed in the Authorization header
@@ -43,16 +51,16 @@ def get_account_transactions():
 
     if not validated_token[0]:
         return jsonify(validated_token[1]), 401
-    
+
     user_data = validated_token[1]
-    
+
     # get transactions data(done via Assets)
     headers = {
         'provider': request.headers.get('provider'),
         'account': request.headers.get('account'),
-        'yodlee_loginName':user_data['yodlee_login_name'],
-        'binance_key':user_data['binance_key'],
-        'binance_secret':user_data['binance_secret'],
+        'yodlee_loginName': user_data['user_identifier'],
+        'binance_key': user_data['binance_key'],
+        'binance_secret': user_data['binance_secret'],
         'coinbase_key': user_data['coinbase_api_key'],
         'coinbase_secret': user_data['coinbase_api_secret']
     }
