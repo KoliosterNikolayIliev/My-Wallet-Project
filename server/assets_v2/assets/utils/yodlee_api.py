@@ -146,6 +146,8 @@ def format_holdings_response(response):
             if holding.get('symbol') and holding.get('value'):
                 data[holding['id']] = {'symbol': holding['symbol'], 'quantity': holding['quantity'],
                                         'value': holding['value']}
+            elif holding.get('description') and holding.get('value'):
+                data[holding['id']] = {'symbol': holding['description'], 'quantity': holding['quantity'], 'value': holding['value']}
         return {'status': 'success', 'content': data}
 
     except:
