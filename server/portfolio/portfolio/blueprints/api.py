@@ -50,7 +50,7 @@ def get_account_transactions():
     headers = {
         'provider': request.headers.get('provider'),
         'account': request.headers.get('account'),
-        'yodlee_loginName':user_data['yodlee_login_name'],
+        'yodlee_loginName':user_data['user_identifier'],
         'binance_key':user_data['binance_key'],
         'binance_secret':user_data['binance_secret'],
         'coinbase_key': user_data['coinbase_api_key'],
