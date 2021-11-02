@@ -28,14 +28,15 @@ class EditUserSerializer(serializers.ModelSerializer):
         exclude = ['id']
 
 
-class ViewUserSerializerInternal(serializers.ModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = '__all__'
-
-
 class NordigenRequisitionSerializer(serializers.ModelSerializer):
     class Meta:
         model = NordigenRequisition
         fields = ['user', 'institution_id', 'requisition_id', 'confirmation_link']
 
+
+class ViewUserSerializerInternal(serializers.ModelSerializer):
+    nordigenrequisition_set = NordigenRequisitionSerializer(many=True)
+
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
