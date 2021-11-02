@@ -41,8 +41,8 @@ class ViewTests(TestCase):
 
         self.assertEqual(response.status_code, 401)
 
-    @patch('authentication.views.get_put_delete_view.user_does_not_exist', side_effect=user_check_mock)
-    @patch('authentication.views.get_put_delete_view.jwt_decode_token', side_effect=token_check_mock)
+    @patch('authentication.common_shared.utils.user_does_not_exist', side_effect=user_check_mock)
+    @patch('authentication.common_shared.utils.jwt_decode_token', side_effect=token_check_mock)
     def test_get_request_returns_status_200_user_not_existing(self, mock_user_check, mock_token_check):
         self.user.username = 'testUser'
         self.user.save()
@@ -54,8 +54,8 @@ class ViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    @patch('authentication.views.get_put_delete_view.user_does_not_exist', side_effect=user_check_mock)
-    @patch('authentication.views.get_put_delete_view.jwt_decode_token', side_effect=token_check_mock)
+    @patch('authentication.common_shared.utils.user_does_not_exist', side_effect=user_check_mock)
+    @patch('authentication.common_shared.utils.jwt_decode_token', side_effect=token_check_mock)
     def test_get_request_returns_status_200_user_existing(self, mock_user_check, mock_token_check):
         self.user.username = 'testUser'
         self.user.save()
@@ -70,8 +70,8 @@ class ViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    @patch('authentication.views.get_put_delete_view.user_does_not_exist', side_effect=user_check_mock)
-    @patch('authentication.views.get_put_delete_view.jwt_decode_token', side_effect=token_check_mock)
+    @patch('authentication.common_shared.utils.user_does_not_exist', side_effect=user_check_mock)
+    @patch('authentication.common_shared.utils.jwt_decode_token', side_effect=token_check_mock)
     def test_get_request_internal_returns_status_200_not_existing(self, mock_user_check, mock_token_check):
         self.user.username = 'testUser'
         self.user.save()
@@ -83,8 +83,8 @@ class ViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    @patch('authentication.views.get_put_delete_view.user_does_not_exist', side_effect=user_check_mock)
-    @patch('authentication.views.get_put_delete_view.jwt_decode_token', side_effect=token_check_mock)
+    @patch('authentication.common_shared.utils.user_does_not_exist', side_effect=user_check_mock)
+    @patch('authentication.common_shared.utils.jwt_decode_token', side_effect=token_check_mock)
     def test_get_request_internal_returns_status_200_user_existing(self, mock_user_check, mock_token_check):
         self.user.username = 'testUser'
         self.user.save()
@@ -99,8 +99,8 @@ class ViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    @patch('authentication.views.get_put_delete_view.user_does_not_exist', side_effect=user_check_mock)
-    @patch('authentication.views.get_put_delete_view.jwt_decode_token', side_effect=token_check_mock)
+    @patch('authentication.common_shared.utils.user_does_not_exist', side_effect=user_check_mock)
+    @patch('authentication.common_shared.utils.jwt_decode_token', side_effect=token_check_mock)
     def test_put_request_returns_status_404_not_existing_user(self, mock_user_check, mock_token_check):
         self.user.username = 'testUser'
         self.user.save()
@@ -116,8 +116,8 @@ class ViewTests(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
-    @patch('authentication.views.get_put_delete_view.user_does_not_exist', side_effect=user_check_mock)
-    @patch('authentication.views.get_put_delete_view.jwt_decode_token', side_effect=token_check_mock)
+    @patch('authentication.common_shared.utils.user_does_not_exist', side_effect=user_check_mock)
+    @patch('authentication.common_shared.utils.jwt_decode_token', side_effect=token_check_mock)
     def test_put_request_returns_status_200_successful_edit(self, mock_user_check, mock_token_check):
         self.user.username = 'testUser'
         self.user.save()
@@ -136,8 +136,8 @@ class ViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    @patch('authentication.views.get_put_delete_view.user_does_not_exist', side_effect=user_check_mock)
-    @patch('authentication.views.get_put_delete_view.jwt_decode_token', side_effect=token_check_mock)
+    @patch('authentication.common_shared.utils.user_does_not_exist', side_effect=user_check_mock)
+    @patch('authentication.common_shared.utils.jwt_decode_token', side_effect=token_check_mock)
     def test_delete_request_returns_status_204(self, mock_user_check, mock_token_check):
         self.user.username = 'testUser'
         self.user.save()
