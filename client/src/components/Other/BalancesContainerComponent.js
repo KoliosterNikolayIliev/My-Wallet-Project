@@ -12,20 +12,22 @@ const BalancesContainerComponent = ({ data, getTransactionsFunc }) => {
           return (
             <ul>
               {Object.entries(value.content).map(([key, value]) => {
-                account = key;
-                return (
-                  <li>
-                    <BalanceComponent
-                      key={key}
-                      providerName={value.providerName}
-                      amount={value.balanceData.amount}
-                      currency={value.balanceData.currency}
-                      provider={provider}
-                      account={account}
-                      getTransactionsFunc={getTransactionsFunc}
-                    />
-                  </li>
-                );
+                return Object.entries(value).map(([key, value]) => {
+                  account = key;
+                  return (
+                    <li>
+                      <BalanceComponent
+                        key={key}
+                        providerName={value.providerName}
+                        amount={value.balanceData.amount}
+                        currency={value.balanceData.currency}
+                        provider={provider}
+                        account={account}
+                        getTransactionsFunc={getTransactionsFunc}
+                      />
+                    </li>
+                  );
+                })
               })}
             </ul>
           );
