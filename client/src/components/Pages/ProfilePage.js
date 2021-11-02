@@ -1,11 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import LogOutButton from "../Buttons/LogOutButton";
 import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
+
+import { updateUser } from "../../utils/account";
 
 // Profile component to display user information.
 const Profile = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
+    useAuth0();
+  const [provider, setProvider] = useState(null);
+  const [key, setKey] = useState(null);
+  const [secret, setSecret] = useState(null);
+
+  const selectProvider = (e) => {
+    if (provider) {
+      e.target.parentElement.childNodes.forEach((node) => {
+        node.classList.remove("active");
+      });
+    }
+    e.target.classList.add("active");
+    setProvider(e.target.innerText);
+  };
+
+  const saveChanges = async (provider) => {
+    let data = {};
+    const token = await getAccessTokenSilently();
+
+    if (provider === "Binance") {
+      data["binance_key"] = key;
+      data["binance_secret"] = secret;
+    } else if (provider === "Coinbase") {
+      data["coinbase_api_key"] = key;
+      data["coinbase_api_secret"] = secret;
+    }
+
+    updateUser(token, data);
+  };
 
   //   Return this if Auth0 is still loading. Can be replaced with an animation in the future
   if (isLoading) {
@@ -21,7 +52,56 @@ const Profile = () => {
     isAuthenticated && (
       <div>
         <h2>Hi, {user.name}, this is the profile page</h2>
-        <LogOutButton />
+        <ul>
+          <li onClick={(e) => selectProvider(e)}>Binance</li>
+          <li onClick={(e) => selectProvider(e)}>Coinbase</li>
+          <li onClick={(e) => selectProvider(e)}>Yodlee</li>
+          <li onClick={(e) => selectProvider(e)}>Nordigen</li>
+        </ul>
+
+        {!provider && <p>Select a provider on the right</p>}
+
+        {provider === "Binance" && (
+          <form>
+            <label>API Key</label>
+            <input
+              type={"text"}
+              onChange={(e) => setKey(e.target.value)}
+              placeholder={"API Key goes here"}
+            />
+            <label>API Secret</label>
+            <input
+              type={"text"}
+              onChange={(e) => setSecret(e.target.value)}
+              placeholder={"API Secret goes here"}
+            />
+          </form>
+        )}
+
+        {provider === "Coinbase" && (
+          <form>
+            <label>API Key</label>
+            <input
+              type={"text"}
+              onChange={(e) => setKey(e.target.value)}
+              placeholder={"API Key goes here"}
+            />
+            <label>API Secret</label>
+            <input
+              type={"text"}
+              onChange={(e) => setSecret(e.target.value)}
+              placeholder={"API Secret goes here"}
+            />
+          </form>
+        )}
+
+        {(provider === "Yodlee" || provider === "Nordigen") && (
+          <p>Coming soon!</p>
+        )}
+
+        <button onClick={() => saveChanges(provider)}>
+          <Link to={"/dashboard"}>Save Changes</Link>
+        </button>
       </div>
     )
   );
