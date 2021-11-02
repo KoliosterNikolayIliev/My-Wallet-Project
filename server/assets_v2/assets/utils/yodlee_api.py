@@ -23,7 +23,7 @@ import requests, os
 # get yodlee developer credentials from .env file
 CLIENT_ID = os.environ.get('ASSETS_YODLEE_CLIENT_ID')
 SECRET = os.environ.get('ASSETS_YODLEE_SECRET')
-URL = os.environ.get('ASSETS_YODLEE_SANDBOX_URL')
+URL = os.environ.get('YODLEE_DEVELOPMENT_URL')
 USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
 
 BALANCES_MOCK_DATA = {'account': [
@@ -146,6 +146,8 @@ def format_holdings_response(response):
             if holding.get('symbol') and holding.get('value'):
                 data[holding['id']] = {'symbol': holding['symbol'], 'quantity': holding['quantity'],
                                         'value': holding['value']}
+            elif holding.get('description') and holding.get('value'):
+                data[holding['id']] = {'symbol': holding['description'], 'quantity': holding['quantity'], 'value': holding['value']}
         return {'status': 'success', 'content': data}
 
     except:

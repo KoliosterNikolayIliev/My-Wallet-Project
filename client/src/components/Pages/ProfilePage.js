@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 
-import { updateUser } from "../../utils/account";
+import { getAccessToken, updateUser } from "../../utils/account";
 
 // Profile component to display user information.
 const Profile = () => {
@@ -36,6 +36,25 @@ const Profile = () => {
     }
 
     updateUser(token, data);
+  };
+
+  const addYodleeSource = async () => {
+    const auth0Token = await getAccessTokenSilently();
+    const yodleeToken = await getAccessToken(auth0Token);
+    window.fastlink.open(
+      {
+        fastLinkURL:
+          "https://development.node.yodlee.uk/authenticate/UKPre-Prod-203/?channelAppName=ukpreprod",
+        accessToken: yodleeToken,
+        params: {
+          userExperienceFlow: "Aggregation",
+        },
+        onSuccess: (data) => {
+          console.log(data);
+        },
+      },
+      "container-fastlink"
+    );
   };
 
   //   Return this if Auth0 is still loading. Can be replaced with an animation in the future
@@ -95,8 +114,10 @@ const Profile = () => {
           </form>
         )}
 
-        {(provider === "Yodlee" || provider === "Nordigen") && (
-          <p>Coming soon!</p>
+        {provider === "Yodlee" && (
+          <div id="container-fastlink">
+            <button onClick={() => addYodleeSource()}>Add source</button>
+          </div>
         )}
 
         <button onClick={() => saveChanges(provider)}>
