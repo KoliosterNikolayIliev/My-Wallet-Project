@@ -265,11 +265,11 @@ async def get_all_accounts_balances(requisitions, session, tasks):
             get_all_account_balances(requisition, session=session, tasks=requisitions_tasks, headers=headers)))
 
     responses = await asyncio.gather(*tasks)
-    data = []
+    data = {}
 
     for response in responses:
         if response['status'] == 'success':
-            data.append(response['content'])
+            data.update(response['content'])
 
     if data:
         return {'status': 'success', 'content': data}
