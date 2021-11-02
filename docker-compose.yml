@@ -17,7 +17,7 @@ services:
 
   custom-assets:
     build:
-      context: ./custom_assets
+      context: ./server/custom_assets
 
     command:
       - python
@@ -33,7 +33,7 @@ services:
 
   assets:
     build:
-      context: ./assets_v2
+      context: ./server/assets_v2
 
     command:
       - flask
@@ -52,7 +52,7 @@ services:
 
   portfolio:
     build:
-      context: ./portfolio
+      context: ./server/portfolio
 
     command:
       - flask
@@ -72,7 +72,7 @@ services:
 
   reference:
     build:
-      context: ./reference
+      context: ./server/reference
 
     command:
       - flask
@@ -92,7 +92,7 @@ services:
 
   account:
     build:
-      context: ./account/account
+      context: ./server/account/account
 
     command:
       - python
