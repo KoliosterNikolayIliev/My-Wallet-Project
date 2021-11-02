@@ -132,7 +132,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'CLIENT': {
-            'name': '3vial_account_test_DB',
+            'name': '3vial',
             # 'host': DB_HOST,
             'host': os.environ.get('DB_HOST'),
             'username': os.environ.get('DB_USERNAME'),
