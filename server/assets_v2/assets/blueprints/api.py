@@ -1,3 +1,4 @@
+import json
 import os
 from flask import Blueprint, request, jsonify
 import aiohttp, asyncio
@@ -18,15 +19,26 @@ bp = Blueprint('api', __name__)
 @bp.route('/balances', methods=(['GET']))
 async def get_balances():
     results = {}
+    nordigen_requisitions = request.headers.get('nordigen_requisitions')
+    nordigen_requisitions = json.loads(nordigen_requisitions) if nordigen_requisitions else []
     async with aiohttp.ClientSession() as session:
             tasks = []
             nordigen_tasks = []
             tasks.append(asyncio.ensure_future(get_yodlee_balances(request.headers.get('yodlee_loginName'), session=session)))
-            tasks.append(asyncio.ensure_future(get_nordigen_balances(request.headers.get('nordigen_key'), session=session, tasks=nordigen_tasks)))
+
+            for requisition in nordigen_requisitions:
+                tasks.append(asyncio.ensure_future(get_nordigen_balances(requisition, session=session, tasks=nordigen_tasks)))
 
             responses = await asyncio.gather(*tasks)
             results['yodlee'] = responses[0]
-            results['nordigen'] = responses[1]
+            nordigen_responses = responses[1:]
+            if nordigen_responses:
+                results['nordigen'] = responses[1:]
+            else:
+                results['nordigen'] = {
+                    'status': 'failed',
+                    'content': 'Error: list of nordigen requisition id\'s was not provided'
+                }
 
     return jsonify(results)
 
@@ -45,7 +57,7 @@ async def get_holdings():
         results['custom_assets'] = responses[1]
         results['binance'] = responses[2]
         results['coinbase'] = responses[3]
-    
+
     return jsonify(results)
 
 @bp.route('/transactions', methods=(['GET']))
@@ -64,5 +76,5 @@ async def get_transactions():
 
         else:
             return {'status': 'failed', 'content': 'provider is not valid or missing'}
-    
+
     return jsonify(results)
