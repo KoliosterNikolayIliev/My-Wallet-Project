@@ -55,30 +55,35 @@ def is_internal_request(request):
     return False
 
 
-def register_or_delete_yodlee_login_name(yodlee_login_name, delete=False, ):
-    """
-    The possible error codes are (200,400,401). All of them are important to our application and not the end user.
-    I suppose in this case logging is better than error handling. 400 is for user that already exists
-    401 is if we have problems with our credentials
-    """
+def yodlee_token(yodlee_login_name, end_user=False):
     admin_login_name = os.environ.get('YODLEE_ADMIN_LOGIN_NAME')
     client_id = os.environ.get('ASSETS_YODLEE_CLIENT_ID')
     client_secret = os.environ.get('ASSETS_YODLEE_SECRET')
     managers_token_url = os.environ.get('YODLEE_GET_MANAGERS_TOKEN_URL')
-    register_user_url = os.environ.get('YODLEE_REGISTER_USER_URL')
-    delete_user_url = os.environ.get('YODLEE_DELETE_USER_URL')
-
     payload = {
         'clientId': client_id,
         'secret': client_secret
     }
     headers = {
         'Api-Version': '1.1',
-        'loginName': admin_login_name if not delete else yodlee_login_name
+        'loginName': admin_login_name if not end_user else yodlee_login_name
     }
     response = requests.post(managers_token_url, payload, headers=headers)
     token_dict = response.json()
     token = token_dict.get('token').get('accessToken')
+    return token
+
+
+def register_or_delete_yodlee_login_name(yodlee_login_name, end_user=False):
+    """
+    The possible error codes are (200,400,401). All of them are important to our application and not the end user.
+    I suppose in this case logging is better than error handling. 400 is for user that already exists
+    401 is if we have problems with our credentials
+    """
+    token = yodlee_token(yodlee_login_name, end_user)
+
+    register_user_url = os.environ.get('YODLEE_REGISTER_USER_URL')
+    delete_user_url = os.environ.get('YODLEE_DELETE_USER_URL')
 
     registry_delete_headers = {
         'Api-Version': '1.1',
@@ -87,7 +92,7 @@ def register_or_delete_yodlee_login_name(yodlee_login_name, delete=False, ):
     }
     registry_payload = json.dumps({'user': {'loginName': f'{yodlee_login_name}'}})
 
-    if delete:
+    if end_user:
         return requests.delete(delete_user_url, headers=registry_delete_headers)
 
     return requests.post(register_user_url, registry_payload, headers=registry_delete_headers)
