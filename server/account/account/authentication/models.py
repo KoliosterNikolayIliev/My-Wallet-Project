@@ -18,8 +18,7 @@ class UserProfile(models.Model):
     # Coinbase access
     coinbase_api_secret = EncryptedCharField(max_length=200, blank=True)
     coinbase_api_key = EncryptedCharField(max_length=200, blank=True)
-    coinbase_api_pass = EncryptedCharField(max_length=200, blank=True)
-
+ 
 
 class NordigenRequisition(models.Model):
     """
