@@ -21,4 +21,17 @@ const updateUser = async (token, user) => {
   return response.json();
 };
 
-export { getUser, updateUser };
+const getAccessToken = async (token) => {
+  const response = await fetch(
+    "http://localhost:8001/api/account/user/yodlee-token",
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+
+  return response.json();
+};
+
+export { getUser, updateUser, getAccessToken };
