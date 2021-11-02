@@ -6,7 +6,7 @@ import aiohttp, asyncio
 from ..utils.yodlee_api import get_balances as get_yodlee_balances
 from ..utils.yodlee_api import get_holdings as get_yodlee_holdings
 from ..utils.yodlee_api import get_transactions as get_yodlee_transactions
-from ..utils.nordigen import get_all_account_balances as get_nordigen_balances
+from ..utils.nordigen import get_all_accounts_balances as get_nordigen_balances
 from ..utils.nordigen import get_account_transactions as get_nordigen_transactions
 from ..utils.nordigen import get_single_account_balance as get_nordigen_balance
 from ..utils.binance_api import get_balances as get_binance_holdings
@@ -25,20 +25,11 @@ async def get_balances():
             tasks = []
             nordigen_tasks = []
             tasks.append(asyncio.ensure_future(get_yodlee_balances(request.headers.get('yodlee_loginName'), session=session)))
-
-            for requisition in nordigen_requisitions:
-                tasks.append(asyncio.ensure_future(get_nordigen_balances(requisition, session=session, tasks=nordigen_tasks)))
+            tasks.append(asyncio.ensure_future(get_nordigen_balances(nordigen_requisitions, session=session, tasks=nordigen_tasks)))
 
             responses = await asyncio.gather(*tasks)
             results['yodlee'] = responses[0]
-            nordigen_responses = responses[1:]
-            if nordigen_responses:
-                results['nordigen'] = responses[1:]
-            else:
-                results['nordigen'] = {
-                    'status': 'failed',
-                    'content': 'Error: list of nordigen requisition id\'s was not provided'
-                }
+            results['nordigen'] = responses[1]
 
     return jsonify(results)
 

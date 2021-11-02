@@ -186,14 +186,7 @@ async def get_single_account_balance(account, headers, session):
     return {"id": account, "providerName": bank_name, "balanceData": balance_data["balances"][0]["balanceAmount"]}
 
 
-async def get_all_account_balances(requisition_id, session, tasks):
-    response = get_access_token()
-
-    if response['status'] != 'success':
-        return response
-
-    headers = {'Authorization': f'Bearer {response["content"]}'}
-
+async def get_all_account_balances(requisition_id, session, tasks, headers):
     # get user bank accounts from requisition
     accounts = await get_bank_accounts(requisition_id, session, headers)
 
@@ -250,3 +243,35 @@ async def get_account_transactions(account, session):
 
     # return saved data
     return {'status': 'success', 'content': data}
+
+
+async def get_all_accounts_balances(requisitions, session, tasks):
+    if not requisitions:
+        return {
+            'status': 'failed',
+            'content': 'Error: list of nordigen requisition id\'s was not provided'
+        }
+
+    response = get_access_token()
+
+    if response['status'] != 'success':
+        return response
+
+    headers = {'Authorization': f'Bearer {response["content"]}'}
+
+    requisitions_tasks = []
+    for requisition in requisitions:
+        tasks.append(asyncio.ensure_future(
+            get_all_account_balances(requisition, session=session, tasks=requisitions_tasks, headers=headers)))
+
+    responses = await asyncio.gather(*tasks)
+    data = []
+
+    for response in responses:
+        if response['status'] == 'success':
+            data.append(response['content'])
+
+    if data:
+        return {'status': 'success', 'content': data}
+
+    return {'status': 'failed', 'content': 'Error: there are no valid requisition id\'s'}
