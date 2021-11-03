@@ -51,7 +51,7 @@ def get_access_token():
 
 @api_view(['GET'])
 def get_nordigen_banks(request):
-    headers_country = request.headers.get('country')
+    headers_country = request.GET.get('country')
     if not headers_country:
         return Response('Country was not provided', status=status.HTTP_400_BAD_REQUEST)
 
