@@ -1,3 +1,4 @@
+import "@progress/kendo-theme-default/dist/all.css";
 import "./App.css";
 import DashboardPage from "./components/Pages/DashboardPage";
 import ProfilePage from "./components/Pages/ProfilePage";
