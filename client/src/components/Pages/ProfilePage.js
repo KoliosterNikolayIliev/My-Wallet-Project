@@ -4,6 +4,8 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 
 import { getAccessToken, updateUser } from "../../utils/account";
+// import { countries, generateNordigenToken } from "../../utils/nordigen";
+import { CountriesDropDownList } from "../Other/DropDown";
 
 // Profile component to display user information.
 const Profile = () => {
@@ -51,6 +53,9 @@ const Profile = () => {
         },
         onSuccess: (data) => {
           console.log(data);
+        },
+        onError: (error) => {
+          console.log(error);
         },
       },
       "container-fastlink"
@@ -117,6 +122,12 @@ const Profile = () => {
         {provider === "Yodlee" && (
           <div id="container-fastlink">
             <button onClick={() => addYodleeSource()}>Add source</button>
+          </div>
+        )}
+
+        {provider === "Nordigen" && (
+          <div>
+            <CountriesDropDownList />
           </div>
         )}
 

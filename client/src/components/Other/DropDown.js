@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-// import { countries } from "../../utils/nordigen";
+import { useAuth0 } from "@auth0/auth0-react";
 import { DropDownList } from "@progress/kendo-react-dropdowns";
 import { BanksContainer } from "./BanksContainer";
+import { getBanks } from "../../utils/nordigen";
 
 const countries = [
   "Austria",
@@ -38,10 +39,10 @@ const countries = [
 ];
 
 export const CountriesDropDownList = () => {
-  // Store currently selected category
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [country, setCountry] = useState("");
   const [data, setData] = useState([]);
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     countries.forEach((country) => {
@@ -50,8 +51,15 @@ export const CountriesDropDownList = () => {
   }, []);
 
   useEffect(() => {
-    // TODO: get data for country from account
-  }, [selectedCategory]);
+    if (country !== "") {
+      const fetchData = async () => {
+        const token = await getAccessTokenSilently();
+        const banks = await getBanks(token, country);
+        setData(banks);
+      };
+      fetchData();
+    }
+  }, [country]);
 
   return (
     <div>
@@ -60,7 +68,7 @@ export const CountriesDropDownList = () => {
           <label className="k-label k-mb-3">Category</label>
           <DropDownList
             data={categories}
-            onChange={(e) => setSelectedCategory(e.value)}
+            onChange={(e) => setCountry(e.value)}
           />
         </form>
       </section>
