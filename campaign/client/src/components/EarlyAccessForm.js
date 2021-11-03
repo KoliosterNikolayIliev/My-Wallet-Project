@@ -89,7 +89,7 @@ const EarlyAccessForm = ({
       <p style={{ display: "block" }}>
         {status === "sending" && <span>Sending...</span>}
         {status === "error" && (
-          <span style={{ color: "#7000ff" }}>Already subscribed or Invalid email !</span>
+          <span style={{ color: "#7000ff" }}>You have already subscribed !</span>
         )}
         {/*{status === "success" && <span>Thanks for subscribing!</span>}*/}
       </p>

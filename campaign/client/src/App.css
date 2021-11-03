@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
 
-html{scroll-behavior: smooth;}
+html {
+    scroll-behavior: smooth;
+}
+
 html * {
 
     box-sizing: border-box;
@@ -178,22 +181,6 @@ input[type="email"] {
     margin-right: 1%;
     color: #1d1d1d;
 }
-
-/*input[type="submit"] {*/
-/*    background-color: #7000ff;*/
-/*    height: 48px;*/
-/*    width: 150px;*/
-/*    min-width: 150px;*/
-/*    color: #fff;*/
-/*    border-radius: 6px;*/
-/*    border: none;*/
-/*    align-items: center;*/
-/*}*/
-
-/*input[type="submit"]:hover {*/
-/*    cursor: pointer;*/
-/*    background-color: #B768F5;*/
-/*}*/
 
 /*      Message    */
 
@@ -425,6 +412,7 @@ article {
     height: auto;
     min-width: 60%;
     min-height: 73%;
+    justify-content: space-evenly;
 }
 
 .Overlay {
@@ -444,6 +432,10 @@ article {
     position: absolute;
     right: 4px;
     top: 4px
+}
+
+.modal-close-button:hover {
+    cursor: pointer;
 }
 
 .btn-holder {
@@ -547,43 +539,60 @@ input.selected {
     margin-bottom: 7%;
 }
 
-.follow-btn {
-    background: #8C30F5;
-    color: #FFFFFF;
-    border: none;
-    border-radius: 4px;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 17px;
-    padding: 9px 17px 9px 17px;
+/*.follow-btn {*/
+/*    background: #8C30F5;*/
+/*    color: #FFFFFF;*/
+/*    border: none;*/
+/*    border-radius: 4px;*/
+/*    font-family: 'Source Sans Pro', sans-serif;*/
+/*    font-size: 17px;*/
+/*    padding: 9px 17px 9px 17px;*/
 
-}
+/*}*/
 
 .twitter-button {
     margin-right: 6px;
 }
 
+@media only screen and (max-height: 600px) {
+    .question-answer-container p {
+        display: none;
+    }
+    .heading-text{
+        display: none;
+    }
+}
+
 @media only screen and (max-height: 700px) {
-    .Modal{
+    .Modal {
         min-width: 80%;
     }
-    .answer{
+
+    .answer {
         max-width: 100%;
         margin: 0.5%;
     }
-    .submit-text-area{
+
+    .submit-text-area {
         margin-bottom: 4%;
     }
 }
+
 @media only screen and (max-width: 800px) {
-    .submit-text-area{
+    .submit-text-area {
         margin: 10% auto;
+        padding: 8%;
     }
-    .answer{
+    .end-questionnaire-container{
+        min-width: 100%;
+    }
+    .answer {
         max-width: 100%;
         margin-top: 0;
         margin-left: 0;
     }
 }
+
 @media only screen and (max-width: 539px) {
 
     .get-early-access-btn {
@@ -678,10 +687,9 @@ input.selected {
         margin-top: 10%;
     }
 
-    .modalHeading {
-        margin-top: 20%;
-    }
-
+    /*.modalHeading {*/
+    /*    margin-top: 20%;*/
+    /*}*/
     .sub-heading {
         width: 95%;
         margin-bottom: 15%;
@@ -700,7 +708,7 @@ input.selected {
     /*    padding-bottom: 4px;*/
     /*    border-radius: 6px;*/
     /*}*/
-    .start{
+    .start {
         font-size: 20px;
 
     }
@@ -708,7 +716,6 @@ input.selected {
     /*.start img {*/
     /*    display: none;*/
     /*}*/
-
     .footer-content {
         flex-direction: column-reverse;
         font-size: 15px;
@@ -736,7 +743,6 @@ input.selected {
 
 @media only screen and (max-width: 420px) {
     /*Modal*/
-
     .answer {
         font-size: 80%;
         margin: 2% 0 0;
@@ -762,37 +768,44 @@ input.selected {
     }
 
     .submit-text-area {
-        margin:4% auto 0;
+        margin: 4% auto 0;
     }
 
     .additional-info {
         margin-bottom: 0;
-        margin-top:0;
+        margin-top: 0;
         font-size: 90%;
     }
 }
 
 @media only screen and (max-width: 370px) {
     /*Modal*/
-    .modalHeading {
-        margin-top: 1%;
-    }
+    /*.modalHeading {*/
+    /*    margin-top: 1%;*/
+    /*}*/
 }
+
 @media only screen and (max-width: 340px) {
     /*Modal*/
     .modalHeading {
         margin-top: 1%;
     }
-    .sub-heading{
+
+    .sub-heading {
         margin: 0;
     }
-    .additional-info{
+
+    .additional-info {
         font-size: 80%;
     }
-    .answer{
+
+    .answer {
         font-size: 70%;
     }
 }
+
 @media only screen and (max-width: 300px) {
-    .get-early-access-btn{font-size: 10px}
+    .get-early-access-btn {
+        font-size: 10px
+    }
 }
