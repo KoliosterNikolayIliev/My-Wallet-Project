@@ -3,8 +3,9 @@ import FooterComponent from "./FooterComponent";
 import HeaderComponent from "./HeaderComponent";
 import TopBodyComponent from "./TopBodyComponent";
 import MailchimpFormContainer from "./MailChimpFormContainer";
-import imageOne from "../images/marketing1.png"
-import imageTwo from "../images/marketing2.png"
+import imageOne from "../images/image1.png"
+import imageTwo from "../images/image2.png"
+import imageThree from "../images/image3.png"
 
 const LandingPage = () => {
 
@@ -37,24 +38,14 @@ const LandingPage = () => {
                 <ContainerComponent
                     subtitle="Unlock the power of your data"
                     paragraphOne="With all your financial data in one place, you can make better decisions to achieve your wealth goals. We will continue bringing features to help you reach financial milestones quicker, safer and smoother."
-                    image={imageOne}
+                    image={imageThree}
                     articleClasses="section-content-text-and-image reversed "
                     imageClass="left-image"
                 />
             </div>
-            <div className="section-content body-section">
-                <ContainerComponent
-                    subtitle="Feature Headline"
-                    paragraphOne="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Condimentum diam orci pretium a pharetra, feugiat cursus. Dictumst risus, sem egestas odio cras adipiscing vulputate. Nisi, risus in suscipit non. Non commodo volutpat, pharetra, vel."
-                    image={imageTwo}
-                    articleClasses="section-content-text-and-image non-reversed"
-                    imageClass="right-image"
-                />
+            <div className="last-subscription">
+                <MailchimpFormContainer show={false}/>
             </div>
-
-                <div className="last-subscription">
-                    <MailchimpFormContainer show={false}/>
-                </div>
 
 
             <FooterComponent/>

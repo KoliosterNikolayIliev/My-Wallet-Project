@@ -22,7 +22,7 @@ const HeaderComponent = () => {
               <a href="#">Contact</a>
             </li>
           </ul> */}
-          <a href="#get-early-access" className="top-nav-btn">Get early access</a>
+          <a href="#get-early-access" className="get-early-access-btn">Get early access</a>
       </nav>
     </header>
   );

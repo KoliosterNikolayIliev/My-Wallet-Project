@@ -84,12 +84,12 @@ const EarlyAccessForm = ({
           }
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input type="submit" value="Get early access" />
+        <input className="get-early-access-btn" type="submit" value="Get early access" />
       </form>
       <p style={{ display: "block" }}>
         {status === "sending" && <span>Sending...</span>}
         {status === "error" && (
-          <span style={{ color: "red" }}>Invalid email</span>
+          <span style={{ color: "#7000ff" }}>Already subscribed or Invalid email !</span>
         )}
         {/*{status === "success" && <span>Thanks for subscribing!</span>}*/}
       </p>
