@@ -10,4 +10,17 @@ const getBanks = async (token, country) => {
   return banks.json();
 };
 
-export { getBanks };
+const linkAccount = async (token, bank) => {
+  const response = await fetch("http://localhost:8001/api/account/user/bank", {
+    method: "POST",
+    body: JSON.stringify({ institution_id: bank }),
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+};
+
+export { getBanks, linkAccount };

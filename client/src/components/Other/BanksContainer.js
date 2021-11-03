@@ -1,4 +1,15 @@
+import { useAuth0 } from "@auth0/auth0-react";
+import { linkAccount } from "../../utils/nordigen";
+
 export const BanksContainer = ({ data }) => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const addBankAccount = async (id) => {
+    const token = await getAccessTokenSilently();
+    const redirect = await linkAccount(token, id);
+    console.log(redirect);
+  };
+
   if (data === []) return null;
 
   return (
@@ -7,7 +18,7 @@ export const BanksContainer = ({ data }) => {
         {data.map((bank) => {
           return (
             <div>
-              <p>{bank.name}</p>
+              <p onClick={() => addBankAccount(bank.id)}>{bank.name}</p>
               <img src={bank.logo} width={100} />
             </div>
           );
