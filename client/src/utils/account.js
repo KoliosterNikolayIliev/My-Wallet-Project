@@ -26,7 +26,7 @@ const getAccessToken = async (token) => {
     "http://localhost:8001/api/account/user/yodlee-token",
     {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
     }
   );
