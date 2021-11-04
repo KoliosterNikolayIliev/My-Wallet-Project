@@ -84,7 +84,7 @@ const EarlyAccessForm = ({
           }
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button className="get-early-access-btn" type="submit">"Get early access"</button>
+        <button className="get-early-access-btn" type="submit">Get early access</button>
       </form>
       <p style={{ display: "block" }}>
         {status === "sending" && <span>Sending...</span>}

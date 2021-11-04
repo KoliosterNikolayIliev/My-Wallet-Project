@@ -103,6 +103,7 @@ const QuizComponent = ({
                 type="text"
                 placeholder="Other (Please specify):"
                 onMouseOut={selectAnswer}
+                onTouchStart={selectAnswer}
             />
           </div>
           <div className="btn-holder">
@@ -139,7 +140,7 @@ const QuizComponent = ({
                 className="submit-text-area"
                 placeholder="...."
                 onMouseOut={selectAnswer}
-                onTouchEnd={selectAnswer}
+                onTouchStart={selectAnswer}
             />
           </div>
           <div className="btn-holder">
