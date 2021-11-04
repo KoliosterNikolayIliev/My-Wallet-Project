@@ -1,4 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from "react-router-dom";
 import { linkAccount } from "../../utils/nordigen";
 
 export const BanksContainer = ({ data }) => {
@@ -7,7 +8,8 @@ export const BanksContainer = ({ data }) => {
   const addBankAccount = async (id) => {
     const token = await getAccessTokenSilently();
     const redirect = await linkAccount(token, id);
-    console.log(redirect);
+
+    window.location.href = redirect.confirmation_link;
   };
 
   if (data === []) return null;
