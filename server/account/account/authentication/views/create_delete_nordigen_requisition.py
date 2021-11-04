@@ -33,7 +33,8 @@ class CreateDeleteNordigenRequisition(mixins.ListModelMixin, mixins.CreateModelM
 
     def create(self, request, *args, **kwargs):
         request_user = return_request_user(request)
-        request_data = request.data
+        stream = io.BytesIO(request.body)
+        request_data = JSONParser().parse(stream)
         institution_id = request_data.get('institution_id')
         if not request_user:
             return Response('UNAUTHORIZED!', status=status.HTTP_401_UNAUTHORIZED)
