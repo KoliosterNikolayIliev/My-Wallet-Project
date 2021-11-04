@@ -22,6 +22,6 @@ class UserProfile(models.Model):
 
 class NordigenRequisition(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    institution_id = models.CharField(unique=True, max_length=100)
+    institution_id = models.CharField(max_length=100)
     requisition_id = EncryptedCharField(max_length=100)
     confirmation_link = EncryptedCharField(max_length=300)
