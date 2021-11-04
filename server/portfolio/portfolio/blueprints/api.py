@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 from ..utils.assets import get_balances, get_transactions, get_holdings
 from ..utils.account import validate_auth_header
-from ..utils.custom_assets import create_asset
+from ..utils.custom_assets import create_asset as create_custom_asset
 
 import aiohttp, asyncio
 
@@ -81,13 +81,16 @@ def create_asset():
 
     user_data = validated_token[1]
     key = user_data['user_identifier']
-    type = request.headers.get('type')
+
+    asset_type = request.headers.get('type')
     symbol = request.headers.get('symbol')
     amount = request.headers.get('amount')
 
-    if type not in ['crypto', 'stock']:
+    if asset_type not in ['crypto', 'stock']:
         return jsonify({'status': 'failed', 'content': 'Error: invalid asset type'}), 400
-
-    response = create_asset(key, type, symbol, amount)
+    try:
+        response = create_custom_asset(key, asset_type, symbol, amount)
+    except Exception as e:
+        return jsonify({'status': 'failed', 'content': str(e)}), 400
     return jsonify(response), 200
     
