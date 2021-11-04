@@ -26,7 +26,7 @@ async def get_assets():
 
     balances_headers = {'yodlee_loginName': user_data['user_identifier'],
                         'nordigen_requisitions': nordigen_requisitions}
-    holdings_headers = {'yodlee_loginName': user_data['user_identifier'], 'binance_key': user_data['binance_key'],
+    holdings_headers = {'yodlee_loginName': user_data['user_identifier'], "custom_assets_key": user_data['user_identifier'],'binance_key': user_data['binance_key'],
                         'binance_secret': user_data['binance_secret'], 'coinbase_key': user_data['coinbase_api_key'],
                         'coinbase_secret': user_data['coinbase_api_secret']}
 
