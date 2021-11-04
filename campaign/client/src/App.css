@@ -554,7 +554,7 @@ input.selected {
     margin-right: 6px;
 }
 
-@media only screen and (max-height: 470px) {
+@media only screen and (max-height: 550px) {
     .question-answer-container p {
         display: none;
     }
