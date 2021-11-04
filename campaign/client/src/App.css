@@ -583,7 +583,7 @@ input.selected {
         margin-left: 0;
         border: 1px solid #000000;
         border-radius: 30px;
-        padding: 1%;
+        padding: 4%;
         font-size: 10px;
         font-weight: 400;
         line-height: 10px;
@@ -591,6 +591,12 @@ input.selected {
         text-align: left;
         margin-top: 0;
 
+    }
+    .modalHeading{
+        font-size: 15px;
+    }
+    .sub-heading{
+        font-size: 10px;
     }
 }
 
