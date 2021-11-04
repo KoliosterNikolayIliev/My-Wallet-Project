@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 
 import { getAccessToken, updateUser } from "../../utils/account";
 // import { countries, generateNordigenToken } from "../../utils/nordigen";
-import { CountriesDropDownList } from "../Other/DropDown";
+import { CountriesDropDownList } from "../Other/CountriesDropDownList";
+import AssetsDropDownList from "../Other/AssetsDropDownList";
 
 // Profile component to display user information.
 const Profile = () => {
@@ -81,6 +82,7 @@ const Profile = () => {
           <li onClick={(e) => selectProvider(e)}>Coinbase</li>
           <li onClick={(e) => selectProvider(e)}>Yodlee</li>
           <li onClick={(e) => selectProvider(e)}>Nordigen</li>
+          <li onClick={(e) => selectProvider(e)}>Custom Assets</li>
         </ul>
 
         {!provider && <p>Select a provider on the right</p>}
@@ -128,6 +130,12 @@ const Profile = () => {
         {provider === "Nordigen" && (
           <div>
             <CountriesDropDownList />
+          </div>
+        )}
+
+        {provider === "Custom Assets" && (
+          <div>
+            <AssetsDropDownList />
           </div>
         )}
 
