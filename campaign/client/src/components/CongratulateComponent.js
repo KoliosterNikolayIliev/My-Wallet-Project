@@ -12,7 +12,7 @@ const CongratulateComponent = () => {
             <h4 className="modalHeading">Thanks for supporting us!</h4>
             <p className="reminder">Don’t forget to tell your friends and keep your eyes peeled for the
                 launch! 🚀</p>
-            <a href="https://twitter.com/joinTrivial?ref_src=twsrc%5Etfw" data-show-count="false" className="follow-btn">
+            <a href="https://twitter.com/joinTrivial?ref_src=twsrc%5Etfw" data-show-count="false" className="get-early-access-btn">
                 <FontAwesomeIcon className="twitter-button" icon={faTwitter} size="1x" inverse/>
                 Follow us on Twitter
             </a>
