@@ -16,6 +16,7 @@ const linkAccount = async (token, bank) => {
     body: JSON.stringify({ institution_id: bank }),
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
   });
 

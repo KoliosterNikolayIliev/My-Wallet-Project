@@ -3,17 +3,18 @@ import uuid, os, requests
 MOCK_ASSETS_DATA = {'crypto_assets': [{'type': 'BTC', 'amount': 2.0}], 'stock_assets': [{'type': 'TSLA', 'amount': 3}],
                     'currency_assets': [{'type': 'BGN', 'amount': 20.0}, {'type': 'EUR', 'amount': 20.0}]}
 
-URL = os.environ.get('CUSTOM_ASSETS_URL')
+URL = os.environ.get('ASSETS_CUSTOM_ASSETS_URL')
 USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
 
 def format_holdings_response(response):
     data = {}
     try:
         for assets in response.values():
-            for asset in assets:
-                # generate a random id for the asset
-                id = uuid.uuid4().int
-                data[id] = {'symbol': asset['type'], 'quantity': asset['amount']}
+            if assets is not None:
+                for asset in assets:
+                    # generate a random id for the asset
+                    id = uuid.uuid4().int
+                    data[id] = {'symbol': asset['type'], 'quantity': asset['amount']}
     except:
         return {'status': 'failed', 'content': 'Error: unknown error'}
 

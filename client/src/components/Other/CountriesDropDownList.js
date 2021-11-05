@@ -65,7 +65,7 @@ export const CountriesDropDownList = () => {
     <div>
       <section className="k-my-8">
         <form className="k-form k-mb-4">
-          <label className="k-label k-mb-3">Category</label>
+          <label className="k-label k-mb-3">Country</label>
           <DropDownList
             data={categories}
             onChange={(e) => setCountry(e.value)}
