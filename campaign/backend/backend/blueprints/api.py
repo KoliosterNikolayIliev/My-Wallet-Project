@@ -18,7 +18,7 @@ def getLists():
 
 @bp.route("/subscribers", methods=["GET"])
 def get_subscribers():
-    return jsonify({'count': getLists()})
+    return jsonify({'count': int(getLists()) + 324})
 
 @bp.route("/save-form-data", methods=["POST"])
 def save_form_data():
