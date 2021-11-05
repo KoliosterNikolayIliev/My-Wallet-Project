@@ -11,8 +11,6 @@ const TopBodyComponent = ({show}) => {
                     New-age wealth builders juggle with multiple investment
                     platforms. Making sense of the big picture is arduous when it really
                     shouldn’t be.
-                </p>
-                <p>
                     We bring seamless order to your wealth so you can spend more time
                     growing it.
                 </p>
