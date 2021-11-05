@@ -132,7 +132,7 @@ def format_balances_response(response):
         return {'status': 'success', 'content': data}
     except:
         # return an error if it has occured
-        return {'status': 'failed', 'content': f"Error: {response['errorMessage']}"}
+        return {'status': 'failed', 'content': f"Error: Unknown"}
 
 
 def format_holdings_response(response):
@@ -152,7 +152,7 @@ def format_holdings_response(response):
 
     except:
         # return an error if it has occured
-        return {'status': 'failed', 'content': f"Error: {response['errorMessage']}"}
+        return {'status': 'failed', 'content': f"Error: Unknown"}
 
 
 def format_transactions_response(response):
@@ -194,7 +194,7 @@ def get_access_token(loginName):
         return {'status': 'success', 'content': response.json()['token']['accessToken']}
     except:
         # return an error if it has occured
-        return {'status': 'failed', 'content': f"Error: {response.json()['errorMessage']}"}
+        return {'status': 'failed', 'content': f"Error: Unknown"}
 
 
 async def get_balances(loginName, session):
