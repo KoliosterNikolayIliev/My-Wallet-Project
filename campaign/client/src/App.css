@@ -820,7 +820,7 @@ input.selected {
         max-height: 50px;
     }
 }
-@media only screen and (max-height: 400px) {
+@media only screen and (max-height: 390px) {
     .question-answer-container p {
         display: none;
     }
