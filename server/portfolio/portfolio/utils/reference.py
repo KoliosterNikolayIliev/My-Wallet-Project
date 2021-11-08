@@ -32,5 +32,5 @@ def convert_assets_value_to_base_currency(base, assets):
     for holding in holdings.values():
         for asset in holding['content'].values():
             if crypto_prices.get(asset["symbol"]):
-                base_currency = float(crypto_prices[asset["symbol"]]) * float(asset["quantity"])
-                asset["base_currency"] = base_currency / float(currency_prices["USD"])
+                usd_currency = float(crypto_prices[asset["symbol"]]) * float(asset["quantity"])
+                asset["base_currency"] = usd_currency / float(currency_prices["USD"])
