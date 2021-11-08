@@ -15,12 +15,19 @@ const GroupComponent = ({ account, provider, getTransactionsFunc }) => {
   if (amount > 0) {
     return (
       <div>
-        <p
-          onClick={() => getTransactionsFunc(provider, account.id)}
-          className="has-transactions"
-        >
-          {currency}: {amount}
-        </p>
+        {provider !== "binance" && provider !== "custom_assets" && (
+          <p
+            onClick={() => getTransactionsFunc(provider, account.id)}
+            className="has-transactions"
+          >
+            {currency}: {amount}
+          </p>
+        )}
+        {(provider === "binance" || provider === "custom_assets") && (
+          <p>
+            {currency}: {amount}
+          </p>
+        )}
       </div>
     );
   }
