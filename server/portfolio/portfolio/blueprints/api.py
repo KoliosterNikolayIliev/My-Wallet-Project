@@ -5,6 +5,7 @@ from flask_cors import CORS
 from ..utils.assets import get_balances, get_transactions, get_holdings
 from ..utils.account import validate_auth_header
 from ..utils.custom_assets import create_asset as create_custom_asset
+from ..utils.format import group_balances
 
 import aiohttp, asyncio
 
@@ -38,10 +39,14 @@ async def get_assets():
         tasks.append(asyncio.ensure_future(get_holdings(headers=holdings_headers, session=session)))
 
         responses = await asyncio.gather(*tasks)
-        for response in responses:
-            results.append(response)
 
-    return jsonify(results), 200
+        balances = responses[0]
+        holdings = responses[1]
+
+        data = group_balances(balances, holdings)
+
+
+    return jsonify(data), 200
 
 
 @bp.route('/api/transactions', methods=(['GET']))
