@@ -3,7 +3,7 @@ def group_balances(balances: dict, holdings: dict):
     for provider, content in balances.items():
         for account, account_content in content['content'].items():
             name = account_content['providerName']
-            data = {'id': account, 'data': {key:value for (key, value) in account_content.items() if key != "providerName"}}
+            data = {'provider': provider, 'id': account, 'data': {key:value for (key, value) in account_content.items() if key != "providerName"}}
             for key, value in holdings.items():
                 if key == "yodlee":
                     holdings_data = []
@@ -18,7 +18,7 @@ def group_balances(balances: dict, holdings: dict):
         
     for provider, content in {key:value for (key, value) in holdings.items() if key != "yodlee"}.items():
         for asset, asset_content in content['content'].items():
-            data = {'id': asset, 'data': asset_content}
+            data = {'provider': provider, 'id': asset, 'data': asset_content}
             if result.get(provider):
                 result[provider].append(data)
             else:
