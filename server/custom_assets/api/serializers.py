@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from api.models import UserAssets
-from api.utils.serializer_validators import validate_user_key
+from api.utils.serializer_validators import validate_user_key, add_or_increment_asset
 
 
 class CryptoAssetSerializer(serializers.Serializer):
@@ -22,7 +22,7 @@ class CryptoAssetSerializer(serializers.Serializer):
         if not user_assets.crypto_assets:
             user_assets.crypto_assets = []
 
-        user_assets.crypto_assets.append(validated_data)
+        user_assets.crypto_assets = add_or_increment_asset(user_assets.crypto_assets, validated_data)
         user_assets.save()
 
         return validated_data
@@ -47,7 +47,7 @@ class StockAssetSerializer(serializers.Serializer):
         if not user_assets.stock_assets:
             user_assets.stock_assets = []
 
-        user_assets.stock_assets.append(validated_data)
+        user_assets.stock_assets = add_or_increment_asset(user_assets.stock_assets, validated_data)
         user_assets.save()
 
         return validated_data
@@ -72,7 +72,7 @@ class CurrencyAssetSerializer(serializers.Serializer):
         if not user_assets.currency_assets:
             user_assets.currency_assets = []
 
-        user_assets.currency_assets.append(validated_data)
+        user_assets.currency_assets = add_or_increment_asset(user_assets.currency_assets, validated_data)
         user_assets.save()
 
         return validated_data
