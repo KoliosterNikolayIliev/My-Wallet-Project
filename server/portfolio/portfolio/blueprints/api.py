@@ -8,6 +8,8 @@ from ..utils.custom_assets import create_asset as create_custom_asset
 
 import aiohttp, asyncio
 
+from ..utils.reference import convert_assets_value_to_base_currency
+
 bp = Blueprint('api', __name__)
 CORS(bp)
 
@@ -40,6 +42,8 @@ async def get_assets():
         responses = await asyncio.gather(*tasks)
         for response in responses:
             results.append(response)
+
+        convert_assets_value_to_base_currency(user_data['base_currency'], results)
 
     return jsonify(results), 200
 
