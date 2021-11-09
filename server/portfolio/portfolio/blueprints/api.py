@@ -9,6 +9,8 @@ from ..utils.format import group_balances
 
 import aiohttp, asyncio
 
+from ..utils.reference import convert_assets_value_to_base_currency
+
 bp = Blueprint('api', __name__)
 CORS(bp)
 
@@ -43,10 +45,11 @@ async def get_assets():
         balances = responses[0]
         holdings = responses[1]
 
+        convert_assets_value_to_base_currency(user_data['base_currency'], balances, holdings)
         data = group_balances(balances, holdings)
 
-
     return jsonify(data), 200
+
 
 
 @bp.route('/api/transactions', methods=(['GET']))
