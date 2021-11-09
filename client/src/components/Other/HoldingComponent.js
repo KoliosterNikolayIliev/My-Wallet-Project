@@ -1,23 +1,12 @@
 import React from "react";
 
-const HoldingComponent = ({symbol, quantity, provider, account, getTransactionsFunc}) => {
-  if (!provider) {
-    return (
-      <div>
-        <p>
-          {symbol}: {quantity}
-        </p>
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <p onClick={() => getTransactionsFunc(provider, account)} className='has-transactions'>
-          {symbol}: {quantity}
-        </p>
-      </div>
-    );
-  }
+const HoldingComponent = ({ data }) => {
+  console.log(data);
+  return (
+    <p>
+      {data.symbol}: {data.quantity}
+    </p>
+  );
 };
 
 export default HoldingComponent;
