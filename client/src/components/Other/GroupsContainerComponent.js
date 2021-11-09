@@ -2,7 +2,11 @@ import React from "react";
 import GroupComponent from "./GroupComponent";
 import HoldingComponent from "./HoldingComponent";
 
-const GroupsContainerComponent = ({ data, getTransactionsFunc }) => {
+const GroupsContainerComponent = ({
+  data,
+  getTransactionsFunc,
+  baseSymbol,
+}) => {
   let source;
   return (
     <div>
@@ -15,6 +19,7 @@ const GroupsContainerComponent = ({ data, getTransactionsFunc }) => {
               {value.map((account) => {
                 return (
                   <GroupComponent
+                    baseSymbol={baseSymbol}
                     provider={account.provider}
                     account={account}
                     getTransactionsFunc={getTransactionsFunc}
@@ -25,7 +30,12 @@ const GroupsContainerComponent = ({ data, getTransactionsFunc }) => {
                 if (account.holdings) {
                   if (account.holdings.length > 0) {
                     return account.holdings.map((holding) => {
-                      return <HoldingComponent data={holding} />;
+                      return (
+                        <HoldingComponent
+                          data={holding}
+                          baseSymbol={baseSymbol}
+                        />
+                      );
                     });
                   }
                   return null;
