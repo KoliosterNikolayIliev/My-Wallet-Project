@@ -10,12 +10,11 @@
     <link rel="stylesheet" href="styles.css">
     <title>Title</title>
     {% block content %}
-    <h2>Monitor</h2>
-        {% for mon in monitor %}
-       <p>Number of registered users: {{ mon.number_of_accounts }}</p>
-       <p>Total assets: {{ mon.total_assets_on_platform }} GBP</p>
-        {% endfor %}
-{% endblock %}
+        <h2>Monitor</h2>
+        <p>Number of registered users: {{ users }}</p>
+        <p>Total assets: {{ total_assets }} GBP</p>
+
+    {% endblock %}
 </head>
 <body>
 

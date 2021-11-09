@@ -1,10 +1,19 @@
+from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import ListView
 
-from monitor_app.models import Monitor
+from monitor_app.utils import get_number_of_users, get_assets
 
 
-class IndexView(ListView):
-    model = Monitor
-    context_object_name = 'monitor'
-    template_name = "index.html"
+def index_view(request):
+    users = get_number_of_users()
+    assets = get_assets()
+    if request.method == 'GET':
+        context = {
+            'users': users,
+            'total_assets': assets
+        }
+        return render(request, 'index.html', context)
+    return HttpResponse('FORBIDDEN!', status=405)
+
+
+
