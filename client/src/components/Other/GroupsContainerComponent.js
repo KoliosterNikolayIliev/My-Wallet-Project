@@ -14,9 +14,12 @@ const GroupsContainerComponent = ({
         source = key;
         return (
           <div>
-            <h3>{source[0].toUpperCase() + source.slice(1)}</h3>
+            <h3>
+              {source[0].toUpperCase() + source.slice(1)}: total balance-{" "}
+              {value.total.toFixed(2)} {baseSymbol}
+            </h3>
             <ul>
-              {value.map((account) => {
+              {value.accounts.map((account) => {
                 return (
                   <GroupComponent
                     baseSymbol={baseSymbol}
@@ -26,7 +29,7 @@ const GroupsContainerComponent = ({
                   />
                 );
               })}
-              {value.map((account) => {
+              {value.accounts.map((account) => {
                 if (account.holdings) {
                   if (account.holdings.length > 0) {
                     return account.holdings.map((holding) => {
