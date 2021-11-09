@@ -18,9 +18,7 @@ def get_currencies_prices(base):
     return res.json()
 
 
-def convert_assets_value_to_base_currency(base, assets):
-    balances = assets[0]
-    holdings = assets[1]
+def convert_assets_value_to_base_currency(base, balances, holdings):
     currency_prices = get_currencies_prices(base)
     crypto_prices = get_crypto_prices()
 

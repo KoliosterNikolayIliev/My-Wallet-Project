@@ -7,16 +7,14 @@ import ProfileButton from "../Buttons/ProfileButton";
 
 import { getAssets, getTransactions } from "../../utils/portfolio";
 
-import BalancesContainerComponent from "../Other/BalancesContainerComponent";
-import HoldingsContainerComponent from "../Other/HoldingsContainerComponent";
+import GroupsContainerComponent from "../Other/GroupsContainerComponent";
 import TransactionsContainerComponent from "../Other/TransactionsContainerComponent";
 
 import "../../styles/dashboard.css";
 
 // Dashboard page to be filled in with user account data
 const DashboardPage = () => {
-  const [balances, setBalances] = useState({});
-  const [holdings, setHoldings] = useState({});
+  const [groups, setGroups] = useState({});
   const [transactions, setTransactions] = useState({});
 
   const [loading, setLoading] = useState(false);
@@ -32,8 +30,7 @@ const DashboardPage = () => {
     await Promise.all([
       (async () => {
         const assets = await getAssets(token);
-        setBalances(assets[0]);
-        setHoldings(assets[1]);
+        setGroups(assets);
       })(),
     ]);
 
@@ -71,17 +68,9 @@ const DashboardPage = () => {
 
         <div className="dashboard-container">
           <div className="container">
-            <h1>Balances</h1>
-            <BalancesContainerComponent
-              data={balances}
-              getTransactionsFunc={getAccountTransactions}
-            />
-          </div>
-
-          <div className="container">
-            <h1>Holdings</h1>
-            <HoldingsContainerComponent
-              data={holdings}
+            <h1>Groups</h1>
+            <GroupsContainerComponent
+              data={groups}
               getTransactionsFunc={getAccountTransactions}
             />
           </div>
