@@ -11,18 +11,38 @@ def group_balances(balances: dict, holdings: dict):
                         if str(asset_content['parent']) == account:
                             holdings_data.append(asset_content)
                     data['holdings'] = holdings_data
+                    
             if result.get(name):
-                result[name].append(data)
+                if result[name].get('accounts'):
+                    result[name]['accounts'].append(data)
+                else:
+                    result[name]['accounts'] = [data]
+                
+                if account_content['balanceData'].get('base_currency'):
+                    if result[name].get('total'):
+                        result[name]['total'] += account_content['balanceData']['base_currency']
+                    else:
+                        result[name]['total'] = account_content['balanceData']['base_currency']
             else:
-                result[name] = [data]
-        
+                result[name] = {'accounts': [data], 'total': account_content['balanceData']['base_currency']}
+
     for provider, content in {key:value for (key, value) in holdings.items() if key != "yodlee"}.items():
         for asset, asset_content in content['content'].items():
             data = {'provider': provider, 'id': asset, 'data': asset_content}
+
             if result.get(provider):
-                result[provider].append(data)
+                if result[provider].get('accounts'):
+                    result[provider]['accounts'].append(data)
+                else:
+                    result[provider]['accounts'] = [data]
+
+                if asset_content.get('base_currency'):
+                    if result[provider].get('total'):
+                        result[provider]['total'] += asset_content['base_currency']
+                    else:
+                        result[provider]['total'] = asset_content['base_currency']
             else:
-                result[provider] = [data]
+                result[provider] = {'accounts': [data], 'total': asset_content['base_currency']}
     
     return result
             

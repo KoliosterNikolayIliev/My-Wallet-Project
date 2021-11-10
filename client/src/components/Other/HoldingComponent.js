@@ -1,10 +1,10 @@
 import React from "react";
 
-const HoldingComponent = ({ data }) => {
-  console.log(data);
+const HoldingComponent = ({ data, baseSymbol }) => {
   return (
     <p>
-      {data.symbol}: {data.quantity}
+      {data.symbol}: {data.quantity}; {data.base_currency.toFixed(2)}{" "}
+      {baseSymbol}
     </p>
   );
 };

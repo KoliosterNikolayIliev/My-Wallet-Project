@@ -6,6 +6,7 @@ import LogOutButton from "../Buttons/LogOutButton";
 import ProfileButton from "../Buttons/ProfileButton";
 
 import { getAssets, getTransactions } from "../../utils/portfolio";
+import { getUser } from "../../utils/account";
 
 import GroupsContainerComponent from "../Other/GroupsContainerComponent";
 import TransactionsContainerComponent from "../Other/TransactionsContainerComponent";
@@ -16,11 +17,21 @@ import "../../styles/dashboard.css";
 const DashboardPage = () => {
   const [groups, setGroups] = useState({});
   const [transactions, setTransactions] = useState({});
+  const [base, setBase] = useState("");
 
   const [loading, setLoading] = useState(false);
 
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
     useAuth0();
+
+  useEffect(() => {
+    const getBase = async () => {
+      const token = await getAccessTokenSilently();
+      const response = await getUser(token);
+      setBase(response.base_currency);
+    };
+    getBase();
+  }, []);
 
   const getData = async () => {
     setLoading(true);
@@ -70,6 +81,7 @@ const DashboardPage = () => {
           <div className="container">
             <h1>Groups</h1>
             <GroupsContainerComponent
+              baseSymbol={base}
               data={groups}
               getTransactionsFunc={getAccountTransactions}
             />
