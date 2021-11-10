@@ -42,7 +42,10 @@ def group_balances(balances: dict, holdings: dict):
                     else:
                         result[provider]['total'] = asset_content['base_currency']
             else:
-                result[provider] = {'accounts': [data], 'total': asset_content['base_currency']}
+                if asset_content.get('base_currency'):
+                    result[provider] = {'accounts': [data], 'total': asset_content['base_currency']}
+                else:
+                    result[provider] = {'accounts': [data], 'total': 0}
     
     return result
             
