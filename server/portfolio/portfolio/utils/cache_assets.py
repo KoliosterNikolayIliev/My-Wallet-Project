@@ -10,7 +10,7 @@ def cache_assets(assets, user_id):
     current_datetime = datetime.utcnow()
     data = {
         'user_id': user_id,
-        'date': current_datetime.strftime('%m/%d/%Y-%H:%M:%S'),
+        'date': current_datetime,
         'content': assets,
     }
     db.assets.insert_one(data)
