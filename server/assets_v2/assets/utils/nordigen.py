@@ -173,6 +173,13 @@ async def get_bank_accounts(requisition_id, session, headers):
     return {'status': 'success', 'content': accounts}, True
 
 
+async def get_single_account_details(account, headers, session):
+    async with session.get(URL + f'accounts/{account}/details', headers=headers) as response:
+        awaited = await response.json()
+    
+    return awaited
+
+
 async def get_single_account_balance(account, headers, session):
     bank_name = await get_bank_name(account, session, headers)
 
@@ -182,8 +189,17 @@ async def get_single_account_balance(account, headers, session):
             balance_data = await response.json()
     else:
         balance_data = MOCK_BALANCES_DATA
+    
+    details = await get_single_account_details(account, headers, session)
+    if details.get('account'):
+        if details['account'].get('product'):
+            details = details['account']['product']
+        elif details['account'].get('name'):
+            details = details['account']['name']
+        else:
+            details = None
 
-    return {"id": account, "providerName": bank_name, "balanceData": balance_data["balances"][0]["balanceAmount"]}
+    return {"id": account, "providerName": bank_name, "balanceData": balance_data["balances"][0]["balanceAmount"], "accountType": details}
 
 
 async def get_all_account_balances(requisition_id, session, tasks, headers):
@@ -205,11 +221,10 @@ async def get_all_account_balances(requisition_id, session, tasks, headers):
 
     responses = await asyncio.gather(*tasks)
     for response in responses:
-        data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"]}
+        data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"], "accountType": response["accountType"]}
 
     return {"status": "success", "content": data}
 
-    # # loop through all user bank accounts
 
 
 async def get_account_transactions(account, session):
