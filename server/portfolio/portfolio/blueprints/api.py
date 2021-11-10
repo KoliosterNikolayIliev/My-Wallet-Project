@@ -4,6 +4,7 @@ from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 from ..utils.assets import get_balances, get_transactions, get_holdings
 from ..utils.account import validate_auth_header
+from ..utils.cache_assets import cache_assets
 from ..utils.custom_assets import create_asset as create_custom_asset
 from ..utils.format import group_balances
 
@@ -47,6 +48,7 @@ async def get_assets():
 
         convert_assets_value_to_base_currency(user_data['base_currency'], balances, holdings)
         data = group_balances(balances, holdings)
+        cache_assets(data, user_data['user_identifier'])
 
     return jsonify(data), 200
 

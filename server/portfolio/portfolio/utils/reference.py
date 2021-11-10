@@ -20,15 +20,20 @@ def get_currencies_prices(base):
 
 def convert_assets_value_to_base_currency(base, balances, holdings):
     currency_prices = get_currencies_prices(base)
+    currency_prices_gbp = get_currencies_prices("GBP")
     crypto_prices = get_crypto_prices()
 
     for balance in balances.values():
-        for asset in balance['content'].values():
+        for asset in balance["content"].values():
             asset["balanceData"]["base_currency"] = float(asset["balanceData"]["amount"]) / float(
                 currency_prices[asset["balanceData"]["currency"]])
+
+            asset["balanceData"]["monitor_currency"] = float(asset["balanceData"]["amount"]) / float(
+                currency_prices_gbp[asset["balanceData"]["currency"]])
 
     for holding in holdings.values():
         for asset in holding['content'].values():
             if crypto_prices.get(asset["symbol"]):
                 usd_currency = float(crypto_prices[asset["symbol"]]) * float(asset["quantity"])
                 asset["base_currency"] = usd_currency / float(currency_prices["USD"])
+                asset["monitor_currency"] = usd_currency / float(currency_prices_gbp["USD"])
