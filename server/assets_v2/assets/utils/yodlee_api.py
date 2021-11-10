@@ -128,6 +128,8 @@ def format_balances_response(response):
     try:
         for account in response['account']:
             data[account['id']] = {"providerName": account["providerName"], "balanceData": account["balance"]}
+            if account.get("CONTAINER"):
+                data[account['id']]["accountType"] = account["CONTAINER"]
 
         return {'status': 'success', 'content': data}
     except:
