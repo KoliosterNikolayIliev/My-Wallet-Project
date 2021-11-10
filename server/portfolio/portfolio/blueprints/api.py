@@ -10,7 +10,7 @@ from ..utils.format import group_balances
 
 import aiohttp, asyncio
 
-from ..utils.reference import convert_assets_value_to_base_currency
+from ..utils.reference import convert_assets_value_to_base_currency, convert_transactions_currency_to_base_currency
 
 bp = Blueprint('api', __name__)
 CORS(bp)
@@ -77,8 +77,9 @@ def get_account_transactions():
         'coinbase_key': user_data['coinbase_api_key'],
         'coinbase_secret': user_data['coinbase_api_secret']
     }
-    response = jsonify(get_transactions(headers))
-    return response, 200
+    response = get_transactions(headers)
+    convert_transactions_currency_to_base_currency(user_data['base_currency'], response)
+    return jsonify(response), 200
 
 @bp.route('/api/create-asset', methods=(['GET']))
 def create_asset():
