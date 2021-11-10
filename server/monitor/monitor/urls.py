@@ -21,4 +21,5 @@ from monitor_app.admin import admin_site
 urlpatterns = [
     path('admin/', admin_site.urls),
     path('', include('monitor_app.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

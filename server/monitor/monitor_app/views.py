@@ -1,9 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
 
 from monitor_app.utils import get_number_of_users, get_assets
 
-
+@login_required
 def index_view(request):
     users = get_number_of_users()
     assets = get_assets()

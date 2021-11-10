@@ -9,14 +9,15 @@
           integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <title>Title</title>
-    {% block content %}
+
+</head>
+<body>
+{% block content %}
         <h2>Monitor</h2>
         <p>Number of registered users: {{ users }}</p>
         <p>Total assets: {{ total_assets }} GBP</p>
 
     {% endblock %}
-</head>
-<body>
-
+{% block login %}{% endblock %}
 </body>
 </html>
