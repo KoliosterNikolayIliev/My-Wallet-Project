@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 const GroupComponent = ({
   account,
+  source,
+  type,
   provider,
   getTransactionsFunc,
   baseSymbol,
@@ -20,6 +22,12 @@ const GroupComponent = ({
     base_currency = account.data.base_currency;
   }
 
+  if (!type) {
+    type = `${source} account(${currency})`;
+  } else {
+    type = `${source} ${type} account(${currency})`;
+  }
+
   if (!base_currency) {
     base_currency = "N/A";
   } else {
@@ -34,12 +42,17 @@ const GroupComponent = ({
             onClick={() => getTransactionsFunc(provider, account.id)}
             className="has-transactions"
           >
+            {type}: {base_currency} {baseSymbol}
+          </p>
+        )}
+        {provider === "custom_assets" && (
+          <p>
             {currency}: {amount}; {base_currency} {baseSymbol}
           </p>
         )}
-        {(provider === "binance" || provider === "custom_assets") && (
+        {provider === "binance" && (
           <p>
-            {currency}: {amount}; {base_currency} {baseSymbol}
+            {type}: {amount}; {base_currency} {baseSymbol}
           </p>
         )}
       </div>
