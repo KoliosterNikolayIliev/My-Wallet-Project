@@ -19,7 +19,11 @@ const GroupsContainerComponent = ({
               {value.total.toFixed(2)} {baseSymbol}
             </h3>
             <ul>
-              {(value.accounts.length > 1 || source === "coinbase") &&
+              {(value.accounts.length > 1 ||
+                source === "coinbase" ||
+                (value.accounts.length === 1 &&
+                  source === "yodlee" &&
+                  value.accounts[0].holdings.length === 0)) &&
                 value.accounts.map((account) => {
                   return (
                     <GroupComponent
