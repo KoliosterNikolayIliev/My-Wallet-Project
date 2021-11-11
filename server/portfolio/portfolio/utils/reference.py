@@ -22,6 +22,7 @@ def convert_assets_value_to_base_currency(base, balances, holdings):
     currency_prices = get_currencies_prices(base)
     currency_prices_gbp = get_currencies_prices("GBP")
     crypto_prices = get_crypto_prices()
+    stocks_prices = get_stocks_prices()
 
     for balance in balances.values():
         for asset in balance["content"].values():
@@ -37,6 +38,12 @@ def convert_assets_value_to_base_currency(base, balances, holdings):
                 usd_currency = float(crypto_prices[asset["symbol"]]) * float(asset["quantity"])
                 asset["base_currency"] = usd_currency / float(currency_prices["USD"])
                 asset["monitor_currency"] = usd_currency / float(currency_prices_gbp["USD"])
+
+            else:
+                if stocks_prices.get(asset["symbol"]):
+                    usd_currency = float(stocks_prices[asset["symbol"]]) * float(asset["quantity"])
+                    asset["base_currency"] = usd_currency / float(currency_prices["USD"])
+                    asset["monitor_currency"] = usd_currency / float(currency_prices_gbp["USD"])
 
 
 def convert_transactions_currency_to_base_currency(base, transactions):
