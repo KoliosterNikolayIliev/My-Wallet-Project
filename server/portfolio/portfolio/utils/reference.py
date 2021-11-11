@@ -47,17 +47,18 @@ def convert_assets_value_to_base_currency(base, balances, holdings):
 
 
 def convert_transactions_currency_to_base_currency(base, transactions):
-    currency_prices = get_currencies_prices(base)
-    crypto_prices = get_crypto_prices()
+    if transactions["status"] != "failed":
+        currency_prices = get_currencies_prices(base)
+        crypto_prices = get_crypto_prices()
 
-    for transaction in transactions["content"].values():
-        for amount in transaction.values():
-            if currency_prices.get(amount["currency"]):
-                amount["amount"] = float(amount["amount"]) / currency_prices[amount["currency"]]
-                amount["currency"] = base
-
-            else:
-                if crypto_prices.get(amount["currency"]):
-                    usd_currency = float(crypto_prices[amount["currency"]]) * float(amount["amount"])
-                    amount["amount"] = usd_currency / float(currency_prices["USD"])
+        for transaction in transactions["content"].values():
+            for amount in transaction.values():
+                if currency_prices.get(amount["currency"]):
+                    amount["amount"] = float(amount["amount"]) / currency_prices[amount["currency"]]
                     amount["currency"] = base
+
+                else:
+                    if crypto_prices.get(amount["currency"]):
+                        usd_currency = float(crypto_prices[amount["currency"]]) * float(amount["amount"])
+                        amount["amount"] = usd_currency / float(currency_prices["USD"])
+                        amount["currency"] = base
