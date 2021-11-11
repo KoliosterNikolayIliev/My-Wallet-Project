@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 const GroupComponent = ({
   account,
+  source,
+  type,
   provider,
   getTransactionsFunc,
   baseSymbol,
@@ -11,13 +13,19 @@ const GroupComponent = ({
   let base_currency = 0;
 
   if (account.data.balanceData) {
-    amount = account.data.balanceData.amount;
+    amount = Number(account.data.balanceData.amount).toFixed(2);
     currency = account.data.balanceData.currency;
     base_currency = account.data.balanceData.base_currency;
   } else {
-    amount = account.data.quantity;
+    amount = Number(account.data.quantity).toFixed(2);
     currency = account.data.symbol;
     base_currency = account.data.base_currency;
+  }
+
+  if (!type) {
+    type = `${source} account(${currency})`;
+  } else {
+    type = `${source} ${type} account(${currency})`;
   }
 
   if (!base_currency) {
@@ -29,15 +37,19 @@ const GroupComponent = ({
   if (amount > 0) {
     return (
       <div>
-        {provider !== "binance" && provider !== "custom_assets" && (
-          <p
-            onClick={() => getTransactionsFunc(provider, account.id)}
-            className="has-transactions"
-          >
-            {currency}: {amount}; {base_currency} {baseSymbol}
-          </p>
-        )}
-        {(provider === "binance" || provider === "custom_assets") && (
+        {provider !== "binance" &&
+          provider !== "custom_assets" &&
+          provider !== "coinbase" && (
+            <p
+              onClick={() => getTransactionsFunc(provider, account.id)}
+              className="has-transactions"
+            >
+              {type}: {base_currency} {baseSymbol}
+            </p>
+          )}
+        {(provider === "custom_assets" ||
+          provider === "binance" ||
+          provider === "coinbase") && (
           <p>
             {currency}: {amount}; {base_currency} {baseSymbol}
           </p>

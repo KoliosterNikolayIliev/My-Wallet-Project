@@ -22,9 +22,11 @@ const GroupsContainerComponent = ({
               {value.accounts.map((account) => {
                 return (
                   <GroupComponent
+                    source={source[0].toUpperCase() + source.slice(1)}
                     baseSymbol={baseSymbol}
                     provider={account.provider}
                     account={account}
+                    type={account.data.accountType}
                     getTransactionsFunc={getTransactionsFunc}
                   />
                 );
