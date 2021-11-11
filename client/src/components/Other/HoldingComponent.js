@@ -1,11 +1,21 @@
 import React from "react";
 
-const HoldingComponent = ({ data, baseSymbol }) => {
+const HoldingComponent = ({ data, baseSymbol, nest }) => {
   return (
-    <p>
-      {data.symbol}: {data.quantity}; {data.base_currency.toFixed(2)}{" "}
-      {baseSymbol}
-    </p>
+    <div>
+      {!nest && (
+        <p>
+          {data.symbol}: {data.quantity}; {data.base_currency.toFixed(2)}{" "}
+          {baseSymbol}
+        </p>
+      )}
+      {nest && (
+        <li>
+          {data.symbol}: {data.quantity}; {data.base_currency.toFixed(2)}{" "}
+          {baseSymbol}
+        </li>
+      )}
+    </div>
   );
 };
 

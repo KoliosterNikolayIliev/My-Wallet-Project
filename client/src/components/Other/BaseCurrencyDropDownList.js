@@ -199,6 +199,10 @@ export const BaseCurrencyDropDownList = () => {
     <div>
       <section className="k-my-8">
         <form className="k-form k-mb-4">
+          <label className="k-label k-mb-3">
+            Select a base currency for your assets and balances to be displayed
+            in:
+          </label>
           <DropDownList
             data={categories}
             onChange={(e) => setBaseCurrency(e.value)}
