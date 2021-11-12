@@ -14,7 +14,23 @@ def get_number_of_users():
 
 
 def get_assets():
-    return 15000
+    db = client['portfolio']
+    collection = db['assets']
+    assets = collection.find({})
+    result = 0
+
+    for asset in assets:
+        for accounts in asset['content'].values():
+            for account in accounts['accounts']:
+                balance_data = account['data']
+                if balance_data.get('balanceData'):
+                    if balance_data['balanceData'].get('monitor_currency'):
+                        result += float(balance_data['balanceData']['monitor_currency'])
+                else:
+                    if balance_data.get('monitor_currency'):
+                        result += float(balance_data['monitor_currency'])
+
+    return f'{result:.2f}'
 
 
 def get_user_totp_device(self, user, confirmed=None):
