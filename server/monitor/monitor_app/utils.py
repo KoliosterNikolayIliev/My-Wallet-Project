@@ -35,7 +35,7 @@ def get_assets():
     return 15000
 
 
-def get_user_totp_device(self, user, confirmed=None):
+def get_user_totp_device(user, confirmed=None):
     devices = devices_for_user(user, confirmed=confirmed)
     for device in devices:
         if isinstance(device, TOTPDevice):
