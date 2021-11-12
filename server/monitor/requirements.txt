@@ -1,0 +1,6 @@
+django-otp==1.1.1
+django-qr-code==2.3.0
+dnspython==2.1.0
+pip-chill==1.0.1
+pymongo==3.12.1
+qrcode==7.3.1
