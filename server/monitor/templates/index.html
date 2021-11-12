@@ -12,12 +12,16 @@
 
 </head>
 <body>
-{% block content %}
+{% if users %}
+    {% block content %}
         <h2>Monitor</h2>
         <p>Number of registered users: {{ users }}</p>
         <p>Total assets: {{ total_assets }} GBP</p>
-
+        <a href={% url 'logout' %}>Logout</a>
     {% endblock %}
+{% endif %}
 {% block login %}{% endblock %}
+{% block register %}{% endblock %}
+{% block barcode %}{% endblock %}
 </body>
 </html>
