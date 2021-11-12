@@ -13,10 +13,7 @@ def get_number_of_users():
     return collection.estimated_document_count()
 
 
-def get_assets():
-    db = client['portfolio']
-    collection = db['assets']
-    assets = collection.find({})
+def get_total_assets_value(assets):
     result = 0
 
     for asset in assets:
@@ -31,6 +28,13 @@ def get_assets():
                         result += float(balance_data['monitor_currency'])
 
     return f'{result:.2f}'
+
+
+def get_assets():
+    db = client['portfolio']
+    collection = db['assets']
+    assets = collection.find({})
+    return get_total_assets_value(assets)
 
 
 def get_user_totp_device(self, user, confirmed=None):
