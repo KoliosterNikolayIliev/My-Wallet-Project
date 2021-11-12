@@ -4,35 +4,37 @@ from django_otp.plugins.otp_totp.models import TOTPDevice
 from pymongo import MongoClient
 
 
-def get_db_handle(db_name, host, port, username, password):
-    client = MongoClient(
-        host=host,
-        port=int(port),
-        username=username,
-        password=password
-    )
-    return client[db_name]
+client = MongoClient(host=os.environ.get('DB_HOST'))
 
 
 def get_number_of_users():
-    db_name = '3vial'
-    db_host = os.environ.get('DB_HOST')
-    db_port = 27017
-    db_username = os.environ.get('DB_USERNAME').strip()
-    db_password = os.environ.get('DB_PASSWORD').strip()
-
-    db = get_db_handle(
-        db_name,
-        db_host,
-        db_port,
-        db_username,
-        db_password)
+    db = client['3vial']
     collection = db['authentication_userprofile']
     return collection.estimated_document_count()
 
 
+def get_total_assets_value(assets):
+    result = 0
+
+    for asset in assets:
+        for accounts in asset['content'].values():
+            for account in accounts['accounts']:
+                balance_data = account['data']
+                if balance_data.get('balanceData'):
+                    if balance_data['balanceData'].get('monitor_currency'):
+                        result += float(balance_data['balanceData']['monitor_currency'])
+                else:
+                    if balance_data.get('monitor_currency'):
+                        result += float(balance_data['monitor_currency'])
+
+    return f'{result:.2f}'
+
+
 def get_assets():
-    return 15000
+    db = client['portfolio']
+    collection = db['assets']
+    assets = collection.find({})
+    return get_total_assets_value(assets)
 
 
 def get_user_totp_device(user, confirmed=None):
