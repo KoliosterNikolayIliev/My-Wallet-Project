@@ -6,6 +6,7 @@ import aiohttp, asyncio
 from ..utils.yodlee_api import get_balances as get_yodlee_balances
 from ..utils.yodlee_api import get_holdings as get_yodlee_holdings
 from ..utils.yodlee_api import get_transactions as get_yodlee_transactions
+from ..utils.yodlee_api import get_all_transactions as get_all_yodlee_transactions
 from ..utils.nordigen import get_all_accounts_balances as get_nordigen_balances
 from ..utils.nordigen import get_account_transactions as get_nordigen_transactions
 from ..utils.nordigen import get_single_account_balance as get_nordigen_balance
@@ -69,3 +70,8 @@ async def get_transactions():
             return {'status': 'failed', 'content': 'provider is not valid or missing'}
 
     return jsonify(results)
+
+@bp.route('/recent-transactions', methods=(['GET']))
+async def get_recent_transactions():
+    yodlee_transactions = get_all_yodlee_transactions(request.headers.get('yodlee_loginName'))
+    return yodlee_transactions
