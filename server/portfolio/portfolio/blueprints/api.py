@@ -48,7 +48,7 @@ async def get_assets():
 
         convert_assets_value_to_base_currency(user_data['base_currency'], balances, holdings)
         data = group_balances(balances, holdings)
-        cache_assets(data, user_data['user_identifier'])
+        cache_assets({key: value for (key, value) in data.items() if key != "total"}, user_data['user_identifier'])
 
     return jsonify(data), 200
 

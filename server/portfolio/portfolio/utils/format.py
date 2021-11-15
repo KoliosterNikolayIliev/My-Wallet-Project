@@ -1,5 +1,6 @@
 def group_balances(balances: dict, holdings: dict):
     result = {}
+    total_balance = 0
     for provider, content in balances.items():
         for account, account_content in content['content'].items():
             name = account_content['providerName']
@@ -19,11 +20,13 @@ def group_balances(balances: dict, holdings: dict):
                     result[name]['accounts'] = [data]
                 
                 if account_content['balanceData'].get('base_currency'):
+                    total_balance += float(account_content['balanceData']['base_currency'])
                     if result[name].get('total'):
                         result[name]['total'] += account_content['balanceData']['base_currency']
                     else:
                         result[name]['total'] = account_content['balanceData']['base_currency']
             else:
+                total_balance += float(account_content['balanceData']['base_currency'])
                 result[name] = {'accounts': [data], 'total': account_content['balanceData']['base_currency']}
 
     for provider, content in {key:value for (key, value) in holdings.items() if key != "yodlee"}.items():
@@ -37,15 +40,19 @@ def group_balances(balances: dict, holdings: dict):
                     result[provider]['accounts'] = [data]
 
                 if asset_content.get('base_currency'):
+                    total_balance += float(asset_content['base_currency'])
                     if result[provider].get('total'):
                         result[provider]['total'] += asset_content['base_currency']
                     else:
                         result[provider]['total'] = asset_content['base_currency']
             else:
                 if asset_content.get('base_currency'):
+                    total_balance += float(asset_content['base_currency'])
                     result[provider] = {'accounts': [data], 'total': asset_content['base_currency']}
                 else:
                     result[provider] = {'accounts': [data], 'total': 0}
-    
+
+    result['total'] = total_balance
+
     return result
             
