@@ -231,7 +231,7 @@ async def get_transactions(loginName, session, account):
         if USE_MOCK != 'True':
             # set up header data and query parameters for the request
             headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
-            params = {'top': 10, 'fromDate': '2013-12-12', 'accountId': account}
+            params = {'top': 10, 'accountId': account}
 
             # send the request and save the balance for each account
             async with session.get(URL + 'transactions', headers=headers, params=params, ssl=False) as resp:
