@@ -245,7 +245,7 @@ async def get_transactions(loginName, session, account):
     else:
         return access_token
 
-def get_all_transactions(loginName):
+async def get_all_transactions(loginName, session):
     if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
     # try to obtain a token and return an error if it fails
     access_token = get_access_token(loginName)
@@ -255,8 +255,9 @@ def get_all_transactions(loginName):
             headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
 
             # send the request and save the balance for each account
-            response = requests.get(URL + 'transactions', headers=headers).json()
-            return format_transactions_response(response)
+            async with session.get(URL + 'transactions', headers=headers, ssl=False) as resp:
+                awaited = await resp.json()
+                return format_transactions_response(awaited)
 
         else:
             response = TRANSACTIONS_MOCK_DATA

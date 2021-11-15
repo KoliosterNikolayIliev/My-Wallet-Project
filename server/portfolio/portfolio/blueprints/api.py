@@ -2,7 +2,7 @@ import json
 
 from flask import Blueprint, jsonify, request
 from flask_cors import CORS
-from ..utils.assets import get_balances, get_transactions, get_holdings
+from ..utils.assets import get_balances, get_transactions, get_holdings, get_assets_recent_transactions
 from ..utils.account import validate_auth_header
 from ..utils.cache_assets import cache_assets
 from ..utils.custom_assets import create_asset as create_custom_asset
@@ -80,6 +80,25 @@ def get_account_transactions():
     response = get_transactions(headers)
     convert_transactions_currency_to_base_currency(user_data['base_currency'], response)
     return jsonify(response), 200
+
+@bp.route('/api/recent-transactions', methods=(['GET']))
+def get_recent_transactions():
+    # check if a token was passed in the Authorization header
+    received_token = request.headers.get('Authorization')
+    validated_token = validate_auth_header(received_token)
+
+    if not validated_token[0]:
+        return jsonify(validated_token[1]), 401
+
+    user_data = validated_token[1]
+    all_requisitions = user_data['nordigenrequisition_set']
+    all_requisitions = json.dumps([el['requisition_id'] for el in all_requisitions])
+
+    headers = {'yodlee_loginName': user_data['user_identifier'], 'nordigen_requisitions': all_requisitions}
+
+    response = get_assets_recent_transactions(headers=headers)
+
+    return jsonify(response)
 
 @bp.route('/api/create-asset', methods=(['GET']))
 def create_asset():
