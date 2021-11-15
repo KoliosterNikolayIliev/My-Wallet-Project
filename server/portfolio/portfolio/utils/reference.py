@@ -26,25 +26,27 @@ def convert_assets_to_base_currency_and_get_total_gbp(base, balances, holdings):
     total_gbp = 0
 
     for balance in balances.values():
-        for asset in balance["content"].values():
-            asset["balanceData"]["base_currency"] = float(asset["balanceData"]["amount"]) / float(
-                currency_prices[asset["balanceData"]["currency"]])
+        if balance["status"] != "failed":
+            for asset in balance["content"].values():
+                asset["balanceData"]["base_currency"] = float(asset["balanceData"]["amount"]) / float(
+                    currency_prices[asset["balanceData"]["currency"]])
 
-            total_gbp += float(asset["balanceData"]["amount"]) / float(
-                currency_prices_gbp[asset["balanceData"]["currency"]])
+                total_gbp += float(asset["balanceData"]["amount"]) / float(
+                    currency_prices_gbp[asset["balanceData"]["currency"]])
 
     for holding in holdings.values():
-        for asset in holding['content'].values():
-            if crypto_prices.get(asset["symbol"]):
-                usd_currency = float(crypto_prices[asset["symbol"]]) * float(asset["quantity"])
-                asset["base_currency"] = usd_currency / float(currency_prices["USD"])
-                total_gbp += usd_currency / float(currency_prices_gbp["USD"])
-
-            else:
-                if stocks_prices.get(asset["symbol"]):
-                    usd_currency = float(stocks_prices[asset["symbol"]]) * float(asset["quantity"])
+        if holding["status"] != "failed":
+            for asset in holding['content'].values():
+                if crypto_prices.get(asset["symbol"]):
+                    usd_currency = float(crypto_prices[asset["symbol"]]) * float(asset["quantity"])
                     asset["base_currency"] = usd_currency / float(currency_prices["USD"])
                     total_gbp += usd_currency / float(currency_prices_gbp["USD"])
+
+                else:
+                    if stocks_prices.get(asset["symbol"]):
+                        usd_currency = float(stocks_prices[asset["symbol"]]) * float(asset["quantity"])
+                        asset["base_currency"] = usd_currency / float(currency_prices["USD"])
+                        total_gbp += usd_currency / float(currency_prices_gbp["USD"])
 
     return total_gbp
 
