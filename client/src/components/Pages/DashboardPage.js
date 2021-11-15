@@ -18,6 +18,7 @@ const DashboardPage = () => {
   const [groups, setGroups] = useState({});
   const [transactions, setTransactions] = useState({});
   const [base, setBase] = useState("");
+  const [total, setTotal] = useState(0);
 
   const [loading, setLoading] = useState(false);
 
@@ -41,6 +42,10 @@ const DashboardPage = () => {
     await Promise.all([
       (async () => {
         const assets = await getAssets(token);
+        const total = assets.total;
+        delete assets.total;
+
+        setTotal(total);
         setGroups(assets);
       })(),
     ]);
@@ -83,6 +88,7 @@ const DashboardPage = () => {
             <GroupsContainerComponent
               baseSymbol={base}
               data={groups}
+              total={total}
               getTransactionsFunc={getAccountTransactions}
             />
           </div>

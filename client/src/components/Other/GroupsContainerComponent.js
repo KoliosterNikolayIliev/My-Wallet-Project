@@ -4,12 +4,16 @@ import HoldingComponent from "./HoldingComponent";
 
 const GroupsContainerComponent = ({
   data,
+  total,
   getTransactionsFunc,
   baseSymbol,
 }) => {
   let source;
   return (
     <div>
+      <h4>
+        Total balance: {total.toFixed(2)} {baseSymbol}
+      </h4>
       {Object.entries(data).map(([key, value]) => {
         source = key;
         return (
