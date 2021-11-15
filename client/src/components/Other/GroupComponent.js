@@ -13,11 +13,11 @@ const GroupComponent = ({
   let base_currency = 0;
 
   if (account.data.balanceData) {
-    amount = Number(account.data.balanceData.amount).toFixed(2);
+    amount = Number(account.data.balanceData.amount);
     currency = account.data.balanceData.currency;
     base_currency = account.data.balanceData.base_currency;
   } else {
-    amount = Number(account.data.quantity).toFixed(2);
+    amount = Number(account.data.quantity);
     currency = account.data.symbol;
     base_currency = account.data.base_currency;
   }
@@ -47,11 +47,17 @@ const GroupComponent = ({
               {type}: {base_currency} {baseSymbol}
             </p>
           )}
-        {(provider === "custom_assets" ||
-          provider === "binance" ||
-          provider === "coinbase") && (
+        {(provider === "custom_assets" || provider === "binance") && (
           <p>
-            {currency}: {amount}; {base_currency} {baseSymbol}
+            {currency}: {amount.toFixed(2)}; {base_currency} {baseSymbol}
+          </p>
+        )}
+        {provider === "coinbase" && (
+          <p
+            onClick={() => getTransactionsFunc(provider, account.id)}
+            className="has-transactions"
+          >
+            {currency}: {amount.toFixed(2)}; {base_currency} {baseSymbol}
           </p>
         )}
       </div>
