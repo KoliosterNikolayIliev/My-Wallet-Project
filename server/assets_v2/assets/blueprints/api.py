@@ -9,6 +9,7 @@ from ..utils.yodlee_api import get_transactions as get_yodlee_transactions
 from ..utils.yodlee_api import get_all_transactions as get_all_yodlee_transactions
 from ..utils.nordigen import get_all_accounts_balances as get_nordigen_balances
 from ..utils.nordigen import get_account_transactions as get_nordigen_transactions
+from ..utils.nordigen import get_all_transactions as get_all_nordigen_transactions
 from ..utils.nordigen import get_single_account_balance as get_nordigen_balance
 from ..utils.binance_api import get_balances as get_binance_holdings
 from ..utils.coinbase_api import get_account_balances as get_coinbase_holdings
@@ -73,5 +74,15 @@ async def get_transactions():
 
 @bp.route('/recent-transactions', methods=(['GET']))
 async def get_recent_transactions():
-    yodlee_transactions = get_all_yodlee_transactions(request.headers.get('yodlee_loginName'))
-    return yodlee_transactions
+    nordigen_requisitions = json.loads(request.headers.get('nordigen_requisitions'))
+    result = []
+    async with aiohttp.ClientSession() as session:
+        tasks = []
+        tasks.append(asyncio.ensure_future(get_all_yodlee_transactions(request.headers.get('yodlee_loginName'), session=session)))
+        await get_all_nordigen_transactions(requisitions=nordigen_requisitions, session=session, tasks=tasks)
+
+        responses = await asyncio.gather(*tasks)
+        for response in responses:
+            result.append(response)
+
+    return jsonify(result)
