@@ -44,6 +44,8 @@ const GroupsContainerComponent = ({
                         return (
                           <HoldingComponent
                             nest={false}
+                            account={account}
+                            getTransactionsFunc={getTransactionsFunc}
                             data={holding}
                             baseSymbol={baseSymbol}
                           />
