@@ -5,7 +5,11 @@ import { Redirect } from "react-router";
 import LogOutButton from "../Buttons/LogOutButton";
 import ProfileButton from "../Buttons/ProfileButton";
 
-import { getAssets, getTransactions } from "../../utils/portfolio";
+import {
+  getAssets,
+  getTransactions,
+  getAllRecentTransactions,
+} from "../../utils/portfolio";
 import { getUser } from "../../utils/account";
 
 import GroupsContainerComponent from "../Other/GroupsContainerComponent";
@@ -55,6 +59,15 @@ const DashboardPage = () => {
     setTransactions({ transactions });
     setLoading(false);
   };
+
+  const getRecentTransactions = async () => {
+    setLoading(true);
+    const token = await getAccessTokenSilently();
+    const transactions = await getAllRecentTransactions(token);
+    console.log(transactions);
+    setLoading(false);
+  };
+
   // fetch all data on first render
   useEffect(() => {
     getData();
@@ -76,6 +89,9 @@ const DashboardPage = () => {
         <h2>Hi, {user.name}, this is the dashboard</h2>
         <LogOutButton />
         <ProfileButton />
+        <button onClick={() => getRecentTransactions()}>
+          Recent transactions
+        </button>
 
         <div className="dashboard-container">
           <div className="container">
