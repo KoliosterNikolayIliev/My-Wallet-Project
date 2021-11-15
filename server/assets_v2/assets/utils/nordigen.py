@@ -268,7 +268,13 @@ async def get_all_transactions(requisitions, session, tasks):
         async with session.get(URL + f'accounts/{account}/transactions/',
                                headers=headers) as response:
             awaited = await response.json()
-            return awaited.get('transactions').get('booked')
+            data = awaited.get('transactions').get('booked')
+            result = []
+            for transaction in data:
+                transaction_data = {transaction['transactionId']: transaction['transactionAmount']}
+                result.append(transaction_data)
+            return result
+
 
     for requisition in requisitions:
         # get user bank accounts from requisition
