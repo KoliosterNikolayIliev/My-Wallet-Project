@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 
 from flask import Blueprint, jsonify, request
@@ -100,8 +101,10 @@ def get_recent_transactions():
     response = get_assets_recent_transactions(headers=headers)
     convert_transactions_currency_to_base_currency(user_data['base_currency'], response, recent=True)
 
+    response['content'].sort(key=lambda x: datetime.strptime(list(x.values())[0]['date'], "%Y-%m-%d"), reverse=True)
+
     if recent == 'True':
-        response = response["content"][:6]
+        response = {"status": "success", "content": response["content"][:6]}
 
     return jsonify(response)
 

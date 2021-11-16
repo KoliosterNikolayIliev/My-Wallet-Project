@@ -26,6 +26,7 @@ const getAllRecentTransactions = async (token) => {
     {
       headers: {
         Authorization: `Bearer ${token}`,
+        Recent: "True",
       },
     }
   );

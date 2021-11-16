@@ -14,6 +14,7 @@ import { getUser } from "../../utils/account";
 
 import GroupsContainerComponent from "../Other/GroupsContainerComponent";
 import TransactionsContainerComponent from "../Other/TransactionsContainerComponent";
+import RecentTransactionsContainerComponent from "../Other/RecentTransactionsContainerComponent";
 
 import "../../styles/dashboard.css";
 
@@ -21,6 +22,7 @@ import "../../styles/dashboard.css";
 const DashboardPage = () => {
   const [groups, setGroups] = useState({});
   const [transactions, setTransactions] = useState({});
+  const [recentTransactions, setRecentTransactions] = useState([]);
   const [base, setBase] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -47,6 +49,10 @@ const DashboardPage = () => {
         const assets = await getAssets(token);
         setGroups(assets);
       })(),
+      (async () => {
+        const transactions = await getRecentTransactions(token);
+        setRecentTransactions(transactions);
+      })(),
     ]);
 
     setLoading(false);
@@ -66,6 +72,7 @@ const DashboardPage = () => {
     const transactions = await getAllRecentTransactions(token);
     console.log(transactions);
     setLoading(false);
+    return transactions.content;
   };
 
   // fetch all data on first render
@@ -106,6 +113,11 @@ const DashboardPage = () => {
           <div className="container">
             <h1>Transactions</h1>
             <TransactionsContainerComponent data={transactions} />
+          </div>
+
+          <div className="container">
+            <h1>Recent Transactions</h1>
+            <RecentTransactionsContainerComponent data={recentTransactions} />
           </div>
         </div>
       </div>
