@@ -17,15 +17,7 @@ def get_total_assets_value(assets):
     result = 0
 
     for asset in assets:
-        for accounts in asset['content'].values():
-            for account in accounts['accounts']:
-                balance_data = account['data']
-                if balance_data.get('balanceData'):
-                    if balance_data['balanceData'].get('monitor_currency'):
-                        result += float(balance_data['balanceData']['monitor_currency'])
-                else:
-                    if balance_data.get('monitor_currency'):
-                        result += float(balance_data['monitor_currency'])
+        result += asset['total_gbp']
 
     return f'{result:.2f}'
 
