@@ -157,7 +157,7 @@ def format_holdings_response(response):
         return {'status': 'failed', 'content': f"Error: Unknown"}
 
 
-def format_transactions_response(response):
+def format_transactions_response(response, recent=False):
     try:
         transactions = response["transaction"]
     except:
@@ -176,7 +176,10 @@ def format_transactions_response(response):
 
         #    add only the completed transactions
         if transaction['status'] == 'POSTED':
-            transaction_data[source][transaction["id"]] = transaction['amount']
+            if not recent:
+                transaction_data[source][transaction["id"]] = transaction['amount']
+            else:
+                transaction_data[source][transaction["id"]] = {'amount': transaction['amount'], 'date': transaction['date'], 'type': transaction['CONTAINER']}
 
     data = transaction_data
 
@@ -257,11 +260,11 @@ async def get_all_transactions(loginName, session):
             # send the request and save the balance for each account
             async with session.get(URL + 'transactions', headers=headers, ssl=False) as resp:
                 awaited = await resp.json()
-                return format_transactions_response(awaited)
+                return format_transactions_response(awaited, recent=True)
 
         else:
             response = TRANSACTIONS_MOCK_DATA
-            return format_transactions_response(response)
+            return format_transactions_response(response, recent=True)
         
     else:
         return access_token
