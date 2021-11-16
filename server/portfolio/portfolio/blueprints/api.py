@@ -85,6 +85,7 @@ def get_account_transactions():
 def get_recent_transactions():
     # check if a token was passed in the Authorization header
     received_token = request.headers.get('Authorization')
+    recent = request.headers.get('Recent')
     validated_token = validate_auth_header(received_token)
 
     if not validated_token[0]:
@@ -97,6 +98,10 @@ def get_recent_transactions():
     headers = {'yodlee_loginName': user_data['user_identifier'], 'nordigen_requisitions': all_requisitions}
 
     response = get_assets_recent_transactions(headers=headers)
+    convert_transactions_currency_to_base_currency(user_data['base_currency'], response, recent=True)
+
+    if recent == 'True':
+        response = response["content"][:6]
 
     return jsonify(response)
 
