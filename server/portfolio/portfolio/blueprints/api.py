@@ -50,6 +50,7 @@ async def get_assets():
         data = group_balances(balances, holdings)
         cache_assets(total_gbp, user_data['user_identifier'])
 
+
     return jsonify(data), 200
 
 
