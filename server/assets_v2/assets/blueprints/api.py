@@ -76,6 +76,7 @@ async def get_transactions():
 async def get_recent_transactions():
     nordigen_requisitions = json.loads(request.headers.get('nordigen_requisitions'))
     result = []
+    final = []
     async with aiohttp.ClientSession() as session:
         tasks = []
         tasks.append(asyncio.ensure_future(get_all_yodlee_transactions(request.headers.get('yodlee_loginName'), session=session)))
@@ -83,6 +84,21 @@ async def get_recent_transactions():
 
         responses = await asyncio.gather(*tasks)
         for response in responses:
+            if type(response) is dict:
+                if not response.get('status') == "failed":
+                    transactions = response.get('content')
+                    for source in transactions:
+                        for transaction in source:
+                            result.append(transaction)
+                else:
+                    continue
             result.append(response)
+    
+    for element in result:
+        if type(element) is list:
+            for transaction in element:
+                final.append(transaction)
+        elif type(element) is dict:
+            final.append(element)
 
-    return jsonify(result)
+    return jsonify(final)
