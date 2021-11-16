@@ -271,7 +271,7 @@ async def get_all_transactions(requisitions, session, tasks):
             data = awaited.get('transactions').get('booked')
             result = []
             for transaction in data:
-                transaction_data = {transaction['transactionId']: transaction['transactionAmount']}
+                transaction_data = {transaction['transactionId']: {"amount": transaction['transactionAmount'], "date": transaction['bookingDate'], "type": "bank"}}
                 result.append(transaction_data)
             return result
 
