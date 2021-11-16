@@ -77,28 +77,32 @@ async def get_recent_transactions():
     nordigen_requisitions = json.loads(request.headers.get('nordigen_requisitions'))
     result = []
     final = []
-    async with aiohttp.ClientSession() as session:
-        tasks = []
-        tasks.append(asyncio.ensure_future(get_all_yodlee_transactions(request.headers.get('yodlee_loginName'), session=session)))
-        await get_all_nordigen_transactions(requisitions=nordigen_requisitions, session=session, tasks=tasks)
-
-        responses = await asyncio.gather(*tasks)
-        for response in responses:
-            if type(response) is dict:
-                if not response.get('status') == "failed":
-                    transactions = response.get('content')
-                    for source in transactions:
-                        for transaction in source:
-                            result.append(transaction)
-                else:
-                    continue
-            result.append(response)
     
-    for element in result:
-        if type(element) is list:
-            for transaction in element:
-                final.append(transaction)
-        elif type(element) is dict:
-            final.append(element)
+    try:
+        async with aiohttp.ClientSession() as session:
+            tasks = []
+            tasks.append(asyncio.ensure_future(get_all_yodlee_transactions(request.headers.get('yodlee_loginName'), session=session)))
+            await get_all_nordigen_transactions(requisitions=nordigen_requisitions, session=session, tasks=tasks)
 
-    return jsonify(final)
+            responses = await asyncio.gather(*tasks)
+            for response in responses:
+                if type(response) is dict:
+                    if not response.get('status') == "failed":
+                        transactions = response.get('content')
+                        for source in transactions:
+                            for transaction in source:
+                                result.append(transaction)
+                    else:
+                        continue
+                result.append(response)
+        
+        for element in result:
+            if type(element) is list:
+                for transaction in element:
+                    final.append(transaction)
+            elif type(element) is dict:
+                final.append(element)
+    except Exception as e:
+        return {'status': 'failed', 'content': str(e)}
+
+    return jsonify({'status': 'success', 'content': final})
