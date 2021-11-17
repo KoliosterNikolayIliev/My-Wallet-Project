@@ -280,12 +280,9 @@ async def get_all_transactions(requisitions, session, tasks):
         # get user bank accounts from requisition
         accounts = await get_bank_accounts(requisition, session, headers)
 
-        # check requisition validation and check if user has bank accounts
         if not accounts[1]:
-            # return error message
-            return accounts[0]
+            continue
 
-        # if requisition is valid and user has bank accounts we take his accounts
         accounts = accounts[0]['content']
         for account in accounts:
             tasks.append(asyncio.ensure_future(get_transactions(session, account)))
