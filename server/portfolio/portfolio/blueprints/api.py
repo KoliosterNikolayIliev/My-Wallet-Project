@@ -96,15 +96,18 @@ def get_recent_transactions():
     all_requisitions = user_data['nordigenrequisition_set']
     all_requisitions = json.dumps([el['requisition_id'] for el in all_requisitions])
 
-    headers = {'yodlee_loginName': user_data['user_identifier'], 'nordigen_requisitions': all_requisitions}
+    headers = {'yodlee_loginName': user_data['user_identifier'], 'nordigen_requisitions': all_requisitions, 'coinbase_key': user_data['coinbase_api_key'], 'coinbase_secret': user_data['coinbase_api_secret']}
 
     response = get_assets_recent_transactions(headers=headers)
-    convert_transactions_currency_to_base_currency(user_data['base_currency'], response, recent=True)
+    if response:
+        convert_transactions_currency_to_base_currency(user_data['base_currency'], response, recent=True)
 
-    response['content'].sort(key=lambda x: datetime.strptime(list(x.values())[0]['date'], "%Y-%m-%d"), reverse=True)
+        response['content'].sort(key=lambda x: datetime.strptime(list(x.values())[0]['date'], "%Y-%m-%d"), reverse=True)
 
-    if recent == 'True':
-        response = {"status": "success", "content": response["content"][:6]}
+        if recent == 'True':
+            response = {"status": "success", "content": response["content"][:6]}
+    else:
+        response = None
 
     return jsonify(response)
 

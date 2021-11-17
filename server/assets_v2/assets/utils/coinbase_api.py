@@ -1,5 +1,6 @@
 import os
 from coinbase.wallet.client import Client
+from requests.auth import AuthBase
 
 USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
 
@@ -171,7 +172,7 @@ async def get_transactions(api_key, api_secret, account):
     try:
         if USE_MOCK != 'True':
             account_name = client.get_account(account)['name']
-            transactions = client.get_transactions(account, limit=10)
+            transactions = client.get_transactions(account)
 
         else:
             transactions = MOCK_TRANSACTIONS_DATA
@@ -190,3 +191,21 @@ async def get_transactions(api_key, api_secret, account):
         return {'status': 'failed', 'content': f"Error: unknown error"}
 
     return {'status': 'success', 'content': data}
+
+
+def get_all_transactions(api_key, api_secret):
+    try:
+        client = Client(api_key, api_secret)
+    except Exception:
+        return None
+    
+    accounts = client.get_accounts()
+    data = []
+    for account in accounts["data"]:
+        transactions = client.get_transactions(account['id'])
+        if transactions.get('data'):
+            for transaction in transactions["data"]:
+                if transaction["status"] == "completed":
+                    data.append({transaction["id"]: {"amount": transaction['amount'], "date": transaction['created_at'][:10], "type": "crypto"}})
+
+    return data
