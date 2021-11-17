@@ -185,17 +185,23 @@ async def get_single_account_details(account, headers, session):
     return awaited
 
 
+async def account_balance_request(account, headers, session):
+    async with session.get(URL + f'accounts/{account}/balances/',
+                           headers=headers) as response:
+        return await response.json()
+
+
 async def get_single_account_balance(account, headers, session):
-    bank_name = await get_bank_name(account, session, headers)
+    bank_name, details, balance_data = await asyncio.gather(
+        get_bank_name(account, session, headers),
+        get_single_account_details(account, headers, session),
+        account_balance_request(account, headers, session),
+    )
 
     if USE_MOCK != 'True':
-        async with session.get(URL + f'accounts/{account}/balances/',
-                               headers=headers) as response:
-            balance_data = await response.json()
+        pass
     else:
         balance_data = MOCK_BALANCES_DATA
-    
-    details = await get_single_account_details(account, headers, session)
     if details.get('account'):
         if details['account'].get('product'):
             details = details['account']['product']
@@ -208,6 +214,7 @@ async def get_single_account_balance(account, headers, session):
 
 
 async def get_all_account_balances(requisition_id, session, headers):
+    # total_time = MeasuredScope('total get_all_account_balances')
     # get user bank accounts from requisition
     accounts = await get_bank_accounts(requisition_id, session, headers)
 
@@ -228,6 +235,7 @@ async def get_all_account_balances(requisition_id, session, headers):
     for response in responses:
         data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"], "accountType": response["accountType"]}
 
+    # del total_time
     return {"status": "success", "content": data}
 
 
