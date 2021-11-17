@@ -197,7 +197,7 @@ async def get_access_token(loginName, session):
         response = await res.json()
 
     try:
-        return {'status': 'success', 'content': response.json()['token']['accessToken']}
+        return {'status': 'success', 'content': response['token']['accessToken']}
     except:
         # return an error if it has occured
         return {'status': 'failed', 'content': f"Error: Unknown"}
