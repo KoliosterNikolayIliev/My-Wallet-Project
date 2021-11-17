@@ -207,7 +207,7 @@ async def get_single_account_balance(account, headers, session):
     return {"id": account, "providerName": bank_name, "balanceData": balance_data["balances"][0]["balanceAmount"], "accountType": details}
 
 
-async def get_all_account_balances(requisition_id, session, tasks, headers):
+async def get_all_account_balances(requisition_id, session, headers):
     # get user bank accounts from requisition
     accounts = await get_bank_accounts(requisition_id, session, headers)
 
@@ -220,7 +220,7 @@ async def get_all_account_balances(requisition_id, session, tasks, headers):
     accounts = accounts[0]['content']
 
     data = {}
-
+    tasks = []
     for account in accounts:
         tasks.append(asyncio.ensure_future(get_single_account_balance(account, headers, session)))
 
@@ -265,7 +265,7 @@ async def get_account_transactions(account, session):
     return {'status': 'success', 'content': data}
 
 
-async def get_all_accounts_balances(requisitions, session, tasks):
+async def get_all_accounts_balances(requisitions, session):
     total_time = MeasuredScope('nordigen')
     if not requisitions:
         return {
@@ -280,10 +280,10 @@ async def get_all_accounts_balances(requisitions, session, tasks):
 
     headers = {'Authorization': f'Bearer {response["content"]}'}
 
-    requisitions_tasks = []
+    tasks = []
     for requisition in requisitions:
         tasks.append(asyncio.ensure_future(
-            get_all_account_balances(requisition, session=session, tasks=requisitions_tasks, headers=headers)))
+            get_all_account_balances(requisition, session=session, headers=headers)))
 
     responses = await asyncio.gather(*tasks)
     data = {}
