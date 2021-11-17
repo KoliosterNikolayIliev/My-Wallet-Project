@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import LogInButton from "../Buttons/LogInButton";
+import Loader from "../Other/LoaderComponent";
 
 // Landing page to explain our product. Includes a button to log in.
 const LandingPage = () => {
@@ -8,7 +9,7 @@ const LandingPage = () => {
 
   //   Return this if Auth0 is still loading. Can be replaced with an animation in the future
   if (isLoading) {
-    return <div>Loading ...</div>;
+    return Loader();
   }
 
   return (

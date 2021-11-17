@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { Redirect } from "react-router";
+import React, {useState, useEffect} from "react";
+import {useAuth0} from "@auth0/auth0-react";
+import {Redirect} from "react-router";
 
 import LogOutButton from "../Buttons/LogOutButton";
 import ProfileButton from "../Buttons/ProfileButton";
 
-import { getAssets, getTransactions } from "../../utils/portfolio";
-import { getUser } from "../../utils/account";
+import {getAssets, getTransactions} from "../../utils/portfolio";
+import {getUser} from "../../utils/account";
 
 import GroupsContainerComponent from "../Other/GroupsContainerComponent";
 import TransactionsContainerComponent from "../Other/TransactionsContainerComponent";
 
-import "../../styles/dashboard.css";
+import "../../styles/dashboard.scss";
+import "../../styles/main_content.scss";
+import Loader from "../Other/LoaderComponent";
+import Header from "../Other/HeaderComponent";
+import SubHeader from "../Other/SubHeaderComponent";
 
 // Dashboard page to be filled in with user account data
 const DashboardPage = () => {
@@ -21,7 +25,7 @@ const DashboardPage = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
+  const {user, isAuthenticated, isLoading, getAccessTokenSilently} =
     useAuth0();
 
   useEffect(() => {
@@ -52,7 +56,7 @@ const DashboardPage = () => {
     setLoading(true);
     const token = await getAccessTokenSilently();
     const transactions = await getTransactions(token, provider, account);
-    setTransactions({ transactions });
+    setTransactions({transactions});
     setLoading(false);
   };
   // fetch all data on first render
@@ -62,20 +66,21 @@ const DashboardPage = () => {
 
   //   Return this if Auth0 is still loading. Can be replaced with an animation in the future
   if (isLoading || loading) {
-    return <div>Loading ...</div>;
+    return Loader()
   }
 
   // Redirect the user to the landing page if the user is not logged in
   if (!isAuthenticated) {
-    return <Redirect to={"/"} />;
+    return <Redirect to={"/"}/>;
   }
 
   return (
     isAuthenticated && (
       <div className="main">
-        <h2>Hi, {user.name}, this is the dashboard</h2>
-        <LogOutButton />
-        <ProfileButton />
+        {Header()}
+        {SubHeader(user)}
+        <LogOutButton/>
+        <ProfileButton/>
 
         <div className="dashboard-container">
           <div className="container">
@@ -89,7 +94,7 @@ const DashboardPage = () => {
 
           <div className="container">
             <h1>Transactions</h1>
-            <TransactionsContainerComponent data={transactions} />
+            <TransactionsContainerComponent data={transactions}/>
           </div>
         </div>
       </div>
