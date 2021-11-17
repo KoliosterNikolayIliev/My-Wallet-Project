@@ -3,6 +3,8 @@ import os
 
 import requests
 
+from assets.utils.measure_time import MeasuredScope
+
 SECRET_ID = os.environ.get('ASSETS_NORDIGEN_ID')
 SECRET_KEY = os.environ.get('ASSETS_NORDIGEN_KEY')
 USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
@@ -261,6 +263,7 @@ async def get_account_transactions(account, session):
 
 
 async def get_all_accounts_balances(requisitions, session, tasks):
+    total_time = MeasuredScope('nordigen')
     if not requisitions:
         return {
             'status': 'failed',
@@ -286,6 +289,7 @@ async def get_all_accounts_balances(requisitions, session, tasks):
         if response['status'] == 'success':
             data.update(response['content'])
 
+    del total_time
     if data:
         return {'status': 'success', 'content': data}
 

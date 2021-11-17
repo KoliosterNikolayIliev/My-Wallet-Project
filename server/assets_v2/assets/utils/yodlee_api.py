@@ -1,5 +1,7 @@
 import requests, os
 
+from assets.utils.measure_time import MeasuredScope
+
 """
     HOW THIS WHOLE THING WORKS:
     1. We need to obtain an access token
@@ -182,7 +184,7 @@ def format_transactions_response(response):
 
     return {'status': 'success', 'content': data}
 
-def get_access_token(loginName):
+async def get_access_token(loginName, session):
     if USE_MOCK == 'True':
         return {'status': 'success', 'content': 'token'}
 
@@ -191,7 +193,9 @@ def get_access_token(loginName):
     headers = {'Api-Version': '1.1', 'loginName': loginName}
 
     # send the request and return the access token
-    response = requests.post(URL + 'auth/token', data=data, headers=headers)
+    async with session.post(URL + 'auth/token', data=data, headers=headers) as res:
+        response = await res.json()
+
     try:
         return {'status': 'success', 'content': response.json()['token']['accessToken']}
     except:
@@ -200,10 +204,11 @@ def get_access_token(loginName):
 
 
 async def get_balances(loginName, session):
+    total_time = MeasuredScope('yodlee')
     if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
 
     # try to obtain a token and return an error if it fails
-    access_token = get_access_token(loginName)
+    access_token = await get_access_token(loginName, session)
     if access_token['status'] == 'success':
         # set up header data for the request
         if USE_MOCK != 'True':
@@ -212,6 +217,7 @@ async def get_balances(loginName, session):
             # send the request and save the balance for each account
             async with session.get(URL + 'accounts', headers=headers, ssl=False) as resp:
                 awaited = await resp.json()
+                del total_time
                 return format_balances_response(awaited)
 
         else:
