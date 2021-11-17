@@ -275,11 +275,13 @@ async def get_all_transactions(requisitions, session, tasks):
                 result.append(transaction_data)
             return result
 
-
+    requisition_tasks = []
     for requisition in requisitions:
         # get user bank accounts from requisition
-        accounts = await get_bank_accounts(requisition, session, headers)
-
+        requisition_tasks.append(asyncio.ensure_future(get_bank_accounts(requisition, session, headers)))
+        
+    responses = await asyncio.gather(*requisition_tasks)
+    for accounts in responses:
         if not accounts[1]:
             continue
 

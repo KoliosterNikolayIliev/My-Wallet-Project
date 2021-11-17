@@ -91,8 +91,6 @@ async def get_recent_transactions():
                     tasks.append(asyncio.ensure_future(get_all_yodlee_transactions(yodlee_login_name, session=session)))
                 if nordigen_requisitions:
                     await get_all_nordigen_transactions(requisitions=nordigen_requisitions, session=session, tasks=tasks)
-                if coinbase_secret and coinbase_key:
-                    coinbase_transactions = get_all_coinbase_transactions(coinbase_key, coinbase_secret)
 
                 responses = await asyncio.gather(*tasks)
                 for response in responses:
@@ -105,10 +103,13 @@ async def get_recent_transactions():
                         else:
                             continue
                     result.append(response)
-                
-                if coinbase_transactions:
-                    for transaction in coinbase_transactions:
-                        result.append(transaction)
+
+            if coinbase_secret and coinbase_key:
+                coinbase_transactions = get_all_coinbase_transactions(coinbase_key, coinbase_secret)
+            
+            if coinbase_transactions:
+                for transaction in coinbase_transactions:
+                    result.append(transaction)
             
             for element in result:
                 if type(element) is list:
