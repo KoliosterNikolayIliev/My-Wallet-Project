@@ -232,7 +232,7 @@ async def get_transactions(loginName, session, account):
     if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
 
     # try to obtain a token and return an error if it fails
-    access_token = get_access_token(loginName)
+    access_token = await get_access_token(loginName, session)
     if access_token['status'] == 'success':
         if USE_MOCK != 'True':
             # set up header data and query parameters for the request
@@ -256,7 +256,7 @@ async def get_holdings(loginName, session):
     if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
 
     # try to obtain a token and return an error if it fails
-    access_token = get_access_token(loginName)
+    access_token = await get_access_token(loginName, session)
 
     if access_token['status'] == 'success':
         # set up header data for the request
