@@ -93,9 +93,6 @@ const DashboardPage = () => {
         <h2>Hi, {user.name}, this is the dashboard</h2>
         <LogOutButton />
         <ProfileButton />
-        <button onClick={() => getRecentTransactions()}>
-          Recent transactions
-        </button>
 
         <div className="dashboard-container">
           <div className="container">
