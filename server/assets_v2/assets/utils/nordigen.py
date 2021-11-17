@@ -105,13 +105,16 @@ MOCK_TRANSACTIONS_DATA = {
 }
 
 
-def get_access_token():
-    response = requests.post(URL + 'token/new/', data={'secret_id': SECRET_ID, 'secret_key': SECRET_KEY})
-    if response.status_code != 200:
-        return {'status': 'failed', 'content': response.json()['detail']}
+async def get_access_token(session):
+    async with session.post(URL + 'token/new/', data={'secret_id': SECRET_ID, 'secret_key': SECRET_KEY}) as res:
+        response = await res.json()
+        status_code = res.status
+
+    if status_code != 200:
+        return {'status': 'failed', 'content': response['detail']}
 
     else:
-        return {'status': 'success', 'content': response.json()['access']}
+        return {'status': 'success', 'content': response['access']}
 
 
 async def get_bank_name(account_id, session, headers):
@@ -230,7 +233,7 @@ async def get_all_account_balances(requisition_id, session, tasks, headers):
 
 
 async def get_account_transactions(account, session):
-    response = get_access_token()
+    response = await get_access_token(session)
 
     if response['status'] != 'success':
         return response
@@ -270,7 +273,7 @@ async def get_all_accounts_balances(requisitions, session, tasks):
             'content': 'Error: list of nordigen requisition id\'s was not provided'
         }
 
-    response = get_access_token()
+    response = await get_access_token(session)
 
     if response['status'] != 'success':
         return response
