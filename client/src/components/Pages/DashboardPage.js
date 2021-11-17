@@ -25,7 +25,7 @@ const DashboardPage = () => {
   const [recentTransactions, setRecentTransactions] = useState([]);
   const [base, setBase] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
     useAuth0();
@@ -67,11 +67,8 @@ const DashboardPage = () => {
   };
 
   const getRecentTransactions = async () => {
-    setLoading(true);
     const token = await getAccessTokenSilently();
     const transactions = await getAllRecentTransactions(token);
-    console.log(transactions);
-    setLoading(false);
     return transactions.content;
   };
 
