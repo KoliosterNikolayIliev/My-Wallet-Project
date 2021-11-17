@@ -1,7 +1,7 @@
 import json
 import os
 from flask import Blueprint, request, jsonify
-import aiohttp, asyncio
+import aiohttp, asyncio, httpx
 
 from ..utils.yodlee_api import get_balances as get_yodlee_balances
 from ..utils.yodlee_api import get_holdings as get_yodlee_holdings
@@ -103,13 +103,18 @@ async def get_recent_transactions():
                         else:
                             continue
                     result.append(response)
-
-            if coinbase_secret and coinbase_key:
-                coinbase_transactions = get_all_coinbase_transactions(coinbase_key, coinbase_secret)
             
-            if coinbase_transactions:
-                for transaction in coinbase_transactions:
-                    result.append(transaction)
+            coinbase_tasks = []
+            if coinbase_secret and coinbase_key:
+                async with httpx.AsyncClient() as client:
+                    await get_all_coinbase_transactions(coinbase_key, coinbase_secret, coinbase_tasks, client)
+                    
+                    coinbase_transactions = await asyncio.gather(*coinbase_tasks)
+
+                    if coinbase_transactions:
+                        for account in coinbase_transactions:
+                            for transaction in account:
+                                result.append(transaction)
             
             for element in result:
                 if type(element) is list:
@@ -117,6 +122,7 @@ async def get_recent_transactions():
                         final.append(transaction)
                 elif type(element) is dict:
                     final.append(element)
+
         except Exception as e:
             print(str(e))
             return None

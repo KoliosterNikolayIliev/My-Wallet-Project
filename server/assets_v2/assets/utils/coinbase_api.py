@@ -1,6 +1,6 @@
-import os
+import os, json, hmac, hashlib, time, httpx, asyncio, base64
+from requests.utils import to_native_string
 from coinbase.wallet.client import Client
-from requests.auth import AuthBase
 
 USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
 
@@ -133,6 +133,7 @@ MOCK_TRANSACTIONS_DATA = {
                     ]
                 }
 
+
 def format_balances_response(client_accounts):
     data = {}
     try:
@@ -193,19 +194,37 @@ async def get_transactions(api_key, api_secret, account):
     return {'status': 'success', 'content': data}
 
 
-def get_all_transactions(api_key, api_secret):
+async def get_all_transactions(api_key, api_secret, tasks, client):
+    def get_auth(key, secret, path):
+        timestamp = str(int(time.time()))
+        message = timestamp + 'GET' + path 
+        message = message.encode()
+        secret_en = secret.encode()
+
+        signature = hmac.new(secret_en, message, hashlib.sha256).hexdigest()
+
+        headers = {
+            to_native_string('CB-ACCESS-SIGN'): signature,
+            to_native_string('CB-ACCESS-TIMESTAMP'): timestamp,
+            to_native_string('CB-ACCESS-KEY'): key,
+            # to_native_string('Content-Type'): 'application/json'
+        }
+        return headers
+
+    api_url = 'https://api.coinbase.com/v2/'
     try:
-        client = Client(api_key, api_secret)
-    except Exception:
-        return None
-    
-    accounts = client.get_accounts()
-    data = []
-    for account in accounts["data"]:
-        transactions = client.get_transactions(account['id'])
-        if transactions.get('data'):
+        accounts = httpx.get(api_url + 'accounts', headers=get_auth(api_key, api_secret, '/v2/accounts')).json()
+        async def get_transactions_async(account, client):
+            data = []
+            transactions = await client.get(api_url + f'accounts/{account}/transactions', headers=get_auth(api_key, api_secret, f'/v2/accounts/{account}/transactions'))
+            transactions = transactions.json()
             for transaction in transactions["data"]:
                 if transaction["status"] == "completed":
                     data.append({transaction["id"]: {"amount": transaction['amount'], "date": transaction['created_at'][:10], "type": "crypto"}})
+            return data
 
-    return data
+        for account in accounts["data"]:
+            tasks.append(asyncio.ensure_future(get_transactions_async(account["id"], client)))
+    except Exception as e:
+        print(str(e))
+
