@@ -21,6 +21,7 @@ def group_balances(balances: dict, holdings: dict):
                         result[name]['accounts'] = [data]
 
                     if account_content['balanceData'].get('base_currency'):
+                        total_balance += float(account_content['balanceData']['base_currency'])
                         if result[name].get('total'):
                             result[name]['total'] += account_content['balanceData']['base_currency']
                         else:
