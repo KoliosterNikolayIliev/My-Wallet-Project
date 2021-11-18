@@ -1,6 +1,5 @@
 import requests, os
 
-from assets.utils.measure_time import MeasuredScope
 
 """
     HOW THIS WHOLE THING WORKS:
@@ -204,7 +203,6 @@ async def get_access_token(loginName, session):
 
 
 async def get_balances(loginName, session):
-    total_time = MeasuredScope('yodlee')
     if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
 
     # try to obtain a token and return an error if it fails
@@ -217,7 +215,6 @@ async def get_balances(loginName, session):
             # send the request and save the balance for each account
             async with session.get(URL + 'accounts', headers=headers, ssl=False) as resp:
                 awaited = await resp.json()
-                del total_time
                 return format_balances_response(awaited)
 
         else:

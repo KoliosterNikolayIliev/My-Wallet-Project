@@ -3,7 +3,6 @@ import os
 from flask import Blueprint, request, jsonify
 import aiohttp, asyncio
 
-from ..utils.measure_time import MeasuredScope
 from ..utils.yodlee_api import get_balances as get_yodlee_balances
 from ..utils.yodlee_api import get_holdings as get_yodlee_holdings
 from ..utils.yodlee_api import get_transactions as get_yodlee_transactions
@@ -19,7 +18,6 @@ bp = Blueprint('api', __name__)
 
 @bp.route('/balances', methods=(['GET']))
 async def get_balances():
-    total_time = MeasuredScope('total')
     results = {}
     nordigen_requisitions = request.headers.get('nordigen_requisitions')
     nordigen_requisitions = json.loads(nordigen_requisitions) if nordigen_requisitions else []
@@ -33,7 +31,6 @@ async def get_balances():
         results['yodlee'] = responses[0]
         results['nordigen'] = responses[1]
 
-    del total_time
     return jsonify(results)
 
 @bp.route('/holdings', methods=(['GET']))

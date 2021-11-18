@@ -3,7 +3,6 @@ import os
 
 import requests
 
-from assets.utils.measure_time import MeasuredScope
 
 SECRET_ID = os.environ.get('ASSETS_NORDIGEN_ID')
 SECRET_KEY = os.environ.get('ASSETS_NORDIGEN_KEY')
@@ -210,7 +209,6 @@ async def get_single_account_balance(account, headers, session):
 
 
 async def get_all_account_balances(requisition_id, session, headers):
-    # total_time = MeasuredScope('total get_all_account_balances')
     # get user bank accounts from requisition
     accounts = await get_bank_accounts(requisition_id, session, headers)
 
@@ -231,7 +229,6 @@ async def get_all_account_balances(requisition_id, session, headers):
     for response in responses:
         data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"], "accountType": response["accountType"]}
 
-    # del total_time
     return {"status": "success", "content": data}
 
 
@@ -270,7 +267,6 @@ async def get_account_transactions(account, session):
 
 
 async def get_all_accounts_balances(requisitions, session):
-    total_time = MeasuredScope('nordigen')
     if not requisitions:
         return {
             'status': 'failed',
@@ -296,7 +292,6 @@ async def get_all_accounts_balances(requisitions, session):
         if response['status'] == 'success':
             data.update(response['content'])
 
-    del total_time
     if data:
         return {'status': 'success', 'content': data}
 
