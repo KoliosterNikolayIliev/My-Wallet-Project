@@ -51,19 +51,33 @@ def convert_assets_to_base_currency_and_get_total_gbp(base, balances, holdings):
     return total_gbp
 
 
-def convert_transactions_currency_to_base_currency(base, transactions):
+def convert_transactions_currency_to_base_currency(base, transactions, recent=False):
     if transactions["status"] != "failed":
         currency_prices = get_currencies_prices(base)
         crypto_prices = get_crypto_prices()
 
-        for transaction in transactions["content"].values():
-            for amount in transaction.values():
-                if currency_prices.get(amount["currency"]):
-                    amount["amount"] = float(amount["amount"]) / currency_prices[amount["currency"]]
-                    amount["currency"] = base
+        if not recent:
+            for transaction in transactions["content"].values():
+                    for amount in transaction.values():
+                        if currency_prices.get(amount["currency"]):
+                            amount["amount"] = float(amount["amount"]) / currency_prices[amount["currency"]]
+                            amount["currency"] = base
 
-                else:
-                    if crypto_prices.get(amount["currency"]):
-                        usd_currency = float(crypto_prices[amount["currency"]]) * float(amount["amount"])
-                        amount["amount"] = usd_currency / float(currency_prices["USD"])
+                        else:
+                            if crypto_prices.get(amount["currency"]):
+                                usd_currency = float(crypto_prices[amount["currency"]]) * float(amount["amount"])
+                                amount["amount"] = usd_currency / float(currency_prices["USD"])
+                                amount["currency"] = base
+        else:
+            for transaction in transactions['content']:
+                for data in transaction.values():
+                    amount = data["amount"]
+                    if currency_prices.get(amount["currency"]):
+                        amount["amount"] = float(amount["amount"]) / currency_prices[amount["currency"]]
                         amount["currency"] = base
+
+                    else:
+                        if crypto_prices.get(amount["currency"]):
+                            usd_currency = float(crypto_prices[amount["currency"]]) * float(amount["amount"])
+                            amount["amount"] = usd_currency / float(currency_prices["USD"])
+                            amount["currency"] = base
