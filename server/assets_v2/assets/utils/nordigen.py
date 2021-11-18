@@ -263,7 +263,7 @@ async def get_account_transactions(account, session):
     return {'status': 'success', 'content': data}
 
 async def get_all_transactions(requisitions, session, tasks):
-    response = get_access_token()
+    response = await get_access_token(session)
 
     if response['status'] != 'success':
         return response
