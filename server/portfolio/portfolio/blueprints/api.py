@@ -60,7 +60,7 @@ async def get_assets():
 
 
 @bp.route('/api/transactions', methods=(['GET']))
-def get_account_transactions():
+async def get_account_transactions():
     # check if a token was passed in the Authorization header
     received_token = request.headers.get('Authorization')
     validated_token = validate_auth_header(received_token)
@@ -83,12 +83,12 @@ def get_account_transactions():
         'coinbase_secret': user_data['coinbase_api_secret']
     }
     response = get_transactions(headers)
-    convert_transactions_currency_to_base_currency(user_data['base_currency'], response)
+    async with aiohttp.ClientSession() as session:
+        await convert_transactions_currency_to_base_currency(user_data['base_currency'], response, session)
     return jsonify(response), 200
 
 @bp.route('/api/recent-transactions', methods=(['GET']))
-def get_recent_transactions():
-    return {}
+async def get_recent_transactions():
     # check if a token was passed in the Authorization header
     received_token = request.headers.get('Authorization')
     recent = request.headers.get('Recent')
@@ -105,7 +105,10 @@ def get_recent_transactions():
 
     response = get_assets_recent_transactions(headers=headers)
     if response:
-        convert_transactions_currency_to_base_currency(user_data['base_currency'], response, recent=True)
+        async with aiohttp.ClientSession() as session:
+            await convert_transactions_currency_to_base_currency(
+                user_data['base_currency'], response, session, recent=True
+            )
 
         response['content'].sort(key=lambda x: datetime.strptime(list(x.values())[0]['date'], "%Y-%m-%d"), reverse=True)
 

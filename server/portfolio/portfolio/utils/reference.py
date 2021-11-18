@@ -59,10 +59,12 @@ async def convert_assets_to_base_currency_and_get_total_gbp(base, balances, hold
     return total_gbp
 
 
-def convert_transactions_currency_to_base_currency(base, transactions, recent=False):
+async def convert_transactions_currency_to_base_currency(base, transactions, session, recent=False):
     if transactions["status"] != "failed":
-        currency_prices = get_currencies_prices(base)
-        crypto_prices = get_crypto_prices()
+        currency_prices, crypto_prices = await asyncio.gather(
+            get_currencies_prices(base, session),
+            get_crypto_prices(session)
+        )
 
         if not recent:
             for transaction in transactions["content"].values():
