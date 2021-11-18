@@ -46,11 +46,14 @@ async def get_assets():
 
         balances = responses[0]
         holdings = responses[1]
-
-        total_gbp = convert_assets_to_base_currency_and_get_total_gbp(user_data['base_currency'], balances, holdings)
+        total_gbp = await convert_assets_to_base_currency_and_get_total_gbp(
+            user_data['base_currency'],
+            balances,
+            holdings,
+            session,
+        )
         data = group_balances(balances, holdings)
         cache_assets(total_gbp, user_data['user_identifier'])
-
 
     return jsonify(data), 200
 
@@ -85,6 +88,7 @@ def get_account_transactions():
 
 @bp.route('/api/recent-transactions', methods=(['GET']))
 def get_recent_transactions():
+    return {}
     # check if a token was passed in the Authorization header
     received_token = request.headers.get('Authorization')
     recent = request.headers.get('Recent')
