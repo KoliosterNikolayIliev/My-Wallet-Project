@@ -5,11 +5,16 @@ import { Redirect } from "react-router";
 import LogOutButton from "../Buttons/LogOutButton";
 import ProfileButton from "../Buttons/ProfileButton";
 
-import { getAssets, getTransactions } from "../../utils/portfolio";
+import {
+  getAssets,
+  getTransactions,
+  getAllRecentTransactions,
+} from "../../utils/portfolio";
 import { getUser } from "../../utils/account";
 
 import GroupsContainerComponent from "../Other/GroupsContainerComponent";
 import TransactionsContainerComponent from "../Other/TransactionsContainerComponent";
+import RecentTransactionsContainerComponent from "../Other/RecentTransactionsContainerComponent";
 
 import "../../styles/dashboard.css";
 
@@ -17,10 +22,11 @@ import "../../styles/dashboard.css";
 const DashboardPage = () => {
   const [groups, setGroups] = useState({});
   const [transactions, setTransactions] = useState({});
+  const [recentTransactions, setRecentTransactions] = useState([]);
   const [base, setBase] = useState("");
   const [total, setTotal] = useState(0);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
     useAuth0();
@@ -48,6 +54,10 @@ const DashboardPage = () => {
         setTotal(total);
         setGroups(assets);
       })(),
+      (async () => {
+        const transactions = await getRecentTransactions(token);
+        setRecentTransactions(transactions);
+      })(),
     ]);
 
     setLoading(false);
@@ -60,6 +70,13 @@ const DashboardPage = () => {
     setTransactions({ transactions });
     setLoading(false);
   };
+
+  const getRecentTransactions = async () => {
+    const token = await getAccessTokenSilently();
+    const transactions = await getAllRecentTransactions(token);
+    return transactions.content;
+  };
+
   // fetch all data on first render
   useEffect(() => {
     getData();
@@ -96,6 +113,11 @@ const DashboardPage = () => {
           <div className="container">
             <h1>Transactions</h1>
             <TransactionsContainerComponent data={transactions} />
+          </div>
+
+          <div className="container">
+            <h1>Recent Transactions</h1>
+            <RecentTransactionsContainerComponent data={recentTransactions} />
           </div>
         </div>
       </div>

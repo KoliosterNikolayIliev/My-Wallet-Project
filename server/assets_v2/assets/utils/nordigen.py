@@ -1,7 +1,4 @@
-import asyncio
-import os
-
-import requests
+import asyncio, os, requests
 
 SECRET_ID = os.environ.get('ASSETS_NORDIGEN_ID')
 SECRET_KEY = os.environ.get('ASSETS_NORDIGEN_KEY')
@@ -233,7 +230,7 @@ async def get_account_transactions(account, session):
     if response['status'] != 'success':
         return response
 
-    headers = {'Authorization': f'Bearer {response["content"]}'}
+    headers = {'Authorization': f"Bearer {response['content']}"}
 
     bank_name = await get_bank_name(account, session, headers)
     if not bank_name:
@@ -259,6 +256,38 @@ async def get_account_transactions(account, session):
     # return saved data
     return {'status': 'success', 'content': data}
 
+async def get_all_transactions(requisitions, session, tasks):
+    response = get_access_token()
+
+    if response['status'] != 'success':
+        return response
+
+    headers = {'Authorization': f"Bearer {response['content']}"}
+    
+    async def get_transactions(session, account):
+        async with session.get(URL + f'accounts/{account}/transactions/',
+                               headers=headers) as response:
+            awaited = await response.json()
+            data = awaited.get('transactions').get('booked')
+            result = []
+            for transaction in data:
+                transaction_data = {transaction['transactionId']: {"amount": transaction['transactionAmount'], "date": transaction['bookingDate'], "type": "bank"}}
+                result.append(transaction_data)
+            return result
+
+    requisition_tasks = []
+    for requisition in requisitions:
+        # get user bank accounts from requisition
+        requisition_tasks.append(asyncio.ensure_future(get_bank_accounts(requisition, session, headers)))
+        
+    responses = await asyncio.gather(*requisition_tasks)
+    for accounts in responses:
+        if not accounts[1]:
+            continue
+
+        accounts = accounts[0]['content']
+        for account in accounts:
+            tasks.append(asyncio.ensure_future(get_transactions(session, account)))
 
 async def get_all_accounts_balances(requisitions, session, tasks):
     if not requisitions:

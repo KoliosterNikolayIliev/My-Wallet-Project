@@ -20,6 +20,20 @@ const getTransactions = async (token, provider, account) => {
   return response.json();
 };
 
+const getAllRecentTransactions = async (token) => {
+  const response = await fetch(
+    "http://localhost:5001/api/recent-transactions",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Recent: "True",
+      },
+    }
+  );
+
+  return response.json();
+};
+
 const createCustomAsset = async (token, type, symbol, amount) => {
   const response = await fetch("http://localhost:5001/api/create-asset", {
     headers: {
@@ -33,4 +47,9 @@ const createCustomAsset = async (token, type, symbol, amount) => {
   return response.json();
 };
 
-export { getAssets, getTransactions, createCustomAsset };
+export {
+  getAssets,
+  getTransactions,
+  createCustomAsset,
+  getAllRecentTransactions,
+};

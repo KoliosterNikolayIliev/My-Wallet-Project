@@ -16,6 +16,7 @@ cryptography==35.0.0
 Flask==2.0.2
 Flask-Cors==3.0.10
 hyperlink==21.0.0
+httpx==0.21.1
 idna==2.10
 incremental==21.3.0
 itsdangerous==2.0.1
