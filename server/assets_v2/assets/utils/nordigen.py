@@ -198,10 +198,6 @@ async def get_single_account_balance(account, headers, session):
         account_balance_request(account, headers, session),
     )
 
-    if USE_MOCK != 'True':
-        pass
-    else:
-        balance_data = MOCK_BALANCES_DATA
     if details.get('account'):
         if details['account'].get('product'):
             details = details['account']['product']
