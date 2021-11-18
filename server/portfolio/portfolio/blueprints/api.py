@@ -1,5 +1,6 @@
 from datetime import datetime
 import json
+from threading import Thread
 
 from flask import Blueprint, jsonify, request
 from flask_cors import CORS
@@ -36,7 +37,6 @@ async def get_assets():
                         'coinbase_secret': user_data['coinbase_api_secret']}
 
     results = []
-
     async with aiohttp.ClientSession() as session:
         tasks = []
         tasks.append(asyncio.ensure_future(get_balances(headers=balances_headers, session=session)))
@@ -53,7 +53,7 @@ async def get_assets():
             session,
         )
         data = group_balances(balances, holdings)
-        cache_assets(total_gbp, user_data['user_identifier'])
+        Thread(target=cache_assets, args=(total_gbp, user_data['user_identifier'])).start()
 
     return jsonify(data), 200
 
