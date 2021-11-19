@@ -25,14 +25,14 @@ async def get_balances():
     nordigen_requisitions = request.headers.get('nordigen_requisitions')
     nordigen_requisitions = json.loads(nordigen_requisitions) if nordigen_requisitions else []
     async with aiohttp.ClientSession() as session:
-            tasks = []
-            nordigen_tasks = []
-            tasks.append(asyncio.ensure_future(get_yodlee_balances(request.headers.get('yodlee_loginName'), session=session)))
-            tasks.append(asyncio.ensure_future(get_nordigen_balances(nordigen_requisitions, session=session, tasks=nordigen_tasks)))
+        tasks = (
+            asyncio.ensure_future(get_yodlee_balances(request.headers.get('yodlee_loginName'), session=session)),
+            asyncio.ensure_future(get_nordigen_balances(nordigen_requisitions, session=session)),
+        )
 
-            responses = await asyncio.gather(*tasks)
-            results['yodlee'] = responses[0]
-            results['nordigen'] = responses[1]
+        responses = await asyncio.gather(*tasks)
+        results['yodlee'] = responses[0]
+        results['nordigen'] = responses[1]
 
     return jsonify(results)
 
