@@ -10,18 +10,16 @@ const GroupsContainerComponent = ({
 }) => {
   let source;
   return (
-    <div>
-      <h4>
-        Total balance: {total.toFixed(2)} {baseSymbol}
-      </h4>
+    <div className="data-source-container">
       {Object.entries(data).map(([key, value]) => {
         source = key;
         return (
-          <div>
-            <h3>
-              {source[0].toUpperCase() + source.slice(1)}: total balance-{" "}
-              {value.total.toFixed(2)} {baseSymbol}
-            </h3>
+          <div className="data-source">
+
+            <p>
+              {source[0].toUpperCase() + source.slice(1)} {" "}
+            </p>
+            <p>{value.total.toFixed(2)} {baseSymbol}</p>
             <ul>
               {(value.accounts.length > 1 ||
                 source === "coinbase" ||

@@ -1,0 +1,36 @@
+.dashboard-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom:20px;
+}
+.dashboard-container div:nth-child(2){
+  width: 315px;
+
+}
+.data-source-container {
+display: grid;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  grid-template-columns: auto auto auto;
+  width: 1000px;
+}
+.has-transactions:hover {
+  color: aqua;
+  cursor: pointer;
+}
+
+.has-transactions {
+  color: brown;
+}
+
+.data-source{
+  background: #FFFFFF;
+  max-width: 99%;
+  box-shadow: 0 23px 44px 0 #B0B7C324;
+  border-radius: 8px;
+  min-height: 300px;
+}
+
+ul{
+  padding: 0;
+}
