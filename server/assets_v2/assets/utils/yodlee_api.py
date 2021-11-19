@@ -1,5 +1,6 @@
 import requests, os
 
+
 """
     HOW THIS WHOLE THING WORKS:
     1. We need to obtain an access token
@@ -157,7 +158,7 @@ def format_holdings_response(response):
         return {'status': 'failed', 'content': f"Error: Unknown"}
 
 
-def format_transactions_response(response):
+def format_transactions_response(response, recent=False):
     try:
         transactions = response["transaction"]
     except:
@@ -176,13 +177,16 @@ def format_transactions_response(response):
 
         #    add only the completed transactions
         if transaction['status'] == 'POSTED':
-            transaction_data[source][transaction["id"]] = transaction['amount']
+            if not recent:
+                transaction_data[source][transaction["id"]] = transaction['amount']
+            else:
+                transaction_data[source][transaction["id"]] = {'amount': transaction['amount'], 'date': transaction['date'], 'type': transaction['CONTAINER']}
 
     data = transaction_data
 
     return {'status': 'success', 'content': data}
 
-def get_access_token(loginName):
+async def get_access_token(loginName, session):
     if USE_MOCK == 'True':
         return {'status': 'success', 'content': 'token'}
 
@@ -191,9 +195,11 @@ def get_access_token(loginName):
     headers = {'Api-Version': '1.1', 'loginName': loginName}
 
     # send the request and return the access token
-    response = requests.post(URL + 'auth/token', data=data, headers=headers)
+    async with session.post(URL + 'auth/token', data=data, headers=headers) as res:
+        response = await res.json()
+
     try:
-        return {'status': 'success', 'content': response.json()['token']['accessToken']}
+        return {'status': 'success', 'content': response['token']['accessToken']}
     except:
         # return an error if it has occured
         return {'status': 'failed', 'content': f"Error: Unknown"}
@@ -203,7 +209,7 @@ async def get_balances(loginName, session):
     if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
 
     # try to obtain a token and return an error if it fails
-    access_token = get_access_token(loginName)
+    access_token = await get_access_token(loginName, session)
     if access_token['status'] == 'success':
         # set up header data for the request
         if USE_MOCK != 'True':
@@ -226,12 +232,12 @@ async def get_transactions(loginName, session, account):
     if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
 
     # try to obtain a token and return an error if it fails
-    access_token = get_access_token(loginName)
+    access_token = await get_access_token(loginName, session)
     if access_token['status'] == 'success':
         if USE_MOCK != 'True':
             # set up header data and query parameters for the request
             headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
-            params = {'top': 10, 'fromDate': '2013-12-12', 'accountId': account}
+            params = {'top': 10, 'accountId': account}
 
             # send the request and save the balance for each account
             async with session.get(URL + 'transactions', headers=headers, params=params, ssl=False) as resp:
@@ -245,12 +251,32 @@ async def get_transactions(loginName, session, account):
     else:
         return access_token
 
+async def get_all_transactions(loginName, session):
+    if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
+    # try to obtain a token and return an error if it fails
+    access_token = await get_access_token(loginName, session)
+    if access_token['status'] == 'success':
+        if USE_MOCK != 'True':
+            # set up header data and query parameters for the request
+            headers = {'Api-Version': '1.1', 'Authorization': 'Bearer ' + access_token['content']}
+
+            # send the request and save the balance for each account
+            async with session.get(URL + 'transactions', headers=headers, ssl=False) as resp:
+                awaited = await resp.json()
+                return format_transactions_response(awaited, recent=True)
+
+        else:
+            response = TRANSACTIONS_MOCK_DATA
+            return format_transactions_response(response, recent=True)
+        
+    else:
+        return access_token
 
 async def get_holdings(loginName, session):
     if not loginName: return {'status': 'failed', 'content': 'Error: no Yodlee loginName was provided'}
 
     # try to obtain a token and return an error if it fails
-    access_token = get_access_token(loginName)
+    access_token = await get_access_token(loginName, session)
 
     if access_token['status'] == 'success':
         # set up header data for the request

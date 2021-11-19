@@ -1,28 +1,36 @@
+import asyncio
+
 import requests, os
+
 
 URL = os.environ.get("PORTFOLIO_REFERENCE_URL")
 
 
-def get_crypto_prices():
-    res = requests.get(URL + "crypto/prices")
-    return res.json()
+async def get_crypto_prices(session):
+    async with session.get(URL + "crypto/prices") as res:
+        res = await res.json()
+        return res
 
 
-def get_stocks_prices():
-    res = requests.get(URL + "stocks/prices")
-    return res.json()
+async def get_stocks_prices(session):
+    async with session.get(URL + "stocks/prices") as res:
+        res = await res.json()
+        return res
 
 
-def get_currencies_prices(base):
-    res = requests.get(URL + "currencies/prices", headers={'base': base})
-    return res.json()
+async def get_currencies_prices(base, session):
+    async with session.get(URL + "currencies/prices", headers={'base': base}) as res:
+        res = await res.json()
+        return res
 
 
-def convert_assets_to_base_currency_and_get_total_gbp(base, balances, holdings):
-    currency_prices = get_currencies_prices(base)
-    currency_prices_gbp = get_currencies_prices("GBP")
-    crypto_prices = get_crypto_prices()
-    stocks_prices = get_stocks_prices()
+async def convert_assets_to_base_currency_and_get_total_gbp(base, balances, holdings, session):
+    currency_prices, currency_prices_gbp, crypto_prices, stocks_prices = await asyncio.gather(
+        get_currencies_prices(base, session),
+        get_currencies_prices("GBP", session),
+        get_crypto_prices(session),
+        get_stocks_prices(session)
+    )
     total_gbp = 0
 
     for balance in balances.values():
@@ -51,19 +59,35 @@ def convert_assets_to_base_currency_and_get_total_gbp(base, balances, holdings):
     return total_gbp
 
 
-def convert_transactions_currency_to_base_currency(base, transactions):
+async def convert_transactions_currency_to_base_currency(base, transactions, session, recent=False):
     if transactions["status"] != "failed":
-        currency_prices = get_currencies_prices(base)
-        crypto_prices = get_crypto_prices()
+        currency_prices, crypto_prices = await asyncio.gather(
+            get_currencies_prices(base, session),
+            get_crypto_prices(session)
+        )
 
-        for transaction in transactions["content"].values():
-            for amount in transaction.values():
-                if currency_prices.get(amount["currency"]):
-                    amount["amount"] = float(amount["amount"]) / currency_prices[amount["currency"]]
-                    amount["currency"] = base
-
-                else:
-                    if crypto_prices.get(amount["currency"]):
-                        usd_currency = float(crypto_prices[amount["currency"]]) * float(amount["amount"])
-                        amount["amount"] = usd_currency / float(currency_prices["USD"])
+        if not recent:
+            for transaction in transactions["content"].values():
+                for amount in transaction.values():
+                    if currency_prices.get(amount["currency"]):
+                        amount["amount"] = float(amount["amount"]) / currency_prices[amount["currency"]]
                         amount["currency"] = base
+
+                    else:
+                        if crypto_prices.get(amount["currency"]):
+                            usd_currency = float(crypto_prices[amount["currency"]]) * float(amount["amount"])
+                            amount["amount"] = usd_currency / float(currency_prices["USD"])
+                            amount["currency"] = base
+        else:
+            for transaction in transactions['content']:
+                for data in transaction.values():
+                    amount = data["amount"]
+                    if currency_prices.get(amount["currency"]):
+                        amount["amount"] = float(amount["amount"]) / currency_prices[amount["currency"]]
+                        amount["currency"] = base
+
+                    else:
+                        if crypto_prices.get(amount["currency"]):
+                            usd_currency = float(crypto_prices[amount["currency"]]) * float(amount["amount"])
+                            amount["amount"] = usd_currency / float(currency_prices["USD"])
+                            amount["currency"] = base

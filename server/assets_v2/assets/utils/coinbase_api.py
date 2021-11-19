@@ -1,4 +1,5 @@
-import os
+import os, json, hmac, hashlib, time, httpx, asyncio, base64
+from requests.utils import to_native_string
 from coinbase.wallet.client import Client
 
 USE_MOCK = os.environ.get('ASSETS_USE_MOCK')
@@ -132,6 +133,7 @@ MOCK_TRANSACTIONS_DATA = {
                     ]
                 }
 
+
 def format_balances_response(client_accounts):
     data = {}
     try:
@@ -171,7 +173,7 @@ async def get_transactions(api_key, api_secret, account):
     try:
         if USE_MOCK != 'True':
             account_name = client.get_account(account)['name']
-            transactions = client.get_transactions(account, limit=10)
+            transactions = client.get_transactions(account)
 
         else:
             transactions = MOCK_TRANSACTIONS_DATA
@@ -190,3 +192,39 @@ async def get_transactions(api_key, api_secret, account):
         return {'status': 'failed', 'content': f"Error: unknown error"}
 
     return {'status': 'success', 'content': data}
+
+
+async def get_all_transactions(api_key, api_secret, tasks, client):
+    def get_auth(key, secret, path):
+        timestamp = str(int(time.time()))
+        message = timestamp + 'GET' + path 
+        message = message.encode()
+        secret_en = secret.encode()
+
+        signature = hmac.new(secret_en, message, hashlib.sha256).hexdigest()
+
+        headers = {
+            to_native_string('CB-ACCESS-SIGN'): signature,
+            to_native_string('CB-ACCESS-TIMESTAMP'): timestamp,
+            to_native_string('CB-ACCESS-KEY'): key,
+            # to_native_string('Content-Type'): 'application/json'
+        }
+        return headers
+
+    api_url = 'https://api.coinbase.com/v2/'
+    try:
+        accounts = httpx.get(api_url + 'accounts', headers=get_auth(api_key, api_secret, '/v2/accounts')).json()
+        async def get_transactions_async(account, client):
+            data = []
+            transactions = await client.get(api_url + f'accounts/{account}/transactions', headers=get_auth(api_key, api_secret, f'/v2/accounts/{account}/transactions'))
+            transactions = transactions.json()
+            for transaction in transactions["data"]:
+                if transaction["status"] == "completed":
+                    data.append({transaction["id"]: {"amount": transaction['amount'], "date": transaction['created_at'][:10], "type": "crypto"}})
+            return data
+
+        for account in accounts["data"]:
+            tasks.append(asyncio.ensure_future(get_transactions_async(account["id"], client)))
+    except Exception as e:
+        print(str(e))
+

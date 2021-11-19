@@ -138,3 +138,11 @@ dmypy.json
 sensitive_data.py
 
 yarn.lock
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/vcs.xml
+.idea/My-Wallet-Project.iml
+.idea/modules.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/workspace.xml
+

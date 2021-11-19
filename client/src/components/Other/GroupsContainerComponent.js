@@ -4,6 +4,7 @@ import HoldingComponent from "./HoldingComponent";
 
 const GroupsContainerComponent = ({
   data,
+  total,
   getTransactionsFunc,
   baseSymbol,
 }) => {
@@ -45,6 +46,8 @@ const GroupsContainerComponent = ({
                         return (
                           <HoldingComponent
                             nest={false}
+                            account={account}
+                            getTransactionsFunc={getTransactionsFunc}
                             data={holding}
                             baseSymbol={baseSymbol}
                           />
