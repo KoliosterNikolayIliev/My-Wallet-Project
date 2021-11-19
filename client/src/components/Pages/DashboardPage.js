@@ -79,7 +79,8 @@ const DashboardPage = () => {
     isAuthenticated && (
       <div className="main">
         <Header/>
-        {SubHeader(user)}
+        <SubHeader
+          user={user}/>
         <ChartComponent/>
         {/*<LogOutButton/>*/}
         {/*<ProfileButton/>*/}

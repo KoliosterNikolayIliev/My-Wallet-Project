@@ -1,7 +1,7 @@
 import React from "react";
 import "../../styles/subheader.scss";
 
-const SubHeader = (user) => {
+const SubHeader = ({user}) => {
   return <div className="subheader">
     <div>
       <p>Good morning, {user.name}</p>
