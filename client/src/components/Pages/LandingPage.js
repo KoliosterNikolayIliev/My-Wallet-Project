@@ -9,7 +9,7 @@ const LandingPage = () => {
 
   //   Return this if Auth0 is still loading. Can be replaced with an animation in the future
   if (isLoading) {
-    return Loader();
+    return <Loader/>;
   }
 
   return (

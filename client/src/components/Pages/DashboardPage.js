@@ -16,6 +16,7 @@ import "../../styles/main_content.scss";
 import Loader from "../Other/LoaderComponent";
 import Header from "../Other/HeaderComponent";
 import SubHeader from "../Other/SubHeaderComponent";
+import ChartComponent from "../Other/ChartComponent";
 
 // Dashboard page to be filled in with user account data
 const DashboardPage = () => {
@@ -23,7 +24,7 @@ const DashboardPage = () => {
   const [transactions, setTransactions] = useState({});
   const [base, setBase] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const {user, isAuthenticated, isLoading, getAccessTokenSilently} =
     useAuth0();
@@ -77,22 +78,24 @@ const DashboardPage = () => {
   return (
     isAuthenticated && (
       <div className="main">
-        {Header()}
+        <Header/>
         {SubHeader(user)}
-        <LogOutButton/>
-        <ProfileButton/>
-
+        <ChartComponent/>
+        {/*<LogOutButton/>*/}
+        {/*<ProfileButton/>*/}
+        <div style={{margin:"3% 0"}}>
+          <p style={{display:"inline",paddingRight:"20px"}}>Accounts</p>
+          <a href="#">+ Add new Source</a>
+        </div>
         <div className="dashboard-container">
-          <div className="container">
-            <h1>Groups</h1>
-            <GroupsContainerComponent
-              baseSymbol={base}
-              data={groups}
-              getTransactionsFunc={getAccountTransactions}
-            />
-          </div>
 
-          <div className="container">
+          <GroupsContainerComponent
+            baseSymbol={base}
+            data={groups}
+            getTransactionsFunc={getAccountTransactions}
+          />
+
+          <div className="data-source">
             <h1>Transactions</h1>
             <TransactionsContainerComponent data={transactions}/>
           </div>
