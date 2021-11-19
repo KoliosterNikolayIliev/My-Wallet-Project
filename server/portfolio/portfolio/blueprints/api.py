@@ -1,5 +1,6 @@
 from datetime import datetime
 import json
+from threading import Thread
 
 from flask import Blueprint, jsonify, request
 from flask_cors import CORS
@@ -36,7 +37,6 @@ async def get_assets():
                         'coinbase_secret': user_data['coinbase_api_secret']}
 
     results = []
-
     async with aiohttp.ClientSession() as session:
         tasks = []
         tasks.append(asyncio.ensure_future(get_balances(headers=balances_headers, session=session)))
@@ -46,18 +46,21 @@ async def get_assets():
 
         balances = responses[0]
         holdings = responses[1]
-
-        total_gbp = convert_assets_to_base_currency_and_get_total_gbp(user_data['base_currency'], balances, holdings)
+        total_gbp = await convert_assets_to_base_currency_and_get_total_gbp(
+            user_data['base_currency'],
+            balances,
+            holdings,
+            session,
+        )
         data = group_balances(balances, holdings)
-        cache_assets(total_gbp, user_data['user_identifier'])
-
+        Thread(target=cache_assets, args=(total_gbp, user_data['user_identifier'])).start()
 
     return jsonify(data), 200
 
 
 
 @bp.route('/api/transactions', methods=(['GET']))
-def get_account_transactions():
+async def get_account_transactions():
     # check if a token was passed in the Authorization header
     received_token = request.headers.get('Authorization')
     validated_token = validate_auth_header(received_token)
@@ -80,11 +83,12 @@ def get_account_transactions():
         'coinbase_secret': user_data['coinbase_api_secret']
     }
     response = get_transactions(headers)
-    convert_transactions_currency_to_base_currency(user_data['base_currency'], response)
+    async with aiohttp.ClientSession() as session:
+        await convert_transactions_currency_to_base_currency(user_data['base_currency'], response, session)
     return jsonify(response), 200
 
 @bp.route('/api/recent-transactions', methods=(['GET']))
-def get_recent_transactions():
+async def get_recent_transactions():
     # check if a token was passed in the Authorization header
     received_token = request.headers.get('Authorization')
     recent = request.headers.get('Recent')
@@ -101,7 +105,10 @@ def get_recent_transactions():
 
     response = get_assets_recent_transactions(headers=headers)
     if response:
-        convert_transactions_currency_to_base_currency(user_data['base_currency'], response, recent=True)
+        async with aiohttp.ClientSession() as session:
+            await convert_transactions_currency_to_base_currency(
+                user_data['base_currency'], response, session, recent=True
+            )
 
         response['content'].sort(key=lambda x: datetime.strptime(list(x.values())[0]['date'], "%Y-%m-%d"), reverse=True)
 
