@@ -8,7 +8,7 @@ from ..utils.assets import get_balances, get_transactions, get_holdings, get_ass
 from ..utils.account import validate_auth_header
 from ..utils.cache_assets import cache_assets
 from ..utils.custom_assets import create_asset as create_custom_asset
-from ..utils.format import group_balances
+from ..utils.format import group_balances, set_historical_balance
 
 import aiohttp, asyncio
 
@@ -118,6 +118,55 @@ async def get_recent_transactions():
         response = None
 
     return jsonify(response)
+
+@bp.route('/api/historical-balances', methods=(['GET']))
+async def get_historical_balances():
+    # check if a token was passed in the Authorization header
+    received_token = request.headers.get('Authorization')
+    validated_token = validate_auth_header(received_token)
+
+    if not validated_token[0]:
+        return jsonify(validated_token[1]), 401
+
+    user_data = validated_token[1]
+    all_requisitions = user_data['nordigenrequisition_set']
+    all_requisitions = json.dumps([el['requisition_id'] for el in all_requisitions])
+    balances_headers = {'yodlee_loginName': user_data['user_identifier'],
+                        'nordigen_requisitions': all_requisitions}
+    holdings_headers = {'yodlee_loginName': user_data['user_identifier'], "custom_assets_key": user_data['user_identifier'],'binance_key': user_data['binance_key'],
+                        'binance_secret': user_data['binance_secret'], 'coinbase_key': user_data['coinbase_api_key'],
+                        'coinbase_secret': user_data['coinbase_api_secret']}
+
+    transactions_headers = {'yodlee_loginName': user_data['user_identifier'], 'nordigen_requisitions': all_requisitions, 'coinbase_key': user_data['coinbase_api_key'], 'coinbase_secret': user_data['coinbase_api_secret']}
+
+    all_transactions = get_assets_recent_transactions(headers=transactions_headers)
+    if all_transactions:
+        async with aiohttp.ClientSession() as session:
+            tasks = []
+            tasks.append(asyncio.ensure_future(get_balances(headers=balances_headers, session=session)))
+            tasks.append(asyncio.ensure_future(get_holdings(headers=holdings_headers, session=session)))
+            tasks.append(asyncio.ensure_future(convert_transactions_currency_to_base_currency(
+                user_data['base_currency'], all_transactions, session, recent=True
+            )))
+
+            responses = await asyncio.gather(*tasks)
+
+            balances = responses[0]
+            holdings = responses[1]
+            await convert_assets_to_base_currency_and_get_total_gbp(
+            user_data['base_currency'],
+            balances,
+            holdings,
+            session,
+            )
+            total_balance = group_balances(balances, holdings)['total']
+
+        all_transactions['content'].sort(key=lambda x: datetime.strptime(list(x.values())[0]['date'], "%Y-%m-%d"), reverse=True)
+
+    historical_balances = set_historical_balance(total_balance, all_transactions['content'])
+    if historical_balances:
+        return jsonify(historical_balances)
+    return jsonify("Error")
 
 @bp.route('/api/create-asset', methods=(['GET']))
 def create_asset():
