@@ -90,7 +90,7 @@ async def get_recent_transactions():
                 if yodlee_login_name:
                     tasks.append(asyncio.ensure_future(get_all_yodlee_transactions(yodlee_login_name, session=session)))
                 if nordigen_requisitions:
-                    await get_all_nordigen_transactions(requisitions=nordigen_requisitions, session=session, tasks=tasks)
+                    tasks.append(get_all_nordigen_transactions(requisitions=nordigen_requisitions, session=session))
 
                 responses = await asyncio.gather(*tasks)
                 for response in responses:

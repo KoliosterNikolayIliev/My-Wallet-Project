@@ -262,7 +262,7 @@ async def get_account_transactions(account, session):
     # return saved data
     return {'status': 'success', 'content': data}
 
-async def get_all_transactions(requisitions, session, tasks):
+async def get_all_transactions(requisitions, session):
     response = await get_access_token(session)
 
     if response['status'] != 'success':
@@ -292,8 +292,19 @@ async def get_all_transactions(requisitions, session, tasks):
             continue
 
         accounts = accounts[0]['content']
+        tasks = []
         for account in accounts:
             tasks.append(asyncio.ensure_future(get_transactions(session, account)))
+
+        result = []
+        responses = await asyncio.gather(*tasks)
+
+        for response in responses:
+            for transactions in response:
+                result.append(transactions)
+
+        return result
+
 
 async def get_all_accounts_balances(requisitions, session):
     if not requisitions:
