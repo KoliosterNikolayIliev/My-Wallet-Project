@@ -77,9 +77,9 @@ def set_historical_balance(starting_balance: float, transactions: list):
         balance -= float(transaction['amount']['amount'])
 
     # add a point for days where no transaction were made
-    for i in range(len(data), 1, -1):
+    for i in range(dt.datetime.now().day, 0, -1):
         if not data.get(i):
-            if data.get(i-1):
+            if data.get(i-1) and i != 1:
                 data[i] = data[i-1]
             elif data.get(i+1):
                 data[i] = data[i+1]
