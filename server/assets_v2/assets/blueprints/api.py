@@ -75,7 +75,7 @@ async def get_transactions():
 
 @bp.route('/recent-transactions', methods=(['GET']))
 async def get_recent_transactions():
-    nordigen_requisitions = json.loads(request.headers.get('nordigen_requisitions'))
+    nordigen_requisitions = request.headers.get('nordigen_requisitions')
     yodlee_login_name = request.headers.get('yodlee_loginName')
     coinbase_key = request.headers.get('coinbase_key')
     coinbase_secret = request.headers.get('coinbase_secret')
@@ -90,6 +90,7 @@ async def get_recent_transactions():
                 if yodlee_login_name:
                     tasks.append(asyncio.ensure_future(get_all_yodlee_transactions(yodlee_login_name, session=session)))
                 if nordigen_requisitions:
+                    nordigen_requisitions = json.loads(nordigen_requisitions)
                     tasks.append(get_all_nordigen_transactions(requisitions=nordigen_requisitions, session=session))
 
                 responses = await asyncio.gather(*tasks)
