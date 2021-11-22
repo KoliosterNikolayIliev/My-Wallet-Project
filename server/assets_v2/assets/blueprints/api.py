@@ -105,24 +105,23 @@ async def get_recent_transactions():
                             continue
                     result.append(response)
             
-            coinbase_tasks = []
-            if coinbase_secret and coinbase_key:
-                async with httpx.AsyncClient() as client:
-                    await get_all_coinbase_transactions(coinbase_key, coinbase_secret, coinbase_tasks, client)
-                    
+                coinbase_tasks = []
+                if coinbase_secret and coinbase_key:
+                    await get_all_coinbase_transactions(coinbase_key, coinbase_secret, coinbase_tasks, session)
+
                     coinbase_transactions = await asyncio.gather(*coinbase_tasks)
 
                     if coinbase_transactions:
                         for account in coinbase_transactions:
                             for transaction in account:
                                 result.append(transaction)
-            
-            for element in result:
-                if type(element) is list:
-                    for transaction in element:
-                        final.append(transaction)
-                elif type(element) is dict:
-                    final.append(element)
+
+                for element in result:
+                    if type(element) is list:
+                        for transaction in element:
+                            final.append(transaction)
+                    elif type(element) is dict:
+                        final.append(element)
 
         except Exception as e:
             print(str(e))
