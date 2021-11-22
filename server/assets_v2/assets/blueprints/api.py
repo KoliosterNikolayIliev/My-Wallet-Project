@@ -105,6 +105,8 @@ async def get_recent_transactions():
                                     result.append(transaction)
                         else:
                             continue
+                    else:
+                        result.append(response)
 
             for element in result:
                 if type(element) is list:
