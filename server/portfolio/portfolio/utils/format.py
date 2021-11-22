@@ -1,3 +1,5 @@
+import datetime as dt
+
 def group_balances(balances: dict, holdings: dict):
     result = {}
     total_balance = 0
@@ -56,4 +58,24 @@ def group_balances(balances: dict, holdings: dict):
                         result[provider] = {'accounts': [data], 'total': 0}
     result['total'] = total_balance
     return result
-            
+
+def set_historical_balance(starting_balance: float, transactions: list):
+    data = {}
+    result = {}
+    balance = starting_balance
+    transactions_from_this_month = [transaction for transaction in transactions if list(transaction.values())[0]['date'].split('-')[1] == str(dt.datetime.now().month)]
+    
+    if not transactions_from_this_month:
+        return None
+
+    for item in transactions_from_this_month:
+        transaction = list(item.values())[0]
+        day = int(transaction['date'].split('-')[2])
+        if not data.get(day):
+            data[day] = float(balance)
+        balance -= float(transaction['amount']['amount'])
+
+    result['number_of_points'] = len(data)
+    result['points'] = list(reversed([balance for balance in data.values()]))
+
+    return result
