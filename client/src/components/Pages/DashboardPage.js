@@ -122,11 +122,6 @@ const DashboardPage = () => {
               </div>
 
           <div className="data-source">
-            <h1>Transactions</h1>
-            <TransactionsContainerComponent data={transactions}/>
-          </div>
-
-          <div className="container">
             <h1>Recent Transactions</h1>
             <RecentTransactionsContainerComponent data={recentTransactions} />
           </div>

@@ -11,22 +11,33 @@ import arrow_down from "../../images/Vector_down.svg"
 
 const Header = () => {
   return <nav className="header">
-    <span className="img-container"><img src={logo} alt=""/></span>
-        <span>
-            <a className="nav-link" href="#">Overview</a>
-            <a className="nav-link" href="#">Portfolio</a>
-            <a className="nav-link" href="#">Cashflow</a>
-            <a className="nav-link" href="#">Advice</a>
-        </span>
-    <span>
+  <div className="menu-image-container">
+    <div className="img-container"><img src={logo} alt=""/></div>
+    <div className="borderline"/>
+    <ul className="menu-rooter">
+      <li>
+        <a className="nav-link" href="#">Overview</a>
+      </li>
+      <li>
+        <a className="nav-link" href="#">Portfolio</a>
+      </li>
+      <li>
+        <a className="nav-link" href="#">Cashflow</a>
+      </li>
+      <li>
+        <a className="nav-link" href="#">Advice</a>
+      </li>
+    </ul>
+  </div>
+    <div className="user-container">
       <button className="base-currency">USD <img src={arrow} alt="arrow"/></button>
       <a className="nav-link" href="#"><img src={notification} alt="notification"/></a>
       <a className="nav-link" href="#"><img src={messages} alt="messages"/></a>
       <a className="nav-link" href="#"><img src={services} alt="services"/></a>
       <a className="nav-link" href="#"><img src={profileImage} alt="profile"/></a>
-      <span>TestAccount</span>
+      <div>TestAccount</div>
       <a href="#"><img src={arrow_down} alt="user_menu"/></a>
-    </span>
+    </div>
   </nav>
 };
 
