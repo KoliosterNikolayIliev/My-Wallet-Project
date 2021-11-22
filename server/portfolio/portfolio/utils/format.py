@@ -68,12 +68,22 @@ def set_historical_balance(starting_balance: float, transactions: list):
     if not transactions_from_this_month:
         return None
 
+    # add a point for days where transactions were made
     for item in transactions_from_this_month:
         transaction = list(item.values())[0]
         day = int(transaction['date'].split('-')[2])
         if not data.get(day):
             data[day] = float(balance)
         balance -= float(transaction['amount']['amount'])
+
+    # add a point for days where no transaction were made
+    for i in range(len(data), 1, -1):
+        if not data.get(i):
+            if data.get(i-1):
+                data[i] = data[i-1]
+            elif data.get(i+1):
+                data[i] = data[i+1]
+
 
     result['number_of_points'] = len(data)
     result['points'] = list(reversed([balance for balance in data.values()]))
