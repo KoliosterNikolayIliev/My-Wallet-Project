@@ -194,7 +194,7 @@ async def get_transactions(api_key, api_secret, account):
     return {'status': 'success', 'content': data}
 
 
-async def get_all_transactions(api_key, api_secret, tasks, session):
+async def get_all_transactions(api_key, api_secret, session):
     def get_auth(key, secret, path):
         timestamp = str(int(time.time()))
         message = timestamp + 'GET' + path 
@@ -225,9 +225,20 @@ async def get_all_transactions(api_key, api_secret, tasks, session):
                 if transaction["status"] == "completed":
                     data.append({transaction["id"]: {"amount": transaction['amount'], "date": transaction['created_at'][:10], "type": "crypto"}})
             return data
-
+        tasks = []
         for account in accounts["data"]:
             tasks.append(asyncio.ensure_future(get_transactions_async(account["id"], session)))
+
+        responses = await asyncio.gather(*tasks)
+        data = []
+        for response in responses:
+            if response:
+                data.append(response)
+
+        if data:
+            return {'status': 'success', 'content': data}
+
+        return {'status': 'failed', 'content': 'no transactions'}
     except Exception as e:
         print(str(e))
 

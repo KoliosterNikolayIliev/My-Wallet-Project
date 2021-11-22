@@ -92,6 +92,8 @@ async def get_recent_transactions():
                 if nordigen_requisitions:
                     nordigen_requisitions = json.loads(nordigen_requisitions)
                     tasks.append(get_all_nordigen_transactions(requisitions=nordigen_requisitions, session=session))
+                if coinbase_secret and coinbase_key:
+                    tasks.append(get_all_coinbase_transactions(coinbase_key, coinbase_secret, session))
 
                 responses = await asyncio.gather(*tasks)
                 for response in responses:
@@ -103,30 +105,18 @@ async def get_recent_transactions():
                                     result.append(transaction)
                         else:
                             continue
-                    result.append(response)
-            
-                coinbase_tasks = []
-                if coinbase_secret and coinbase_key:
-                    await get_all_coinbase_transactions(coinbase_key, coinbase_secret, coinbase_tasks, session)
 
-                    coinbase_transactions = await asyncio.gather(*coinbase_tasks)
-
-                    if coinbase_transactions:
-                        for account in coinbase_transactions:
-                            for transaction in account:
-                                result.append(transaction)
-
-                for element in result:
-                    if type(element) is list:
-                        for transaction in element:
-                            final.append(transaction)
-                    elif type(element) is dict:
-                        final.append(element)
+            for element in result:
+                if type(element) is list:
+                    for transaction in element:
+                        final.append(transaction)
+                elif type(element) is dict:
+                    final.append(element)
 
         except Exception as e:
             print(str(e))
             return None
         
-        return jsonify({'status': 'success', 'content': final}) 
+        return jsonify({'status': 'success', 'content': final})
     else: 
         return None
