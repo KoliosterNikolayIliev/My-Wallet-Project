@@ -11,7 +11,7 @@ import {
   getTransactions,
   getAllRecentTransactions,
 } from "../../utils/portfolio";
-import { getUser } from "../../utils/account";
+import {getUser} from "../../utils/account";
 
 import GroupsContainerComponent from "../Other/GroupsContainerComponent";
 import TransactionsContainerComponent from "../Other/TransactionsContainerComponent";
@@ -107,23 +107,22 @@ const DashboardPage = () => {
         <ChartComponent/>
         {/*<LogOutButton/>*/}
         {/*<ProfileButton/>*/}
-        <div style={{margin:"3% 0"}}>
-          <p style={{display:"inline",paddingRight:"20px"}}>Accounts</p>
+        <div style={{margin: "3% 0"}}>
+          <p style={{display: "inline", paddingRight: "20px"}}>Accounts</p>
           <a href="#">+ Add new Source</a>
         </div>
         <div className="dashboard-container">
-          <div className="container">
+
           <GroupsContainerComponent
             baseSymbol={base}
             data={groups}
             total={total}
             getTransactionsFunc={getAccountTransactions}
           />
-              </div>
 
-          <div className="data-source">
-            <h1>Recent Transactions</h1>
-            <RecentTransactionsContainerComponent data={recentTransactions} />
+          <div className="transactions data-source">
+            <p>Recent Transactions</p>
+            <RecentTransactionsContainerComponent data={recentTransactions}/>
           </div>
         </div>
       </div>
