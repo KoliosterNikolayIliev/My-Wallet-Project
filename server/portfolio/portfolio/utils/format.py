@@ -1,4 +1,5 @@
 import datetime as dt
+from collections import OrderedDict
 
 def group_balances(balances: dict, holdings: dict):
     result = {}
@@ -79,13 +80,19 @@ def set_historical_balance(starting_balance: float, transactions: list):
     # add a point for days where no transaction were made
     for i in range(dt.datetime.now().day, 0, -1):
         if not data.get(i):
-            if data.get(i-1) and i != 1:
-                data[i] = data[i-1]
-            elif data.get(i+1):
-                data[i] = data[i+1]
-
+            if i != 1:
+                for j in range(i, 0, -1):
+                    if data.get(j):
+                        data[i] = data[j]
+                        found = True
+                        break
+            if i == 1 or not found:
+                for j in range(1, i+1):
+                    if data.get(j):
+                        data[i] = data[j]
+                        break
 
     result['number_of_points'] = len(data)
-    result['points'] = list(reversed([balance for balance in data.values()]))
+    result['points'] = [balance for balance in OrderedDict(sorted(data.items())).values()]
 
     return result
