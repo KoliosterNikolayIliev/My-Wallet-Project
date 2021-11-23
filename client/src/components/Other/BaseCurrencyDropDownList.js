@@ -190,6 +190,7 @@ export const BaseCurrencyDropDownList = ({
       setCategories((prev) => [...prev, type]);
     });
   }, []);
+
   const setBaseCurrency = async (currency) => {
     const token = await getAccessTokenSilently();
     const data = {

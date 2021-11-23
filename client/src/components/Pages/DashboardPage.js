@@ -35,12 +35,12 @@ const DashboardPage = () => {
     useAuth0();
 
   useEffect(() => {
-    const getBase = async () => {
+    const getUserData = async () => {
       const token = await getAccessTokenSilently();
       const response = await getUser(token);
       setBase(response.base_currency);
     };
-    getBase();
+    getUserData();
   }, []);
 
   const getData = async () => {
@@ -98,10 +98,12 @@ const DashboardPage = () => {
   return (
     isAuthenticated && (
       <div className="main">
-        <Header baseSymbol={base} />
+        <Header
+          baseSymbol={base}
+          username={user.nickname ? user.nickname : user.name}
+        />
         <SubHeader user={user} />
         <ChartComponent />
-        {/*<LogOutButton/>*/}
         <ProfileButton />
         <div style={{ margin: "3% 0" }}>
           <p style={{ display: "inline", paddingRight: "20px" }}>Accounts</p>

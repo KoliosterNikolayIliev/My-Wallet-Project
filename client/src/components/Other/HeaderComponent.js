@@ -8,7 +8,11 @@ import profileImage from "../../images/profile_Img.svg";
 import arrow_down from "../../images/Vector_down.svg";
 import BaseCurrencyDropDownList from "./BaseCurrencyDropDownList";
 
-const Header = ({ baseSymbol }) => {
+const Header = ({ baseSymbol, username }) => {
+  const showUserMenu = () => {
+    console.log("are ve");
+  };
+
   return (
     <nav className="header">
       <div className="menu-image-container">
@@ -55,10 +59,10 @@ const Header = ({ baseSymbol }) => {
           <img src={profileImage} alt="profile" />
         </a>
         <div>
-          <span>TestAccount</span>
-          <a href="#">
+          <span>{username}</span>
+          <button onClick={() => showUserMenu()}>
             <img src={arrow_down} alt="user_menu" />
-          </a>
+          </button>
         </div>
       </div>
     </nav>
