@@ -1,3 +1,6 @@
+import datetime as dt
+from collections import OrderedDict
+
 def group_balances(balances: dict, holdings: dict):
     result = {}
     total_balance = 0
@@ -56,4 +59,40 @@ def group_balances(balances: dict, holdings: dict):
                         result[provider] = {'accounts': [data], 'total': 0}
     result['total'] = total_balance
     return result
-            
+
+def set_historical_balance(starting_balance: float, transactions: list):
+    data = {}
+    result = {}
+    balance = starting_balance
+    transactions_from_this_month = [transaction for transaction in transactions if list(transaction.values())[0]['date'].split('-')[1] == str(dt.datetime.now().month)]
+    
+    if not transactions_from_this_month:
+        return None
+
+    # add a point for days where transactions were made
+    for item in transactions_from_this_month:
+        transaction = list(item.values())[0]
+        day = int(transaction['date'].split('-')[2])
+        if not data.get(day):
+            data[day] = float(balance)
+        balance -= float(transaction['amount']['amount'])
+
+    # add a point for days where no transaction were made
+    for i in range(dt.datetime.now().day, 0, -1):
+        if not data.get(i):
+            if i != 1:
+                for j in range(i, 0, -1):
+                    if data.get(j):
+                        data[i] = data[j]
+                        found = True
+                        break
+            if i == 1 or not found:
+                for j in range(1, i+1):
+                    if data.get(j):
+                        data[i] = data[j]
+                        break
+
+    result['number_of_points'] = len(data)
+    result['points'] = [balance for balance in OrderedDict(sorted(data.items())).values()]
+
+    return result
