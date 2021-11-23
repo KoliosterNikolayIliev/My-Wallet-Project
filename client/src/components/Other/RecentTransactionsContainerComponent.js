@@ -6,7 +6,6 @@ const RecentTransactionsContainerComponent = ({ data }) => {
       <ul>
         {data.map((element) => {
           return Object.values(element).map((value) => {
-            console.log(value);
             return (
               <li>
                 {value.amount.amount} {value.amount.currency}
