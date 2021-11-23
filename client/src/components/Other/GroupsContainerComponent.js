@@ -15,7 +15,6 @@ const GroupsContainerComponent = ({
         source = key;
         return (
           <div className="data-source">
-
             <p>
               {source[0].toUpperCase() + source.slice(1)} {" "}
             </p>

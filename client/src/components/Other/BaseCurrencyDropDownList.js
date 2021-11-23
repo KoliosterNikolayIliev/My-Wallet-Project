@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DropDownList } from "@progress/kendo-react-dropdowns";
 import { updateUser } from "../../utils/account";
+import arrow from "../../images/double-arrow.svg";
 
 const supportedCurrencies = [
   "AED",
@@ -176,8 +177,9 @@ const supportedCurrencies = [
   "ZWL",
 ];
 
-export const BaseCurrencyDropDownList = () => {
+export const BaseCurrencyDropDownList = (saveChanges, provider) => {
   const [categories, setCategories] = useState([]);
+
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -186,7 +188,6 @@ export const BaseCurrencyDropDownList = () => {
       setCategories((prev) => [...prev, type]);
     });
   }, []);
-
   const setBaseCurrency = async (currency) => {
     const token = await getAccessTokenSilently();
     const data = {
@@ -196,21 +197,18 @@ export const BaseCurrencyDropDownList = () => {
   };
 
   return (
-    <div>
-      <section className="k-my-8">
-        <form className="k-form k-mb-4">
-          <label className="k-label k-mb-3">
-            Select a base currency for your assets and balances to be displayed
-            in:
-          </label>
+
           <DropDownList
             data={categories}
-            onChange={(e) => setBaseCurrency(e.value)}
+            defaultItem={"CUR"}
+            style={{width:"17%",  fontFamily: "Inter sans-serif", fontSize: "16px", fontWeight: 600}}
+            onChange={(e) =>
+              [setBaseCurrency(e.value), ()=>saveChanges(provider),window.location.reload()]}
           />
-        </form>
-      </section>
-    </div>
+
   );
 };
 
 export default BaseCurrencyDropDownList;
+
+

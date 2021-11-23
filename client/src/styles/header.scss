@@ -5,7 +5,7 @@ ul {
 
 .header {
   background: #FFFFFF;
-  box-shadow: 0px 20px 60px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.07);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,13 +30,15 @@ ul {
   flex-basis: 39%;
 }
 
-.user-container button {
-  flex-direction: row;
-  padding: 3% 4% 3% 4%;
-  border: 1px solid #F7F7F7;
+.k-dropdown .k-dropdown-wrap, .k-dropdowntree .k-dropdown-wrap{
   border-radius: 32px;
-  font-weight: 600;
-  background: none;
+  background-color: white;
+  border: 1px solid #F7F7F7;
+  padding:5%;
+}
+
+.k-i-arrow-s::before{
+  content: url('../images/double-arrow.svg');
 }
 
 .menu-rooter{

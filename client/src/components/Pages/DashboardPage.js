@@ -106,7 +106,7 @@ const DashboardPage = () => {
           user={user}/>
         <ChartComponent/>
         {/*<LogOutButton/>*/}
-        {/*<ProfileButton/>*/}
+        <ProfileButton/>
         <div style={{margin: "3% 0"}}>
           <p style={{display: "inline", paddingRight: "20px"}}>Accounts</p>
           <a href="#">+ Add new Source</a>
