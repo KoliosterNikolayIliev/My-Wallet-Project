@@ -75,7 +75,7 @@ async def get_transactions():
 
 @bp.route('/recent-transactions', methods=(['GET']))
 async def get_recent_transactions():
-    nordigen_requisitions = json.loads(request.headers.get('nordigen_requisitions'))
+    nordigen_requisitions = request.headers.get('nordigen_requisitions')
     yodlee_login_name = request.headers.get('yodlee_loginName')
     coinbase_key = request.headers.get('coinbase_key')
     coinbase_secret = request.headers.get('coinbase_secret')
@@ -90,7 +90,10 @@ async def get_recent_transactions():
                 if yodlee_login_name:
                     tasks.append(asyncio.ensure_future(get_all_yodlee_transactions(yodlee_login_name, session=session)))
                 if nordigen_requisitions:
-                    await get_all_nordigen_transactions(requisitions=nordigen_requisitions, session=session, tasks=tasks)
+                    nordigen_requisitions = json.loads(nordigen_requisitions)
+                    tasks.append(get_all_nordigen_transactions(requisitions=nordigen_requisitions, session=session))
+                if coinbase_secret and coinbase_key:
+                    tasks.append(get_all_coinbase_transactions(coinbase_key, coinbase_secret, session))
 
                 responses = await asyncio.gather(*tasks)
                 for response in responses:
@@ -102,20 +105,9 @@ async def get_recent_transactions():
                                     result.append(transaction)
                         else:
                             continue
-                    result.append(response)
-            
-            coinbase_tasks = []
-            if coinbase_secret and coinbase_key:
-                async with httpx.AsyncClient() as client:
-                    await get_all_coinbase_transactions(coinbase_key, coinbase_secret, coinbase_tasks, client)
-                    
-                    coinbase_transactions = await asyncio.gather(*coinbase_tasks)
+                    else:
+                        result.append(response)
 
-                    if coinbase_transactions:
-                        for account in coinbase_transactions:
-                            for transaction in account:
-                                result.append(transaction)
-            
             for element in result:
                 if type(element) is list:
                     for transaction in element:
@@ -127,6 +119,6 @@ async def get_recent_transactions():
             print(str(e))
             return None
         
-        return jsonify({'status': 'success', 'content': final}) 
+        return jsonify({'status': 'success', 'content': final})
     else: 
         return None

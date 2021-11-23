@@ -194,7 +194,7 @@ async def get_transactions(api_key, api_secret, account):
     return {'status': 'success', 'content': data}
 
 
-async def get_all_transactions(api_key, api_secret, tasks, client):
+async def get_all_transactions(api_key, api_secret, session):
     def get_auth(key, secret, path):
         timestamp = str(int(time.time()))
         message = timestamp + 'GET' + path 
@@ -213,18 +213,32 @@ async def get_all_transactions(api_key, api_secret, tasks, client):
 
     api_url = 'https://api.coinbase.com/v2/'
     try:
-        accounts = httpx.get(api_url + 'accounts', headers=get_auth(api_key, api_secret, '/v2/accounts')).json()
-        async def get_transactions_async(account, client):
+        async with session.get(api_url + 'accounts', headers=get_auth(api_key, api_secret, '/v2/accounts')) as res:
+            accounts = await res.json()
+
+        async def get_transactions_async(account, session):
             data = []
-            transactions = await client.get(api_url + f'accounts/{account}/transactions', headers=get_auth(api_key, api_secret, f'/v2/accounts/{account}/transactions'))
-            transactions = transactions.json()
+            async with session.get(api_url + f'accounts/{account}/transactions', headers=get_auth(api_key, api_secret, f'/v2/accounts/{account}/transactions')) as res:
+                transactions = await res.json()
+
             for transaction in transactions["data"]:
                 if transaction["status"] == "completed":
                     data.append({transaction["id"]: {"amount": transaction['amount'], "date": transaction['created_at'][:10], "type": "crypto"}})
             return data
-
+        tasks = []
         for account in accounts["data"]:
-            tasks.append(asyncio.ensure_future(get_transactions_async(account["id"], client)))
+            tasks.append(asyncio.ensure_future(get_transactions_async(account["id"], session)))
+
+        responses = await asyncio.gather(*tasks)
+        data = []
+        for response in responses:
+            if response:
+                data.append(response)
+
+        if data:
+            return {'status': 'success', 'content': data}
+
+        return {'status': 'failed', 'content': 'no transactions'}
     except Exception as e:
         print(str(e))
 
