@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DropDownList } from "@progress/kendo-react-dropdowns";
 import { updateUser } from "../../utils/account";
-import arrow from "../../images/double-arrow.svg";
 
 const supportedCurrencies = [
   "AED",
@@ -177,9 +176,12 @@ const supportedCurrencies = [
   "ZWL",
 ];
 
-export const BaseCurrencyDropDownList = (saveChanges, provider) => {
+export const BaseCurrencyDropDownList = ({
+  baseSymbol,
+  saveChanges,
+  provider,
+}) => {
   const [categories, setCategories] = useState([]);
-
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -197,18 +199,22 @@ export const BaseCurrencyDropDownList = (saveChanges, provider) => {
   };
 
   return (
-
-          <DropDownList
-            data={categories}
-            defaultItem={"CUR"}
-            style={{width:"17%",  fontFamily: "Inter sans-serif", fontSize: "16px", fontWeight: 600}}
-            onChange={(e) =>
-              [setBaseCurrency(e.value), ()=>saveChanges(provider),window.location.reload()]}
-          />
-
+    <DropDownList
+      data={categories}
+      defaultItem={baseSymbol}
+      style={{
+        width: "17%",
+        fontFamily: "Inter sans-serif",
+        fontSize: "16px",
+        fontWeight: 600,
+      }}
+      onChange={(e) => [
+        setBaseCurrency(e.value),
+        () => saveChanges(provider),
+        window.location.reload(),
+      ]}
+    />
   );
 };
 
 export default BaseCurrencyDropDownList;
-
-

@@ -1,48 +1,68 @@
 import React from "react";
 import "../../styles/header.scss";
-import logo from "../../images/logo.svg"
-import arrow from "../../images/double-arrow.svg"
-import messages from "../../images/messages-2.svg"
-import notification from "../../images/Notification.svg"
-import services from "../../images/Services.svg"
-import profileImage from "../../images/profile_Img.svg"
-import arrow_down from "../../images/Vector_down.svg"
+import logo from "../../images/logo.svg";
+import messages from "../../images/messages-2.svg";
+import notification from "../../images/Notification.svg";
+import services from "../../images/Services.svg";
+import profileImage from "../../images/profile_Img.svg";
+import arrow_down from "../../images/Vector_down.svg";
 import BaseCurrencyDropDownList from "./BaseCurrencyDropDownList";
 
-
-const Header = () => {
-  return <nav className="header">
-    <div className="menu-image-container">
-      <div className="img-container"><img src={logo} alt=""/></div>
-      <div className="borderline"/>
-      <ul className="menu-rooter">
-        <li>
-          <a className="nav-link" href="#">Overview</a>
-        </li>
-        <li>
-          <a className="nav-link" href="#">Portfolio</a>
-        </li>
-        <li>
-          <a className="nav-link" href="#">Cashflow</a>
-        </li>
-        <li>
-          <a className="nav-link" href="#">Advice</a>
-        </li>
-      </ul>
-    </div>
-    <div className="user-container">
-      {/*<button className="base-currency">USD <img src={arrow} alt="arrow"/></button>*/}
-      <BaseCurrencyDropDownList/>
-      <a className="nav-link" href="#"><img src={notification} alt="notification"/></a>
-      <a className="nav-link" href="#"><img src={messages} alt="messages"/></a>
-      <a className="nav-link" href="#"><img src={services} alt="services"/></a>
-      <a className="nav-link" href="#"><img src={profileImage} alt="profile"/></a>
-      <div>
-        <span>TestAccount</span>
-        <a href="#"><img src={arrow_down} alt="user_menu"/></a>
+const Header = ({ baseSymbol }) => {
+  return (
+    <nav className="header">
+      <div className="menu-image-container">
+        <div className="img-container">
+          <img src={logo} alt="" />
+        </div>
+        <div className="borderline" />
+        <ul className="menu-rooter">
+          <li>
+            <a className="nav-link" href="#">
+              Overview
+            </a>
+          </li>
+          <li>
+            <a className="nav-link" href="#">
+              Portfolio
+            </a>
+          </li>
+          <li>
+            <a className="nav-link" href="#">
+              Cashflow
+            </a>
+          </li>
+          <li>
+            <a className="nav-link" href="#">
+              Advice
+            </a>
+          </li>
+        </ul>
       </div>
-    </div>
-  </nav>
+      <div className="user-container">
+        {/*<button className="base-currency">USD <img src={arrow} alt="arrow"/></button>*/}
+        <BaseCurrencyDropDownList baseSymbol={baseSymbol} />
+        <a className="nav-link" href="#">
+          <img src={notification} alt="notification" />
+        </a>
+        <a className="nav-link" href="#">
+          <img src={messages} alt="messages" />
+        </a>
+        <a className="nav-link" href="#">
+          <img src={services} alt="services" />
+        </a>
+        <a className="nav-link" href="#">
+          <img src={profileImage} alt="profile" />
+        </a>
+        <div>
+          <span>TestAccount</span>
+          <a href="#">
+            <img src={arrow_down} alt="user_menu" />
+          </a>
+        </div>
+      </div>
+    </nav>
+  );
 };
 
 export default Header;
