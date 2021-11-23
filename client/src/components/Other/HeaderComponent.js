@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import "../../styles/header.scss";
 import logo from "../../images/logo.svg";
 import messages from "../../images/messages-2.svg";
@@ -7,10 +7,22 @@ import services from "../../images/Services.svg";
 import profileImage from "../../images/profile_Img.svg";
 import arrow_down from "../../images/Vector_down.svg";
 import BaseCurrencyDropDownList from "./BaseCurrencyDropDownList";
+import LogOutButton from "../Buttons/LogOutButton";
+
+import { styled } from "@mui/material/styles";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Button from "@mui/material/Button";
 
 const Header = ({ baseSymbol, username }) => {
-  const showUserMenu = () => {
-    console.log("are ve");
+  const [open, setOpen] = React.useState(false);
+
+  const handleTooltipClose = () => {
+    setOpen(false);
+  };
+
+  const handleTooltipOpen = () => {
+    setOpen(true);
   };
 
   return (
@@ -60,9 +72,29 @@ const Header = ({ baseSymbol, username }) => {
         </a>
         <div>
           <span>{username}</span>
-          <button onClick={() => showUserMenu()}>
-            <img src={arrow_down} alt="user_menu" />
-          </button>
+          <ClickAwayListener onClickAway={handleTooltipClose}>
+            <div>
+              <Tooltip
+                PopperProps={{
+                  disablePortal: true,
+                }}
+                onClose={handleTooltipClose}
+                open={open}
+                disableFocusListener
+                disableHoverListener
+                disableTouchListener
+                title={
+                  <Fragment>
+                    <LogOutButton />
+                  </Fragment>
+                }
+              >
+                <Button onClick={handleTooltipOpen}>
+                  <img src={arrow_down} alt="user_menu" />
+                </Button>
+              </Tooltip>
+            </div>
+          </ClickAwayListener>
         </div>
       </div>
     </nav>
