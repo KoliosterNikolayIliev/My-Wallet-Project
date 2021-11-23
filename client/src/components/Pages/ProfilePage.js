@@ -152,7 +152,10 @@ const Profile = () => {
 
         {menu === "Settings" && (
           <div>
-            <BaseCurrencyDropDownList />
+            <BaseCurrencyDropDownList
+              provider={{provider}}
+              saveChanges={{saveChanges}}
+            />
           </div>
         )}
 
