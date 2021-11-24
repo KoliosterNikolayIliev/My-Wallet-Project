@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import {Menu, MenuItem} from "@mui/material";
 
 const AddNewSourceMenu = ({openMenuFunc, openBul, anchorEl, closeMenuFunc, modalFunc}) => {
   return (
-    <div>
+    <Fragment>
       <button onClick={openMenuFunc}>Add new source</button>
       <Menu open={openBul} onClose={closeMenuFunc} anchorEl={anchorEl}>
         <MenuItem onClick={modalFunc}>
@@ -18,7 +18,7 @@ const AddNewSourceMenu = ({openMenuFunc, openBul, anchorEl, closeMenuFunc, modal
           Custom Entry
         </MenuItem>
       </Menu>
-    </div>
+    </Fragment>
   );
 }
 
