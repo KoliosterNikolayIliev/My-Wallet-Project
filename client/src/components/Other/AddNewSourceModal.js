@@ -1,5 +1,6 @@
-import React from 'react'
+import React, {Fragment, useState} from 'react'
 import {Box, Modal} from "@mui/material";
+import CountriesDropDownList from "./CountriesDropDownList";
 
 const style = {
   position: 'absolute',
@@ -13,18 +14,35 @@ const style = {
 }
 
 const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
-    let sources;
-    if (source === 'banks') {
-      sources = <h1>banks</h1>;
-    }else if (source === 'crypto') {
-      sources = <h1>crypto</h1>;
-    }else {
-      sources = <h1>custom entry</h1>;
-    }
+  const [content, setContent] = useState()
+
+  const selectProvider = () => {
+    setContent(<CountriesDropDownList />)
+  }
+
+  let sources;
+  if (source === 'banks') {
+    sources = (
+      <Fragment>
+        <button onClick={selectProvider}>nordigen</button>
+        <button>yodlee</button>
+      </Fragment>
+    );
+  } else if (source === 'crypto') {
+    sources = <h1>crypto</h1>;
+  } else {
+    sources = <h1>custom entry</h1>;
+  }
+
+  const handleClose = () => {
+    setContent()
+    closeModalFunc()
+  }
+
   return (
-    <Modal open={openModal} onClose={closeModalFunc}>
+    <Modal open={openModal} onClose={handleClose}>
       <Box style={style}>
-        {sources}
+        {content ? content : sources}
       </Box>
     </Modal>
   );

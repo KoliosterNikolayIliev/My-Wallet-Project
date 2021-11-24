@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { DropDownList } from "@progress/kendo-react-dropdowns";
 import { BanksContainer } from "./BanksContainer";
 import { getBanks } from "../../utils/nordigen";
+import {MenuItem, Select} from "@mui/material";
 
 const countries = [
   "Austria",
@@ -66,10 +67,11 @@ export const CountriesDropDownList = () => {
       <section className="k-my-8">
         <form className="k-form k-mb-4">
           <label className="k-label k-mb-3">Country</label>
-          <DropDownList
-            data={categories}
-            onChange={(e) => setCountry(e.value)}
-          />
+          <Select
+            style={{width: '50%'}}
+            onChange={(e) => setCountry(e.target.value)}>
+            {categories.map(el => <MenuItem value={el}>{el}</MenuItem>)}
+          </Select>
         </form>
       </section>
       <BanksContainer data={data} />
