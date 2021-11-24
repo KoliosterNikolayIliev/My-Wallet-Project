@@ -16,10 +16,10 @@ const AddNewSourceComponent = () => {
   const [openModal, setOpenModal] = useState(false)
 
   const openModalFunc = () => {
+    setAnchorEl(null);
     setOpenModal(true)
   }
   const closeModalFunc = () => {
-    setAnchorEl(null);
     setOpenModal(false)
   }
 
