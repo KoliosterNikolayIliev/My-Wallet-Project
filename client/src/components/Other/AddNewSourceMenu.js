@@ -1,11 +1,11 @@
 import React, {Fragment, useState} from 'react';
 import {Menu, MenuItem} from "@mui/material";
 
-const AddNewSourceMenu = ({openMenuFunc, openBul, anchorEl, closeMenuFunc, modalFunc}) => {
+const AddNewSourceMenu = ({openMenuFunc, openBool, anchorEl, closeMenuFunc, modalFunc}) => {
   return (
     <Fragment>
       <button onClick={openMenuFunc}>Add new source</button>
-      <Menu open={openBul} onClose={closeMenuFunc} anchorEl={anchorEl}>
+      <Menu open={openBool} onClose={closeMenuFunc} anchorEl={anchorEl}>
         <MenuItem onClick={modalFunc}>
           Banks
         </MenuItem>

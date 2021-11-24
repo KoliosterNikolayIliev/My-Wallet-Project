@@ -1,24 +1,39 @@
-import React, {useState} from 'react'
+import React, {Fragment, useState} from 'react'
 import AddNewSourceMenu from "./AddNewSourceMenu";
+import AddNewSourceModal from "./AddNewSourceModal";
 
 const AddNewSourceComponent = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const openMenuBul = Boolean(anchorEl)
-  const openMenu = (event) => {
+  const openMenuBool = Boolean(anchorEl)
+
+  const openMenuFunc = (event) => {
     setAnchorEl(event.currentTarget)
   }
-
-  const closeMenu = () => {
+  const closeMenuFunc = () => {
     setAnchorEl(null);
   }
+
+  const [openModal, setOpenModal] = useState(false)
+
+  const openModalFunc = () => {
+    setOpenModal(true)
+  }
+  const closeModalFunc = () => {
+    setAnchorEl(null);
+    setOpenModal(false)
+  }
+
   return (
-    <AddNewSourceMenu
-      openMenuFunc={openMenu}
-      openBul={openMenuBul}
-      anchorEl={anchorEl}
-      closeMenuFunc={closeMenu}
-      modalFunc={closeMenu}
-    />
+    <Fragment>
+      <AddNewSourceMenu
+        openMenuFunc={openMenuFunc}
+        openBool={openMenuBool}
+        anchorEl={anchorEl}
+        closeMenuFunc={closeMenuFunc}
+        modalFunc={openModalFunc}
+      />
+      <AddNewSourceModal openModal={openModal} closeModalFunc={closeModalFunc}/>
+    </Fragment>
   )
 }
 
