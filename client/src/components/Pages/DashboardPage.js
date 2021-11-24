@@ -36,17 +36,10 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const getUserData = async () => {
-      if (window.sessionStorage.getItem("base")) {
-        setBase(JSON.parse(window.sessionStorage.getItem("base")));
-      } else {
-        const token = await getAccessTokenSilently();
-        const response = await getUser(token);
-        window.sessionStorage.setItem(
-          "base",
-          JSON.stringify(response.base_currency)
-        );
-        setBase(response.base_currency);
-      }
+      const token = await getAccessTokenSilently();
+      const response = await getUser(token);
+
+      setBase(response.base_currency);
     };
     getUserData();
   }, []);
@@ -56,9 +49,9 @@ const DashboardPage = () => {
     if (
       window.sessionStorage.getItem("total") &&
       window.sessionStorage.getItem("assets") &&
-      window.sessionStorage.getItem("recentTransactions")
+      window.sessionStorage.getItem("recentTransactions") &&
+      window.sessionStorage.getItem("base") === base
     ) {
-      console.log("are ve");
       setTotal(JSON.parse(window.sessionStorage.getItem("total")));
       setGroups(JSON.parse(window.sessionStorage.getItem("assets")));
       setRecentTransactions(
@@ -66,7 +59,7 @@ const DashboardPage = () => {
       );
     } else {
       const token = await getAccessTokenSilently();
-
+      window.sessionStorage.setItem("base", base);
       // fetch all of the data in parllel using Promise.all
       await Promise.all([
         (async () => {
