@@ -13,19 +13,18 @@ const style = {
 }
 
 const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
-  const getSources = () => {
+    let sources;
     if (source === 'banks') {
-      return <h1>banks</h1>;
+      sources = <h1>banks</h1>;
     }else if (source === 'crypto') {
-      return <h1>crypto</h1>;
+      sources = <h1>crypto</h1>;
     }else {
-      return <h1>custom entry</h1>
+      sources = <h1>custom entry</h1>;
     }
-  }
   return (
     <Modal open={openModal} onClose={closeModalFunc}>
       <Box style={style}>
-        {getSources()}
+        {sources}
       </Box>
     </Modal>
   );
