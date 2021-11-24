@@ -20,6 +20,7 @@ import Loader from "../Other/LoaderComponent";
 import Header from "../Other/HeaderComponent";
 import SubHeader from "../Other/SubHeaderComponent";
 import ChartComponent from "../Other/ChartComponent";
+import AddNewSourceMenu from "../Other/AddNewSourceMenu";
 
 // Dashboard page to be filled in with user account data
 const DashboardPage = () => {
@@ -107,7 +108,7 @@ const DashboardPage = () => {
         <ProfileButton />
         <div style={{ margin: "3% 0" }}>
           <p style={{ display: "inline", paddingRight: "20px" }}>Accounts</p>
-          <a href="#">+ Add new Source</a>
+          <AddNewSourceMenu/>
         </div>
         <div className="dashboard-container">
           <GroupsContainerComponent
