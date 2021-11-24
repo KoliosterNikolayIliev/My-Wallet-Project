@@ -1,30 +1,20 @@
 import React, {useState} from 'react';
 import {Menu, MenuItem} from "@mui/material";
 
-const AddNewSourceMenu = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl)
-  const openMenu = (event) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const closeMenu = () => {
-    setAnchorEl(null);
-  }
-
+const AddNewSourceMenu = ({openMenuFunc, openBul, anchorEl, closeMenuFunc, modalFunc}) => {
   return (
     <div>
-      <button onClick={openMenu}>Add new source</button>
-      <Menu open={open} onClose={closeMenu} anchorEl={anchorEl}>
-        <MenuItem>
+      <button onClick={openMenuFunc}>Add new source</button>
+      <Menu open={openBul} onClose={closeMenuFunc} anchorEl={anchorEl}>
+        <MenuItem onClick={modalFunc}>
           Banks
         </MenuItem>
 
-        <MenuItem>
+        <MenuItem onClick={modalFunc}>
           Crypto
         </MenuItem>
 
-        <MenuItem>
+        <MenuItem onClick={modalFunc}>
           Custom Entry
         </MenuItem>
       </Menu>
