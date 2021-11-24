@@ -12,14 +12,23 @@ const style = {
   height: '80%',
 }
 
-const AddNewSourceModal = ({openModal, closeModalFunc}) => {
+const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
+  const getSources = () => {
+    if (source === 'banks') {
+      return <h1>banks</h1>;
+    }else if (source === 'crypto') {
+      return <h1>crypto</h1>;
+    }else {
+      return <h1>custom entry</h1>
+    }
+  }
   return (
     <Modal open={openModal} onClose={closeModalFunc}>
       <Box style={style}>
-        <h1>TEST</h1>
+        {getSources()}
       </Box>
     </Modal>
-  )
+  );
 }
 
 export default AddNewSourceModal

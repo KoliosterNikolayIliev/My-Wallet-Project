@@ -6,15 +6,15 @@ const AddNewSourceMenu = ({openMenuFunc, openBool, anchorEl, closeMenuFunc, moda
     <Fragment>
       <button onClick={openMenuFunc}>Add new source</button>
       <Menu open={openBool} onClose={closeMenuFunc} anchorEl={anchorEl}>
-        <MenuItem onClick={modalFunc}>
+        <MenuItem onClick={() => modalFunc('banks')}>
           Banks
         </MenuItem>
 
-        <MenuItem onClick={modalFunc}>
+        <MenuItem onClick={() => modalFunc('crypto')}>
           Crypto
         </MenuItem>
 
-        <MenuItem onClick={modalFunc}>
+        <MenuItem onClick={() => modalFunc('custom entry')}>
           Custom Entry
         </MenuItem>
       </Menu>

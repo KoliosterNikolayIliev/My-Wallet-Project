@@ -14,8 +14,10 @@ const AddNewSourceComponent = () => {
   }
 
   const [openModal, setOpenModal] = useState(false)
+  const [source, setSource] = useState(null)
 
-  const openModalFunc = () => {
+  const openModalFunc = (selectedSource) => {
+    setSource(selectedSource)
     setAnchorEl(null);
     setOpenModal(true)
   }
@@ -32,7 +34,7 @@ const AddNewSourceComponent = () => {
         closeMenuFunc={closeMenuFunc}
         modalFunc={openModalFunc}
       />
-      <AddNewSourceModal openModal={openModal} closeModalFunc={closeModalFunc}/>
+      <AddNewSourceModal openModal={openModal} closeModalFunc={closeModalFunc} source={source}/>
     </Fragment>
   )
 }
