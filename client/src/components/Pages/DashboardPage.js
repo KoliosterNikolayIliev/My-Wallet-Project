@@ -40,6 +40,7 @@ const DashboardPage = () => {
       const response = await getUser(token);
 
       setBase(response.base_currency);
+      window.sessionStorage.clear();
     };
     getUserData();
   }, []);
