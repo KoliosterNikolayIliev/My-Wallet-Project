@@ -45,7 +45,7 @@ const GroupComponent = ({
               onClick={() => getTransactionsFunc(provider, account.id)}
             >
               <p className="data-source-asset">{type}</p>{" "}
-              <p>
+              <p className="data-source-asset">
                 {base_currency} {baseSymbol}
               </p>
             </div>
@@ -65,7 +65,7 @@ const GroupComponent = ({
             onClick={() => getTransactionsFunc(provider, account.id)}
           >
             <p className="data-source-asset">{currency}</p>{" "}
-            <p>
+            <p className="data-source-asset">
               {" "}
               {base_currency} {baseSymbol}
             </p>
