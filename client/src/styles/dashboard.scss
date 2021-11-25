@@ -31,7 +31,34 @@
 .data-source {
   box-shadow: 0 23px 44px 0 #b0b7c324;
   border-radius: 8px;
+  background-color: white;
   width: 100%;
+  ul {
+    padding-top: 5%;
+    .asset-root:nth-child(odd) {
+      background-color: #f8f8f9;
+    }
+    p,
+    li {
+      font-family: "Inter", "sans-serif";
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .data-source-asset {
+      cursor: pointer;
+    }
+  }
+}
+
+.asset-root {
+  border-radius: 12px;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.asset-line {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .data-source-header {
