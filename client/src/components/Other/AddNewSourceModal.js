@@ -1,7 +1,8 @@
 import React, {Fragment, useState} from 'react'
 import {Box, Modal} from "@mui/material";
 import CountriesDropDownList from "./CountriesDropDownList";
-import AddYodleeComponent from "./yodleeAddComponent";
+import AddYodleeComponent from "./AddYodleeComponent";
+import AddBinanceSource from "./AddBinanceSource";
 
 const style = {
   position: 'absolute',
@@ -21,9 +22,13 @@ const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
   const selectProvider = (selected) => {
     if (selected === 'nordigen') {
       setContent(<CountriesDropDownList/>)
-    }else if (selected === 'yodlee') {
+    } else if (selected === 'yodlee') {
       setContent(
-          <AddYodleeComponent/>
+        <AddYodleeComponent/>
+      )
+    }else if (selected === 'binance') {
+      setContent(
+        <AddBinanceSource/>
       )
     }
 
@@ -38,7 +43,12 @@ const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
       </Fragment>
     );
   } else if (source === 'crypto') {
-    sources = <h1>crypto</h1>;
+    sources = (
+      <Fragment>
+        <button onClick={() => {selectProvider('binance')}}>binance</button>
+        <button>coinbase</button>
+      </Fragment>
+    );
   } else {
     sources = <h1>custom entry</h1>;
   }
