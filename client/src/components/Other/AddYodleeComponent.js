@@ -17,6 +17,7 @@ const AddYodleeComponent = () => {
           userExperienceFlow: "Aggregation",
         },
         onSuccess: (data) => {
+          window.sessionStorage.clear();
           console.log(data);
         },
         onError: (error) => {

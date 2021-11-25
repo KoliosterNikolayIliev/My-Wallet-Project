@@ -13,7 +13,7 @@ export const BanksContainer = ({data}) => {
   const addBankAccount = async (id) => {
     const token = await getAccessTokenSilently();
     const redirect = await linkAccount(token, id);
-
+    window.sessionStorage.clear();
     window.location.href = redirect.confirmation_link;
   };
 
