@@ -11,8 +11,8 @@ const style = {
   transform: 'translate(-50%, -50%)',
   background: '#FFFFFF',
   border: '2px solid #000',
-  width: '30%',
-  height: '80%',
+  width: '685px',
+  height: '810px',
 }
 
 const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {

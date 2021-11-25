@@ -1,7 +1,6 @@
 import {useAuth0} from "@auth0/auth0-react";
 import {linkAccount} from "../../utils/nordigen";
-import {IconButton, ImageList, ImageListItem, ImageListItemBar, ListSubheader} from "@mui/material";
-import {Fragment} from "react";
+import "../../styles/banks-container-grid.scss"
 
 function InfoIcon() {
   return null;
@@ -20,19 +19,17 @@ export const BanksContainer = ({data}) => {
 
   if (data === []) return null;
   return (
-    <ImageList sx={{ width: 500, height: 450 }} cols={3}>
+    <div className={'bank-container'}>
       {data.map((item) => (
-        <ImageListItem>
-          <img onClick={() => addBankAccount(item.id)}
+        <div className={'bank-item'} onClick={() => addBankAccount(item.id)}>
+          <img style={{marginLeft: '10%'}} width={40}
             src={`${item.logo}?w=248&fit=crop&auto=format`}
             srcSet={`${item.logo}?w=248&fit=crop&auto=format&dpr=2 2x`}
           />
-          <ImageListItemBar
-            title={item.name}
-          />
-        </ImageListItem>
+          <span className={'bank-name'}>{item.name}</span>
+        </div>
       ))}
-    </ImageList>
+    </div>
   );
 };
 
