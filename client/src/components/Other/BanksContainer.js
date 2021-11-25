@@ -22,7 +22,7 @@ export const BanksContainer = ({data}) => {
     <ImageList sx={{ width: 500, height: 450 }} cols={3}>
       {data.map((item) => (
         <ImageListItem key={item.logo}>
-          <img
+          <img onClick={() => addBankAccount(item.id)}
             src={`${item.logo}?w=248&fit=crop&auto=format`}
             srcSet={`${item.logo}?w=248&fit=crop&auto=format&dpr=2 2x`}
             alt={item.name}
