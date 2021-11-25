@@ -1,6 +1,7 @@
 import React, {Fragment, useState} from 'react'
 import {Box, Modal} from "@mui/material";
 import CountriesDropDownList from "./CountriesDropDownList";
+import AddYodleeComponent from "./yodleeAddComponent";
 
 const style = {
   position: 'absolute',
@@ -14,18 +15,26 @@ const style = {
 }
 
 const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
+
   const [content, setContent] = useState()
 
-  const selectProvider = () => {
-    setContent(<CountriesDropDownList />)
+  const selectProvider = (selected) => {
+    if (selected === 'nordigen') {
+      setContent(<CountriesDropDownList/>)
+    }else if (selected === 'yodlee') {
+      setContent(
+          <AddYodleeComponent/>
+      )
+    }
+
   }
 
   let sources;
   if (source === 'banks') {
     sources = (
       <Fragment>
-        <button onClick={selectProvider}>nordigen</button>
-        <button>yodlee</button>
+        <button onClick={() => selectProvider('nordigen')}>nordigen</button>
+        <button onClick={() => selectProvider('yodlee')}>yodlee</button>
       </Fragment>
     );
   } else if (source === 'crypto') {
