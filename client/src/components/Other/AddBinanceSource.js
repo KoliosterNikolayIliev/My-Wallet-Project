@@ -16,6 +16,7 @@ const AddBinanceSource = () => {
     data["binance_key"] = key;
     data["binance_secret"] = secret;
     updateUser(token, data);
+    window.location.reload()
   }
 
   if (isLoading) {
