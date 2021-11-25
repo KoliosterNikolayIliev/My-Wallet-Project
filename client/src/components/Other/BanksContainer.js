@@ -8,6 +8,7 @@ function InfoIcon() {
 }
 
 export const BanksContainer = ({data}) => {
+  console.log(data)
   const {getAccessTokenSilently} = useAuth0();
 
   const addBankAccount = async (id) => {
@@ -21,12 +22,10 @@ export const BanksContainer = ({data}) => {
   return (
     <ImageList sx={{ width: 500, height: 450 }} cols={3}>
       {data.map((item) => (
-        <ImageListItem key={item.logo}>
+        <ImageListItem>
           <img onClick={() => addBankAccount(item.id)}
             src={`${item.logo}?w=248&fit=crop&auto=format`}
             srcSet={`${item.logo}?w=248&fit=crop&auto=format&dpr=2 2x`}
-            alt={item.name}
-            loading="lazy"
           />
           <ImageListItemBar
             title={item.name}
