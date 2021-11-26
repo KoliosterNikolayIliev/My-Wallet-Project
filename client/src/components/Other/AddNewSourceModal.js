@@ -48,6 +48,7 @@ const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
   }
 
   const handleClose = () => {
+    window.fastlink.close()
     setContent()
     closeModalFunc()
   }
