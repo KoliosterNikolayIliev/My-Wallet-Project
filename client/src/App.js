@@ -3,6 +3,10 @@ import "./App.css";
 import DashboardPage from "./components/Pages/DashboardPage";
 import ProfilePage from "./components/Pages/ProfilePage";
 import LandingPage from "./components/Pages/LandingPage";
+import PortfolioPage from "./components/Pages/PortfolioPage";
+import CashflowPage from "./components/Pages/CashflowPage";
+import AdvicePage from "./components/Pages/AdvicePage";
+
 import {
   BrowserRouter as Router,
   Route,
@@ -24,8 +28,11 @@ function App() {
         <Route path="/" exact>
           {isAuthenticated ? <Redirect to="/dashboard" /> : <LandingPage />}
         </Route>
-        <Route path="/profile" exact component={ProfilePage} />
         <Route path="/dashboard" exact component={DashboardPage} />
+        <Route path="/profile" exact component={ProfilePage} />
+        <Route path="/portfolio" exact component={PortfolioPage} />
+        <Route path="/cashflow" exact component={CashflowPage} />
+        <Route path="/advice" exact component={AdvicePage} />
       </Switch>
     </Router>
   );

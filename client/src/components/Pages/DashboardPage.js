@@ -38,34 +38,54 @@ const DashboardPage = () => {
     const getUserData = async () => {
       const token = await getAccessTokenSilently();
       const response = await getUser(token);
+
       setBase(response.base_currency);
+      window.sessionStorage.clear();
     };
     getUserData();
   }, []);
 
   const getData = async () => {
     setLoading(true);
-    const token = await getAccessTokenSilently();
+    if (
+      window.sessionStorage.getItem("total") &&
+      window.sessionStorage.getItem("assets") &&
+      window.sessionStorage.getItem("recentTransactions") &&
+      window.sessionStorage.getItem("base") === base
+    ) {
+      setTotal(JSON.parse(window.sessionStorage.getItem("total")));
+      setGroups(JSON.parse(window.sessionStorage.getItem("assets")));
+      setRecentTransactions(
+        JSON.parse(window.sessionStorage.getItem("recentTransactions"))
+      );
+    } else {
+      const token = await getAccessTokenSilently();
+      window.sessionStorage.setItem("base", base);
+      // fetch all of the data in parllel using Promise.all
+      await Promise.all([
+        (async () => {
+          const assets = await getAssets(token);
+          const total = assets.total;
+          delete assets.total;
 
-    // fetch all of the data in parllel using Promise.all
-    await Promise.all([
-      (async () => {
-        const assets = await getAssets(token);
-        const total = assets.total;
-        delete assets.total;
-
-        setTotal(total);
-        setGroups(assets);
-      })(),
-      (async () => {
-        const transactions = await getRecentTransactions(token);
-        setRecentTransactions(transactions);
-      })(),
-    ]);
+          window.sessionStorage.setItem("total", JSON.stringify(total));
+          window.sessionStorage.setItem("assets", JSON.stringify(assets));
+          setTotal(total);
+          setGroups(assets);
+        })(),
+        (async () => {
+          const transactions = await getRecentTransactions(token);
+          window.sessionStorage.setItem(
+            "recentTransactions",
+            JSON.stringify(transactions)
+          );
+          setRecentTransactions(transactions);
+        })(),
+      ]);
+    }
 
     setLoading(false);
   };
-
   const getAccountTransactions = async (provider, account) => {
     setLoading(true);
     const token = await getAccessTokenSilently();

@@ -9,6 +9,8 @@ import arrow_down from "../../images/Vector_down.svg";
 import BaseCurrencyDropDownList from "./BaseCurrencyDropDownList";
 import LogOutButton from "../Buttons/LogOutButton";
 
+import { Link } from "react-router-dom";
+
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
@@ -34,24 +36,16 @@ const Header = ({ baseSymbol, username }) => {
         <div className="borderline" />
         <ul className="menu-rooter">
           <li>
-            <a className="nav-link" href="#">
-              Overview
-            </a>
+            <Link to={"/"}>Overview</Link>
           </li>
           <li>
-            <a className="nav-link" href="#">
-              Portfolio
-            </a>
+            <Link to={"/portfolio"}>Portfolio</Link>
           </li>
           <li>
-            <a className="nav-link" href="#">
-              Cashflow
-            </a>
+            <Link to={"/cashflow"}>Cashflow</Link>
           </li>
           <li>
-            <a className="nav-link" href="#">
-              Advice
-            </a>
+            <Link to={"/advice"}>Advice</Link>
           </li>
         </ul>
       </div>
