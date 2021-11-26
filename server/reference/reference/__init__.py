@@ -4,6 +4,7 @@ from .utils.extensions import scheduler
 from .blueprints import stocks, crypto, currencies
 from .utils.api_spec import spec
 from .utils.swagger import swagger_ui_blueprint, SWAGGER_URL
+from .third_party_apis.coinlayer_api import CoinlayerApiImpl, MockCoinlayerApiImpl
 
 
 def create_app(test_config=None):
@@ -28,6 +29,17 @@ def create_app(test_config=None):
 
     scheduler.init_app(app)
     scheduler.start()
+
+    if os.environ.get('REFERENCE_USE_MOCK') == "True":
+        coinlayer_api = MockCoinlayerApiImpl()
+    else:
+        coinlayer_api = CoinlayerApiImpl(os.environ['REFERENCE_CL_API_KEY'])
+
+    crypto_instance = crypto.Crypto(coinlayer_api, scheduler)
+
+    app.config.from_mapping(
+        CRYPTO=crypto_instance,
+    )
 
     app.register_blueprint(stocks.bp)
     app.register_blueprint(crypto.bp)
