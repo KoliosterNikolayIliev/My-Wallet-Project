@@ -10,6 +10,10 @@ const AddNewSourceMenu = ({openMenuFunc, openBool, anchorEl, closeMenuFunc, moda
           Banks
         </MenuItem>
 
+        <MenuItem onClick={() => modalFunc('brokers')}>
+          Brokers
+        </MenuItem>
+
         <MenuItem onClick={() => modalFunc('crypto')}>
           Crypto
         </MenuItem>

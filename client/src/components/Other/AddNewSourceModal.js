@@ -20,13 +20,7 @@ const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
   const [content, setContent] = useState()
 
   const selectProvider = (selected) => {
-    if (selected === 'nordigen') {
-      setContent(<CountriesDropDownList/>)
-    } else if (selected === 'yodlee') {
-      setContent(
-        <AddYodleeComponent/>
-      )
-    }else if (selected === 'binance') {
+    if (selected === 'binance') {
       setContent(
         <AddBinanceSource/>
       )
@@ -36,16 +30,16 @@ const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
 
   let sources;
   if (source === 'banks') {
-    sources = (
-      <Fragment>
-        <button onClick={() => selectProvider('nordigen')}>nordigen</button>
-        <button onClick={() => selectProvider('yodlee')}>yodlee</button>
-      </Fragment>
-    );
+    sources = <CountriesDropDownList/>
+  } else if (source === 'brokers') {
+    sources = <AddYodleeComponent/>
   } else if (source === 'crypto') {
     sources = (
       <Fragment>
-        <button onClick={() => {selectProvider('binance')}}>binance</button>
+        <button onClick={() => {
+          selectProvider('binance')
+        }}>binance
+        </button>
         <button>coinbase</button>
       </Fragment>
     );
