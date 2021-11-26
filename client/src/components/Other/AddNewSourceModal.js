@@ -2,7 +2,7 @@ import React, {Fragment, useState} from 'react'
 import {Box, Modal} from "@mui/material";
 import CountriesDropDownList from "./CountriesDropDownList";
 import AddYodleeComponent from "./AddYodleeComponent";
-import AddBinanceSource from "./AddBinanceSource";
+import AddCryptoSource from "./AddCryptoSource";
 
 const style = {
   position: 'absolute',
@@ -22,7 +22,11 @@ const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
   const selectProvider = (selected) => {
     if (selected === 'binance') {
       setContent(
-        <AddBinanceSource/>
+        <AddCryptoSource selected={'binance'}/>
+      )
+    }else if (selected === 'coinbase') {
+      setContent(
+        <AddCryptoSource selected={'coinbase'}/>
       )
     }
 
@@ -40,7 +44,7 @@ const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
           selectProvider('binance')
         }}>binance
         </button>
-        <button>coinbase</button>
+        <button onClick={() => selectProvider('coinbase')}>coinbase</button>
       </Fragment>
     );
   } else {
