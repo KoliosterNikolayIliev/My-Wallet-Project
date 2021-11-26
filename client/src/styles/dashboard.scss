@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+
 .dashboard-container {
   display: flex;
   justify-content: space-between;
@@ -8,7 +10,7 @@
 //
 //}
 .data-source-container {
-display: grid;
+  display: grid;
   grid-column-gap: 3%;
   grid-row-gap: 3%;
   grid-template-columns: 33% 33% 33%;
@@ -26,17 +28,67 @@ display: grid;
   color: brown;
 }
 
-.data-source{
-  background: #FFFFFF;
-  box-shadow: 0 23px 44px 0 #B0B7C324;
+.data-source {
+  box-shadow: 0 23px 44px 0 #b0b7c324;
   border-radius: 8px;
+  background-color: white;
   width: 100%;
+  ul {
+    padding-top: 5%;
+    .asset-root:nth-child(odd) {
+      background-color: #f8f8f9;
+    }
+    .asset-root {
+      :hover {
+        .data-source-asset {
+          color: #9031db;
+        }
+      }
+    }
+    p,
+    li {
+      font-family: "Inter", "sans-serif";
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .data-source-asset {
+      cursor: pointer;
+      transition: 0.3s;
+    }
+  }
 }
 
-ul{
+.asset-root {
+  border-radius: 12px;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.asset-line {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.data-source-header {
+  display: flex;
+  justify-content: space-evenly;
+  border-bottom: 1px solid #f2f2f2;
+  :first-child {
+    border-right: 1px solid #f2f2f2;
+    padding-right: 5%;
+  }
+}
+
+.data-source-total {
+  font-family: "Inter", "sans-serif";
+  font-weight: 600;
+  font-size: 16px;
+}
+
+ul {
   padding: 0;
 }
-.transactions{
-flex-basis: 24.5%;
+.transactions {
+  flex-basis: 24.5%;
   height: 800px;
 }

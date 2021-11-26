@@ -15,10 +15,12 @@ const GroupsContainerComponent = ({
         source = key;
         return (
           <div className="data-source">
-            <p>
-              {source[0].toUpperCase() + source.slice(1)} {" "}
-            </p>
-            <p>{value.total.toFixed(2)} {baseSymbol}</p>
+            <div className="data-source-header">
+              <p>{source[0].toUpperCase() + source.slice(1)} </p>
+              <p className="data-source-total">
+                {value.total.toFixed(2)} {baseSymbol}
+              </p>
+            </div>
             <ul>
               {(value.accounts.length > 1 ||
                 source === "coinbase" ||

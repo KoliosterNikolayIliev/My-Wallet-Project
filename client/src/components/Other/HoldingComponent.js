@@ -8,21 +8,30 @@ const HoldingComponent = ({
   getTransactionsFunc,
 }) => {
   return (
-    <div>
+    <div className="asset-root">
       {!nest && (
-        <p
+        <div
+          className="asset-line"
           onClick={() => getTransactionsFunc(account.provider, account.id)}
-          className="has-transactions"
         >
-          {data.symbol}: {data.quantity}; {data.base_currency.toFixed(2)}{" "}
-          {baseSymbol}
-        </p>
+          <p className="data-source-asset">{data.symbol}</p>
+          <p className="data-source-asset">
+            {data.base_currency.toFixed(2)} {baseSymbol}
+          </p>
+        </div>
       )}
       {nest && (
-        <li>
-          {data.symbol}: {data.quantity}; {data.base_currency.toFixed(2)}{" "}
-          {baseSymbol}
-        </li>
+        <div
+          className="asset-line"
+          onClick={() => getTransactionsFunc(account.provider, account.id)}
+        >
+          <li className="data-source-asset">
+            <p>{data.symbol}</p>{" "}
+            <p>
+              {data.base_currency.toFixed(2)} {baseSymbol}
+            </p>
+          </li>
+        </div>
       )}
     </div>
   );

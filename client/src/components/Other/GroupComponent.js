@@ -36,29 +36,40 @@ const GroupComponent = ({
 
   if (amount > 0) {
     return (
-      <div>
+      <div className="asset-root">
         {provider !== "binance" &&
           provider !== "custom_assets" &&
           provider !== "coinbase" && (
-            <p
+            <div
+              className="asset-line"
               onClick={() => getTransactionsFunc(provider, account.id)}
-              className="has-transactions"
             >
-              {type}: {base_currency} {baseSymbol}
-            </p>
+              <p className="data-source-asset">{type}</p>{" "}
+              <p className="data-source-asset">
+                {base_currency} {baseSymbol}
+              </p>
+            </div>
           )}
         {(provider === "custom_assets" || provider === "binance") && (
-          <p>
-            {currency}: {amount.toFixed(2)}; {base_currency} {baseSymbol}
-          </p>
+          <div className="asset-line">
+            <p>{currency}</p>{" "}
+            <p>
+              {" "}
+              {base_currency} {baseSymbol}
+            </p>
+          </div>
         )}
         {provider === "coinbase" && (
-          <p
+          <div
+            className="asset-line"
             onClick={() => getTransactionsFunc(provider, account.id)}
-            className="has-transactions"
           >
-            {currency}: {amount.toFixed(2)}; {base_currency} {baseSymbol}
-          </p>
+            <p className="data-source-asset">{currency}</p>{" "}
+            <p className="data-source-asset">
+              {" "}
+              {base_currency} {baseSymbol}
+            </p>
+          </div>
         )}
       </div>
     );
