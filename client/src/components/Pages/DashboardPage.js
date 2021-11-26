@@ -137,8 +137,8 @@ const DashboardPage = () => {
             getTransactionsFunc={getAccountTransactions}
           />
 
-          <div className="transactions data-source">
-            <p>Recent Transactions</p>
+          <div className="transactions data-source recent-transactions">
+            <p className="recent-transactions-header">Recent Transactions</p>
             <RecentTransactionsContainerComponent data={recentTransactions} />
           </div>
         </div>
