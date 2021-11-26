@@ -197,6 +197,7 @@ export const BaseCurrencyDropDownList = ({
       base_currency: currency,
     };
     updateUser(token, data);
+    window.sessionStorage.clear();
   };
 
   return (
