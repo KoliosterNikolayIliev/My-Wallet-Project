@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react'
+import React, {useState} from 'react'
 import AddNewSourceMenu from "./AddNewSourceMenu";
 import AddNewSourceModal from "./AddNewSourceModal";
 
@@ -26,7 +26,7 @@ const AddNewSourceComponent = () => {
   }
 
   return (
-    <Fragment>
+    <div>
       <AddNewSourceMenu
         openMenuFunc={openMenuFunc}
         openBool={openMenuBool}
@@ -35,7 +35,7 @@ const AddNewSourceComponent = () => {
         modalFunc={openModalFunc}
       />
       <AddNewSourceModal openModal={openModal} closeModalFunc={closeModalFunc} source={source}/>
-    </Fragment>
+    </div>
   )
 }
 

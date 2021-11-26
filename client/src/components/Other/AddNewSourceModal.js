@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react'
+import React, {useState} from 'react'
 import {Box, Modal} from "@mui/material";
 import CountriesDropDownList from "./CountriesDropDownList";
 import AddYodleeComponent from "./AddYodleeComponent";
@@ -39,13 +39,13 @@ const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
     sources = <AddYodleeComponent/>
   } else if (source === 'crypto') {
     sources = (
-      <Fragment>
+      <div>
         <button onClick={() => {
           selectProvider('binance')
         }}>binance
         </button>
         <button onClick={() => selectProvider('coinbase')}>coinbase</button>
-      </Fragment>
+      </div>
     );
   } else {
     sources = <h1>custom entry</h1>;

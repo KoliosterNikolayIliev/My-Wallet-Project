@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {useState} from "react";
 import {updateUser} from "../../utils/account";
 import {useAuth0} from "@auth0/auth0-react";
 import {Link, Redirect} from "react-router-dom";
@@ -34,7 +34,7 @@ const AddCryptoSource = (selected) => {
   }
 
   return (
-    <Fragment>
+    <div>
       <label>API Key</label>
       <input
         type={"text"}
@@ -49,10 +49,8 @@ const AddCryptoSource = (selected) => {
         placeholder={"API Secret goes here"}
         required={true}
       />
-      <button onClick={saveChanges}>
-        <Link to={"/dashboard"}>Save</Link>
-      </button>
-    </Fragment>
+      <button onClick={saveChanges}>Save</button>
+    </div>
   )
 }
 
