@@ -13,10 +13,9 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-from development_env import secret_key, field_encryption_key
+from development_env import secret_key, field_encryption_key, db_name, db_host, db_username, db_password
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -26,8 +25,6 @@ SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-
 
 # Application definition
 
@@ -41,6 +38,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'encrypted_model_fields',
+    'balance_cashing_app',
 
 ]
 
@@ -68,17 +66,6 @@ CORS_ALLOW_METHODS = [
     "PUT",
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ),
-    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
-}
 
 ROOT_URLCONF = 'balances_history_casher.urls'
 
@@ -101,20 +88,37 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'balances_history_casher.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 # FIELD_ENCRYPTION_KEY = os.environ.get('FIELD_ENCRYPTION_KEY')
 FIELD_ENCRYPTION_KEY = field_encryption_key
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': db_name,
+        'CLIENT': {
+            'host': db_host,
+            'username': db_username,
+            'password': db_password,
+            'authMechanism': 'SCRAM-SHA-1'
+        },
     }
 }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': os.environ.get('CUSTOM_ASSETS_DB_NAME'),
+#         'CLIENT': {
+#             'host': os.environ.get('CUSTOM_ASSETS_DB_HOST'),
+#             'username': os.environ.get('CUSTOM_ASSETS_DB_USERNAME'),
+#             'password': os.environ.get('CUSTOM_ASSETS_DB_PASSWORD'),
+#             'authMechanism': 'SCRAM-SHA-1'
+#         },
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -134,7 +138,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -147,7 +150,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
