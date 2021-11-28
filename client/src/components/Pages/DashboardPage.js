@@ -37,11 +37,13 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const getUserData = async () => {
-      const token = await getAccessTokenSilently();
-      const response = await getUser(token);
-
-      setBase(response.base_currency);
-      window.sessionStorage.clear();
+      if (!window.sessionStorage.getItem("base")) {
+        const token = await getAccessTokenSilently();
+        const response = await getUser(token);
+        setBase(response.base_currency);
+      } else {
+        setBase(window.sessionStorage.getItem("base"));
+      }
     };
     getUserData();
   }, []);
@@ -51,8 +53,7 @@ const DashboardPage = () => {
     if (
       window.sessionStorage.getItem("total") &&
       window.sessionStorage.getItem("assets") &&
-      window.sessionStorage.getItem("recentTransactions") &&
-      window.sessionStorage.getItem("base") === base
+      window.sessionStorage.getItem("recentTransactions")
     ) {
       setTotal(JSON.parse(window.sessionStorage.getItem("total")));
       setGroups(JSON.parse(window.sessionStorage.getItem("assets")));
@@ -61,7 +62,6 @@ const DashboardPage = () => {
       );
     } else {
       const token = await getAccessTokenSilently();
-      window.sessionStorage.setItem("base", base);
       // fetch all of the data in parllel using Promise.all
       await Promise.all([
         (async () => {
@@ -138,8 +138,8 @@ const DashboardPage = () => {
             getTransactionsFunc={getAccountTransactions}
           />
 
-          <div className="transactions data-source">
-            <p>Recent Transactions</p>
+          <div className="transactions data-source recent-transactions">
+            <p className="recent-transactions-header">Recent Transactions</p>
             <RecentTransactionsContainerComponent data={recentTransactions} />
           </div>
         </div>
