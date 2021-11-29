@@ -128,8 +128,8 @@ const DashboardPage = () => {
         <ChartComponent />
         <ProfileButton />
         <div style={{ margin: "3% 0" }}>
-          <p style={{ display: "inline", paddingRight: "20px", fontSize: "x-large", fontWeight: "bold" }}>Accounts</p>
-          <AddNewSourceComponent/>
+          <p style={{ display: "inline", paddingRight: "20px"}} className='add-source-font'>Accounts</p>
+          <AddNewSourceComponent />
         </div>
         <div className="dashboard-container">
           <GroupsContainerComponent

@@ -1,6 +1,7 @@
 import {ListItemIcon, Menu, MenuItem} from "@mui/material";
 import '../../styles/main_content.scss'
 import '../../styles/add-source-menu.scss'
+import '../../styles/dashboard.scss'
 
 
 const menuStyles = {
@@ -12,7 +13,7 @@ const menuStyles = {
 const AddNewSourceMenu = ({openMenuFunc, openBool, anchorEl, closeMenuFunc, modalFunc}) => {
   return (
     <div style={{display: 'inline'}}>
-      <button className='add-new-source' onClick={openMenuFunc}>+ Add new source</button>
+      <button className='add-new-source add-source-font' onClick={openMenuFunc}>+ Add new source</button>
       <Menu PaperProps={{style: menuStyles}} open={openBool} onClose={closeMenuFunc} anchorEl={anchorEl}>
         <div className='menu-item' onClick={() => modalFunc('banks')}>
           <ListItemIcon className='icon-container'>
