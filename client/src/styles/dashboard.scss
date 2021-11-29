@@ -71,6 +71,8 @@
   border-radius: 8px;
   background-color: white;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   ul {
     padding-top: 5%;
@@ -97,15 +99,36 @@
   }
 }
 
+.data-source-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  ul {
+    flex-basis: 83%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    div:nth-child(n + 6) {
+      display: none;
+    }
+  }
+}
+
 .asset-root {
   border-radius: 12px;
   margin-left: 2%;
   margin-right: 2%;
+  display: flex;
+  justify-content: center;
 }
 
 .asset-line {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  width: 75%;
+  align-items: center;
 }
 
 .data-source-header {
@@ -128,9 +151,9 @@
 
 .expand-button {
   cursor: pointer;
-  margin-top: 20%;
   display: flex;
   flex-direction: row;
+  padding-bottom: 10%;
   justify-content: center;
   transition: 0.3s;
   p {
