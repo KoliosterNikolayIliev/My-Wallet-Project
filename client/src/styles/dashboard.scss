@@ -71,6 +71,8 @@
   border-radius: 8px;
   background-color: white;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   ul {
     padding-top: 5%;
@@ -97,15 +99,36 @@
   }
 }
 
+.data-source-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  ul {
+    flex-basis: 83%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    div:nth-child(n + 6) {
+      display: none;
+    }
+  }
+}
+
 .asset-root {
   border-radius: 12px;
   margin-left: 2%;
   margin-right: 2%;
+  display: flex;
+  justify-content: center;
 }
 
 .asset-line {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  width: 75%;
+  align-items: center;
 }
 
 .data-source-header {
@@ -128,9 +151,9 @@
 
 .expand-button {
   cursor: pointer;
-  margin-top: 20%;
   display: flex;
   flex-direction: row;
+  padding-bottom: 10%;
   justify-content: center;
   transition: 0.3s;
   p {
@@ -150,6 +173,41 @@
 ul {
   padding: 0;
 }
+
+.recent-transactions-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  ul {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 80%;
+    li:nth-child(n + 10) {
+      display: none;
+    }
+  }
+  .expand-button {
+    padding-bottom: 10%;
+  }
+  .amount-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    font-size: 14px;
+    :nth-child(2) {
+      color: #84818a;
+      font-weight: 400;
+      font-size: 12px;
+      margin-top: 2%;
+    }
+    p {
+      margin: 0;
+    }
+  }
+}
+
 .transactions {
   flex-basis: 24.5%;
   height: 800px;
