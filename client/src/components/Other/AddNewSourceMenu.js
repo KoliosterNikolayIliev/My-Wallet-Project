@@ -14,33 +14,33 @@ const AddNewSourceMenu = ({openMenuFunc, openBool, anchorEl, closeMenuFunc, moda
     <div style={{display: 'inline'}}>
       <button className='add-new-source' onClick={openMenuFunc}>+ Add new source</button>
       <Menu PaperProps={{style: menuStyles}} open={openBool} onClose={closeMenuFunc} anchorEl={anchorEl}>
-        <MenuItem className='menu-item' onClick={() => modalFunc('banks')}>
+        <div className='menu-item' onClick={() => modalFunc('banks')}>
           <ListItemIcon className='icon-container'>
             <i className="fas fa-envelope-open-dollar icon"></i>
           </ListItemIcon>
           Banks
-        </MenuItem>
+        </div>
 
-        <MenuItem className='menu-item' onClick={() => modalFunc('brokers')}>
+        <div className='menu-item' onClick={() => modalFunc('brokers')}>
           <ListItemIcon className='icon-container'>
             <i className="fas fa-envelope-open-dollar icon"></i>
           </ListItemIcon>
           Brokers
-        </MenuItem>
+        </div>
 
-        <MenuItem className='menu-item' onClick={() => modalFunc('crypto')}>
+        <div className='menu-item' onClick={() => modalFunc('crypto')}>
           <ListItemIcon className='icon-container'>
             <i className="fab fa-bitcoin icon"></i>
           </ListItemIcon>
           Crypto
-        </MenuItem>
+        </div>
 
-        <MenuItem className='menu-item' onClick={() => modalFunc('custom entry')}>
+        <div className='menu-item' onClick={() => modalFunc('custom entry')}>
           <ListItemIcon className='icon-container'>
             <i className="fas fa-plus-circle icon"></i>
           </ListItemIcon>
           Custom Entry
-        </MenuItem>
+        </div>
       </Menu>
     </div>
   );
