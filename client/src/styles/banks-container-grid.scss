@@ -10,9 +10,16 @@
 }
 // magardich
 .bank-item {
+  img {
+    margin-left: 10%;
+    width: 40px;
+    height: 40px;
+  }
+  border-style: solid;
+  border-color: transparent;
   display: flex;
   text-align: center;
-  padding: 20px 0;
+  padding: 10px 0;
   background: #f2f2f2;
   border-radius: 40px;
   width: 174px;
@@ -29,7 +36,6 @@
 }
 
 .bank-item:hover{
-  border-style: solid;
   border-color: #9031DB;
   cursor: pointer;
   background-color: #e8d4f7;

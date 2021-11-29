@@ -22,7 +22,7 @@ export const BanksContainer = ({data}) => {
     <div className={'bank-container'}>
       {data.map((item) => (
         <div className={'bank-item'} onClick={() => addBankAccount(item.id)}>
-          <img style={{marginLeft: '10%'}} width={40}
+          <img
             src={`${item.logo}?w=248&fit=crop&auto=format`}
             srcSet={`${item.logo}?w=248&fit=crop&auto=format&dpr=2 2x`}
           />
