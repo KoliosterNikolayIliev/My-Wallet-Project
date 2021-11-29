@@ -1,10 +1,5 @@
 @import url('https://pro.fontawesome.com/releases/v5.10.0/css/all.css');
 
-.icon {
-  font-size: 20px;
-  color: black !important;
-}
-
 .icon-container {
   border: 1px solid #f2f2f2;
   border-radius: 100px;
@@ -15,7 +10,7 @@
 }
 
 .menu-item {
-  margin: 14px auto auto;
+  margin: 10px auto auto;
   width: 95%;
   padding-top: 25px;
   padding-bottom: 25px;
@@ -28,7 +23,7 @@
   background-color: #e8d4f7;
   color: #9031DB;
   .icon {
-    color: #9031DB !important;
+    filter: invert(35%) sepia(81%) saturate(6682%) hue-rotate(267deg) brightness(89%) contrast(91%);
   }
   .icon-container {
     border-color: transparent;
