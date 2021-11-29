@@ -39,6 +39,7 @@ const DashboardPage = () => {
     const getUserData = async () => {
       if (!window.sessionStorage.getItem("base")) {
         const token = await getAccessTokenSilently();
+        console.log(token)
         const response = await getUser(token);
         setBase(response.base_currency);
       } else {
@@ -127,7 +128,7 @@ const DashboardPage = () => {
         <ChartComponent />
         <ProfileButton />
         <div style={{ margin: "3% 0" }}>
-          <p style={{ display: "inline", paddingRight: "20px" }}>Accounts</p>
+          <p style={{ display: "inline", paddingRight: "20px", fontSize: "x-large", fontWeight: "bold" }}>Accounts</p>
           <AddNewSourceComponent/>
         </div>
         <div className="dashboard-container">

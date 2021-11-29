@@ -3,17 +3,7 @@ import {Box, Modal} from "@mui/material";
 import CountriesDropDownList from "./CountriesDropDownList";
 import AddYodleeComponent from "./AddYodleeComponent";
 import AddCryptoSource from "./AddCryptoSource";
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  background: '#FFFFFF',
-  border: '2px solid #000',
-  width: '685px',
-  height: '810px',
-}
+import '../../styles/add-source-modal.scss'
 
 const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
 
@@ -59,7 +49,7 @@ const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
 
   return (
     <Modal open={openModal} onClose={handleClose}>
-      <Box style={style}>
+      <Box className='modal-box'>
         {content ? content : sources}
       </Box>
     </Modal>
