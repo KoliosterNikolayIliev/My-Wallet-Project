@@ -5,13 +5,11 @@ import '../../styles/dashboard.scss'
 import Popup from "reactjs-popup";
 
 
-const AddNewSourceMenu = ({openMenuFunc, openBool, anchorEl, closeMenuFunc, modalFunc}) => {
+const AddNewSourceMenu = ({modalFunc}) => {
   return (
     <div style={{display: 'inline'}} className='modal'>
       <Popup
-      trigger={<button className='add-new-source add-source-font'>+ Add new source</button>}
-      closeOnDocumentClick
-
+        trigger={<button className='add-new-source add-source-font'>+ Add new source</button>}
       >
         <div className='menu-item' onClick={() => modalFunc('banks')}>
           <ListItemIcon className='icon-container'>
