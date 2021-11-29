@@ -1,6 +1,6 @@
-import {useAuth0} from "@auth0/auth0-react";
-import {getAccessToken} from "../../utils/account";
-import React from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getAccessToken } from "../../utils/account";
+import React, { useEffect } from "react";
 
 const AddYodleeComponent = () => {
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
@@ -27,12 +27,12 @@ const AddYodleeComponent = () => {
       "container-fastlink"
     );
   };
-  return (
-    <div id="container-fastlink">
-      <button onClick={() => addYodleeSource()}>Add source</button>
-    </div>
-  )
-}
 
+  useEffect(() => {
+    addYodleeSource();
+  }, []);
 
-export default AddYodleeComponent
+  return <div id="container-fastlink"></div>;
+};
+
+export default AddYodleeComponent;
