@@ -26,26 +26,26 @@ def auth0user(payload):
 
 # JWT token decoder
 def jwt_decode_token(token):
-    header = token.decode().split('|')
-    if len(header) < 2:
-        return 'invalid identifier'
-    auth = header[0]
-    id_num = header[1]
-    if auth == 'auth0' and len(id_num) == 24 or auth == 'google-oauth2' and len(id_num) == 21:
-        return True
-    header = jwt.get_unverified_header(token)
-    jwks = requests.get('https://{}/.well-known/jwks.json'.format('dev-kbl8py41.us.auth0.com')).json()
-    public_key = None
-    for jwk in jwks['keys']:
-        if jwk['kid'] == header['kid']:
-            public_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
+    try:
+        header = token.decode().split('|')
+        auth = header[0]
+        id_num = header[1]
+        if auth == 'auth0' and len(id_num) == 24 or auth == 'google-oauth2' and len(id_num) == 21:
+            return True
+    except (AttributeError, IndexError):
+        header = jwt.get_unverified_header(token)
+        jwks = requests.get('https://{}/.well-known/jwks.json'.format('dev-kbl8py41.us.auth0.com')).json()
+        public_key = None
+        for jwk in jwks['keys']:
+            if jwk['kid'] == header['kid']:
+                public_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
 
-    if public_key is None:
-        raise Exception('Public key not found.')
+        if public_key is None:
+            raise Exception('Public key not found.')
 
-    issuer = 'https://{}/'.format('dev-kbl8py41.us.auth0.com')
-    return jwt.decode(token, public_key, audience='https://dev-kbl8py41.us.auth0.com/api/v2/', issuer=issuer,
-                      algorithms=['RS256'])
+        issuer = 'https://{}/'.format('dev-kbl8py41.us.auth0.com')
+        return jwt.decode(token, public_key, audience='https://dev-kbl8py41.us.auth0.com/api/v2/', issuer=issuer,
+                          algorithms=['RS256'])
 
 
 # checks if user exists in Auth0
