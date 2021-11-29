@@ -1,15 +1,12 @@
 @import url('https://pro.fontawesome.com/releases/v5.10.0/css/all.css');
 
-.icon {
-  font-size: 20px;
-  color: black !important;
-}
-
 .icon-container {
   border: 1px solid #f2f2f2;
   border-radius: 100px;
   padding: 15px;
   margin-right: 15px;
+  margin-left: 15px;
+  justify-content: center;
 }
 
 .menu-item {
@@ -21,15 +18,28 @@
   border-bottom: 1px solid #f2f2f2;
 }
 
+.menu-item:last-child {
+  border-bottom: none;
+}
+
 .menu-item:hover {
   cursor: pointer;
   background-color: #e8d4f7;
   color: #9031DB;
   .icon {
-    color: #9031DB !important;
+    filter: invert(35%) sepia(81%) saturate(6682%) hue-rotate(267deg) brightness(89%) contrast(91%);
   }
   .icon-container {
     border-color: transparent;
     background-color: #dcbef3;
   }
+}
+
+.popup-content {
+  border-radius: 20px;
+  width: 370px;
+  height: 484px;
+  background: white;
+  border: 1px solid #E4E4E4;
+  box-shadow: 0 0 0 100vmax rgba(0,0,0,0.4);
 }
