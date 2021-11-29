@@ -190,6 +190,22 @@ ul {
   .expand-button {
     padding-bottom: 10%;
   }
+  .amount-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    font-size: 14px;
+    :nth-child(2) {
+      color: #84818a;
+      font-weight: 400;
+      font-size: 12px;
+      margin-top: 2%;
+    }
+    p {
+      margin: 0;
+    }
+  }
 }
 
 .transactions {

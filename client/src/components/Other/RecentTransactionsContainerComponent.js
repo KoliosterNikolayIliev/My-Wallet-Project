@@ -64,7 +64,7 @@ const RecentTransactionsContainerComponent = ({ data }) => {
                 )}
                 {Number(value.amount.amount) < 0 && (
                   <div className="transaction-text">
-                    <p>Paid</p>
+                    <p>Sent</p>
                     <p>
                       {monthNames[value.date.split("-")[1]]}{" "}
                       {value.date.split("-")[2]}, {value.date.split("-")[0]}
@@ -72,16 +72,28 @@ const RecentTransactionsContainerComponent = ({ data }) => {
                   </div>
                 )}
                 {Number(value.amount.amount) > 0 && (
-                  <p>
-                    +{Number(value.amount.amount).toFixed(2)}{" "}
-                    {value.amount.currency}
-                  </p>
+                  <div className="amount-text">
+                    <p>
+                      +{Number(value.amount.amount).toFixed(2)}{" "}
+                      {value.amount.currency}
+                    </p>
+                    <p>
+                      {Number(value.amount.base_amount).toFixed(2)}{" "}
+                      {value.amount.base_currency}
+                    </p>
+                  </div>
                 )}
                 {Number(value.amount.amount) < 0 && (
-                  <p>
-                    {Number(value.amount.amount).toFixed(2)}{" "}
-                    {value.amount.currency}
-                  </p>
+                  <div className="amount-text">
+                    <p>
+                      {Number(value.amount.amount).toFixed(2)}{" "}
+                      {value.amount.currency}
+                    </p>
+                    <p>
+                      {Math.abs(Number(value.amount.base_amount).toFixed(2))}{" "}
+                      {value.amount.base_currency}
+                    </p>
+                  </div>
                 )}
               </li>
             );

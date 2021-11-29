@@ -83,8 +83,8 @@ async def convert_transactions_currency_to_base_currency(base, transactions, ses
                 for data in transaction.values():
                     amount = data["amount"]
                     if currency_prices.get(amount["currency"]):
-                        amount["amount"] = float(amount["amount"]) / currency_prices[amount["currency"]]
-                        amount["currency"] = base
+                        amount["base_amount"] = float(amount["amount"]) / currency_prices[amount["currency"]]
+                        amount["base_currency"] = base
 
                     else:
                         if crypto_prices.get(amount["currency"]):
