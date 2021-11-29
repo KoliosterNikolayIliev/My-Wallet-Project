@@ -173,6 +173,25 @@
 ul {
   padding: 0;
 }
+
+.recent-transactions-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  ul {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 80%;
+    li:nth-child(n + 10) {
+      display: none;
+    }
+  }
+  .expand-button {
+    padding-bottom: 10%;
+  }
+}
+
 .transactions {
   flex-basis: 24.5%;
   height: 800px;
