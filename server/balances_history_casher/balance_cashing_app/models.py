@@ -10,7 +10,7 @@ class Balance(models.Model):
 
 
 class UserData(models.Model):
-    user_identifier = models.CharField(max_length=500, )
+    user_identifier = models.CharField(max_length=500)
     last_login = models.DateTimeField()
     balances_history = models.ArrayField(
         model_container=Balance
