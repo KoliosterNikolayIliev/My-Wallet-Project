@@ -37,17 +37,20 @@ def get_put_create_delete_user_profile(request):
 
     if request.method == 'GET':
         # Checks if the user profile is already in the DB and returns it if True
+        internal = is_internal_request(request)
         try:
             user = UserProfile.objects.get(user_identifier=request_user)
             serializer = ViewUserSerializer(user)
             # checks if user is internal and returns all user data (for Portfolio)
-            if is_internal_request(request):
+            if internal:
                 serializer = ViewUserSerializerInternal(user)
 
             return Response(serializer.data)
 
         # Creates the user profile in the DB. Makes second call to the DB to return the user profile.
         except UserProfile.DoesNotExist:
+            if internal:
+                return Response('User does not exists!', status=status.HTTP_404_NOT_FOUND)
             data = {'user_identifier': request_user}
             serializer = NewUserSerializer(data=data)
             if serializer.is_valid():

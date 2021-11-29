@@ -10,5 +10,6 @@ urlpatterns = [
     path('internal/user', get_put_create_delete_user_profile),
     path('user/bank', CreateDeleteNordigenRequisition.as_view()),
     path('user/yodlee-token', get_yodlee_token),
-    path('user/nordigen-banks', get_nordigen_banks)
+    path('user/nordigen-banks', get_nordigen_banks),
+    path('internal/user/cache', get_put_create_delete_user_profile),
 ]
