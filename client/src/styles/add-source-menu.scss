@@ -11,3 +11,22 @@
   padding: 15px;
   margin-right: 15px;
 }
+
+.menu-item {
+  margin: 10px auto auto;
+  width: 95%;
+  border-radius: 15px;
+}
+
+.menu-item:hover {
+  cursor: pointer;
+  background-color: #e8d4f7;
+  color: #9031DB;
+  .icon {
+    color: #9031DB !important;
+  }
+  .icon-container {
+    border-color: transparent;
+    background-color: #dcbef3;
+  }
+}
