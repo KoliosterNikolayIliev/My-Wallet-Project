@@ -1,10 +1,10 @@
-import React, {Fragment, useState} from 'react';
 import {Menu, MenuItem} from "@mui/material";
+import '../../styles/main_content.scss'
 
 const AddNewSourceMenu = ({openMenuFunc, openBool, anchorEl, closeMenuFunc, modalFunc}) => {
   return (
-    <Fragment>
-      <button onClick={openMenuFunc}>Add new source</button>
+    <div style={{display: 'inline'}}>
+      <button className='add-new-source' onClick={openMenuFunc}>+ Add new source</button>
       <Menu open={openBool} onClose={closeMenuFunc} anchorEl={anchorEl}>
         <MenuItem onClick={() => modalFunc('banks')}>
           Banks
@@ -22,7 +22,7 @@ const AddNewSourceMenu = ({openMenuFunc, openBool, anchorEl, closeMenuFunc, moda
           Custom Entry
         </MenuItem>
       </Menu>
-    </Fragment>
+    </div>
   );
 }
 

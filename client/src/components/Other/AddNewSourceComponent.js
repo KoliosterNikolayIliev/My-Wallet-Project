@@ -26,7 +26,7 @@ const AddNewSourceComponent = () => {
   }
 
   return (
-    <div>
+    <div style={{display: 'inline'}}>
       <AddNewSourceMenu
         openMenuFunc={openMenuFunc}
         openBool={openMenuBool}

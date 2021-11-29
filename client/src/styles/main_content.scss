@@ -16,15 +16,6 @@ body {
   background: #e5e5e5;
 }
 
-a {
-  text-decoration: none;
-  color: #9031DB;
-}
-
-a:hover {
-  text-decoration: none;
-}
-
 #root {
   display: flex;
   flex-direction: column;
@@ -43,4 +34,19 @@ a:hover {
 
 .main > div{
 padding: 0 2%;
+}
+
+.add-new-source {
+  padding: 10px;
+  border: none;
+  background: none;
+  font-size: x-large;
+  font-weight: bold;
+  color: #9031DB;
+}
+
+.add-new-source:hover {
+  cursor: pointer;
+  border-radius: 25px;
+  background-color: #e8d4f7;
 }
