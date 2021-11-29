@@ -39,6 +39,7 @@ const DashboardPage = () => {
     const getUserData = async () => {
       if (!window.sessionStorage.getItem("base")) {
         const token = await getAccessTokenSilently();
+        console.log(token)
         const response = await getUser(token);
         setBase(response.base_currency);
       } else {
