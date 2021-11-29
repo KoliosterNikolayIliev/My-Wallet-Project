@@ -2,19 +2,25 @@ import {ListItemIcon, Menu, MenuItem} from "@mui/material";
 import '../../styles/main_content.scss'
 import '../../styles/add-source-menu.scss'
 import '../../styles/dashboard.scss'
+import Popup from "reactjs-popup";
 
 
 const menuStyles = {
   borderRadius: 25,
   width: 370,
   height: 484,
+  background: '#FFFFFF'
 }
 
 const AddNewSourceMenu = ({openMenuFunc, openBool, anchorEl, closeMenuFunc, modalFunc}) => {
   return (
-    <div style={{display: 'inline'}}>
-      <button className='add-new-source add-source-font' onClick={openMenuFunc}>+ Add new source</button>
-      <Menu PaperProps={{style: menuStyles}} open={openBool} onClose={closeMenuFunc} anchorEl={anchorEl}>
+    <div style={{display: 'inline'}} className='modal'>
+      <Popup
+      contentStyle={menuStyles}
+      trigger={<button className='add-new-source add-source-font'>+ Add new source</button>}
+      closeOnDocumentClick
+
+      >
         <div className='menu-item' onClick={() => modalFunc('banks')}>
           <ListItemIcon className='icon-container'>
             <svg className='icon' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,7 +66,7 @@ const AddNewSourceMenu = ({openMenuFunc, openBool, anchorEl, closeMenuFunc, moda
           </ListItemIcon>
           Custom Entry
         </div>
-      </Menu>
+      </Popup>
     </div>
   );
 }
