@@ -15,7 +15,10 @@
 .menu-item {
   margin: 10px auto auto;
   width: 95%;
+  padding-top: 25px;
+  padding-bottom: 25px;
   border-radius: 15px;
+  border-bottom: 1px solid #f2f2f2;
 }
 
 .menu-item:hover {
