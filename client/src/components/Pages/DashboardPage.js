@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Redirect } from "react-router";
 
+import { atom, useRecoilState } from "recoil";
+
 import ProfileButton from "../Buttons/ProfileButton";
 
 import {
@@ -21,12 +23,15 @@ import Header from "../Other/HeaderComponent";
 import SubHeader from "../Other/SubHeaderComponent";
 import ChartComponent from "../Other/ChartComponent";
 import AddNewSourceComponent from "../Other/AddNewSourceComponent";
+import { recentTransactionsAtom } from "../../recoil";
 
 // Dashboard page to be filled in with user account data
 const DashboardPage = () => {
   const [groups, setGroups] = useState({});
   const [transactions, setTransactions] = useState({});
-  const [recentTransactions, setRecentTransactions] = useState([]);
+  const [recentTransactions, setRecentTransactions] = useRecoilState(
+    recentTransactionsAtom
+  );
   const [base, setBase] = useState("");
   const [total, setTotal] = useState(0);
 
@@ -39,7 +44,7 @@ const DashboardPage = () => {
     const getUserData = async () => {
       if (!window.sessionStorage.getItem("base")) {
         const token = await getAccessTokenSilently();
-        console.log(token)
+        console.log(token);
         const response = await getUser(token);
         setBase(response.base_currency);
       } else {
@@ -128,7 +133,12 @@ const DashboardPage = () => {
         <ChartComponent />
         <ProfileButton />
         <div style={{ margin: "3% 0" }}>
-          <p style={{ display: "inline", paddingRight: "20px"}} className='add-source-font'>Accounts</p>
+          <p
+            style={{ display: "inline", paddingRight: "20px" }}
+            className="add-source-font"
+          >
+            Accounts
+          </p>
           <AddNewSourceComponent />
         </div>
         <div className="dashboard-container">
