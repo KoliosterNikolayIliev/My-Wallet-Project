@@ -2,13 +2,29 @@ import requests, os
 
 URL = os.environ.get("PORTFOLIO_ACCOUNT_URL")
 
+
 def validate_token(token):
+    auto_internal = False
+    try:
+        user_id_check = token.decode().split('|')
+        auth = user_id_check[0]
+        id_num = user_id_check[1]
+        if auth == 'auth0' and len(id_num) == 24 or auth == 'google-oauth2' and len(id_num) == 21:
+            endpoint = "api/account/internal/user/cache"
+            auto_internal = True
+    except (AttributeError, IndexError):
+        endpoint = "api/account/internal/user"
     headers = {'Authorization': token}
     print(URL)
-    res = requests.get(URL + "api/account/internal/user", headers=headers)
+    res = requests.get(URL + endpoint, headers=headers)
     if res.status_code == 200:
-        return res.json()
+        result = res.json()
+        if auto_internal:
+            result['internal'] = True
+            result['base_currency'] = 'GBP'
+        return result
     return False
+
 
 def validate_auth_header(token: None):
     if not token:
