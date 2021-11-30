@@ -1,23 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Redirect } from "react-router";
-import { recentTransactionsAtom } from "../../recoil";
+import { recentTransactionsAtom, baseAtom } from "../../recoil";
 import { useRecoilState } from "recoil";
 
-import "../../styles/dashboard.scss";
+import "../../styles/cashflow.scss";
 import "../../styles/main_content.scss";
 import Loader from "../Other/LoaderComponent";
+import Header from "../Other/HeaderComponent";
 
 // Dashboard page to be filled in with user account data
 const CashflowPage = () => {
+  const monthNames = {
+    1: "Jan",
+    2: "Feb",
+    3: "Mar",
+    4: "Apr",
+    5: "May",
+    6: "Jun",
+    7: "Jul",
+    8: "Aug",
+    9: "Sep",
+    10: "Oct",
+    11: "Nov",
+    12: "Dec",
+  };
+
   const [recentTransactions, setRecentTransactions] = useRecoilState(
     recentTransactionsAtom
   );
-  const { isAuthenticated, user, loading } = useAuth0();
+  const [base, setBase] = useRecoilState(baseAtom);
 
-  useEffect(() => {
-    console.log(recentTransactions);
-  }, []);
+  const { isAuthenticated, user, loading } = useAuth0();
 
   if (loading) {
     return Loader();
@@ -25,8 +39,66 @@ const CashflowPage = () => {
 
   return (
     isAuthenticated && (
-      <div>
-        <h2>This is the cashflow page</h2>
+      <div className="main">
+        <Header
+          baseSymbol={base}
+          username={user.nickname ? user.nickname : user.name}
+        />
+        <div className="transactions-table">
+          <div className="headings">
+            <p>Date</p>
+            <p>Type</p>
+            <p>Amount</p>
+            <p>Asset</p>
+          </div>
+          <ul>
+            {recentTransactions.map((element) => {
+              return Object.values(element).map((value) => {
+                return (
+                  <li>
+                    <div className="transaction-row">
+                      {/* Date */}
+                      <p className="transaction-date">
+                        {monthNames[value.date.split("-")[1]]}{" "}
+                        {value.date.split("-")[2]}, {value.date.split("-")[0]}
+                      </p>
+
+                      {/* Type */}
+                      <p className="transaction-value">{value.type}</p>
+
+                      {/* Amount */}
+                      <p className="transaction-amount">
+                        {Number(value.amount.amount) < 0
+                          ? Number(value.amount.amount).toFixed(2)
+                          : `+${Number(value.amount.amount).toFixed(2)}`}
+                      </p>
+
+                      {/* Asset */}
+                      <p className="transaction-asset">
+                        {value.amount.currency}
+                      </p>
+                    </div>
+                  </li>
+                );
+              });
+            })}
+          </ul>
+          <div className="view-all-button">
+            <p>Load more</p>
+            <svg
+              width="8"
+              height="12"
+              viewBox="0 0 8 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1.16994 1.00005C0.983691 1.18741 0.87915 1.44087 0.87915 1.70505C0.87915 1.96924 0.983692 2.22269 1.16994 2.41005L4.70994 6.00005L1.16994 9.54005C0.983692 9.72741 0.87915 9.98087 0.87915 10.2451C0.87915 10.5092 0.983692 10.7627 1.16994 10.9501C1.26291 11.0438 1.37351 11.1182 1.49537 11.1689C1.61723 11.2197 1.74793 11.2458 1.87994 11.2458C2.01195 11.2458 2.14266 11.2197 2.26452 11.1689C2.38638 11.1182 2.49698 11.0438 2.58994 10.9501L6.82994 6.71005C6.92367 6.61709 6.99806 6.50649 7.04883 6.38463C7.0996 6.26277 7.12574 6.13206 7.12574 6.00005C7.12574 5.86804 7.0996 5.73733 7.04883 5.61547C6.99806 5.49362 6.92367 5.38301 6.82994 5.29005L2.58994 1.00005C2.49698 0.906323 2.38638 0.831929 2.26452 0.78116C2.14266 0.730391 2.01195 0.704252 1.87994 0.704252C1.74793 0.704252 1.61722 0.730391 1.49537 0.78116C1.37351 0.831929 1.26291 0.906323 1.16994 1.00005Z"
+                fill="#9031DB"
+              />
+            </svg>
+          </div>
+        </div>
       </div>
     )
   );

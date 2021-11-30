@@ -23,7 +23,7 @@ import Header from "../Other/HeaderComponent";
 import SubHeader from "../Other/SubHeaderComponent";
 import ChartComponent from "../Other/ChartComponent";
 import AddNewSourceComponent from "../Other/AddNewSourceComponent";
-import { recentTransactionsAtom } from "../../recoil";
+import { recentTransactionsAtom, baseAtom } from "../../recoil";
 
 // Dashboard page to be filled in with user account data
 const DashboardPage = () => {
@@ -32,7 +32,7 @@ const DashboardPage = () => {
   const [recentTransactions, setRecentTransactions] = useRecoilState(
     recentTransactionsAtom
   );
-  const [base, setBase] = useState("");
+  const [base, setBase] = useRecoilState(baseAtom);
   const [total, setTotal] = useState(0);
 
   const [loading, setLoading] = useState(true);
