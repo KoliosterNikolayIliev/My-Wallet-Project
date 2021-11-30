@@ -5,7 +5,6 @@ import ProfilePage from "./components/Pages/ProfilePage";
 import LandingPage from "./components/Pages/LandingPage";
 import PortfolioPage from "./components/Pages/PortfolioPage";
 import CashflowPage from "./components/Pages/CashflowPage";
-import AdvicePage from "./components/Pages/AdvicePage";
 
 import {
   BrowserRouter as Router,
@@ -32,7 +31,6 @@ function App() {
         <Route path="/profile" exact component={ProfilePage} />
         <Route path="/portfolio" exact component={PortfolioPage} />
         <Route path="/cashflow" exact component={CashflowPage} />
-        <Route path="/advice" exact component={AdvicePage} />
       </Switch>
     </Router>
   );
