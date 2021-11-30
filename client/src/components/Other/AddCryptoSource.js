@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {updateUser} from "../../utils/account";
 import {useAuth0} from "@auth0/auth0-react";
 import {Link, Redirect} from "react-router-dom";
+import '../../styles/dashboard.scss'
 
 const AddCryptoSource = (selected) => {
   const {user, isAuthenticated, isLoading, getAccessTokenSilently} =
@@ -34,9 +35,10 @@ const AddCryptoSource = (selected) => {
   }
 
   return (
-    <div>
+    <div className='form-div'>
       <label>API Key</label>
       <input
+        className='form-input'
         type={"text"}
         onChange={(e) => setKey(e.target.value)}
         placeholder={"API Key goes here"}
@@ -44,12 +46,13 @@ const AddCryptoSource = (selected) => {
       />
       <label>API Secret</label>
       <input
+        className='form-input'
         type={"text"}
         onChange={(e) => setSecret(e.target.value)}
         placeholder={"API Secret goes here"}
         required={true}
       />
-      <button onClick={saveChanges}>Save</button>
+      <button className='button-main-small' onClick={saveChanges}>Save</button>
     </div>
   )
 }

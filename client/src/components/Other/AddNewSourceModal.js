@@ -5,6 +5,7 @@ import AddYodleeComponent from "./AddYodleeComponent";
 import AddCryptoSource from "./AddCryptoSource";
 import '../../styles/add-source-modal.scss'
 import Loader from "./LoaderComponent";
+import '../../styles/dashboard.scss'
 
 const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
   const [content, setContent] = useState()
@@ -29,12 +30,12 @@ const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
     sources = <AddYodleeComponent/>
   } else if (source === 'crypto') {
     sources = (
-      <div>
-        <button onClick={() => {
+      <div className='buttons-div'>
+        <button className='button-main-big' onClick={() => {
           selectProvider('binance')
         }}>binance
         </button>
-        <button onClick={() => selectProvider('coinbase')}>coinbase</button>
+        <button className='button-main-big' onClick={() => selectProvider('coinbase')}>coinbase</button>
       </div>
     );
   } else {
