@@ -40,7 +40,7 @@ const countries = [
 
 export const CountriesDropDownList = () => {
   const [categories, setCategories] = useState([]);
-  const [country, setCountry] = useState("");
+  const [country, setCountry] = useState("United Kingdom");
   const [data, setData] = useState([]);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -71,6 +71,7 @@ export const CountriesDropDownList = () => {
           <Select
             labelId={'simple-select'}
             style={{width: '90%'}}
+            defaultValue={'United Kingdom'}
             onChange={(e) => setCountry(e.target.value)}>
             {categories.map(el => <MenuItem value={el}>{el}</MenuItem>)}
           </Select>
