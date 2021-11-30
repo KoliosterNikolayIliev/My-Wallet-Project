@@ -30,6 +30,10 @@ const CashflowPage = () => {
     recentTransactionsAtom
   );
   const [base, setBase] = useRecoilState(baseAtom);
+  const [colors, setColors] = useState({
+    bank: { "background-color": "#ffa04370", color: "#FFA043" },
+    crypto: { "background-color": "#00a5ff70", color: "#00A5FF" },
+  });
 
   const { isAuthenticated, user, loading } = useAuth0();
 
@@ -64,7 +68,16 @@ const CashflowPage = () => {
                       </p>
 
                       {/* Type */}
-                      <p className="transaction-value">{value.type}</p>
+                      <p
+                        className="transaction-type"
+                        style={
+                          colors[value.type]
+                            ? colors[value.type]
+                            : { backgroundColor: "#a9acb060", color: "#84868a" }
+                        }
+                      >
+                        {value.type}
+                      </p>
 
                       {/* Amount */}
                       <p className="transaction-amount">

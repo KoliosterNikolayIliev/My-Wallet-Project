@@ -9,6 +9,7 @@ const GroupsContainerComponent = ({
   baseSymbol,
 }) => {
   let source;
+  console.log(data);
   return (
     <div className="data-source-container">
       {Object.entries(data).map(([key, value]) => {
