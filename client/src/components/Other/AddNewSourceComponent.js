@@ -7,6 +7,8 @@ const AddNewSourceComponent = () => {
   const [source, setSource] = useState(null)
 
   const openModalFunc = (selectedSource) => {
+    let el = document.getElementById('popup-1')
+    el.style.display = 'none'
     setSource(selectedSource)
     setOpenModal(true)
   }
