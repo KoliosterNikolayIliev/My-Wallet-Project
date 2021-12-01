@@ -17,7 +17,7 @@ def update_balances():
         # user balance will come from portfolio async function
         user_id = user.user_identifier
         headers = {'Authorization': user_id}
-        url = os.environ.get('PORTFOLIO_ASSETS_URL')
+        url = os.environ.get('AUTO_CACHING_URL')
         response = requests.get(url+'api/assets', headers=headers)
         total_balance = response.json()['total']
         data = {
@@ -35,6 +35,7 @@ def update_balances():
 
 def start():
     scheduler = BackgroundScheduler()
-    update_interval = int(os.environ.get('DB_AUTO_CACHING_INTERVAL'))
+    # update_interval = int(os.environ.get('DB_AUTO_CACHING_INTERVAL'))
+    update_interval = 0.2
     scheduler.add_job(update_balances, 'interval', minutes=update_interval)
     scheduler.start()
