@@ -6,8 +6,9 @@ import requests
 
 from django.contrib.auth import authenticate
 
-
 # Returns Auth0 id to be saved as username to Django user. Currently not used
+from rest_framework import status
+from rest_framework.response import Response
 
 
 def jwt_get_username_from_payload_handler(payload):
@@ -18,24 +19,33 @@ def jwt_get_username_from_payload_handler(payload):
 
 # Returns the username needed to make match between database and Auth0 authenticated user
 def auth0user(payload):
+    if payload == 'invalid identifier':
+        return
     return 'auth0user'
 
 
 # JWT token decoder
 def jwt_decode_token(token):
-    header = jwt.get_unverified_header(token)
-    jwks = requests.get('https://{}/.well-known/jwks.json'.format('dev-kbl8py41.us.auth0.com')).json()
-    public_key = None
-    for jwk in jwks['keys']:
-        if jwk['kid'] == header['kid']:
-            public_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
+    try:
+        header = token.decode().split('|')
+        auth = header[0]
+        id_num = header[1]
+        if auth == 'auth0' and len(id_num) == 24 or auth == 'google-oauth2' and len(id_num) == 21:
+            return True
+    except (AttributeError, IndexError):
+        header = jwt.get_unverified_header(token)
+        jwks = requests.get('https://{}/.well-known/jwks.json'.format('dev-kbl8py41.us.auth0.com')).json()
+        public_key = None
+        for jwk in jwks['keys']:
+            if jwk['kid'] == header['kid']:
+                public_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
 
-    if public_key is None:
-        raise Exception('Public key not found.')
+        if public_key is None:
+            raise Exception('Public key not found.')
 
-    issuer = 'https://{}/'.format('dev-kbl8py41.us.auth0.com')
-    return jwt.decode(token, public_key, audience='https://dev-kbl8py41.us.auth0.com/api/v2/', issuer=issuer,
-                      algorithms=['RS256'])
+        issuer = 'https://{}/'.format('dev-kbl8py41.us.auth0.com')
+        return jwt.decode(token, public_key, audience='https://dev-kbl8py41.us.auth0.com/api/v2/', issuer=issuer,
+                          algorithms=['RS256'])
 
 
 # checks if user exists in Auth0
@@ -134,6 +144,9 @@ def create_delete_nordigen_requisition(nordigen_institution_id=None, requisition
 def return_request_user(request):
     # Get and decode token.
     token = request.headers.get('Authorization').split(' ')[1]
+    url = request.get_full_path_info()
+    if url == '/api/account/internal/user/cache':
+        return token
     # check if user exists in Aut0 DB. Important check if user is deleted and same token is used in get or put request
     if user_does_not_exist(token):
         return False
