@@ -44,9 +44,6 @@ const Header = ({ baseSymbol, username }) => {
           <li>
             <Link to={"/cashflow"}>Cashflow</Link>
           </li>
-          <li>
-            <Link to={"/advice"}>Advice</Link>
-          </li>
         </ul>
       </div>
       <div className="user-container">

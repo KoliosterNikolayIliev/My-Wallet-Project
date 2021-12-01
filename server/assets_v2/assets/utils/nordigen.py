@@ -269,15 +269,19 @@ async def get_all_transactions(requisitions, session):
         return response
 
     headers = {'Authorization': f"Bearer {response['content']}"}
+
     
     async def get_transactions(session, account):
+        bank_name = await get_bank_name(account, session, headers)
+
         async with session.get(URL + f'accounts/{account}/transactions/',
                                headers=headers) as response:
             awaited = await response.json()
             data = awaited.get('transactions').get('booked')
             result = []
             for transaction in data:
-                transaction_data = {transaction['transactionId']: {"amount": transaction['transactionAmount'], "date": transaction['bookingDate'], "type": "bank"}}
+                print(transaction)
+                transaction_data = {transaction['transactionId']: {"amount": transaction['transactionAmount'], "date": transaction['bookingDate'], "source": bank_name, "type": "bank"}}
                 result.append(transaction_data)
             return result
 
