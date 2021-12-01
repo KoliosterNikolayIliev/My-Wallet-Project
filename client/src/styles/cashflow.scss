@@ -37,7 +37,7 @@
     flex-direction: column;
     overflow: hidden;
     justify-content: space-between;
-    li:nth-child(n + 10) {
+    li:nth-child(n + 9) {
       display: none;
     }
     .transaction-row {
@@ -48,6 +48,7 @@
       p {
         text-align: center;
         flex-basis: 11%;
+        overflow: ellipsis;
       }
 
       .transaction-date {
@@ -55,6 +56,11 @@
         font-family: "Inter", "sans-serif";
         font-weight: 500;
         color: #84818a;
+      }
+      .transaction-source {
+        font-size: 12px;
+        font-family: "Inter", "sans-serif";
+        font-weight: 500;
       }
       .transaction-type {
         text-transform: capitalize;

@@ -87,6 +87,7 @@ const CashflowPage = () => {
         <div className="transactions-table">
           <div className="headings">
             <p>Date</p>
+            <p>Source</p>
             <p>Type</p>
             <p>Amount</p>
             <p>Asset</p>
@@ -102,6 +103,9 @@ const CashflowPage = () => {
                         {monthNames[value.date.split("-")[1]]}{" "}
                         {value.date.split("-")[2]}, {value.date.split("-")[0]}
                       </p>
+
+                      {/* Source */}
+                      <p className="transaction-source">{value.source}</p>
 
                       {/* Type */}
                       <p
