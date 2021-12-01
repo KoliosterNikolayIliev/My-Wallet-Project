@@ -1,8 +1,8 @@
 from django.utils import timezone
 from rest_framework import serializers
-from balance_cashing_app.models import UserData
-from balance_cashing_app.serializers_validators import validate_user_identifier
-from balance_cashing_app.utils import add_balance
+from balance_caching_app.models import UserData
+from balance_caching_app.serializers_validators import validate_user_identifier
+from balance_caching_app.utils import add_balance
 
 
 class BalancesSerializer(serializers.Serializer):

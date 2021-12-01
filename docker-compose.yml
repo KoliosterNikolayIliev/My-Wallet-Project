@@ -108,7 +108,7 @@ services:
 
   balance-cache:
     build:
-      context: ./server/balances_history_casher
+      context: ./server/balances_history_cacher
 
     command:
       - python
