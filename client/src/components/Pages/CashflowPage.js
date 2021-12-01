@@ -8,6 +8,8 @@ import "../../styles/cashflow.scss";
 import "../../styles/main_content.scss";
 import Loader from "../Other/LoaderComponent";
 import Header from "../Other/HeaderComponent";
+import { getAllRecentTransactions } from "../../utils/portfolio";
+import { getUser } from "../../utils/account";
 
 // Dashboard page to be filled in with user account data
 const CashflowPage = () => {
@@ -30,14 +32,48 @@ const CashflowPage = () => {
     recentTransactionsAtom
   );
   const [base, setBase] = useRecoilState(baseAtom);
+
+  const [isLoading, setIsLoading] = useState(true);
+
   const [colors, setColors] = useState({
     bank: { "background-color": "#ffa04370", color: "#FFA043" },
     crypto: { "background-color": "#00a5ff70", color: "#00A5FF" },
   });
 
-  const { isAuthenticated, user, loading } = useAuth0();
+  const { isAuthenticated, user, loading, getAccessTokenSilently } = useAuth0();
 
-  if (loading) {
+  const getBase = async () => {
+    if (!window.sessionStorage.getItem("base")) {
+      const token = await getAccessTokenSilently();
+      const response = await getUser(token);
+      setBase(response.base_currency);
+    } else {
+      setBase(window.sessionStorage.getItem("base"));
+    }
+  };
+
+  const getTransactions = async () => {
+    const token = await getAccessTokenSilently();
+    const transactions = await getAllRecentTransactions(token);
+
+    window.sessionStorage.setItem(
+      "recentTransactions",
+      JSON.stringify(transactions.content)
+    );
+    setRecentTransactions(transactions.content);
+  };
+
+  useEffect(() => {
+    if (recentTransactions === "" || !recentTransactions) {
+      getTransactions();
+    }
+    if (base === "" || !base) {
+      getBase();
+    }
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading || recentTransactions === "" || !recentTransactions) {
     return Loader();
   }
 
