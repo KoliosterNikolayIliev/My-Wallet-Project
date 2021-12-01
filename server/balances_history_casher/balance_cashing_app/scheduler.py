@@ -14,6 +14,7 @@ def update_balances():
     # users is just for testing
     users = UserData.objects.all()
     for user in users:
+        time.sleep(300)
         # user balance will come from portfolio async function
         user_id = user.user_identifier
         headers = {'Authorization': user_id}
