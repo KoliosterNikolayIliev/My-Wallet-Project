@@ -6,6 +6,7 @@ import AddCryptoSource from "./AddCryptoSource";
 import '../../styles/add-source-modal.scss'
 import Loader from "./LoaderComponent";
 import '../../styles/dashboard.scss'
+import AssetsDropDownList from "./AssetsDropDownList";
 
 const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
   const [content, setContent] = useState()
@@ -39,7 +40,7 @@ const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
       </div>
     );
   } else {
-    sources = <h1>custom entry</h1>;
+    sources = <AssetsDropDownList/>;
   }
 
   const handleClose = () => {
