@@ -180,6 +180,7 @@ def format_transactions_response(response, recent=False):
             if not recent:
                 transaction_data[source][transaction["id"]] = transaction['amount']
             else:
+                print(transaction)
                 transaction_data[source][transaction["id"]] = {'amount': transaction['amount'], 'date': transaction['date'], 'type': transaction['CONTAINER']}
 
     data = transaction_data

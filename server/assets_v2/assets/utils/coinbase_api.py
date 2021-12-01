@@ -223,7 +223,7 @@ async def get_all_transactions(api_key, api_secret, session):
 
             for transaction in transactions["data"]:
                 if transaction["status"] == "completed":
-                    data.append({transaction["id"]: {"amount": transaction['amount'], "date": transaction['created_at'][:10], "type": "crypto"}})
+                    data.append({transaction["id"]: {"amount": transaction['amount'], "date": transaction['created_at'][:10], "type": "crypto", "source": "coinbase"}})
             return data
         tasks = []
         for account in accounts["data"]:
