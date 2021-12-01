@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { BanksContainer } from "./BanksContainer";
 import { getBanks } from "../../utils/nordigen";
 import {InputLabel, MenuItem, Select} from "@mui/material";
+import Loader from "./LoaderComponent";
 
 const countries = [
   "Austria",
@@ -40,9 +41,10 @@ const countries = [
 
 export const CountriesDropDownList = () => {
   const [categories, setCategories] = useState([]);
-  const [country, setCountry] = useState("");
+  const [country, setCountry] = useState("United Kingdom");
   const [data, setData] = useState([]);
   const { getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     countries.forEach((country) => {
@@ -53,9 +55,11 @@ export const CountriesDropDownList = () => {
   useEffect(() => {
     if (country !== "") {
       const fetchData = async () => {
+        setLoading(true)
         const token = await getAccessTokenSilently();
         const banks = await getBanks(token, country);
         setData(banks);
+        setLoading(false)
       };
       fetchData();
     }
@@ -71,12 +75,13 @@ export const CountriesDropDownList = () => {
           <Select
             labelId={'simple-select'}
             style={{width: '90%'}}
+            defaultValue={'United Kingdom'}
             onChange={(e) => setCountry(e.target.value)}>
             {categories.map(el => <MenuItem value={el}>{el}</MenuItem>)}
           </Select>
         </form>
       </section>
-      <BanksContainer data={data} />
+      {loading ? <Loader/> : <BanksContainer data={data} />}
     </div>
   );
 };

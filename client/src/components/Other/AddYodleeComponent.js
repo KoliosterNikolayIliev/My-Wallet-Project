@@ -1,11 +1,15 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { getAccessToken } from "../../utils/account";
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
+import Loader from "./LoaderComponent";
 
 const AddYodleeComponent = () => {
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
     useAuth0();
+
+  const [loading, setLoading] = useState(false)
   const addYodleeSource = async () => {
+    setLoading(true)
     const auth0Token = await getAccessTokenSilently();
     const yodleeToken = await getAccessToken(auth0Token);
     window.fastlink.open(
@@ -26,13 +30,18 @@ const AddYodleeComponent = () => {
       },
       "container-fastlink"
     );
+    setLoading(false)
   };
 
   useEffect(() => {
     addYodleeSource();
   }, []);
 
-  return <div id="container-fastlink"></div>;
+  return (
+    <div id="container-fastlink">
+      {loading === true && <Loader/>}
+    </div>
+  );
 };
 
 export default AddYodleeComponent;

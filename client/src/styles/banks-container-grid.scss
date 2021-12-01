@@ -1,12 +1,15 @@
 .bank-container {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   max-height: 655px;
-  align-content: start;
-  justify-content: center;
-  grid-template-columns: auto auto auto;
-  grid-gap: 20px;
+  justify-content: flex-start;
+  width: 90%;
+  grid-gap: 10px;
   padding: 10px;
   overflow-y: auto;
+  position: relative;
+  left: 5.5%;
+
 }
 // magardich
 .bank-item {
@@ -15,8 +18,8 @@
     width: 40px;
     height: 40px;
   }
-  border-style: solid;
-  border-color: transparent;
+
+  border: 2px solid transparent;
   display: flex;
   text-align: center;
   padding: 10px 0;

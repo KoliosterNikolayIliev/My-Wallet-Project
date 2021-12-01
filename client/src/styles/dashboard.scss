@@ -218,3 +218,61 @@ ul {
   font-weight: 700;
   font-size: 20px;
 }
+
+.button-main-big {
+  background: #9031DB;
+  border-radius: 32px;
+  width: 243px;
+  height: 78px;
+  color: white;
+  font-family: Manrope;
+  font-weight: 600;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.button-main-big:hover {
+  background: #5906b8;
+  cursor: pointer;
+}
+
+.button-main-small {
+  background: #9031DB;
+  border-radius: 32px;
+  width: 109px;
+  height: 31px;
+  color: white;
+  font-family: Manrope;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+}
+
+.button-main-small:hover {
+  background: #5906b8;
+  cursor: pointer;
+}
+
+.buttons-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  grid-gap: 10px;
+  margin-top: 50%;
+}
+
+.form-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 25%;
+  grid-gap: 20px;
+  font-size: 20px;
+}
+
+.form-input {
+  width: 50%;
+  height: 30px;
+  border-radius: 20px;
+}
