@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import ExpandSourceModal from "./ExpandSourceModal";
+import "../../styles/dashboard.scss";
+import { baseAtom } from "../../recoil";
+import { useRecoilState } from "recoil";
 
-const ExpandButton = ({ source }) => {
+const ExpandButton = ({ user, name, source }) => {
   const [openModal, setOpenModal] = useState(false);
+  const [base, setBase] = useRecoilState(baseAtom);
 
-  const openModalFunc = (selectedSource) => {
-    console.log(source);
+  const openModalFunc = () => {
     setOpenModal(true);
   };
   const closeModalFunc = () => {
@@ -30,8 +33,11 @@ const ExpandButton = ({ source }) => {
         </svg>
       </div>
       <ExpandSourceModal
+        base={base}
         openModal={openModal}
         closeModalFunc={closeModalFunc}
+        name={name}
+        user={user}
         source={source}
       />
     </div>

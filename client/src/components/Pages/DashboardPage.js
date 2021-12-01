@@ -146,6 +146,7 @@ const DashboardPage = () => {
             baseSymbol={base}
             data={groups}
             total={total}
+            user={user}
             getTransactionsFunc={getAccountTransactions}
           />
 
