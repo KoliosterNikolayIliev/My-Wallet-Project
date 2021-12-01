@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 import json
 from threading import Thread
@@ -64,7 +65,8 @@ async def get_assets():
             'balance': total_amount,
             'id': user_data['user_identifier']
         }
-        requests.post('http://192.168.0.11:8009/balances/add/', data=valid_data)
+        url = os.environ.get('BALANCE_CACHING_SERVICE_URL')
+        requests.post(url=url, data=valid_data)
     return jsonify(data), 200
 
 

@@ -35,6 +35,6 @@ def update_balances():
 
 def start():
     scheduler = BackgroundScheduler()
-    update_interval = os.environ.get('DB_AUTO_CACHING_INTERVAL')
+    update_interval = int(os.environ.get('DB_AUTO_CACHING_INTERVAL'))
     scheduler.add_job(update_balances, 'interval', minutes=update_interval)
     scheduler.start()
