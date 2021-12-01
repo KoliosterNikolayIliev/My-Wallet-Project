@@ -181,7 +181,7 @@ def format_transactions_response(response, recent=False):
                 transaction_data[source][transaction["id"]] = transaction['amount']
             else:
                 print(transaction)
-                transaction_data[source][transaction["id"]] = {'amount': transaction['amount'], 'date': transaction['date'], 'type': transaction['CONTAINER']}
+                transaction_data[source][transaction["id"]] = {'amount': transaction['amount'], 'date': transaction['date'], 'source': source,'type': transaction['CONTAINER']}
 
     data = transaction_data
 
