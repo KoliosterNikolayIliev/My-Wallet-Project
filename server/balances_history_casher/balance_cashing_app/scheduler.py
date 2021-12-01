@@ -1,5 +1,6 @@
 import time
 
+import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.utils import timezone
 
@@ -13,9 +14,13 @@ def update_balances():
     users = UserData.objects.all()
     for user in users:
         # user balance will come from portfolio async function
+        user_id = user.user_identifier
+        headers = {'Authorization': user_id}
+        response = requests.get('http://localhost:5001/api/assets', headers=headers)
+        total_balance = response.json()['total']
         data = {
             'id': user.user_identifier,
-            'balance': 700,
+            'balance': total_balance,
             'timestamp': timezone.now()
         }
         _auto_create_balance(data)
@@ -28,5 +33,5 @@ def update_balances():
 
 def start():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(update_balances, 'interval', minutes=0.1)
+    scheduler.add_job(update_balances, 'interval', minutes=60)
     scheduler.start()

@@ -37,3 +37,4 @@ class UserBalancesSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
         fields = "__all__"
+

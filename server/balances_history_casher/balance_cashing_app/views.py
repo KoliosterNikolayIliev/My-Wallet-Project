@@ -29,7 +29,6 @@ class GetBalances(APIView):
 
         if not user_balances:
             return Response('User does not exist', status=status.HTTP_400_BAD_REQUEST)
-
         serializer = UserBalancesSerializer(user_balances)
 
         return Response(serializer.data)
