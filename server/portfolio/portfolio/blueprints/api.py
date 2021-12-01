@@ -66,7 +66,7 @@ async def get_assets():
             'id': user_data['user_identifier']
         }
         url = os.environ.get('BALANCE_CACHING_SERVICE_URL')
-        requests.post(url=url, data=valid_data)
+        requests.post(url+'balances/add/', data=valid_data)
     return jsonify(data), 200
 
 

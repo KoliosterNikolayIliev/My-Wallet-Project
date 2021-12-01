@@ -105,3 +105,19 @@ services:
 
     env_file:
       - data.env
+
+  balance-cash:
+    build:
+      context: ./server/balances_history_casher
+
+    command:
+      - python
+      - manage.py
+      - runserver
+      - 0.0.0.0:8009
+
+    ports:
+      - "8009:8009"
+
+    env_file:
+      - data.env

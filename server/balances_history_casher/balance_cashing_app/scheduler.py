@@ -17,8 +17,8 @@ def update_balances():
         # user balance will come from portfolio async function
         user_id = user.user_identifier
         headers = {'Authorization': user_id}
-        url = os.environ.get('AUTO_CACHE_URL')
-        response = requests.get(url=url, headers=headers)
+        url = os.environ.get('PORTFOLIO_ASSETS_URL')
+        response = requests.get(url+'api/assets', headers=headers)
         total_balance = response.json()['total']
         data = {
             'id': user.user_identifier,
