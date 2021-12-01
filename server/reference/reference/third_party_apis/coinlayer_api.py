@@ -1,6 +1,8 @@
 import os, requests
 
 class CoinlayerApi():
+    """Implemented by CoinlayerApiImpl and MockCoinlayerApiImpl. The
+    active implementation depends on the app configuration."""
     def fetch_crypto_price_data(self):
         """Fetches prices of crypto currencies (in USD?)"""
         pass
@@ -25,6 +27,8 @@ class CoinlayerApiImpl(CoinlayerApi):
                 result[key] = value
         except:
             print(f"Error: {response['error']['info']}")
+
+        return result
 
 
 class MockCoinlayerApiImpl(CoinlayerApi):
