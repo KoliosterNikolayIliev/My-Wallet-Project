@@ -14,15 +14,15 @@ import { getUser } from "../../utils/account";
 // Dashboard page to be filled in with user account data
 const CashflowPage = () => {
   const monthNames = {
-    1: "Jan",
-    2: "Feb",
-    3: "Mar",
-    4: "Apr",
-    5: "May",
-    6: "Jun",
-    7: "Jul",
-    8: "Aug",
-    9: "Sep",
+    "01": "Jan",
+    "02": "Feb",
+    "03": "Mar",
+    "04": "Apr",
+    "05": "May",
+    "06": "Jun",
+    "07": "Jul",
+    "08": "Aug",
+    "09": "Sep",
     10: "Oct",
     11: "Nov",
     12: "Dec",
@@ -113,7 +113,10 @@ const CashflowPage = () => {
                         style={
                           colors[value.type]
                             ? colors[value.type]
-                            : { backgroundColor: "#a9acb060", color: "#84868a" }
+                            : {
+                                backgroundColor: "#a9acb060",
+                                color: "#84868a",
+                              }
                         }
                       >
                         {value.type}
