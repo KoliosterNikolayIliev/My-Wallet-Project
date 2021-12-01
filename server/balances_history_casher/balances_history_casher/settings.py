@@ -13,7 +13,6 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-from development_env import secret_key, field_encryption_key, db_name, db_host, db_username, db_password
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secret_key
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY_BALANCE_CACHE')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -91,34 +90,23 @@ WSGI_APPLICATION = 'balances_history_casher.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# currently not implemented
 # FIELD_ENCRYPTION_KEY = os.environ.get('FIELD_ENCRYPTION_KEY')
-FIELD_ENCRYPTION_KEY = field_encryption_key
 
 
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': db_name,
+        'NAME': os.environ.get('DB_NAME'),
         'CLIENT': {
-            'host': db_host,
-            'username': db_username,
-            'password': db_password,
+            'host': os.environ.get('DB_HOST_BALANCES_CACHING'),
+            'username': os.environ.get('DB_USERNAME_BALANCES_CACHING'),
+            'password': os.environ.get('DB_PASSWORD_BALANCES_CACHING'),
             'authMechanism': 'SCRAM-SHA-1'
         },
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': os.environ.get('CUSTOM_ASSETS_DB_NAME'),
-#         'CLIENT': {
-#             'host': os.environ.get('CUSTOM_ASSETS_DB_HOST'),
-#             'username': os.environ.get('CUSTOM_ASSETS_DB_USERNAME'),
-#             'password': os.environ.get('CUSTOM_ASSETS_DB_PASSWORD'),
-#             'authMechanism': 'SCRAM-SHA-1'
-#         },
-#     }
-# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
