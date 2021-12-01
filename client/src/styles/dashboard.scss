@@ -11,13 +11,12 @@
 //}
 .data-source-container {
   display: flex;
-  flex-direction: column;
   grid-gap: 30px;
   overflow-y: auto;
   max-height: 800px;
   flex-wrap: wrap;
   align-content: flex-start;
-  flex-basis: 70%;
+  flex-basis: 74%;
 }
 .has-transactions:hover {
   color: aqua;
