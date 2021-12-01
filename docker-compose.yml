@@ -106,7 +106,7 @@ services:
     env_file:
       - data.env
 
-  balance-cash:
+  balance-cache:
     build:
       context: ./server/balances_history_casher
 
