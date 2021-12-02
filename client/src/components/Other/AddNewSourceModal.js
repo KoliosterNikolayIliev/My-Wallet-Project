@@ -55,10 +55,7 @@ const AddNewSourceModal = ({ openModal, closeModalFunc, source }) => {
   console.log(sources.loading);
   return (
     <Modal open={openModal} onClose={handleClose}>
-      <Box className="modal-box">
-        {sources.loading === true && <Loader />}
-        {content ? content : sources}
-      </Box>
+      <Box className="modal-box">{content ? content : sources}</Box>
     </Modal>
   );
 };
