@@ -218,7 +218,7 @@ const ExpandSourceModal = ({
                 {
                   source.accounts[0].provider === 'nordigen' ?
                   <p onClick={() => deleteNordigenAccountFunc(source.accounts[0].data.institution_id)}>Disconnect account</p> :
-                  <p>Disconnect account</p>
+                  <p className='disabled-remove-button'>Disconnect account</p>
                 }
                 {/* <svg
                   width="20"

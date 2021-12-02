@@ -175,6 +175,11 @@
   }
 }
 
+.disabled-remove-button {
+  color: gray !important;
+  cursor: default !important;
+}
+
 .expand-modal {
   position: absolute;
   top: 50%;
@@ -278,12 +283,12 @@
       }
 
       .remove-button {
-        cursor: pointer;
         padding-top: 10%;
         display: flex;
         justify-content: flex-start;
 
         p {
+          cursor: pointer;
           padding-top: 0;
           margin: 0;
           font-size: 12px;
