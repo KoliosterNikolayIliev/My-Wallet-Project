@@ -9,6 +9,7 @@ const GroupsContainerComponent = ({
   getTransactionsFunc,
   baseSymbol,
   user,
+  deleteNordigenAccountFunc,
 }) => {
   let source;
   return (
@@ -86,7 +87,7 @@ const GroupsContainerComponent = ({
                     return null;
                   })}
               </ul>
-              <ExpandButton user={user} name={source} source={value} />
+              <ExpandButton user={user} name={source} source={value} deleteNordigenAccountFunc={deleteNordigenAccountFunc} />
             </div>
           </div>
         );
