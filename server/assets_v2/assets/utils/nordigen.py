@@ -224,7 +224,12 @@ async def get_all_account_balances(requisition_id, session, headers):
 
     responses = await asyncio.gather(*tasks)
     for response in responses:
-        data[response["id"]] = {"providerName": response["providerName"], "balanceData": response["balanceData"], "accountType": response["accountType"]}
+        data[response["id"]] = {
+            "providerName": response["providerName"],
+            "balanceData": response["balanceData"],
+            "accountType": response["accountType"],
+            "requisition_id": requisition_id,
+        }
 
     return {"status": "success", "content": data}
 
