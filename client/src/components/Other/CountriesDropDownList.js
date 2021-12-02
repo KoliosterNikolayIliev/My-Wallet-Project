@@ -15,7 +15,6 @@ const countries = [
   "Liechtenstein",
   "Netherlands",
   "Portugal",
-  "Slovenia",
   "United Kingdom",
   "Belgium",
   "Cyprus",
