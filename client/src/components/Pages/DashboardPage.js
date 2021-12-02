@@ -110,6 +110,7 @@ const DashboardPage = () => {
   const deleteNordigenAccountFunc = async (institution_id) => {
     const token = await getAccessTokenSilently();
     await deleteNordigenAccount(token, institution_id)
+    window.location.reload()
   }
 
   // fetch all data on first render
