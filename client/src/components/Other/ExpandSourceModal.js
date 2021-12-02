@@ -8,7 +8,7 @@ import "../../styles/dashboard.scss";
 import {deleteNordigenAccount, updateUser} from "../../utils/account";
 import {useAuth0} from "@auth0/auth0-react";
 import {Redirect} from "react-router";
-import {logDOM} from "@testing-library/react";
+import deleteYodleeAccount from "../../utils/yodlee";
 
 const ExpandSourceModal = ({
                              openModal,
@@ -44,6 +44,19 @@ const ExpandSourceModal = ({
       data["coinbase_api_secret"] = "";
     }
     await updateUser(token, data);
+    setLoading(false)
+    window.sessionStorage.clear();
+    window.location.reload()
+  }
+
+  const deleteYodleeAccountFunc = async () => {
+    setLoading(true)
+    const token = await getAccessTokenSilently();
+    let tasks = [];
+    for (const el of source.accounts) {
+      tasks.push(deleteYodleeAccount(token, el.id));
+    }
+    await Promise.all(tasks);
     setLoading(false)
     window.sessionStorage.clear();
     window.location.reload()
@@ -249,7 +262,7 @@ const ExpandSourceModal = ({
                       source.accounts[0].provider === "coinbase" ?
                         <p onClick={() => deleteCryptoAccount("coinbase")}>Disconnect account</p> :
                         source.accounts[0].provider === "yodlee" ?
-                          <p>Disconnect account</p> :
+                          <p onClick={deleteYodleeAccountFunc}>Disconnect account</p> :
                         <p className="disabled-remove-button">Disconnect account</p>
                 }
                 {/* <svg
