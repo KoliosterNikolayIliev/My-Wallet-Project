@@ -193,8 +193,16 @@
     flex-basis: 45%;
     height: 100%;
     margin: 0;
-    overflow-y: scroll;
+    overflow: auto;
     border-right: 1px solid #f2f2f2;
+
+    ul {
+      overflow: auto;
+    }
+
+    div:nth-child(n + 6) {
+      display: flex;
+    }
 
     .expand-button {
       align-items: baseline;

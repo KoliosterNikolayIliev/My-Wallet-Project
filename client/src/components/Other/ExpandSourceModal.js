@@ -14,7 +14,6 @@ const ExpandSourceModal = ({
   user,
   base,
 }) => {
-  console.log(source.accounts[0]);
   if (openModal) {
     return (
       <Modal open={openModal} onClose={closeModalFunc}>
