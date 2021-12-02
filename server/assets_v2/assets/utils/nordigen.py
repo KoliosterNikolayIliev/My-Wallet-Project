@@ -126,7 +126,7 @@ async def get_bank_name(account_id, session, headers):
     identifier = awaited["institution_id"]
     async with session.get(URL + f'institutions/{identifier}/', headers=headers) as response:
         awaited = await response.json()
-        return awaited["name"]
+        return (awaited["name"], identifier)
 
 
 async def validate_requisition(requisition_id, session, headers):
@@ -202,7 +202,13 @@ async def get_single_account_balance(account, headers, session):
         else:
             details = None
 
-    return {"id": account, "providerName": bank_name, "balanceData": balance_data["balances"][0]["balanceAmount"], "accountType": details}
+    return {
+        "id": account,
+        "providerName": bank_name[0],
+        "institution_id": bank_name[1],
+        "balanceData": balance_data["balances"][0]["balanceAmount"],
+        "accountType": details,
+    }
 
 
 async def get_all_account_balances(requisition_id, session, headers):
@@ -226,9 +232,9 @@ async def get_all_account_balances(requisition_id, session, headers):
     for response in responses:
         data[response["id"]] = {
             "providerName": response["providerName"],
+            "institution_id": response["institution_id"],
             "balanceData": response["balanceData"],
             "accountType": response["accountType"],
-            "requisition_id": requisition_id,
         }
 
     return {"status": "success", "content": data}
@@ -285,7 +291,6 @@ async def get_all_transactions(requisitions, session):
             data = awaited.get('transactions').get('booked')
             result = []
             for transaction in data:
-                print(transaction)
                 transaction_data = {transaction['transactionId']: {"amount": transaction['transactionAmount'], "date": transaction['bookingDate'], "source": bank_name, "type": "bank"}}
                 result.append(transaction_data)
             return result
