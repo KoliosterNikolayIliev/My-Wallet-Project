@@ -38,8 +38,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'encrypted_model_fields',
     'balance_caching_app',
-    'django_apscheduler',
-
 ]
 
 MIDDLEWARE = [
@@ -97,7 +95,7 @@ WSGI_APPLICATION = 'balances_history_cacher.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'balance_cache',
+        'NAME': 'test_balance_cache',
         'CLIENT': {
             'host': os.environ.get('DB_HOST_BALANCES_CACHING'),
             'password': os.environ.get('DB_PASSWORD_BALANCES_CACHING'),

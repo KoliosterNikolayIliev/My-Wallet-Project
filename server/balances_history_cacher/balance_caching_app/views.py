@@ -1,4 +1,4 @@
-
+from pprint import pprint
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -6,13 +6,12 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from balance_caching_app.models import UserData
 from balance_caching_app.serializers import BalancesSerializer, UserBalancesSerializer
-from balance_caching_app.utils import add_balance
 
 
 def _auto_create_balance(data):
     user_id = data['id']
     user = UserData.objects.get(user_identifier=user_id)
-    user.balances_history = add_balance(user.balances_history, data)
+    user.balances_history.append(data)
     return user.save()
 
 

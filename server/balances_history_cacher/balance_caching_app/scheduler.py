@@ -15,6 +15,7 @@ def update_balances():
     users = UserData.objects.all()
     for user in users:
         # time.sleep(300)
+        print('sent')
         user_id = user.user_identifier
         headers = {'Authorization': user_id}
         url = os.environ.get('AUTO_CACHING_URL')
