@@ -130,8 +130,7 @@ const DashboardPage = () => {
           username={user.nickname ? user.nickname : user.name}
         />
         <SubHeader user={user} />
-        <ChartComponent />
-        <ProfileButton />
+        <ChartComponent total={total} base={base} />
         <div style={{ margin: "3% 0" }}>
           <p
             style={{ display: "inline", paddingRight: "20px" }}
