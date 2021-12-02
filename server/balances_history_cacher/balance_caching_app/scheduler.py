@@ -10,16 +10,18 @@ from balance_caching_app.views import _auto_create_balance
 
 
 def update_balances():
-    start_time = time.time()
 
     users = UserData.objects.all()
     for user in users:
         # time.sleep(300)
-        print('sent')
         user_id = user.user_identifier
         headers = {'Authorization': user_id}
         url = os.environ.get('AUTO_CACHING_URL')
-        response = requests.get(url + 'api/assets', headers=headers)
+        try:
+            response = requests.get(url + 'api/assets', headers=headers)
+        except Exception as e:
+            print('Connection to porfolio cashing service failed:'+str(e))
+            break
         total_balance = response.json()['total']
         data = {
             'id': user.user_identifier,
@@ -28,13 +30,9 @@ def update_balances():
         }
         _auto_create_balance(data)
 
-    end_time = time.time()
-    measured_time = end_time - start_time
-    return measured_time
-
 
 def start():
     scheduler = BackgroundScheduler()
-    update_interval = int(os.environ.get('DB_AUTO_CACHING_INTERVAL'))
+    update_interval = float(os.environ.get('DB_AUTO_CACHING_INTERVAL'))
     scheduler.add_job(update_balances, 'interval', minutes=update_interval)
     scheduler.start()

@@ -1,3 +1,4 @@
+import logging
 import os
 from datetime import datetime
 import json
@@ -66,7 +67,10 @@ async def get_assets():
             'id': user_data['user_identifier']
         }
         url = os.environ.get('BALANCE_CACHING_SERVICE_URL')
-        requests.post(url+'balances/add/', data=valid_data)
+        try:
+            response = requests.post(url+'balances/add/', data=valid_data)
+        except Exception as e:
+            print('Connection to balance cashing service failed:'+str(e))
     return jsonify(data), 200
 
 
