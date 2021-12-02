@@ -1,10 +1,6 @@
 import React, { Fragment } from "react";
 import "../../styles/header.scss";
 import logo from "../../images/logo.svg";
-import messages from "../../images/messages-2.svg";
-import notification from "../../images/Notification.svg";
-import services from "../../images/Services.svg";
-import profileImage from "../../images/profile_Img.svg";
 import arrow_down from "../../images/Vector_down.svg";
 import BaseCurrencyDropDownList from "./BaseCurrencyDropDownList";
 import LogOutButton from "../Buttons/LogOutButton";
@@ -36,13 +32,19 @@ const Header = ({ baseSymbol, username }) => {
         <div className="borderline" />
         <ul className="menu-rooter">
           <li>
-            <Link to={"/"}>Overview</Link>
+            <Link className="header-link" to={"/"}>
+              <p>Overview</p>
+            </Link>
           </li>
           <li>
-            <Link to={"/portfolio"}>Portfolio</Link>
+            <Link className="header-link" to={"/portfolio"}>
+              <p>Portfolio</p>
+            </Link>
           </li>
           <li>
-            <Link to={"/cashflow"}>Cashflow</Link>
+            <Link className="header-link" to={"/cashflow"}>
+              <p>Cashflow</p>
+            </Link>
           </li>
         </ul>
       </div>
