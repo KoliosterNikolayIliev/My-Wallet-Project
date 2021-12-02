@@ -50,25 +50,25 @@ services:
     env_file:
       - data.env
 
-  portfolio:
-    build:
-      context: ./server/portfolio
-
-    command:
-      - flask
-      - run
-      - --host=0.0.0.0
-      - --port=5001
-
-    ports:
-      - "5001:5001"
-
-    environment:
-      - FLASK_APP=portfolio
-      - FLASK_ENV=development
-
-    env_file:
-      - data.env
+#  portfolio:
+#    build:
+#      context: ./server/portfolio
+#
+#    command:
+#      - flask
+#      - run
+#      - --host=0.0.0.0
+#      - --port=5001
+#
+#    ports:
+#      - "5001:5001"
+#
+#    environment:
+#      - FLASK_APP=portfolio
+#      - FLASK_ENV=development
+#
+#    env_file:
+#      - data.env
 
   reference:
     build:
@@ -106,19 +106,19 @@ services:
     env_file:
       - data.env
 
-  balance-cache:
-    build:
-      context: ./server/balances_history_cacher
-
-    command:
-      - python
-      - manage.py
-      - runserver
-      - --noreload
-      - 0.0.0.0:8009
-
-    ports:
-      - "8009:8009"
-
-    env_file:
-      - data.env
+#  balance-cache:
+#    build:
+#      context: ./server/balances_history_cacher
+#
+#    command:
+#      - python
+#      - manage.py
+#      - runserver
+#      - --noreload
+#      - 0.0.0.0:8009
+#
+#    ports:
+#      - "8009:8009"
+#
+#    env_file:
+#      - data.env

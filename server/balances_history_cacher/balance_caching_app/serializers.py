@@ -1,8 +1,10 @@
+from math import trunc
 from django.utils import timezone
+from django.utils.datetime_safe import date
 from rest_framework import serializers
 from balance_caching_app.models import UserData
 from balance_caching_app.serializers_validators import validate_user_identifier
-
+from balance_caching_app.utils import add_balance
 
 
 class BalancesSerializer(serializers.Serializer):
@@ -23,8 +25,8 @@ class BalancesSerializer(serializers.Serializer):
 
         if not user.balances_history:
             user.balances_history = []
-
-        user.balances_history.append(validated_data)
+        validated_data['balance'] = trunc(validated_data['balance'])
+        user.balances_history = add_balance(user.balances_history, validated_data)
         user.last_login = timezone.now()
         user.save()
 
@@ -37,4 +39,3 @@ class UserBalancesSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
         fields = "__all__"
-
