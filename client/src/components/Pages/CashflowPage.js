@@ -139,7 +139,7 @@ const CashflowPage = () => {
               });
             })}
           </ul>
-          <div className="view-all-button">
+          {/* <div className="view-all-button">
             <p>Load more</p>
             <svg
               width="8"
@@ -153,7 +153,7 @@ const CashflowPage = () => {
                 fill="#9031DB"
               />
             </svg>
-          </div>
+          </div> */}
         </div>
       </div>
     )
