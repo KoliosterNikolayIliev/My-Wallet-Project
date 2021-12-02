@@ -11,7 +11,7 @@ import {
   getTransactions,
   getAllRecentTransactions,
 } from "../../utils/portfolio";
-import {deleteNordigenAccount, getUser} from "../../utils/account";
+import {getUser} from "../../utils/account";
 
 import GroupsContainerComponent from "../Other/GroupsContainerComponent";
 import RecentTransactionsContainerComponent from "../Other/RecentTransactionsContainerComponent";
@@ -107,12 +107,6 @@ const DashboardPage = () => {
     return transactions.content;
   };
 
-  const deleteNordigenAccountFunc = async (institution_id) => {
-    const token = await getAccessTokenSilently();
-    await deleteNordigenAccount(token, institution_id)
-    window.location.reload()
-  }
-
   // fetch all data on first render
   useEffect(() => {
     getData();
@@ -154,7 +148,6 @@ const DashboardPage = () => {
             total={total}
             user={user}
             getTransactionsFunc={getAccountTransactions}
-            deleteNordigenAccountFunc={deleteNordigenAccountFunc}
           />
 
           <div className="transactions data-source recent-transactions">

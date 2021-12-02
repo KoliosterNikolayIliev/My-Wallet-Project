@@ -4,7 +4,7 @@ import "../../styles/dashboard.scss";
 import { baseAtom } from "../../recoil";
 import { useRecoilState } from "recoil";
 
-const ExpandButton = ({ user, name, source, deleteNordigenAccountFunc }) => {
+const ExpandButton = ({ user, name, source }) => {
   const [openModal, setOpenModal] = useState(false);
   const [base, setBase] = useRecoilState(baseAtom);
   const openModalFunc = () => {
@@ -13,10 +13,6 @@ const ExpandButton = ({ user, name, source, deleteNordigenAccountFunc }) => {
   const closeModalFunc = () => {
     setOpenModal(false);
   };
-  let institution_id;
-  if (source.accounts[0].provider === 'nordigen') {
-    institution_id = source.accounts[0].data.institution_id
-  }
   return (
     <div>
       <div className="expand-button" onClick={openModalFunc}>
@@ -41,8 +37,6 @@ const ExpandButton = ({ user, name, source, deleteNordigenAccountFunc }) => {
         name={name}
         user={user}
         source={source}
-        institution_id={institution_id}
-        deleteNordigenAccountFunc={deleteNordigenAccountFunc}
       />
     </div>
   );

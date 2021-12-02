@@ -5,6 +5,10 @@ import GroupComponent from "./GroupComponent";
 import HoldingComponent from "./HoldingComponent";
 import "../../styles/add-source-modal.scss";
 import "../../styles/dashboard.scss";
+import {deleteNordigenAccount} from "../../utils/account";
+import {useAuth0} from "@auth0/auth0-react";
+import { Redirect } from "react-router";
+import {logDOM} from "@testing-library/react";
 
 const ExpandSourceModal = ({
   openModal,
@@ -13,9 +17,20 @@ const ExpandSourceModal = ({
   source,
   user,
   base,
-  deleteNordigenAccountFunc,
-  institution_id,
 }) => {
+  const { isAuthenticated, getAccessTokenSilently } =
+    useAuth0();
+
+  const deleteNordigenAccountFunc = async (institution_id) => {
+    const token = await getAccessTokenSilently();
+    await deleteNordigenAccount(token, institution_id)
+    window.sessionStorage.clear()
+    window.location.reload()
+  }
+
+  if (!isAuthenticated) {
+    return <Redirect to={"/"} />;
+  }
   if (openModal) {
     return (
       <Modal open={openModal} onClose={closeModalFunc}>
@@ -202,7 +217,7 @@ const ExpandSourceModal = ({
                 </svg> */}
                 {
                   source.accounts[0].provider === 'nordigen' ?
-                  <p onClick={() => deleteNordigenAccountFunc(institution_id)}>Disconnect account</p> :
+                  <p onClick={() => deleteNordigenAccountFunc(source.accounts[0].data.institution_id)}>Disconnect account</p> :
                   <p>Disconnect account</p>
                 }
                 {/* <svg
