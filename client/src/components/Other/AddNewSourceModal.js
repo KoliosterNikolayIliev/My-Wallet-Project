@@ -1,62 +1,66 @@
-import React, {useState} from 'react'
-import {Box, Modal} from "@mui/material";
+import React, { useState } from "react";
+import { Box, Modal } from "@mui/material";
 import CountriesDropDownList from "./CountriesDropDownList";
 import AddYodleeComponent from "./AddYodleeComponent";
 import AddCryptoSource from "./AddCryptoSource";
-import '../../styles/add-source-modal.scss'
+import "../../styles/add-source-modal.scss";
 import Loader from "./LoaderComponent";
-import '../../styles/dashboard.scss'
+import "../../styles/dashboard.scss";
 import AssetsDropDownList from "./AssetsDropDownList";
 
-const AddNewSourceModal = ({openModal, closeModalFunc, source}) => {
-  const [content, setContent] = useState()
+const AddNewSourceModal = ({ openModal, closeModalFunc, source }) => {
+  const [content, setContent] = useState();
 
   const selectProvider = (selected) => {
-    if (selected === 'binance') {
-      setContent(
-        <AddCryptoSource selected={'binance'}/>
-      )
-    }else if (selected === 'coinbase') {
-      setContent(
-        <AddCryptoSource selected={'coinbase'}/>
-      )
+    if (selected === "binance") {
+      setContent(<AddCryptoSource selected={"binance"} />);
+    } else if (selected === "coinbase") {
+      setContent(<AddCryptoSource selected={"coinbase"} />);
     }
-
-  }
+  };
 
   let sources;
-  if (source === 'banks') {
-    sources = <CountriesDropDownList/>
-  } else if (source === 'brokers') {
-    sources = <AddYodleeComponent/>
-  } else if (source === 'crypto') {
+  if (source === "banks") {
+    sources = <CountriesDropDownList />;
+  } else if (source === "brokers") {
+    sources = <AddYodleeComponent />;
+  } else if (source === "crypto") {
     sources = (
-      <div className='buttons-div'>
-        <button className='button-main-big' onClick={() => {
-          selectProvider('binance')
-        }}>binance
+      <div className="buttons-div">
+        <button
+          className="button-main-big"
+          onClick={() => {
+            selectProvider("binance");
+          }}
+        >
+          binance
         </button>
-        <button className='button-main-big' onClick={() => selectProvider('coinbase')}>coinbase</button>
+        <button
+          className="button-main-big"
+          onClick={() => selectProvider("coinbase")}
+        >
+          coinbase
+        </button>
       </div>
     );
   } else {
-    sources = <AssetsDropDownList/>;
+    sources = <AssetsDropDownList />;
   }
 
   const handleClose = () => {
-    window.fastlink.close()
-    setContent()
-    closeModalFunc()
-  }
-  console.log(sources.loading)
+    window.fastlink.close();
+    setContent();
+    closeModalFunc();
+  };
+  console.log(sources.loading);
   return (
     <Modal open={openModal} onClose={handleClose}>
-      <Box className='modal-box'>
+      <Box className="modal-box">
         {sources.loading === true && <Loader />}
         {content ? content : sources}
       </Box>
     </Modal>
   );
-}
+};
 
-export default AddNewSourceModal
+export default AddNewSourceModal;

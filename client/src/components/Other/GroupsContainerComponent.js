@@ -26,10 +26,11 @@ const GroupsContainerComponent = ({
             <div className="data-source-content">
               <ul>
                 {(value.accounts.length > 1 ||
-                  source === "coinbase" ||
+                  value.accounts[0].provider === "coinbase" ||
                   (value.accounts.length === 1 &&
-                    source === "yodlee" &&
-                    value.accounts[0].holdings.length === 0)) &&
+                    value.accounts[0].provider === "yodlee" &&
+                    value.accounts[0].holdings.length === 0) ||
+                  value.accounts[0].provider === "custom_assets") &&
                   value.accounts.map((account) => {
                     return (
                       <GroupComponent

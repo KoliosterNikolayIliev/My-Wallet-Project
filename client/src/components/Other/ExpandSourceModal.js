@@ -14,6 +14,7 @@ const ExpandSourceModal = ({
   user,
   base,
 }) => {
+  console.log(source.accounts[0]);
   if (openModal) {
     return (
       <Modal open={openModal} onClose={closeModalFunc}>
@@ -28,10 +29,11 @@ const ExpandSourceModal = ({
             <div className="data-source-content">
               <ul>
                 {(source.accounts.length > 1 ||
-                  source === "coinbase" ||
+                  source.accounts[0].provider === "coinbase" ||
                   (source.accounts.length === 1 &&
-                    source === "yodlee" &&
-                    source.accounts[0].holdings.length === 0)) &&
+                    source.accounts[0].provider === "yodlee" &&
+                    source.accounts[0].holdings.length === 0) ||
+                  source.accounts[0].provider === "custom_assets") &&
                   source.accounts.map((account) => {
                     return (
                       <GroupComponent
