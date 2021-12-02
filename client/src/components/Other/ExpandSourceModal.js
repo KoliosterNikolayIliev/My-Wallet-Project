@@ -21,15 +21,20 @@ const ExpandSourceModal = ({
   const {isAuthenticated, getAccessTokenSilently} =
     useAuth0();
 
+  const [loading, setLoading] = useState(false)
+
   const deleteNordigenAccountFunc = async (institution_id) => {
+    setLoading(true)
     const token = await getAccessTokenSilently();
     await deleteNordigenAccount(token, institution_id)
+    setLoading(false)
     window.sessionStorage.clear()
     window.location.reload()
   }
 
   const deleteCryptoAccount = async (type) => {
     let data = {};
+    setLoading(true)
     const token = await getAccessTokenSilently();
     if (type === "binance") {
       data["binance_key"] = "";
@@ -39,6 +44,7 @@ const ExpandSourceModal = ({
       data["coinbase_api_secret"] = "";
     }
     await updateUser(token, data);
+    setLoading(false)
     window.sessionStorage.clear();
     window.location.reload()
   }
@@ -50,6 +56,7 @@ const ExpandSourceModal = ({
     return (
       <Modal open={openModal} onClose={closeModalFunc}>
         <Box className="expand-modal">
+          {loading && <Loader/>}
           <div className="data-source expand-data-source">
             <div className="data-source-header">
               <p>{name[0].toUpperCase() + name.slice(1)} </p>
@@ -231,17 +238,19 @@ const ExpandSourceModal = ({
                   </g>
                 </svg> */}
                 {
-                  source.accounts[0].provider === 'nordigen' ?
+                  source.accounts[0].provider === "nordigen" ?
                     <p onClick={
                       () => deleteNordigenAccountFunc(
                         source.accounts[0].data.institution_id
                       )}>Disconnect account
                     </p> :
-                    source.accounts[0].provider === 'binance' ?
-                      <p onClick={() => deleteCryptoAccount('binance')}>Disconnect account</p> :
-                      source.accounts[0].provider === 'coinbase' ?
-                        <p onClick={() => deleteCryptoAccount('coinbase')}>Disconnect account</p> :
-                        <p className='disabled-remove-button'>Disconnect account</p>
+                    source.accounts[0].provider === "binance" ?
+                      <p onClick={() => deleteCryptoAccount("binance")}>Disconnect account</p> :
+                      source.accounts[0].provider === "coinbase" ?
+                        <p onClick={() => deleteCryptoAccount("coinbase")}>Disconnect account</p> :
+                        source.accounts[0].provider === "yodlee" ?
+                          <p>Disconnect account</p> :
+                        <p className="disabled-remove-button">Disconnect account</p>
                 }
                 {/* <svg
                   width="20"
