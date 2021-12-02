@@ -1,4 +1,6 @@
 import React from "react";
+import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
 
 const RecentTransactionsContainerComponent = ({ data }) => {
   const monthNames = {
@@ -101,7 +103,11 @@ const RecentTransactionsContainerComponent = ({ data }) => {
         })}
       </ul>
       <div className="expand-button">
-        <p>View All</p>
+        <p>
+          <Link className="recent-transactions-link" to={"/cashflow"}>
+            View all
+          </Link>
+        </p>
         <svg
           width="8"
           height="12"
