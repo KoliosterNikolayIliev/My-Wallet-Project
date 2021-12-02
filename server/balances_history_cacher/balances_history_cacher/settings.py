@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'encrypted_model_fields',
     'balance_caching_app',
+    'django_apscheduler',
 
 ]
 

@@ -113,7 +113,7 @@ services:
     command:
       - python
       - manage.py
-      - runserver
+      - runserver --noreload
       - 0.0.0.0:8009
 
     ports:

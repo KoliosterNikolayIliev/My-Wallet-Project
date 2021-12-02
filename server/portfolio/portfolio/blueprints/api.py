@@ -210,3 +210,4 @@ def create_asset():
     except Exception as e:
         return jsonify({'status': 'failed', 'content': str(e)}), 400
     return jsonify(response), 200
+
