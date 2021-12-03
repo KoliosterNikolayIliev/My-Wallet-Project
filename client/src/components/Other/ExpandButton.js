@@ -7,14 +7,12 @@ import { useRecoilState } from "recoil";
 const ExpandButton = ({ user, name, source }) => {
   const [openModal, setOpenModal] = useState(false);
   const [base, setBase] = useRecoilState(baseAtom);
-
   const openModalFunc = () => {
     setOpenModal(true);
   };
   const closeModalFunc = () => {
     setOpenModal(false);
   };
-
   return (
     <div>
       <div className="expand-button" onClick={openModalFunc}>

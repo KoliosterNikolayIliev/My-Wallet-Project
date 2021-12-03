@@ -11,7 +11,7 @@ import {
   getTransactions,
   getAllRecentTransactions,
 } from "../../utils/portfolio";
-import { getUser } from "../../utils/account";
+import {getUser} from "../../utils/account";
 
 import GroupsContainerComponent from "../Other/GroupsContainerComponent";
 import RecentTransactionsContainerComponent from "../Other/RecentTransactionsContainerComponent";

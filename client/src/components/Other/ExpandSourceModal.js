@@ -1,23 +1,75 @@
-import React, { useState } from "react";
-import { Box, Modal } from "@mui/material";
+import React, {useState} from "react";
+import {Box, Modal} from "@mui/material";
 import Loader from "./LoaderComponent";
 import GroupComponent from "./GroupComponent";
 import HoldingComponent from "./HoldingComponent";
 import "../../styles/add-source-modal.scss";
 import "../../styles/dashboard.scss";
+import {deleteNordigenAccount, updateUser} from "../../utils/account";
+import {useAuth0} from "@auth0/auth0-react";
+import {Redirect} from "react-router";
+import deleteYodleeAccount from "../../utils/yodlee";
 
 const ExpandSourceModal = ({
-  openModal,
-  closeModalFunc,
-  name,
-  source,
-  user,
-  base,
-}) => {
+                             openModal,
+                             closeModalFunc,
+                             name,
+                             source,
+                             user,
+                             base,
+                           }) => {
+  const {isAuthenticated, getAccessTokenSilently} =
+    useAuth0();
+
+  const [loading, setLoading] = useState(false)
+
+  const deleteNordigenAccountFunc = async (institution_id) => {
+    setLoading(true)
+    const token = await getAccessTokenSilently();
+    await deleteNordigenAccount(token, institution_id)
+    setLoading(false)
+    window.sessionStorage.clear()
+    window.location.reload()
+  }
+
+  const deleteCryptoAccount = async (type) => {
+    let data = {};
+    setLoading(true)
+    const token = await getAccessTokenSilently();
+    if (type === "binance") {
+      data["binance_key"] = "";
+      data["binance_secret"] = "";
+    } else if (type === "coinbase") {
+      data["coinbase_api_key"] = ""
+      data["coinbase_api_secret"] = "";
+    }
+    await updateUser(token, data);
+    setLoading(false)
+    window.sessionStorage.clear();
+    window.location.reload()
+  }
+
+  const deleteYodleeAccountFunc = async () => {
+    setLoading(true)
+    const token = await getAccessTokenSilently();
+    let tasks = [];
+    for (const el of source.accounts) {
+      tasks.push(deleteYodleeAccount(token, el.id));
+    }
+    await Promise.all(tasks);
+    setLoading(false)
+    window.sessionStorage.clear();
+    window.location.reload()
+  }
+
+  if (!isAuthenticated) {
+    return <Redirect to={"/"}/>;
+  }
   if (openModal) {
     return (
       <Modal open={openModal} onClose={closeModalFunc}>
         <Box className="expand-modal">
+          {loading && <Loader/>}
           <div className="data-source expand-data-source">
             <div className="data-source-header">
               <p>{name[0].toUpperCase() + name.slice(1)} </p>
@@ -28,11 +80,11 @@ const ExpandSourceModal = ({
             <div className="data-source-content">
               <ul>
                 {(source.accounts.length > 1 ||
-                  source.accounts[0].provider === "coinbase" ||
-                  (source.accounts.length === 1 &&
-                    source.accounts[0].provider === "yodlee" &&
-                    source.accounts[0].holdings.length === 0) ||
-                  source.accounts[0].provider === "custom_assets") &&
+                    source.accounts[0].provider === "coinbase" ||
+                    (source.accounts.length === 1 &&
+                      source.accounts[0].provider === "yodlee" &&
+                      source.accounts[0].holdings.length === 0) ||
+                    source.accounts[0].provider === "custom_assets") &&
                   source.accounts.map((account) => {
                     return (
                       <GroupComponent
@@ -198,8 +250,21 @@ const ExpandSourceModal = ({
                     />
                   </g>
                 </svg> */}
-
-                <p>Disconnect account</p>
+                {
+                  source.accounts[0].provider === "nordigen" ?
+                    <p onClick={
+                      () => deleteNordigenAccountFunc(
+                        source.accounts[0].data.institution_id
+                      )}>Disconnect account
+                    </p> :
+                    source.accounts[0].provider === "binance" ?
+                      <p onClick={() => deleteCryptoAccount("binance")}>Disconnect account</p> :
+                      source.accounts[0].provider === "coinbase" ?
+                        <p onClick={() => deleteCryptoAccount("coinbase")}>Disconnect account</p> :
+                        source.accounts[0].provider === "yodlee" ?
+                          <p onClick={deleteYodleeAccountFunc}>Disconnect account</p> :
+                        <p className="disabled-remove-button">Disconnect account</p>
+                }
                 {/* <svg
                   width="20"
                   height="20"

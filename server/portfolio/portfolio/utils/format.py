@@ -4,6 +4,8 @@ from collections import OrderedDict
 def group_balances(balances: dict, holdings: dict):
     result = {}
     total_balance = 0
+    print(balances)
+    print(holdings)
     for provider, content in balances.items():
         if content['status'] != 'failed':
             for account, account_content in content['content'].items():
@@ -12,10 +14,14 @@ def group_balances(balances: dict, holdings: dict):
                 for key, value in holdings.items():
                     if key == "yodlee":
                         holdings_data = []
-                        for asset, asset_content in value['content'].items():
-                            if str(asset_content['parent']) == account:
-                                holdings_data.append(asset_content)
-                        data['holdings'] = holdings_data
+                        print(key, value)
+                        if value['status'] != 'failed':
+                            for asset, asset_content in value['content'].items():
+                                if str(asset_content['parent']) == account:
+                                    holdings_data.append(asset_content)
+                            data['holdings'] = holdings_data
+                        else:
+                            data['holdings'] = []
 
                 if result.get(name):
                     if result[name].get('accounts'):

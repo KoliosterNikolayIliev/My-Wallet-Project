@@ -34,4 +34,14 @@ const getAccessToken = async (token) => {
   return response.json();
 };
 
-export { getUser, updateUser, getAccessToken };
+const deleteNordigenAccount = async (token, institution_id) => {
+  await fetch("http://localhost:8001/api/account/user/bank", {
+    method: "DELETE",
+    body: JSON.stringify({institution_id: institution_id}),
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+export { getUser, updateUser, getAccessToken, deleteNordigenAccount };

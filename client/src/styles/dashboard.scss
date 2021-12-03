@@ -89,7 +89,7 @@
   display: flex;
   flex-direction: column;
   width: 30%;
-  height: 48%;
+  height: 47%;
   ul {
     padding-top: 5%;
     .asset-root:nth-child(odd) {
@@ -189,6 +189,11 @@
     margin: 0;
     padding: 0;
   }
+}
+
+.disabled-remove-button {
+  color: gray !important;
+  cursor: default !important;
 }
 
 .expand-modal {
@@ -294,12 +299,12 @@
       }
 
       .remove-button {
-        cursor: pointer;
         padding-top: 10%;
         display: flex;
         justify-content: flex-start;
 
         p {
+          cursor: pointer;
           padding-top: 0;
           margin: 0;
           font-size: 12px;

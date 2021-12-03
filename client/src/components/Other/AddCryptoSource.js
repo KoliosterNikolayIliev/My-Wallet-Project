@@ -4,13 +4,12 @@ import {useAuth0} from "@auth0/auth0-react";
 import {Link, Redirect} from "react-router-dom";
 import '../../styles/dashboard.scss'
 
-const AddCryptoSource = (selected) => {
+const AddCryptoSource = ({selected}) => {
   const {user, isAuthenticated, isLoading, getAccessTokenSilently} =
     useAuth0();
 
   const [key, setKey] = useState(null);
   const [secret, setSecret] = useState(null);
-
   const saveChanges = async () => {
     let data = {};
     const token = await getAccessTokenSilently();
@@ -21,7 +20,7 @@ const AddCryptoSource = (selected) => {
       data["coinbase_api_key"] = key;
       data["coinbase_api_secret"] = secret;
     }
-    updateUser(token, data);
+    await updateUser(token, data);
     window.sessionStorage.clear();
     window.location.reload()
   }
