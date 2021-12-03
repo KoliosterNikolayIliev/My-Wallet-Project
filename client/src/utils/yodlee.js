@@ -11,7 +11,7 @@ const deleteYodleeAccount = async (token, account_id) => {
       },
     }
   );
-  return response.json()
+  return response
 }
 
 export default deleteYodleeAccount
