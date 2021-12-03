@@ -4,7 +4,7 @@ ul {
 }
 
 .header {
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.07);
   display: flex;
   justify-content: space-between;
@@ -15,13 +15,20 @@ ul {
   flex-direction: row;
   flex-wrap: wrap;
 }
-.menu-image-container{
+.menu-image-container {
   flex-basis: 50%;
   display: flex;
   justify-content: space-between;
   padding: 2% 0;
 }
 
+.header-link {
+  text-decoration: none;
+  transition: 0.3s;
+  :hover {
+    color: #9031db;
+  }
+}
 
 .user-container {
   display: flex;
@@ -30,18 +37,19 @@ ul {
   flex-basis: 39%;
 }
 
-.k-dropdown .k-dropdown-wrap, .k-dropdowntree .k-dropdown-wrap{
+.k-dropdown .k-dropdown-wrap,
+.k-dropdowntree .k-dropdown-wrap {
   border-radius: 32px;
   background-color: white;
-  border: 1px solid #F7F7F7;
-  padding:5%;
+  border: 1px solid #f7f7f7;
+  padding: 5%;
 }
 
-.k-i-arrow-s::before{
-  content: url('../images/double-arrow.svg');
+.k-i-arrow-s::before {
+  content: url("../images/double-arrow.svg");
 }
 
-.menu-rooter{
+.menu-rooter {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -53,20 +61,20 @@ ul {
   font-family: DM Sans, sans-serif;
   font-style: normal;
   font-weight: 700;
-  color: #969AA4;
+  color: #969aa4;
 }
 
 .img-container {
   flex-basis: 25%;
-
 }
-.borderline{
+.borderline {
   border-right: 1px solid;
   border-image: linear-gradient(
-                  to bottom,
-                  rgba(151, 151, 151, 1),
-                  rgba(151, 151, 151, 0)
-  ) 1 100%;
+      to bottom,
+      rgba(151, 151, 151, 1),
+      rgba(151, 151, 151, 0)
+    )
+    1 100%;
 }
 
 .img-container img {

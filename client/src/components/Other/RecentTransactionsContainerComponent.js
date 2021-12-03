@@ -1,16 +1,18 @@
 import React from "react";
+import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
 
 const RecentTransactionsContainerComponent = ({ data }) => {
   const monthNames = {
-    1: "Jan",
-    2: "Feb",
-    3: "Mar",
-    4: "Apr",
-    5: "May",
-    6: "Jun",
-    7: "Jul",
-    8: "Aug",
-    9: "Sep",
+    "01": "Jan",
+    "02": "Feb",
+    "03": "Mar",
+    "04": "Apr",
+    "05": "May",
+    "06": "Jun",
+    "07": "Jul",
+    "08": "Aug",
+    "09": "Sep",
     10: "Oct",
     11: "Nov",
     12: "Dec",
@@ -101,7 +103,11 @@ const RecentTransactionsContainerComponent = ({ data }) => {
         })}
       </ul>
       <div className="expand-button">
-        <p>View All</p>
+        <p>
+          <Link className="recent-transactions-link" to={"/cashflow"}>
+            View all
+          </Link>
+        </p>
         <svg
           width="8"
           height="12"
