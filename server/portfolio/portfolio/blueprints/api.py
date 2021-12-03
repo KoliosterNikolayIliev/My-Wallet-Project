@@ -67,10 +67,15 @@ async def get_assets():
             'id': user_data['user_identifier']
         }
         url = os.environ.get('BALANCE_CACHING_SERVICE_URL')
+        response_from_balance_cache=False
         try:
-            response = requests.post(url+'balances/add/', data=valid_data)
+            response_from_balance_cache = requests.post(url+'balances/add/', data=valid_data).json()
         except Exception as e:
             print('Connection to balance cashing service failed:'+str(e))
+        # print(data)
+        # if response_from_balance_cache:
+        #     data['balance_history_GBP']=response_from_balance_cache
+        #     print(data)
     return jsonify(data), 200
 
 

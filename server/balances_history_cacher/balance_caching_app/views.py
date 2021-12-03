@@ -12,7 +12,7 @@ from balance_caching_app.utils import timestamp_is_updated
 def _auto_create_balance(data):
     user_id = data['id']
     user = UserData.objects.get(user_identifier=user_id)
-    if timestamp_is_updated(user.last_login,data['timestamp']):
+    if timestamp_is_updated(user.last_login, data['timestamp']):
         return True
     data['balance'] = trunc(data['balance'])
     user.balances_history.append(data)
@@ -20,9 +20,20 @@ def _auto_create_balance(data):
 
 
 class CreateBalance(CreateAPIView):
+    def create(self, request, *args, **kwargs):
+        user_id = request.data.get('id')
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        user = UserData.objects.get(user_identifier=user_id)
+        data = user.balances_history
+        headers = self.get_success_headers(serializer.data)
+        return Response(data, status=status.HTTP_201_CREATED, headers=headers)
+
     serializer_class = BalancesSerializer
 
 
+# for dev purposes only !!!
 class GetBalances(APIView):
     def get(self, request):
         user_identifier = request.headers.get('id')

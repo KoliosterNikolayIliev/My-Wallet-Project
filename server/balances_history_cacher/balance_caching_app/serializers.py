@@ -29,7 +29,6 @@ class BalancesSerializer(serializers.Serializer):
         user.balances_history = add_balance(user.balances_history, validated_data)
         user.last_login = timezone.now()
         user.save()
-
         return validated_data
 
 

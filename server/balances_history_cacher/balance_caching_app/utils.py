@@ -2,7 +2,7 @@ from django.utils import timezone
 
 
 def add_balance(balances_history, data):
-    print(balances_history)
+
     balance_not_exist = True
     for balance in balances_history:
         current_balance = balance['balance']
@@ -20,7 +20,7 @@ def add_balance(balances_history, data):
 
     if balance_not_exist:
         balances_history.append(data)
-    
+
     return balances_history
 
 
