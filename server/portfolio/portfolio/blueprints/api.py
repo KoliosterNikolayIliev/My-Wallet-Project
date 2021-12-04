@@ -62,11 +62,9 @@ async def get_assets():
         Thread(target=cache_assets, args=(total_gbp, user_data['user_identifier'])).start()
     cache_balance_data = group_balances(balances, holdings, gbp_cur=True)
 
-    valid_data = cache_balance(cache_balance_data, data, user_data, total_gbp)
+    valid_data = cache_balance(cache_balance_data, data, user_data, total_gbp, internal)
 
-    if internal:
-        return jsonify(valid_data[1]), 200
-    return jsonify(valid_data[0]), 200
+    return jsonify(valid_data), 200
 
 
 @bp.route('/api/transactions', methods=(['GET']))

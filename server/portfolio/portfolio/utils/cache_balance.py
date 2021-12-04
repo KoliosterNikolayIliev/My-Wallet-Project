@@ -2,7 +2,7 @@ import os
 import requests
 
 
-def cache_balance(cache_balance_data, data, user_data, total_gbp):
+def cache_balance(cache_balance_data, data, user_data, total_gbp, internal):
     cache_balance_data.pop('total')
     cleared_data = cache_balance_data
     source_balances = {key: value['total'] for key, value in cleared_data.items()}
@@ -20,4 +20,6 @@ def cache_balance(cache_balance_data, data, user_data, total_gbp):
     except Exception as e:
         print('Connection to balance cashing service failed:' + str(e))
 
-    return data, valid_data
+    if internal:
+        return valid_data
+    return data
