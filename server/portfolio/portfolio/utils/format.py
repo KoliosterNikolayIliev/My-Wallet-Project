@@ -1,14 +1,19 @@
 import datetime as dt
 from collections import OrderedDict
 
-def group_balances(balances: dict, holdings: dict):
+
+def group_balances(balances: dict, holdings: dict, gbp_cur=False):
+    cur_currency = 'base_currency'
+    if gbp_cur:
+        cur_currency = 'gbp_currency'
     result = {}
     total_balance = 0
     for provider, content in balances.items():
         if content['status'] != 'failed':
             for account, account_content in content['content'].items():
                 name = account_content['providerName']
-                data = {'provider': provider, 'id': account, 'data': {key:value for (key, value) in account_content.items() if key != "providerName"}}
+                data = {'provider': provider, 'id': account,
+                        'data': {key: value for (key, value) in account_content.items() if key != "providerName"}}
                 for key, value in holdings.items():
                     if key == "yodlee":
                         holdings_data = []
@@ -23,18 +28,17 @@ def group_balances(balances: dict, holdings: dict):
                     else:
                         result[name]['accounts'] = [data]
 
-                    if account_content['balanceData'].get('base_currency'):
-                        total_balance += float(account_content['balanceData']['base_currency'])
+                    if account_content['balanceData'].get(cur_currency):
+                        total_balance += float(account_content['balanceData'][cur_currency])
                         if result[name].get('total'):
-                            result[name]['total'] += account_content['balanceData']['base_currency']
+                            result[name]['total'] += account_content['balanceData'][cur_currency]
                         else:
-                            result[name]['total'] = account_content['balanceData']['base_currency']
+                            result[name]['total'] = account_content['balanceData'][cur_currency]
                 else:
-                    total_balance += float(account_content['balanceData']['base_currency'])
-                    result[name] = {'accounts': [data], 'total': account_content['balanceData']['base_currency']}
+                    total_balance += float(account_content['balanceData'][cur_currency])
+                    result[name] = {'accounts': [data], 'total': account_content['balanceData'][cur_currency]}
 
-
-    for provider, content in {key:value for (key, value) in holdings.items() if key != "yodlee"}.items():
+    for provider, content in {key: value for (key, value) in holdings.items() if key != "yodlee"}.items():
         if content['status'] != 'failed':
             for asset, asset_content in content['content'].items():
                 data = {'provider': provider, 'id': asset, 'data': asset_content}
@@ -45,27 +49,29 @@ def group_balances(balances: dict, holdings: dict):
                     else:
                         result[provider]['accounts'] = [data]
 
-                    if asset_content.get('base_currency'):
-                        total_balance += float(asset_content['base_currency'])
+                    if asset_content.get(cur_currency):
+                        total_balance += float(asset_content[cur_currency])
                         if result[provider].get('total'):
-                            result[provider]['total'] += asset_content['base_currency']
+                            result[provider]['total'] += asset_content[cur_currency]
                         else:
-                            result[provider]['total'] = asset_content['base_currency']
+                            result[provider]['total'] = asset_content[cur_currency]
                 else:
-                    if asset_content.get('base_currency'):
-                        total_balance += float(asset_content['base_currency'])
-                        result[provider] = {'accounts': [data], 'total': asset_content['base_currency']}
+                    if asset_content.get(cur_currency):
+                        total_balance += float(asset_content[cur_currency])
+                        result[provider] = {'accounts': [data], 'total': asset_content[cur_currency]}
                     else:
                         result[provider] = {'accounts': [data], 'total': 0}
     result['total'] = total_balance
     return result
 
+
 def set_historical_balance(starting_balance: float, transactions: list):
     data = {}
     result = {}
     balance = starting_balance
-    transactions_from_this_month = [transaction for transaction in transactions if list(transaction.values())[0]['date'].split('-')[1] == str(dt.datetime.now().month)]
-    
+    transactions_from_this_month = [transaction for transaction in transactions if
+                                    list(transaction.values())[0]['date'].split('-')[1] == str(dt.datetime.now().month)]
+
     if not transactions_from_this_month:
         return None
 
@@ -87,7 +93,7 @@ def set_historical_balance(starting_balance: float, transactions: list):
                         found = True
                         break
             if i == 1 or not found:
-                for j in range(1, i+1):
+                for j in range(1, i + 1):
                     if data.get(j):
                         data[i] = data[j]
                         break

@@ -1,4 +1,3 @@
-import logging
 import os
 from datetime import datetime
 import json
@@ -52,30 +51,36 @@ async def get_assets():
 
         balances = responses[0]
         holdings = responses[1]
+
         total_gbp = await convert_assets_to_base_currency_and_get_total_gbp(
             user_data['base_currency'],
             balances,
             holdings,
             session,
         )
+
         data = group_balances(balances, holdings)
+
         Thread(target=cache_assets, args=(total_gbp, user_data['user_identifier'])).start()
     if not internal:
-        total_amount = total_gbp
+        cache_balance_data = group_balances(balances, holdings, gbp_cur=True)
+        cache_balance_data.pop('total')
+        cleared_data = cache_balance_data
+        source_balances = {key: value['total'] for key, value in cleared_data.items()}
+
         valid_data = {
-            'balance': total_amount,
-            'id': user_data['user_identifier']
+            'id': user_data['user_identifier'],
+            'total_balance': total_gbp,
+            'source_balances': source_balances
         }
         url = os.environ.get('BALANCE_CACHING_SERVICE_URL')
-        response_from_balance_cache=False
+
         try:
-            response_from_balance_cache = requests.post(url+'balances/add/', data=valid_data).json()
+            response_from_balance_cache = requests.post(url + 'balances/add/', data=valid_data).json()
+            data['balance_history_GBP'] = response_from_balance_cache
         except Exception as e:
-            print('Connection to balance cashing service failed:'+str(e))
-        # print(data)
-        # if response_from_balance_cache:
-        #     data['balance_history_GBP']=response_from_balance_cache
-        #     print(data)
+            print('Connection to balance cashing service failed:' + str(e))
+
     return jsonify(data), 200
 
 
@@ -219,4 +224,3 @@ def create_asset():
     except Exception as e:
         return jsonify({'status': 'failed', 'content': str(e)}), 400
     return jsonify(response), 200
-
