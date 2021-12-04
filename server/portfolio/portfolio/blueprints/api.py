@@ -1,14 +1,12 @@
-import os
 from datetime import datetime
 import json
 from threading import Thread
-
-import requests
 from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 from ..utils.assets import get_balances, get_transactions, get_holdings, get_assets_recent_transactions
 from ..utils.account import validate_auth_header
 from ..utils.cache_assets import cache_assets
+from ..utils.cache_balance import cache_balance
 from ..utils.custom_assets import create_asset as create_custom_asset
 from ..utils.format import group_balances, set_historical_balance
 
@@ -62,26 +60,13 @@ async def get_assets():
         data = group_balances(balances, holdings)
 
         Thread(target=cache_assets, args=(total_gbp, user_data['user_identifier'])).start()
-    if not internal:
-        cache_balance_data = group_balances(balances, holdings, gbp_cur=True)
-        cache_balance_data.pop('total')
-        cleared_data = cache_balance_data
-        source_balances = {key: value['total'] for key, value in cleared_data.items()}
+    cache_balance_data = group_balances(balances, holdings, gbp_cur=True)
 
-        valid_data = {
-            'id': user_data['user_identifier'],
-            'total_balance': total_gbp,
-            'source_balances': source_balances
-        }
-        url = os.environ.get('BALANCE_CACHING_SERVICE_URL')
+    valid_data = cache_balance(cache_balance_data, data, user_data, total_gbp)
 
-        try:
-            response_from_balance_cache = requests.post(url + 'balances/add/', data=valid_data).json()
-            data['balance_history_GBP'] = response_from_balance_cache
-        except Exception as e:
-            print('Connection to balance cashing service failed:' + str(e))
-
-    return jsonify(data), 200
+    if internal:
+        return jsonify(valid_data[1]), 200
+    return jsonify(valid_data[0]), 200
 
 
 @bp.route('/api/transactions', methods=(['GET']))
