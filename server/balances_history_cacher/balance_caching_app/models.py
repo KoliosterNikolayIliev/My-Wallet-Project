@@ -1,8 +1,19 @@
 from djongo import models
 
 
+class Source(models.Model):
+    provider = models.CharField(max_length=50, primary_key=True)
+    value = models.FloatField()
+
+    class Meta:
+        managed = False
+
+
 class Balance(models.Model):
     balance = models.FloatField(primary_key=True)
+    source_balances = models.ArrayField(
+        model_container=Source
+    )
     timestamp = models.DateTimeField()
 
     class Meta:
