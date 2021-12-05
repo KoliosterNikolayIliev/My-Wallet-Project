@@ -1,4 +1,5 @@
 import os
+import time
 import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 from balance_caching_app.models import UserData
@@ -9,7 +10,8 @@ def update_balances():
     users = UserData.objects.all()
     for user in users:
         AutoRequest.auto = True
-        # time.sleep(300)
+        sleep_time = os.environ.get('AUTO_UPDATE_USER_DELAY')
+        time.sleep(float(sleep_time))
         if user_is_not_active(user.last_login):
             continue
         user_id = user.user_identifier
