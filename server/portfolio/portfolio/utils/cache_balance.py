@@ -1,4 +1,5 @@
 import os
+from pprint import pprint
 
 import requests
 
@@ -18,9 +19,10 @@ def cache_balance(cache_balance_data, data, user_data, total_gbp, internal):
     url = os.environ.get('BALANCE_CACHING_SERVICE_URL')
     try:
         response_from_balance_cache = requests.post(url + 'balances/add/', data=valid_data).json()
-        # TODO - must be handled in frontend !!!
+        #TODO - must be handled in frontend !!!
         # if not internal:
         #     data['balance_history_GBP'] = response_from_balance_cache
+        pprint(response_from_balance_cache)
     except Exception as e:
         print('Connection to balance cashing service failed:' + str(e))
 
