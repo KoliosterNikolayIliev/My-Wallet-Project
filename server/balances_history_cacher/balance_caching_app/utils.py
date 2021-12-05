@@ -14,11 +14,12 @@ def add_balance(balances_history, data):
         'source_balances_history': []
     }
     balance_not_exist = True
+    new_balance = validated_balance_data['balance']
+    new_timestamp = str(validated_balance_data['timestamp']).split(' ')[0]
+
     for balance in balances_history:
         current_balance = balance['balance']
-        new_balance = validated_balance_data['balance']
         current_timestamp = str(balance['timestamp']).split(' ')[0]
-        new_timestamp = str(validated_balance_data['timestamp']).split(' ')[0]
 
         if trunc(current_balance) == trunc(new_balance) and current_timestamp == new_timestamp:
             balance_not_exist = False
