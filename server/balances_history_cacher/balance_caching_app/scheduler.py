@@ -1,15 +1,14 @@
 import os
 import requests
 from apscheduler.schedulers.background import BackgroundScheduler
-from balance_caching_app.apps import auto
 from balance_caching_app.models import UserData
-from balance_caching_app.utils import user_is_not_active
+from balance_caching_app.utils import user_is_not_active, AutoRequest
 
 
 def update_balances():
-    auto.auto = True
     users = UserData.objects.all()
     for user in users:
+        AutoRequest.auto = True
         # time.sleep(300)
         if user_is_not_active(user.last_login):
             continue
@@ -21,6 +20,7 @@ def update_balances():
         except Exception as e:
             print('Connection to porfolio cashing service failed:' + str(e))
             break
+    AutoRequest.auto = False
 
 
 def start():

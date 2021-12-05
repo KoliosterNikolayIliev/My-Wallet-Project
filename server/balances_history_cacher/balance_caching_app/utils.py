@@ -3,8 +3,7 @@ from math import trunc
 
 
 class AutoRequest:
-    def __init__(self):
-        self.auto = False
+    auto = False
 
 
 def add_balance(balances_history, data):
@@ -55,9 +54,9 @@ def user_is_not_active(timestamp):
     user_month = int(str(timestamp).split('-')[1])
     current_month = int(str(timezone.now()).split('-')[1])
     if current_month - user_month >= 3:
-        print('inactive')
+        print('inactive'+f'{timezone.now()}')
         return True
-    print('active')
+    print('active'+f'{timezone.now()}')
     return False
 
 

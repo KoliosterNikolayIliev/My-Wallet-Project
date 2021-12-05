@@ -1,9 +1,5 @@
 from django.apps import AppConfig
 
-from balance_caching_app.utils import AutoRequest
-
-auto = AutoRequest
-
 
 class BalanceCachingAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
@@ -12,4 +8,3 @@ class BalanceCachingAppConfig(AppConfig):
     def ready(self):
         from balance_caching_app import scheduler
         scheduler.start()
-        auto()
