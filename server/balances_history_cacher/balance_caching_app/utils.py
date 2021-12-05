@@ -4,26 +4,38 @@ from math import trunc
 
 def add_balance(balances_history, data):
     # print(data)
+    validated_balance_data = {
+        'balance': data['total_balance'],
+        'timestamp': data['timestamp'],
+        'source_balances_history':[]
+    }
     balance_not_exist = True
     for balance in balances_history:
         # TODO here I need to check with floatpoint accuracy
         current_balance = balance['balance']
-        new_balance = data['balance']
+        new_balance = validated_balance_data['balance']
         current_timestamp = str(balance['timestamp']).split(' ')[0]
-        new_timestamp = str(data['timestamp']).split(' ')[0]
+        new_timestamp = str(validated_balance_data['timestamp']).split(' ')[0]
 
         if trunc(current_balance) == trunc(new_balance) and current_timestamp == new_timestamp:
             balance_not_exist = False
-            balance['timestamp'] = data['timestamp']
+            balance['timestamp'] = validated_balance_data['timestamp']
         if trunc(current_balance) != trunc(new_balance) and current_timestamp == new_timestamp:
-            balance['timestamp'] = data['timestamp']
+            balance['timestamp'] = validated_balance_data['timestamp']
             balance['balance'] = new_balance
             balance_not_exist = False
 
     if balance_not_exist:
-        balances_history.append(data)
+        source_balances_list = data['source_balances']
+        it = iter(source_balances_list)
+        validated_source_data = tuple(zip(it, it))
+        source_balances_history = []
+        source_balances_history= add_source_balances(source_balances_history, validated_source_data)
+        validated_balance_data['source_balances_history']=source_balances_history
+        balances_history.append(validated_balance_data)
 
-    return balances_history, balance_not_exist
+
+    return balances_history
 
 
 def add_source_balances(source_balances_history, data):

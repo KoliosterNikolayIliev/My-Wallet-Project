@@ -27,9 +27,9 @@ class CreateBalance(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         user = UserData.objects.get(user_identifier=user_id)
-        data = [user.balances_history, user.source_balances_history]
+        # data = [user.balances_history, user.source_balances_history]
         headers = self.get_success_headers(serializer.data)
-        return Response(data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(status=status.HTTP_201_CREATED, headers=headers)
 
     serializer_class = BalancesSerializer
 
