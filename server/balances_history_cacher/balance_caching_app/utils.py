@@ -54,17 +54,7 @@ def user_is_not_active(timestamp):
     user_month = int(str(timestamp).split('-')[1])
     current_month = int(str(timezone.now()).split('-')[1])
     if current_month - user_month >= 3:
-        print('inactive'+f'{timezone.now()}')
+        print('inactive' + f'{timezone.now()}')
         return True
-    print('active'+f'{timezone.now()}')
-    return False
-
-
-def timestamp_is_updated(last_login, timestamp):
-    last_login = str(last_login).split(' ')[0]
-    timestamp = str(timestamp).split(' ')[0]
-    if last_login == timestamp:
-        print('user not updated')
-        return True
-    print('user updated')
+    print('active' + f'{timezone.now()}')
     return False
