@@ -1,19 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
-from balance_caching_app.models import UserData
 from balance_caching_app.serializers import BalancesSerializer
-from balance_caching_app.utils import timestamp_is_updated
-
-
-def _auto_create_balance(data):
-    user_id = data['id']
-    user = UserData.objects.get(user_identifier=user_id)
-    if timestamp_is_updated(user.last_login, data['timestamp']):
-        return True
-
-    user.balances_history.append(data)
-    return user.save()
 
 
 class CreateBalance(CreateAPIView):

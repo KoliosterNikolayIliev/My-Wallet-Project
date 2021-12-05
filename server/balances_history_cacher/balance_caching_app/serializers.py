@@ -1,5 +1,7 @@
 from django.utils import timezone
 from rest_framework import serializers
+
+from balance_caching_app.apps import auto
 from balance_caching_app.models import UserData
 from balance_caching_app.utils import add_balance
 
@@ -24,6 +26,8 @@ class BalancesSerializer(serializers.Serializer):
             user.balances_history = []
 
         user.balances_history = add_balance(user.balances_history, validated_data)
-        user.last_login = timezone.now()
+        if not auto.auto:
+            user.last_login = timezone.now()
         user.save()
+        auto.auto = False
         return validated_data

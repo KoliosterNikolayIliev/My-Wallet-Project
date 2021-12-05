@@ -2,8 +2,12 @@ from django.utils import timezone
 from math import trunc
 
 
-def add_balance(balances_history, data):
+class AutoRequest:
+    def __init__(self):
+        self.auto = False
 
+
+def add_balance(balances_history, data):
     validated_balance_data = {
         'balance': data['total_balance'],
         'timestamp': data['timestamp'],
@@ -11,7 +15,6 @@ def add_balance(balances_history, data):
     }
     balance_not_exist = True
     for balance in balances_history:
-        # TODO here I need to check with floatpoint accuracy
         current_balance = balance['balance']
         new_balance = validated_balance_data['balance']
         current_timestamp = str(balance['timestamp']).split(' ')[0]
