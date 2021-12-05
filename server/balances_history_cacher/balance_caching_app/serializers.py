@@ -1,9 +1,7 @@
-from pprint import pprint
-
 from django.utils import timezone
 from rest_framework import serializers
-from balance_caching_app.models import UserData, Balance
-from balance_caching_app.utils import add_balance, add_source_balances
+from balance_caching_app.models import UserData
+from balance_caching_app.utils import add_balance
 
 
 class BalancesSerializer(serializers.Serializer):
@@ -26,16 +24,6 @@ class BalancesSerializer(serializers.Serializer):
             user.balances_history = []
 
         user.balances_history = add_balance(user.balances_history, validated_data)
-
         user.last_login = timezone.now()
-        pprint(user.balances_history)
-        print()
         user.save()
         return validated_data
-
-# class UserBalancesSerializer(serializers.ModelSerializer):
-#     balances_history = BalancesSerializer(many=True)
-#
-#     class Meta:
-#         model = UserData
-#         fields = "__all__"

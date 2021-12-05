@@ -3,11 +3,11 @@ from math import trunc
 
 
 def add_balance(balances_history, data):
-    # print(data)
+
     validated_balance_data = {
         'balance': data['total_balance'],
         'timestamp': data['timestamp'],
-        'source_balances_history':[]
+        'source_balances_history': []
     }
     balance_not_exist = True
     for balance in balances_history:
@@ -29,22 +29,21 @@ def add_balance(balances_history, data):
         source_balances_list = data['source_balances']
         it = iter(source_balances_list)
         validated_source_data = tuple(zip(it, it))
-        source_balances_history = []
-        source_balances_history= add_source_balances(source_balances_history, validated_source_data)
-        validated_balance_data['source_balances_history']=source_balances_history
+        source_balances_history = add_source_balances(validated_source_data)
+        validated_balance_data['source_balances_history'] = source_balances_history
         balances_history.append(validated_balance_data)
-
 
     return balances_history
 
 
-def add_source_balances(source_balances_history, data):
-    for tup in data:
-        ready = {
-            'provider': tup[0],
-            'value': tup[1]
+def add_source_balances(data):
+    source_balances_history = []
+    for entry in data:
+        balance = {
+            'provider': entry[0],
+            'value': entry[1]
         }
-        source_balances_history.append(ready)
+        source_balances_history.append(balance)
     return source_balances_history
 
 
