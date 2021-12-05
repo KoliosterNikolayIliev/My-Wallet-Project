@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY_BALANCE_CACHE')
+SECRET_KEY = 'django-insecure-gn%^@t@35sy(cp05$8@8%v@^x#0qum)6kq!w27f130!#zu89kz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -97,8 +97,8 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'test_balance_cache',
         'CLIENT': {
-            'host': os.environ.get('DB_HOST_BALANCES_CACHING'),
-            'password': os.environ.get('DB_PASSWORD_BALANCES_CACHING'),
+            'host': 'mongodb+srv://trivialAdmin:<password>@3vial.9mih9.mongodb.net/3vial?retryWrites=true&w=majority',
+            'password': 'OZjhinrBmHRGiXHk',
             'authMechanism': 'SCRAM-SHA-1'
         },
     }

@@ -11,13 +11,11 @@ class Source(models.Model):
 
 class Balance(models.Model):
     balance = models.FloatField(primary_key=True)
-    source_balances = models.ArrayField(
-        model_container=Source
-    )
     timestamp = models.DateTimeField()
 
     class Meta:
         managed = False
+        ordering = ['timestamp']
 
 
 class UserData(models.Model):
@@ -26,3 +24,7 @@ class UserData(models.Model):
     balances_history = models.ArrayField(
         model_container=Balance
     )
+    source_balances_history = models.ArrayField(
+        model_container=Source
+    )
+
