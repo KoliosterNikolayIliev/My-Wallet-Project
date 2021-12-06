@@ -11,7 +11,7 @@ import {
   getTransactions,
   getAllRecentTransactions,
 } from "../../utils/portfolio";
-import {getUser} from "../../utils/account";
+import { getUser } from "../../utils/account";
 
 import GroupsContainerComponent from "../Other/GroupsContainerComponent";
 import RecentTransactionsContainerComponent from "../Other/RecentTransactionsContainerComponent";
@@ -23,7 +23,11 @@ import Header from "../Other/HeaderComponent";
 import SubHeader from "../Other/SubHeaderComponent";
 import ChartComponent from "../Other/ChartComponent";
 import AddNewSourceComponent from "../Other/AddNewSourceComponent";
-import { recentTransactionsAtom, baseAtom } from "../../recoil";
+import {
+  recentTransactionsAtom,
+  baseAtom,
+  balanceHistoryAtom,
+} from "../../recoil";
 
 // Dashboard page to be filled in with user account data
 const DashboardPage = () => {
@@ -32,6 +36,8 @@ const DashboardPage = () => {
   const [recentTransactions, setRecentTransactions] = useRecoilState(
     recentTransactionsAtom
   );
+  const [balanceHistory, setBalanceHistory] =
+    useRecoilState(balanceHistoryAtom);
   const [base, setBase] = useRecoilState(baseAtom);
   const [total, setTotal] = useState(0);
 
@@ -59,7 +65,8 @@ const DashboardPage = () => {
     if (
       window.sessionStorage.getItem("total") &&
       window.sessionStorage.getItem("assets") &&
-      window.sessionStorage.getItem("recentTransactions")
+      window.sessionStorage.getItem("recentTransactions") &&
+      window.sessionStorage.getItem("balanceHistory")
     ) {
       setTotal(JSON.parse(window.sessionStorage.getItem("total")));
       setGroups(JSON.parse(window.sessionStorage.getItem("assets")));
@@ -73,11 +80,19 @@ const DashboardPage = () => {
         (async () => {
           const assets = await getAssets(token);
           const total = assets.total;
+          const cached_history = assets.balance_history;
+
           delete assets.total;
+          delete assets.balance_history;
 
           window.sessionStorage.setItem("total", JSON.stringify(total));
           window.sessionStorage.setItem("assets", JSON.stringify(assets));
+          window.sessionStorage.setItem(
+            "balanceHistory",
+            JSON.stringify(cached_history)
+          );
           setTotal(total);
+          setBalanceHistory(cached_history);
           setGroups(assets);
         })(),
         (async () => {
