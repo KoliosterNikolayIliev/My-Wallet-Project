@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import GroupComponent from "./GroupComponent";
 import HoldingComponent from "./HoldingComponent";
 import ExpandButton from "./ExpandButton";
 
 import { useRecoilState } from "recoil";
 import { balanceHistoryAtom } from "../../recoil";
+import { getAssets } from "../../utils/portfolio";
+import { useAuth0 } from "@auth0/auth0-react";
+import Loader from "./LoaderComponent";
 
 const GroupsContainerComponent = ({
   data,
@@ -13,16 +16,45 @@ const GroupsContainerComponent = ({
   baseSymbol,
   user,
 }) => {
+  const { getAccessTokenSilently } = useAuth0();
+  const [isLoading, setIsLoading] = useState(true);
   let source;
   const [balanceHistory, setBalanceHistory] =
     useRecoilState(balanceHistoryAtom);
 
-  if (balanceHistory === "" || !balanceHistory) {
-    if (window.sessionStorage.getItem("balanceHistory")) {
-      setBalanceHistory(
-        JSON.parse(window.sessionStorage.getItem("balanceHistory"))
-      );
+  const getData = async () => {
+    const token = await getAccessTokenSilently();
+    const assets = await getAssets(token);
+    const total = assets.total;
+    const cached_history = assets.balance_history;
+
+    delete assets.total;
+    delete assets.balance_history;
+
+    window.sessionStorage.setItem("total", JSON.stringify(total));
+    window.sessionStorage.setItem("assets", JSON.stringify(assets));
+    window.sessionStorage.setItem(
+      "balanceHistory",
+      JSON.stringify(cached_history)
+    );
+    setBalanceHistory(cached_history);
+  };
+
+  useEffect(() => {
+    if (balanceHistory === "" || !balanceHistory) {
+      if (window.sessionStorage.getItem("balanceHistory")) {
+        setBalanceHistory(
+          JSON.parse(window.sessionStorage.getItem("balanceHistory"))
+        );
+      } else {
+        getData();
+      }
     }
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading || balanceHistory === "" || !balanceHistory) {
+    return Loader();
   }
 
   const source_balances_history =
@@ -44,6 +76,7 @@ const GroupsContainerComponent = ({
             } else {
               percentage = 100 - percentage;
             }
+            percentage = percentage.toFixed(2);
           }
         });
 
