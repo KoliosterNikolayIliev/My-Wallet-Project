@@ -105,7 +105,11 @@ const CashflowPage = () => {
                       </p>
 
                       {/* Source */}
-                      <p className="transaction-source">{value.source}</p>
+                      <p className="transaction-source">
+                        {typeof value.source !== "object"
+                          ? value.source
+                          : value.source[0]}
+                      </p>
 
                       {/* Type */}
                       <p
