@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'balances_history_cacher.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'test_balance_cache',
+        'NAME': 'balance_cache',
         'CLIENT': {
             'host': os.environ.get('DB_HOST_BALANCES_CACHING'),
             'password': os.environ.get('DB_PASSWORD_BALANCES_CACHING'),
