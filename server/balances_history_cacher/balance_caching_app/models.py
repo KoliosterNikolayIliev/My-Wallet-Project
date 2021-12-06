@@ -1,12 +1,24 @@
 from djongo import models
 
 
-class Balance(models.Model):
-    balance = models.FloatField(primary_key=True)
-    timestamp = models.DateTimeField()
+class Source(models.Model):
+    provider = models.CharField(max_length=50, primary_key=True)
+    value = models.FloatField()
 
     class Meta:
         managed = False
+
+
+class Balance(models.Model):
+    balance = models.FloatField(primary_key=True)
+    timestamp = models.DateTimeField()
+    source_balances_history = models.ArrayField(
+        model_container=Source
+    )
+
+    class Meta:
+        managed = False
+        ordering = ['timestamp']
 
 
 class UserData(models.Model):
@@ -15,3 +27,6 @@ class UserData(models.Model):
     balances_history = models.ArrayField(
         model_container=Balance
     )
+
+
+

@@ -2,7 +2,6 @@ import asyncio
 
 import requests, os
 
-
 URL = os.environ.get("PORTFOLIO_REFERENCE_URL")
 
 
@@ -38,9 +37,10 @@ async def convert_assets_to_base_currency_and_get_total_gbp(base, balances, hold
             for asset in balance["content"].values():
                 asset["balanceData"]["base_currency"] = float(asset["balanceData"]["amount"]) / float(
                     currency_prices[asset["balanceData"]["currency"]])
-
-                total_gbp += float(asset["balanceData"]["amount"]) / float(
+                value = float(asset["balanceData"]["amount"]) / float(
                     currency_prices_gbp[asset["balanceData"]["currency"]])
+                total_gbp += value
+                asset["balanceData"]["gbp_currency"] = value
 
     for holding in holdings.values():
         if holding["status"] != "failed":
@@ -48,13 +48,17 @@ async def convert_assets_to_base_currency_and_get_total_gbp(base, balances, hold
                 if crypto_prices.get(asset["symbol"]):
                     usd_currency = float(crypto_prices[asset["symbol"]]) * float(asset["quantity"])
                     asset["base_currency"] = usd_currency / float(currency_prices["USD"])
-                    total_gbp += usd_currency / float(currency_prices_gbp["USD"])
+                    value = usd_currency / float(currency_prices_gbp["USD"])
+                    total_gbp += value
+                    asset["gbp_currency"] = value
 
                 else:
                     if stocks_prices.get(asset["symbol"]):
                         usd_currency = float(stocks_prices[asset["symbol"]]) * float(asset["quantity"])
                         asset["base_currency"] = usd_currency / float(currency_prices["USD"])
-                        total_gbp += usd_currency / float(currency_prices_gbp["USD"])
+                        value = usd_currency / float(currency_prices_gbp["USD"])
+                        total_gbp += value
+                        asset["gbp_currency"] = value
 
     return total_gbp
 

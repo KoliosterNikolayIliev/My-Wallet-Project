@@ -1,39 +1,32 @@
 import os
 import time
-
 import requests
 from apscheduler.schedulers.background import BackgroundScheduler
-from django.utils import timezone
-
 from balance_caching_app.models import UserData
-from balance_caching_app.views import _auto_create_balance
+from balance_caching_app.utils import user_is_not_active, AutoRequest
 
 
 def update_balances():
-    start_time = time.time()
-
     users = UserData.objects.all()
     for user in users:
-        # time.sleep(300)
+        AutoRequest.auto = True
+        sleep_time = os.environ.get('AUTO_UPDATE_USER_DELAY')
+        time.sleep(float(sleep_time))
+        if user_is_not_active(user.last_login):
+            continue
         user_id = user.user_identifier
         headers = {'Authorization': user_id}
         url = os.environ.get('AUTO_CACHING_URL')
-        response = requests.get(url + 'api/assets', headers=headers)
-        total_balance = response.json()['total']
-        data = {
-            'id': user.user_identifier,
-            'balance': total_balance,
-            'timestamp': timezone.now()
-        }
-        _auto_create_balance(data)
-
-    end_time = time.time()
-    measured_time = end_time - start_time
-    return measured_time
+        try:
+            requests.get(url + 'api/assets', headers=headers)
+        except Exception as e:
+            print('Connection to porfolio cashing service failed:' + str(e))
+            break
+    AutoRequest.auto = False
 
 
 def start():
     scheduler = BackgroundScheduler()
-    update_interval = int(os.environ.get('DB_AUTO_CACHING_INTERVAL'))
+    update_interval = float(os.environ.get('DB_AUTO_CACHING_INTERVAL'))
     scheduler.add_job(update_balances, 'interval', minutes=update_interval)
     scheduler.start()
