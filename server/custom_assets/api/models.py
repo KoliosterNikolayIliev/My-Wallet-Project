@@ -6,6 +6,7 @@ from djongo import models
 class CryptoAsset(models.Model):
     type = models.CharField(max_length=5)
     amount = models.FloatField()
+    asset_type = models.CharField(max_length=6)
 
     class Meta:
         abstract = True
@@ -14,6 +15,7 @@ class CryptoAsset(models.Model):
 class StockAsset(models.Model):
     type = models.CharField(max_length=5)
     amount = models.IntegerField()
+    asset_type = models.CharField(max_length=5)
 
     class Meta:
         abstract = True
@@ -22,6 +24,7 @@ class StockAsset(models.Model):
 class CurrencyAsset(models.Model):
     type = models.CharField(max_length=3)
     amount = models.FloatField()
+    asset_type = models.CharField(max_length=8)
 
     class Meta:
         abstract = True
