@@ -41,7 +41,8 @@ const ChartComponent = ({ total, base, history }) => {
   const createBackgroundGradient = (ctx) => {
     const gradient = ctx.createLinearGradient(0, 0, 0, 400, 0.1);
     gradient.addColorStop(0, "rgba(190,56,242,0.4)");
-    gradient.addColorStop(1, "rgba(190,56,242,0)");
+    gradient.addColorStop(0.7, "rgba(190,56,242,0)");
+    gradient.addColorStop(1, "rgba(0,0,0,0)");
 
     return gradient;
   };
