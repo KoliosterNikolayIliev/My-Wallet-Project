@@ -21,7 +21,7 @@ class CreateCryptoAsset(CreateAPIView):
 
         user_assets.save()
 
-        return Response(status=204)
+        return Response('success', status=200)
 
 
 class CreateStockAsset(CreateAPIView):
@@ -38,7 +38,7 @@ class CreateStockAsset(CreateAPIView):
 
         user_assets.save()
 
-        return Response(status=204)
+        return Response('success', status=200)
 
 
 class CreateCurrencyAsset(CreateAPIView):
@@ -55,7 +55,7 @@ class CreateCurrencyAsset(CreateAPIView):
 
         user_assets.save()
 
-        return Response(status=204)
+        return Response('success', status=200)
 
 
 class GetAssets(APIView):
