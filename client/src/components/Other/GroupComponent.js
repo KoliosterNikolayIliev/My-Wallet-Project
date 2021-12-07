@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import {deleteCustomAsset} from "../../utils/portfolio";
+import {useAuth0} from "@auth0/auth0-react";
 
 const GroupComponent = ({
   account,
@@ -7,10 +9,20 @@ const GroupComponent = ({
   provider,
   getTransactionsFunc,
   baseSymbol,
+  custom_asset,
 }) => {
   let amount = 0;
   let currency = "";
   let base_currency = 0;
+
+  const {getAccessTokenSilently} = useAuth0();
+
+  const deleteCustomAssetFunc = async (asset, asset_type) => {
+    const token = await getAccessTokenSilently();
+    await deleteCustomAsset(token, asset, asset_type)
+    window.sessionStorage.clear();
+    window.location.reload()
+  }
 
   if (account.data.balanceData) {
     amount = Number(account.data.balanceData.amount);
@@ -52,6 +64,7 @@ const GroupComponent = ({
           )}
         {(provider === "custom_assets" || provider === "binance") && (
           <div className="asset-line">
+            {custom_asset && <button onClick={() => deleteCustomAssetFunc(currency, custom_asset)}>X</button>}
             <p>{currency}</p>{" "}
             <p>
               {" "}
