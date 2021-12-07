@@ -28,7 +28,7 @@ def mock_data_view(request):
                                                        'value': 1259.7141826595068},
                                                       {'provider': 'custom_assets',
                                                        'value': 38228.44893509204}],
-                          'timestamp': '2021-12-05T21:49:35.663000'},
+                          'timestamp': '2021-11-05T21:49:35.663000'},
                          {'balance': 200001.48571080616,
                           'source_balances_history': [{'provider': 'Wise',
                                                        'value': 7561.12},
