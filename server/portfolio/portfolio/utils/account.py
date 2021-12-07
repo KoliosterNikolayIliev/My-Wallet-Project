@@ -16,7 +16,6 @@ def validate_token(token):
     except (AttributeError, IndexError):
         endpoint = "api/account/internal/user"
         headers = {'Authorization': token}
-    print(URL)
     res = requests.get(URL + endpoint, headers=headers)
     if res.status_code == 200:
         result = res.json()

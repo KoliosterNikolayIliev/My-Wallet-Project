@@ -1,8 +1,65 @@
 import React from "react";
 import "../../styles/chart_component.scss";
 import fakeGraph from "../../images/fake_graph.png";
+import Loader from "./LoaderComponent";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
-const ChartComponent = ({ total, base }) => {
+import { Line } from "react-chartjs-2";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+const ChartComponent = ({ total, base, history }) => {
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: "Historical Balance Chart",
+      },
+    },
+  };
+
+  if (!history) {
+    return <Loader />;
+  }
+
+  const labels =
+    // array of days of the month until today
+    Array.from(Array(new Date().getDate()).keys()).map((i) => {
+      return i + 1;
+    });
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Balance",
+        data: history.balances.map((item) => item.balance),
+        borderColor: "#BE38F2",
+        backgroundColor: "#BE38F2",
+      },
+    ],
+  };
+
   return (
     <div className="info-container">
       <div className="total-balance">
@@ -14,7 +71,7 @@ const ChartComponent = ({ total, base }) => {
       </div>
       <div className="chart-container">
         <div className="chart">
-          <img src={fakeGraph} alt="graph" />
+          <Line options={options} data={data} />
         </div>
 
         <div className="notifications">

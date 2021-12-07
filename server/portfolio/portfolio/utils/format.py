@@ -8,8 +8,6 @@ def group_balances(balances: dict, holdings: dict, gbp_cur=False):
         cur_currency = 'gbp_currency'
     result = {}
     total_balance = 0
-    print(balances)
-    print(holdings)
     for provider, content in balances.items():
         if content['status'] != 'failed':
             for account, account_content in content['content'].items():
@@ -19,7 +17,6 @@ def group_balances(balances: dict, holdings: dict, gbp_cur=False):
                 for key, value in holdings.items():
                     if key == "yodlee":
                         holdings_data = []
-                        print(key, value)
                         if value['status'] != 'failed':
                             for asset, asset_content in value['content'].items():
                                 if str(asset_content['parent']) == account:
