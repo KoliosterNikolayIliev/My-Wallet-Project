@@ -78,6 +78,7 @@ const ChartComponent = ({total, base, history}) => {
     const chart = chartRef.current;
 
     if (chart) {
+      if (location.pathname !== '/portfolio'){
       setChartData({
         labels,
         datasets: [
@@ -90,10 +91,34 @@ const ChartComponent = ({total, base, history}) => {
             backgroundColor: createBackgroundGradient(chart.ctx),
           },
         ],
-      });
+      });}else {
+        setChartData({
+          labels,
+          datasets: [
+            {
+              label: "Balance",
+              data: history.balances.map((item) => item.balance),
+              fill: true,
+              borderColor: "rgba(190, 56, 242, 1)",
+              tension: 0.3,
+              backgroundColor: createBackgroundGradient(chart.ctx),
+            },
+            {
+              label:"seccond",
+              data: [
+                47175.48571080616,
+                30175.48571080616,
+                100001.48571080616,
+                15000,
+                1000
+              ]
+            }
+          ],
+        });
+      }
     }
   }, []);
-
+  console.log(history.balances.map((item) => item.source_balances_history.map((item)=>item)[2]).map((item=>item.value)))
   if (!history || history === "") {
     return <Loader/>;
   }

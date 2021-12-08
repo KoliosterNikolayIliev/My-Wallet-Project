@@ -113,6 +113,8 @@ const PortfolioPage = () => {
                     <p>
                       {base} {element.value.toFixed(2)}
                     </p>
+                    {/* performance*/}
+                    <p>GRAPH</p>
                   </div>
                 </li>
               );
