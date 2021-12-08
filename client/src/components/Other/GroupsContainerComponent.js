@@ -57,10 +57,10 @@ const GroupsContainerComponent = ({
 		return Loader();
 	}
 
-	const lastIndex = balanceHistory["balances"].length - 1;
+	const yesterdayIndex = balanceHistory["balances"].length - 2;
 
 	const source_balances_history =
-		balanceHistory["balances"][lastIndex]["source_balances_history"];
+		balanceHistory["balances"][yesterdayIndex]["source_balances_history"];
 
 	return (
 		<div className="data-source-container">
