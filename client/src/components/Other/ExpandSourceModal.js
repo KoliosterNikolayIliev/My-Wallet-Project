@@ -9,6 +9,7 @@ import {deleteNordigenAccount, updateUser} from "../../utils/account";
 import {useAuth0} from "@auth0/auth0-react";
 import {Redirect} from "react-router";
 import deleteYodleeAccount from "../../utils/yodlee";
+import {deleteCustomAsset} from "../../utils/portfolio";
 
 const ExpandSourceModal = ({
                              openModal,
@@ -62,6 +63,13 @@ const ExpandSourceModal = ({
     window.location.reload()
   }
 
+  const deleteCustomAssetFunc = async (asset, asset_type) => {
+    const token = await getAccessTokenSilently();
+    await deleteCustomAsset(token, asset, asset_type)
+    window.sessionStorage.clear();
+    window.location.reload()
+  }
+
   if (!isAuthenticated) {
     return <Redirect to={"/"}/>;
   }
@@ -105,6 +113,7 @@ const ExpandSourceModal = ({
                         account={account}
                         type={account.data.accountType}
                         custom_asset={account.data.asset_type}
+                        deleteCustomAssetFunc={deleteCustomAssetFunc}
                       />
                     );
                   })}
