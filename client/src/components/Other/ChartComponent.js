@@ -1,6 +1,7 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, {useRef, useState, useEffect} from "react";
 import "../../styles/chart_component.scss";
 import Loader from "./LoaderComponent";
+import {useLocation} from "react-router-dom";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,7 +14,8 @@ import {
   Filler,
 } from "chart.js";
 
-import { Chart, Line } from "react-chartjs-2";
+import {Chart, Line} from "react-chartjs-2";
+import NotificationComponent from "./NotificationComponent";
 
 ChartJS.register(
   CategoryScale,
@@ -26,7 +28,8 @@ ChartJS.register(
   Legend
 );
 
-const ChartComponent = ({ total, base, history }) => {
+const ChartComponent = ({total, base, history}) => {
+  const location = useLocation();
   const chartRef = useRef(null);
   const [chartData, setChartData] = useState({
     datasets: [],
@@ -92,7 +95,7 @@ const ChartComponent = ({ total, base, history }) => {
   }, []);
 
   if (!history || history === "") {
-    return <Loader />;
+    return <Loader/>;
   }
 
   return (
@@ -113,13 +116,7 @@ const ChartComponent = ({ total, base, history }) => {
             data={chartData}
           />
         </div>
-
-        <div className="notifications">
-          <p className="notifications-title">Notifications</p>
-          <div>
-            <p className="notifications-message">No notifications to show</p>
-          </div>
-        </div>
+        {location.pathname !== '/portfolio' ? NotificationComponent() : null}
       </div>
     </div>
   );

@@ -9,7 +9,8 @@ import {useRecoilState} from "recoil";
 import {getUser} from "../../utils/account";
 import Header from "../Other/HeaderComponent";
 import {balanceHistoryAtom, baseAtom} from "../../recoil";
-import {getHistoricalBalances} from "../../utils/portfolio";
+import {getAssets, getHistoricalBalances} from "../../utils/portfolio";
+import ChartComponent from "../Other/ChartComponent";
 
 // Dashboard page to be filled in with user account data
 const PortfolioPage = () => {
@@ -22,10 +23,6 @@ const PortfolioPage = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  // const [colors, setColors] = useState({
-  //   bank: { "background-color": "#ffa04370", color: "#FFA043" },
-  //   crypto: { "background-color": "#00a5ff70", color: "#00A5FF" },
-  // });
 
   const {isAuthenticated, user, loading, getAccessTokenSilently} = useAuth0();
 
@@ -41,13 +38,14 @@ const PortfolioPage = () => {
 
   const HistoricalBalances = async () => {
     const token = await getAccessTokenSilently();
-    const balanceHistory = await getHistoricalBalances(token);
-
+    const assets = await getAssets(token);
+    console.log(assets)
+    const balanceHistory = assets.balance_history
     window.sessionStorage.setItem(
       "balanceHistory",
-      JSON.stringify(balanceHistory.content)
+      JSON.stringify(balanceHistory)
     );
-    setBalanceHistory(balanceHistory.content);
+    setBalanceHistory(balanceHistory);
   };
 
   useEffect(() => {
@@ -64,14 +62,9 @@ const PortfolioPage = () => {
     return Loader();
   }
 
-  const currentBalances = balanceHistory.balances[balanceHistory.balances.length-1]
+  const currentBalances = balanceHistory.balances[balanceHistory.balances.length - 1]
   const currentSourceBalances = currentBalances.source_balances_history
   const currentTotalBalance = currentBalances.balance
-  console.log(currentTotalBalance)
-  console.log(currentSourceBalances)
-  // for (let entry of balanceHistory.balances){
-  //   console.log(JSON.stringify(entry))
-  // }
   return (
     isAuthenticated && (
       <div className="main">
@@ -79,6 +72,9 @@ const PortfolioPage = () => {
           baseSymbol={base}
           username={user.nickname ? user.nickname : user.name}
         />
+        {balanceHistory !== "" && (
+          <ChartComponent total={currentTotalBalance} base={base} history={balanceHistory} />
+        )}
         <div className="transactions-table">
           <div className="headings">
             <p>Sources</p>
@@ -88,7 +84,40 @@ const PortfolioPage = () => {
             <p>LATEST VALUE</p>
             <p>PERFORMANCE</p>
           </div>
-          {JSON.stringify(balanceHistory)}
+          <ul>
+            {currentSourceBalances.map((element) => {
+              return (
+                <li>
+                  <div className="transaction-row">
+                    {/* Source */}
+                    <p className="transaction-date">
+                      {element.provider}
+                    </p>
+
+                    {/* Unknown */}
+                    <p className="transaction-source">
+                      ^
+                    </p>
+
+                    {/* percentage */}
+                    <p>
+                      {((element.value/currentTotalBalance)*100).toFixed(2)}%
+                    </p>
+
+                    {/* Value 1M */}
+                    <p>
+                      1-M value TODO
+                    </p>
+
+                    {/* value */}
+                    <p>
+                      {base} {element.value.toFixed(2)}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </div>
     )
