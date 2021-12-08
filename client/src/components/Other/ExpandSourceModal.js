@@ -64,8 +64,10 @@ const ExpandSourceModal = ({
   }
 
   const deleteCustomAssetFunc = async (asset, asset_type) => {
+    setLoading(true)
     const token = await getAccessTokenSilently();
     await deleteCustomAsset(token, asset, asset_type)
+    setLoading(false)
     window.sessionStorage.clear();
     window.location.reload()
   }
