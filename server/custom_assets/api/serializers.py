@@ -6,6 +6,7 @@ from api.utils.serializer_validators import validate_user_key, add_or_increment_
 class CryptoAssetSerializer(serializers.Serializer):
     type = serializers.CharField(max_length=5)
     amount = serializers.FloatField()
+    asset_type = serializers.CharField(default='crypto')
 
     def validate(self, attrs):
         # get user_key from request data, in attrs is only data about serializer fields
@@ -31,6 +32,7 @@ class CryptoAssetSerializer(serializers.Serializer):
 class StockAssetSerializer(serializers.Serializer):
     type = serializers.CharField(max_length=5)
     amount = serializers.IntegerField()
+    asset_type = serializers.CharField(default='stock')
 
     def validate(self, attrs):
         # get user_key from request data, in attrs is only data about serializer fields
@@ -56,6 +58,7 @@ class StockAssetSerializer(serializers.Serializer):
 class CurrencyAssetSerializer(serializers.Serializer):
     type = serializers.CharField(max_length=3)
     amount = serializers.FloatField()
+    asset_type = serializers.CharField(default='currency')
 
     def validate(self, attrs):
         # get user_key from request data, in attrs is only data about serializer fields

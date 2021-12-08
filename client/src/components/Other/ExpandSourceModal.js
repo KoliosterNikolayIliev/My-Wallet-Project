@@ -86,6 +86,17 @@ const ExpandSourceModal = ({
                       source.accounts[0].holdings.length === 0) ||
                     source.accounts[0].provider === "custom_assets") &&
                   source.accounts.map((account) => {
+                    if (account.provider !== "custom_assets") {
+                      return (
+                        <GroupComponent
+                          source={name[0].toUpperCase() + name.slice(1)}
+                          baseSymbol={base}
+                          provider={account.provider}
+                          account={account}
+                          type={account.data.accountType}
+                        />
+                      );
+                    }
                     return (
                       <GroupComponent
                         source={name[0].toUpperCase() + name.slice(1)}
@@ -93,6 +104,7 @@ const ExpandSourceModal = ({
                         provider={account.provider}
                         account={account}
                         type={account.data.accountType}
+                        custom_asset={account.data.asset_type}
                       />
                     );
                   })}
@@ -263,7 +275,7 @@ const ExpandSourceModal = ({
                         <p onClick={() => deleteCryptoAccount("coinbase")}>Disconnect account</p> :
                         source.accounts[0].provider === "yodlee" ?
                           <p onClick={deleteYodleeAccountFunc}>Disconnect account</p> :
-                        <p className="disabled-remove-button">Disconnect account</p>
+                          <p className="disabled-remove-button">Disconnect account</p>
                 }
                 {/* <svg
                   width="20"
