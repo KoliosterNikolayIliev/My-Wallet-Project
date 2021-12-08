@@ -76,11 +76,11 @@ const RecentTransactionsContainerComponent = ({ data }) => {
                 {Number(value.amount.amount) > 0 && (
                   <div className="amount-text">
                     <p>
-                      +{Number(value.amount.amount).toFixed(2)}{" "}
+                      +{Number(Number(value.amount.amount).toFixed(1)).toLocaleString()}{" "}
                       {value.amount.currency}
                     </p>
                     <p>
-                      {Number(value.amount.base_amount).toFixed(2)}{" "}
+                      {Number(Number(value.amount.base_amount).toFixed(1)).toLocaleString()}{" "}
                       {value.amount.base_currency}
                     </p>
                   </div>
@@ -88,11 +88,11 @@ const RecentTransactionsContainerComponent = ({ data }) => {
                 {Number(value.amount.amount) < 0 && (
                   <div className="amount-text">
                     <p>
-                      {Number(value.amount.amount).toFixed(2)}{" "}
+                      {Number(Number(value.amount.amount).toFixed(1)).toLocaleString()}{" "}
                       {value.amount.currency}
                     </p>
                     <p>
-                      {Math.abs(Number(value.amount.base_amount).toFixed(2))}{" "}
+                      {Math.abs(Number(value.amount.base_amount).toFixed(1)).toLocaleString()}{" "}
                       {value.amount.base_currency}
                     </p>
                   </div>

@@ -85,7 +85,7 @@ const ExpandSourceModal = ({
               <div className="data-source-header">
                 <p>{name[0].toUpperCase() + name.slice(1)} </p>
                 <p className="data-source-total">
-                  {source.total.toFixed(2)} {base}
+                  {Number(source.total.toFixed(1)).toLocaleString()} {base}
                 </p>
               </div>
               <div className="data-source-content">
@@ -203,7 +203,7 @@ const ExpandSourceModal = ({
               <div className={"total-value"}>
                 <p>Total Value</p>
                 <p>
-                  {Number(source.total).toFixed(2)} {base}
+                  {Number(Number(source.total).toFixed(1)).toLocaleString()} {base}
                 </p>
               </div>
               <div className={"remove-account"}>

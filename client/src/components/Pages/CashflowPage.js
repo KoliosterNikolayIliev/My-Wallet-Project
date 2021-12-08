@@ -129,8 +129,8 @@ const CashflowPage = () => {
                       {/* Amount */}
                       <p className="transaction-amount">
                         {Number(value.amount.amount) < 0
-                          ? Number(value.amount.amount).toFixed(2)
-                          : `+${Number(value.amount.amount).toFixed(2)}`}
+                          ? Number(Number(value.amount.amount).toFixed(1)).toLocaleString()
+                          : `+${Number(Number(value.amount.amount).toFixed(1)).toLocaleString()}`}
                       </p>
 
                       {/* Asset */}

@@ -33,7 +33,7 @@ const GroupComponent = ({
   if (!base_currency) {
     base_currency = "N/A";
   } else {
-    base_currency = base_currency.toFixed(2);
+    base_currency = Number(base_currency.toFixed(1)).toLocaleString();
   }
 
   if (amount > 0) {
