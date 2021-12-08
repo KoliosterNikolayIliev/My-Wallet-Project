@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from  balance_caching_app.utils import add_null_balances
+from  balance_caching_app.utils import fill_missing_days
 import datetime
 
 from balance_caching_app.models import UserData
@@ -18,7 +19,9 @@ class CreateBalance(CreateAPIView):
         full_data = user.balances_history
 
         current_day = datetime.datetime.today().day
-        return_data = add_null_balances(full_data, current_day)
+
+        return_data = fill_missing_days(full_data)
+        return_data = add_null_balances(return_data, current_day)
 
         user_data = {
             'balances': return_data

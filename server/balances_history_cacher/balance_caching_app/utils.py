@@ -73,11 +73,24 @@ def add_null_balances(data, today):
 
         template_object = data[0].copy()
         template_object['balance'] = 0
-        
+
         for source in template_object['source_balances_history']:
             source['value'] = 0
 
         template_object['timestamp'] = datetime(2021, 12, prev_date, 0, 0, 0, 0)
         data.insert(0, template_object)
 
+    return data
+
+def fill_missing_days(data):
+    for i in range(0, len(data)):
+        if i != 0:
+            current_date = data[i]['timestamp'].day
+            prev_date = data[i - 1]['timestamp'].day
+
+            if current_date - prev_date > 1:
+                template_object = data[i-1].copy()
+                template_object['timestamp'] = datetime(2021, 12, prev_date + 1, 0, 0, 0, 0)
+                data.insert(i, template_object)
+    
     return data
