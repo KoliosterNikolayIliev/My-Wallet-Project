@@ -1,4 +1,5 @@
 from django.utils import timezone
+from datetime import datetime
 from math import trunc
 
 
@@ -58,3 +59,25 @@ def user_is_not_active(timestamp):
         return True
     print('active' + f'{timezone.now()}')
     return False
+
+def add_null_balances(data, today):
+    if len(data) == today:
+        return data
+    
+
+    for i in range(today, 0, -1):
+        if len(data) == today:
+            break
+        
+        prev_date = data[0]['timestamp'].day - 1
+
+        template_object = data[0].copy()
+        template_object['balance'] = 0
+        
+        for source in template_object['source_balances_history']:
+            source['value'] = 0
+
+        template_object['timestamp'] = datetime(2021, 12, prev_date, 0, 0, 0, 0)
+        data.insert(0, template_object)
+
+    return data
