@@ -7,6 +7,8 @@ const GroupComponent = ({
   provider,
   getTransactionsFunc,
   baseSymbol,
+  custom_asset,
+  deleteCustomAssetFunc,
 }) => {
   let amount = 0;
   let currency = "";
@@ -31,7 +33,7 @@ const GroupComponent = ({
   if (!base_currency) {
     base_currency = "N/A";
   } else {
-    base_currency = base_currency.toFixed(2);
+    base_currency = Number(base_currency.toFixed(1)).toLocaleString();
   }
 
   if (amount > 0) {
@@ -52,6 +54,7 @@ const GroupComponent = ({
           )}
         {(provider === "custom_assets" || provider === "binance") && (
           <div className="asset-line">
+            {custom_asset && <button onClick={() => deleteCustomAssetFunc(currency, custom_asset)}>X</button>}
             <p>{currency}</p>{" "}
             <p>
               {" "}

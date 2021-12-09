@@ -59,10 +59,24 @@ const createCustomAsset = async (token, type, symbol, amount) => {
   return response.json();
 };
 
+const deleteCustomAsset = async (token, asset, asset_type) => {
+  const response = await fetch("http://localhost:5001/api/delete-asset", {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      asset_type: asset_type,
+      asset: asset,
+    },
+  });
+
+  return response.json();
+}
+
 export {
   getAssets,
   getTransactions,
   createCustomAsset,
   getAllRecentTransactions,
   getHistoricalBalances,
+  deleteCustomAsset,
 };

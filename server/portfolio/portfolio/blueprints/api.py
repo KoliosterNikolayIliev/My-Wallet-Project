@@ -7,13 +7,13 @@ from ..utils.assets import get_balances, get_transactions, get_holdings, get_ass
 from ..utils.account import validate_auth_header
 from ..utils.cache_assets import cache_assets
 from ..utils.cache_balance import cache_balance
-from ..utils.custom_assets import create_asset as create_custom_asset
+from ..utils.custom_assets import create_asset as create_custom_asset, delete_asset as delete_custom_asset
 from ..utils.format import group_balances, set_historical_balance
 
 import aiohttp, asyncio
 
 from ..utils.reference import convert_assets_to_base_currency_and_get_total_gbp, \
-    convert_transactions_currency_to_base_currency
+    convert_transactions_currency_to_base_currency, convert_balance_history_to_base_currency
 
 bp = Blueprint('api', __name__)
 CORS(bp)
@@ -63,6 +63,7 @@ async def get_assets():
     cache_balance_data = group_balances(balances, holdings, gbp_cur=True)
 
     valid_data = cache_balance(cache_balance_data, data, user_data, total_gbp, internal)
+    convert_balance_history_to_base_currency(valid_data, user_data['base_currency'])
 
     return jsonify(valid_data), 200
 
@@ -204,6 +205,29 @@ def create_asset():
         return jsonify({'status': 'failed', 'content': 'Error: invalid asset type'}), 400
     try:
         response = create_custom_asset(key, asset_type, symbol, amount)
+    except Exception as e:
+        return jsonify({'status': 'failed', 'content': str(e)}), 400
+    return jsonify(response), 200
+
+
+@bp.route('/api/delete-asset', methods=(['DELETE']))
+def delete_asset():
+    received_token = request.headers.get('Authorization')
+    validated_token = validate_auth_header(received_token)
+
+    if not validated_token[0]:
+        return jsonify(validated_token[1]), 401
+
+    user_data = validated_token[1]
+
+    key = user_data['user_identifier']
+    asset = request.headers.get('asset')
+    asset_type = request.headers.get('asset_type')
+
+    if asset_type not in ['crypto', 'stock']:
+        return jsonify({'status': 'failed', 'content': 'Error: invalid asset type'}), 400
+    try:
+        response = delete_custom_asset(key, asset_type, asset)
     except Exception as e:
         return jsonify({'status': 'failed', 'content': str(e)}), 400
     return jsonify(response), 200
