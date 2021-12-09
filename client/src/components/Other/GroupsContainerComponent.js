@@ -89,7 +89,7 @@ const GroupsContainerComponent = ({
                   : "Assets"}{" "}
               </p>
               <p className="data-source-total">
-                {value.total.toFixed(2)} {baseSymbol}
+                {Number(value.total.toFixed(1)).toLocaleString()} {baseSymbol}
               </p>
               {value.total !== source_previous_balance ? (
                 value.total < source_previous_balance ? (

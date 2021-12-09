@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {Fragment, useState} from "react";
 import {Box, Modal} from "@mui/material";
 import Loader from "./LoaderComponent";
 import GroupComponent from "./GroupComponent";
@@ -9,6 +9,7 @@ import {deleteNordigenAccount, updateUser} from "../../utils/account";
 import {useAuth0} from "@auth0/auth0-react";
 import {Redirect} from "react-router";
 import deleteYodleeAccount from "../../utils/yodlee";
+import {deleteCustomAsset} from "../../utils/portfolio";
 
 const ExpandSourceModal = ({
                              openModal,
@@ -62,6 +63,15 @@ const ExpandSourceModal = ({
     window.location.reload()
   }
 
+  const deleteCustomAssetFunc = async (asset, asset_type) => {
+    setLoading(true)
+    const token = await getAccessTokenSilently();
+    await deleteCustomAsset(token, asset, asset_type)
+    setLoading(false)
+    window.sessionStorage.clear();
+    window.location.reload()
+  }
+
   if (!isAuthenticated) {
     return <Redirect to={"/"}/>;
   }
@@ -69,24 +79,35 @@ const ExpandSourceModal = ({
     return (
       <Modal open={openModal} onClose={closeModalFunc}>
         <Box className="expand-modal">
-          {loading && <Loader/>}
-          <div className="data-source expand-data-source">
-            <div className="data-source-header">
-              <p>{name[0].toUpperCase() + name.slice(1)} </p>
-              <p className="data-source-total">
-                {source.total.toFixed(2)} {base}
-              </p>
-            </div>
-            <div className="data-source-content">
-              <ul>
-                {(source.accounts.length > 1 ||
-                    source.accounts[0].provider === "coinbase" ||
-                    (source.accounts.length === 1 &&
-                      source.accounts[0].provider === "yodlee" &&
-                      source.accounts[0].holdings.length === 0) ||
-                    source.accounts[0].provider === "custom_assets") &&
-                  source.accounts.map((account) => {
-                    if (account.provider !== "custom_assets") {
+          {loading ? <Loader/> :
+          <Fragment>
+            <div className="data-source expand-data-source">
+              <div className="data-source-header">
+                <p>{name[0].toUpperCase() + name.slice(1)} </p>
+                <p className="data-source-total">
+                  {Number(source.total.toFixed(1)).toLocaleString()} {base}
+                </p>
+              </div>
+              <div className="data-source-content">
+                <ul>
+                  {(source.accounts.length > 1 ||
+                      source.accounts[0].provider === "coinbase" ||
+                      (source.accounts.length === 1 &&
+                        source.accounts[0].provider === "yodlee" &&
+                        source.accounts[0].holdings.length === 0) ||
+                      source.accounts[0].provider === "custom_assets") &&
+                    source.accounts.map((account) => {
+                      if (account.provider !== "custom_assets") {
+                        return (
+                          <GroupComponent
+                            source={name[0].toUpperCase() + name.slice(1)}
+                            baseSymbol={base}
+                            provider={account.provider}
+                            account={account}
+                            type={account.data.accountType}
+                          />
+                        );
+                      }
                       return (
                         <GroupComponent
                           source={name[0].toUpperCase() + name.slice(1)}
@@ -94,65 +115,56 @@ const ExpandSourceModal = ({
                           provider={account.provider}
                           account={account}
                           type={account.data.accountType}
+                          custom_asset={account.data.asset_type}
+                          deleteCustomAssetFunc={deleteCustomAssetFunc}
                         />
                       );
-                    }
-                    return (
-                      <GroupComponent
-                        source={name[0].toUpperCase() + name.slice(1)}
-                        baseSymbol={base}
-                        provider={account.provider}
-                        account={account}
-                        type={account.data.accountType}
-                        custom_asset={account.data.asset_type}
-                      />
-                    );
-                  })}
-                {source.accounts.length <= 1 &&
-                  source.accounts.map((account) => {
-                    if (account.holdings) {
-                      if (account.holdings.length > 0) {
-                        return account.holdings.map((holding) => {
+                    })}
+                  {source.accounts.length <= 1 &&
+                    source.accounts.map((account) => {
+                      if (account.holdings) {
+                        if (account.holdings.length > 0) {
+                          return account.holdings.map((holding) => {
+                            return (
+                              <HoldingComponent
+                                nest={false}
+                                account={account}
+                                data={holding}
+                                baseSymbol={base}
+                              />
+                            );
+                          });
+                        }
+                        return null;
+                      }
+                      return null;
+                    })}
+                  {source.accounts.length > 1 &&
+                    source.accounts.map((account) => {
+                      if (account.holdings) {
+                        if (account.holdings.length > 0) {
                           return (
-                            <HoldingComponent
-                              nest={false}
-                              account={account}
-                              data={holding}
-                              baseSymbol={base}
-                            />
+                            <ul>
+                              {account.holdings.map((holding) => {
+                                return (
+                                  <HoldingComponent
+                                    nest={true}
+                                    data={holding}
+                                    baseSymbol={base}
+                                  />
+                                );
+                              })}
+                            </ul>
                           );
-                        });
+                        }
+                        return null;
                       }
                       return null;
-                    }
-                    return null;
-                  })}
-                {source.accounts.length > 1 &&
-                  source.accounts.map((account) => {
-                    if (account.holdings) {
-                      if (account.holdings.length > 0) {
-                        return (
-                          <ul>
-                            {account.holdings.map((holding) => {
-                              return (
-                                <HoldingComponent
-                                  nest={true}
-                                  data={holding}
-                                  baseSymbol={base}
-                                />
-                              );
-                            })}
-                          </ul>
-                        );
-                      }
-                      return null;
-                    }
-                    return null;
-                  })}
-              </ul>
-              <div className="expand-button" onClick={closeModalFunc}>
-                <p>Collapse</p>
-                {/* <svg
+                    })}
+                </ul>
+                <div className="expand-button" onClick={closeModalFunc}>
+                  <p>Collapse</p>
+                  {/* <svg
                   width="24"
                   height="24"
                   viewBox="0 0 24 24"
@@ -184,23 +196,23 @@ const ExpandSourceModal = ({
                     fill="#9031DB"
                   />
                 </svg> */}
+                </div>
               </div>
             </div>
-          </div>
-          <div className={"expand-modal-extra-info"}>
-            <div className={"total-value"}>
-              <p>Total Value</p>
-              <p>
-                {Number(source.total).toFixed(2)} {base}
-              </p>
-            </div>
-            <div className={"remove-account"}>
-              <div className={"account-info"}>
-                <p>{name}</p>
-                <p>{user.email}</p>
+            <div className={"expand-modal-extra-info"}>
+              <div className={"total-value"}>
+                <p>Total Value</p>
+                <p>
+                  {Number(Number(source.total).toFixed(1)).toLocaleString()} {base}
+                </p>
               </div>
-              <div className={"remove-button"}>
-                {/* <svg
+              <div className={"remove-account"}>
+                <div className={"account-info"}>
+                  <p>{name}</p>
+                  <p>{user.email}</p>
+                </div>
+                <div className={"remove-button"}>
+                  {/* <svg
                   width="15"
                   height="14"
                   viewBox="0 0 15 14"
@@ -262,22 +274,22 @@ const ExpandSourceModal = ({
                     />
                   </g>
                 </svg> */}
-                {
-                  source.accounts[0].provider === "nordigen" ?
-                    <p onClick={
-                      () => deleteNordigenAccountFunc(
-                        source.accounts[0].data.institution_id
-                      )}>Disconnect account
-                    </p> :
-                    source.accounts[0].provider === "binance" ?
-                      <p onClick={() => deleteCryptoAccount("binance")}>Disconnect account</p> :
-                      source.accounts[0].provider === "coinbase" ?
-                        <p onClick={() => deleteCryptoAccount("coinbase")}>Disconnect account</p> :
-                        source.accounts[0].provider === "yodlee" ?
-                          <p onClick={deleteYodleeAccountFunc}>Disconnect account</p> :
-                          <p className="disabled-remove-button">Disconnect account</p>
-                }
-                {/* <svg
+                  {
+                    source.accounts[0].provider === "nordigen" ?
+                      <p onClick={
+                        () => deleteNordigenAccountFunc(
+                          source.accounts[0].data.institution_id
+                        )}>Disconnect account
+                      </p> :
+                      source.accounts[0].provider === "binance" ?
+                        <p onClick={() => deleteCryptoAccount("binance")}>Disconnect account</p> :
+                        source.accounts[0].provider === "coinbase" ?
+                          <p onClick={() => deleteCryptoAccount("coinbase")}>Disconnect account</p> :
+                          source.accounts[0].provider === "yodlee" ?
+                            <p onClick={deleteYodleeAccountFunc}>Disconnect account</p> :
+                            <p className="disabled-remove-button">Disconnect account</p>
+                  }
+                  {/* <svg
                   width="20"
                   height="20"
                   viewBox="0 0 20 20"
@@ -289,9 +301,10 @@ const ExpandSourceModal = ({
                     fill="#FC3400"
                   />
                 </svg> */}
+                </div>
               </div>
             </div>
-          </div>
+          </Fragment>}
         </Box>
       </Modal>
     );

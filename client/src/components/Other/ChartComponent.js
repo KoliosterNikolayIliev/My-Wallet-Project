@@ -103,7 +103,7 @@ const ChartComponent = ({ total, base, history }) => {
           <p className="total-balance-title">Total Balance</p>
           <p className="total-balance-base">{base}</p>
         </div>
-        <p className="total-balance-value">{Number(total).toFixed(2)}</p>
+        <p className="total-balance-value">{Number(Number(total).toFixed(1)).toLocaleString()}</p>
       </div>
       <div className="chart-container">
         <div className="chart">
