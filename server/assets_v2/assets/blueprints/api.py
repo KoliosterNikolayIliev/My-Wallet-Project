@@ -82,7 +82,6 @@ async def get_recent_transactions():
 
     result = []
     final = []
-
     if nordigen_requisitions or yodlee_login_name or (coinbase_secret and coinbase_key):
         try:
             async with aiohttp.ClientSession() as session:
@@ -107,7 +106,6 @@ async def get_recent_transactions():
                             continue
                     else:
                         result.append(response)
-
             for element in result:
                 if type(element) is list:
                     for transaction in element:
@@ -118,7 +116,6 @@ async def get_recent_transactions():
         except Exception as e:
             print(str(e))
             return None
-        
         return jsonify({'status': 'success', 'content': final})
     else: 
         return None

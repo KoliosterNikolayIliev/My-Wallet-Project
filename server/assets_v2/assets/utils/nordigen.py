@@ -184,7 +184,12 @@ async def get_single_account_details(account, headers, session):
 async def account_balance_request(account, headers, session):
     async with session.get(URL + f'accounts/{account}/balances/',
                            headers=headers) as response:
-        return await response.json()
+        result = await response.json()
+
+        if response.status != 200:
+            return
+
+        return result
 
 
 async def get_single_account_balance(account, headers, session):
@@ -194,6 +199,9 @@ async def get_single_account_balance(account, headers, session):
         account_balance_request(account, headers, session),
     )
 
+    if not balance_data:
+        return
+
     if details.get('account'):
         if details['account'].get('product'):
             details = details['account']['product']
@@ -201,7 +209,6 @@ async def get_single_account_balance(account, headers, session):
             details = details['account']['name']
         else:
             details = None
-
     return {
         "id": account,
         "providerName": bank_name[0],
@@ -230,12 +237,13 @@ async def get_all_account_balances(requisition_id, session, headers):
 
     responses = await asyncio.gather(*tasks)
     for response in responses:
-        data[response["id"]] = {
-            "providerName": response["providerName"],
-            "institution_id": response["institution_id"],
-            "balanceData": response["balanceData"],
-            "accountType": response["accountType"],
-        }
+        if response:
+            data[response["id"]] = {
+                "providerName": response["providerName"],
+                "institution_id": response["institution_id"],
+                "balanceData": response["balanceData"],
+                "accountType": response["accountType"],
+            }
 
     return {"status": "success", "content": data}
 
@@ -288,6 +296,10 @@ async def get_all_transactions(requisitions, session):
         async with session.get(URL + f'accounts/{account}/transactions/',
                                headers=headers) as response:
             awaited = await response.json()
+
+            if response.status != 200:
+                return
+
             data = awaited.get('transactions').get('booked')
             result = []
             for transaction in data:
@@ -314,8 +326,9 @@ async def get_all_transactions(requisitions, session):
         responses = await asyncio.gather(*tasks)
 
         for response in responses:
-            for transactions in response:
-                result.append(transactions)
+            if response:
+                for transactions in response:
+                    result.append(transactions)
 
         return result
 

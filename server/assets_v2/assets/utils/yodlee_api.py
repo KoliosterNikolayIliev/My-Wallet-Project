@@ -148,7 +148,7 @@ def format_holdings_response(response):
         for holding in response['holding']:
             if holding.get('symbol') and holding.get('value'):
                 data[holding['id']] = {'symbol': holding['symbol'], 'quantity': holding['quantity'],
-                                        'value': holding['value']}
+                                        'value': holding['value'], 'parent': holding['accountId']}
             elif holding.get('description') and holding.get('value'):
                 data[holding['id']] = {'symbol': holding['description'], 'parent': holding['accountId'],'quantity': holding['quantity'], 'value': holding['value']}
         return {'status': 'success', 'content': data}
@@ -180,7 +180,6 @@ def format_transactions_response(response, recent=False):
             if not recent:
                 transaction_data[source][transaction["id"]] = transaction['amount']
             else:
-                print(transaction)
                 transaction_data[source][transaction["id"]] = {'amount': transaction['amount'], 'date': transaction['date'], 'source': source,'type': transaction['CONTAINER']}
 
     data = transaction_data
