@@ -44,7 +44,6 @@ async def convert_assets_to_base_currency_and_get_total_gbp(base, balances, hold
     for holding in holdings.values():
         if holding["status"] != "failed":
             for asset in holding['content'].values():
-                print(asset)
                 if crypto_prices.get(asset["symbol"]):
                     usd_currency = float(crypto_prices[asset["symbol"]]) * float(asset["quantity"])
                     asset["base_currency"] = usd_currency / float(currency_prices["USD"])
