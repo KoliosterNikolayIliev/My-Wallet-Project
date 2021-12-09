@@ -95,3 +95,14 @@ async def convert_transactions_currency_to_base_currency(base, transactions, ses
                             usd_currency = float(crypto_prices[amount["currency"]]) * float(amount["amount"])
                             amount["base_amount"] = usd_currency / float(currency_prices["USD"])
                             amount["base_currency"] = base
+
+
+def convert_balance_history_to_base_currency(data, base_currency):
+    balance_history = data.get('balance_history')
+    if balance_history:
+        currency_prices = requests.get(URL + "currencies/prices", headers={'base': 'GBP'}).json()
+        exchange_rate = currency_prices[base_currency]
+        for balance in balance_history['balances']:
+            balance['balance'] *= exchange_rate
+            for source in balance['source_balances_history']:
+                source['value'] *= exchange_rate

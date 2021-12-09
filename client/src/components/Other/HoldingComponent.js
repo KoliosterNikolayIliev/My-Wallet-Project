@@ -16,7 +16,7 @@ const HoldingComponent = ({
         >
           <p className="data-source-asset">{data.symbol}</p>
           <p className="data-source-asset">
-            {data.base_currency.toFixed(2)} {baseSymbol}
+            {Number(data.base_currency.toFixed(1)).toLocaleString()} {baseSymbol}
           </p>
         </div>
       )}
@@ -28,7 +28,7 @@ const HoldingComponent = ({
           <li className="data-source-asset">
             <p>{data.symbol}</p>{" "}
             <p>
-              {data.base_currency.toFixed(2)} {baseSymbol}
+              {Number(data.base_currency.toFixed(1)).toLocaleString()} {baseSymbol}
             </p>
           </li>
         </div>

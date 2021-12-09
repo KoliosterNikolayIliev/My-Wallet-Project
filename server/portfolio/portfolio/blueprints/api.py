@@ -13,7 +13,7 @@ from ..utils.format import group_balances, set_historical_balance
 import aiohttp, asyncio
 
 from ..utils.reference import convert_assets_to_base_currency_and_get_total_gbp, \
-    convert_transactions_currency_to_base_currency
+    convert_transactions_currency_to_base_currency, convert_balance_history_to_base_currency
 
 bp = Blueprint('api', __name__)
 CORS(bp)
@@ -63,6 +63,7 @@ async def get_assets():
     cache_balance_data = group_balances(balances, holdings, gbp_cur=True)
 
     valid_data = cache_balance(cache_balance_data, data, user_data, total_gbp, internal)
+    convert_balance_history_to_base_currency(valid_data, user_data['base_currency'])
 
     return jsonify(valid_data), 200
 
