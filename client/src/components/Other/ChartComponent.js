@@ -73,25 +73,15 @@ const ChartComponent = ({total, base, history}) => {
       },
     },
   };
+  (location.pathname === '/portfolio' ?
+    options.plugins.title.text = "Portfolio performance" :
+    options.plugins.title.text = "Historical Balance Chart")
 
   useEffect(() => {
     const chart = chartRef.current;
 
     if (chart) {
-      if (location.pathname !== '/portfolio'){
-      setChartData({
-        labels,
-        datasets: [
-          {
-            label: "Balance",
-            data: history.balances.map((item) => item.balance),
-            fill: true,
-            borderColor: "rgba(190, 56, 242, 1)",
-            tension: 0.3,
-            backgroundColor: createBackgroundGradient(chart.ctx),
-          },
-        ],
-      });}else {
+      if (location.pathname !== '/portfolio') {
         setChartData({
           labels,
           datasets: [
@@ -103,35 +93,57 @@ const ChartComponent = ({total, base, history}) => {
               tension: 0.3,
               backgroundColor: createBackgroundGradient(chart.ctx),
             },
-            {
-              label:"seccond",
-              data: [
-                47175.48571080616,
-                30175.48571080616,
-                100001.48571080616,
-                15000,
-                1000
-              ]
-            }
           ],
+        });
+      } else {
+        const sourceHistory = history.balances.map((item) => item.source_balances_history)
+        const validData = {}
+        const datasets = []
+
+        for (let entry of sourceHistory) {
+          for (let line of entry) {
+            if (!(line.provider in validData)) {
+              validData[line.provider] = []
+            }
+            validData[line.provider].push(line.value)
+          }
+        }
+        Object.entries(validData).map(entry => {
+          let key = entry[0];
+          let value = entry[1];
+          datasets.push({
+            label: key,
+            data: value,
+            fill: true,
+            borderColor: "rgba(190, 56, 242, 1)",
+            tension: 0.3,
+            backgroundColor: createBackgroundGradient(chart.ctx),
+          });
+        });
+        console.log(datasets)
+        setChartData({
+          labels,
+
+          datasets: datasets,
         });
       }
     }
   }, []);
-  console.log(history.balances.map((item) => item.source_balances_history.map((item)=>item)[2]).map((item=>item.value)))
+  // console.log(history.balances.map((item) => item.source_balances_history.map((item)=>item)[2]).map((item=>item.value)))
   if (!history || history === "") {
     return <Loader/>;
   }
 
   return (
     <div className="info-container">
-      <div className="total-balance">
-        <div className="total-balance-text">
-          <p className="total-balance-title">Total Balance</p>
-          <p className="total-balance-base">{base}</p>
-        </div>
-        <p className="total-balance-value">{Number(total).toFixed(2)}</p>
-      </div>
+      {location.pathname !== '/portfolio' ?
+        <div className="total-balance">
+          <div className="total-balance-text">
+            <p className="total-balance-title">Total Balance</p>
+            <p className="total-balance-base">{base}</p>
+          </div>
+          <p className="total-balance-value">{Number(total).toFixed(2)}</p>
+        </div> : null}
       <div className="chart-container">
         <div className="chart">
           <Chart
