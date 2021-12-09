@@ -126,7 +126,13 @@ const PortfolioPage = () => {
                     </p>
                     {/* performance*/}
                     <p>{balanceHistory !== "" && (
-                      <ChartComponent total={currentTotalBalance} base={base} history={validData[element.provider]} portfolio={true} embedded={true} />
+                      <ChartComponent
+                        total={currentTotalBalance}
+                        base={base}
+                        history={validData[element.provider]}
+                        portfolio={true}
+                        embedded={true}
+                        provider={element.provider}/>
                     )}</p>
                   </div>
                 </li>

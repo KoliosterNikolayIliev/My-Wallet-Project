@@ -28,7 +28,24 @@ ChartJS.register(
   Legend
 );
 
-const ChartComponent = ({total, base, history, portfolio = false, embedded = false}) => {
+function hashCode(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return hash;
+}
+
+function intToRGB(i){
+  let c = (i & 0x00FFFFFF)
+    .toString(16)
+    .toUpperCase();
+
+  return "#"+"00000".substring(0, 6 - c.length) + c;
+}
+
+
+const ChartComponent = ({total, base, history, portfolio = false, embedded = false, provider=''}) => {
   const location = useLocation();
   const chartRef = useRef(null);
   const [chartData, setChartData] = useState({
@@ -103,8 +120,6 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
           ],
         });
       } else if (!embedded) {
-
-
         Object.entries(history).map(entry => {
           let key = entry[0];
           let value = entry[1];
@@ -112,12 +127,11 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
             label: key,
             data: value,
             fill: true,
-            borderColor: "rgba(190, 56, 242, 1)",
+            borderColor: intToRGB(hashCode(key)),
             tension: 0.3,
             backgroundColor: createBackgroundGradient(chart.ctx),
           });
         });
-        // console.log(datasets)
         setChartData({
           labels,
           datasets: datasets,
@@ -127,9 +141,9 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
           labels,
           datasets: [
             {
-              label: "Balance",
+              label: provider,
               data: history,
-              borderColor: "rgba(190, 56, 242, 1)",
+              borderColor: intToRGB(hashCode(provider)),
               tension: 0.3,
             },
           ],
