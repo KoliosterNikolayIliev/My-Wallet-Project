@@ -28,7 +28,7 @@ ChartJS.register(
   Legend
 );
 
-const ChartComponent = ({total, base, history}) => {
+const ChartComponent = ({total, base, history, portfolio = false, embedded = false}) => {
   const location = useLocation();
   const chartRef = useRef(null);
   const [chartData, setChartData] = useState({
@@ -49,7 +49,7 @@ const ChartComponent = ({total, base, history}) => {
 
     return gradient;
   };
-
+  const datasets = []
   const options = {
     responsive: true,
     scales: {
@@ -74,21 +74,27 @@ const ChartComponent = ({total, base, history}) => {
       },
     },
   };
-  (location.pathname === '/portfolio' ?
-    options.plugins.title.text = "Portfolio performance" :
-    options.plugins.title.text = "Historical Balance Chart")
+
+  if (portfolio) {
+    options.plugins.title.text = "Portfolio performance"
+  }
+  if (embedded) {
+    delete options.plugins.title.text
+    options.scales.x.display = false
+    options.scales.y.display = false
+  }
 
   useEffect(() => {
     const chart = chartRef.current;
 
     if (chart) {
-      if (location.pathname !== '/portfolio') {
+      if (!portfolio) {
         setChartData({
           labels,
           datasets: [
             {
               label: "Balance",
-              data: history.balances.map((item) => item.balance),
+              data: history,
               fill: true,
               borderColor: "rgba(190, 56, 242, 1)",
               tension: 0.3,
@@ -96,20 +102,10 @@ const ChartComponent = ({total, base, history}) => {
             },
           ],
         });
-      } else {
-        const sourceHistory = history.balances.map((item) => item.source_balances_history)
-        const validData = {}
-        const datasets = []
+      } else if (!embedded) {
 
-        for (let entry of sourceHistory) {
-          for (let line of entry) {
-            if (!(line.provider in validData)) {
-              validData[line.provider] = []
-            }
-            validData[line.provider].push(line.value)
-          }
-        }
-        Object.entries(validData).map(entry => {
+
+        Object.entries(history).map(entry => {
           let key = entry[0];
           let value = entry[1];
           datasets.push({
@@ -121,11 +117,22 @@ const ChartComponent = ({total, base, history}) => {
             backgroundColor: createBackgroundGradient(chart.ctx),
           });
         });
-        console.log(datasets)
+        // console.log(datasets)
         setChartData({
           labels,
-
           datasets: datasets,
+        });
+      } else {
+        setChartData({
+          labels,
+          datasets: [
+            {
+              label: "Balance",
+              data: history,
+              borderColor: "rgba(190, 56, 242, 1)",
+              tension: 0.3,
+            },
+          ],
         });
       }
     }
@@ -135,7 +142,7 @@ const ChartComponent = ({total, base, history}) => {
     return <Loader/>;
   }
 
-  return (
+  return !embedded ? (
     <div className="info-container">
       {location.pathname !== '/portfolio' ?
         <div className="total-balance">
@@ -158,7 +165,12 @@ const ChartComponent = ({total, base, history}) => {
         {location.pathname !== '/portfolio' ? NotificationComponent() : null}
       </div>
     </div>
-  );
+  ) : <div><Chart
+    type="line"
+    ref={chartRef}
+    options={options}
+    data={chartData}
+  /></div>
 };
 
 export default ChartComponent;
