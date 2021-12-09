@@ -31,7 +31,6 @@ async def convert_assets_to_base_currency_and_get_total_gbp(base, balances, hold
         get_stocks_prices(session)
     )
     total_gbp = 0
-
     for balance in balances.values():
         if balance["status"] != "failed":
             for asset in balance["content"].values():
@@ -45,6 +44,7 @@ async def convert_assets_to_base_currency_and_get_total_gbp(base, balances, hold
     for holding in holdings.values():
         if holding["status"] != "failed":
             for asset in holding['content'].values():
+                print(asset)
                 if crypto_prices.get(asset["symbol"]):
                     usd_currency = float(crypto_prices[asset["symbol"]]) * float(asset["quantity"])
                     asset["base_currency"] = usd_currency / float(currency_prices["USD"])
@@ -53,7 +53,9 @@ async def convert_assets_to_base_currency_and_get_total_gbp(base, balances, hold
                     asset["gbp_currency"] = value
 
                 else:
-                    if stocks_prices.get(asset["symbol"]):
+                    if type(asset.get('value')) == dict:
+                        asset["base_currency"] = float(asset['value']['amount']) / float(currency_prices[asset['value']['currency']])
+                    elif stocks_prices.get(asset["symbol"]):
                         usd_currency = float(stocks_prices[asset["symbol"]]) * float(asset["quantity"])
                         asset["base_currency"] = usd_currency / float(currency_prices["USD"])
                         value = usd_currency / float(currency_prices_gbp["USD"])
