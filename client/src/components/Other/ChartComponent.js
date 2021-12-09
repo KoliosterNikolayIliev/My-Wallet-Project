@@ -58,9 +58,9 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
       return i + 1;
     });
 
-  const createBackgroundGradient = (ctx) => {
+  const createBackgroundGradient = (ctx,color) => {
     const gradient = ctx.createLinearGradient(0, 0, 0, 400, 0.1);
-    gradient.addColorStop(0, "rgba(190,56,242,0.4)");
+    gradient.addColorStop(0, color);
     gradient.addColorStop(0.7, "rgba(190,56,242,0)");
     gradient.addColorStop(1, "rgba(0,0,0,0)");
 
@@ -105,6 +105,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
     const chart = chartRef.current;
 
     if (chart) {
+      let color="rgba(190,56,242,0.4)"
       if (!portfolio) {
         setChartData({
           labels,
@@ -115,7 +116,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
               fill: true,
               borderColor: "rgba(190, 56, 242, 1)",
               tension: 0.3,
-              backgroundColor: createBackgroundGradient(chart.ctx),
+              backgroundColor: createBackgroundGradient(chart.ctx,color),
             },
           ],
         });
@@ -129,7 +130,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
             fill: true,
             borderColor: intToRGB(hashCode(key)),
             tension: 0.3,
-            backgroundColor: createBackgroundGradient(chart.ctx),
+            backgroundColor: createBackgroundGradient(chart.ctx,intToRGB(hashCode(key))),
           });
         });
         setChartData({
