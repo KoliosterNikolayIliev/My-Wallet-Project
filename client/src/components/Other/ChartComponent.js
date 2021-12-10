@@ -28,7 +28,24 @@ ChartJS.register(
   Legend
 );
 
-const ChartComponent = ({total, base, history}) => {
+function hashCode(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return hash;
+}
+
+function intToRGB(i){
+  let c = (i & 0x00FFFFFF)
+    .toString(16)
+    .toUpperCase();
+
+  return "#"+"00000".substring(0, 6 - c.length) + c+'52';
+}
+
+
+const ChartComponent = ({total, base, history, portfolio = false, embedded = false, provider=''}) => {
   const location = useLocation();
   const chartRef = useRef(null);
   const [chartData, setChartData] = useState({
@@ -41,15 +58,15 @@ const ChartComponent = ({total, base, history}) => {
       return i + 1;
     });
 
-  const createBackgroundGradient = (ctx) => {
-    const gradient = ctx.createLinearGradient(0, 0, 0, 400, 0.1);
-    gradient.addColorStop(0, "rgba(190,56,242,0.4)");
-    gradient.addColorStop(0.7, "rgba(190,56,242,0)");
-    gradient.addColorStop(1, "rgba(0,0,0,0)");
+  const createBackgroundGradient = (ctx,color) => {
+    const gradient = ctx.createLinearGradient(0, 0, 0, 450, 0.1);
+    gradient.addColorStop(0.1, color);
+    gradient.addColorStop(0.01, color);
+    gradient.addColorStop(0.85, "white");
 
     return gradient;
   };
-
+  const datasets = []
   const options = {
     responsive: true,
     scales: {
@@ -74,58 +91,68 @@ const ChartComponent = ({total, base, history}) => {
       },
     },
   };
-  (location.pathname === '/portfolio' ?
-    options.plugins.title.text = "Portfolio performance" :
-    options.plugins.title.text = "Historical Balance Chart")
+
+  if (portfolio) {
+    options.plugins.title.text = "Portfolio performance"
+  }
+  if (embedded) {
+    delete options.plugins.title.text
+    options.scales.x.display = false
+    options.scales.y.display = false
+  }
 
   useEffect(() => {
     const chart = chartRef.current;
 
     if (chart) {
-      if (location.pathname !== '/portfolio') {
+      let color="rgba(190,56,242,0.4)"
+      if (!portfolio) {
         setChartData({
           labels,
           datasets: [
             {
               label: "Balance",
-              data: history.balances.map((item) => item.balance),
+              data: history,
               fill: true,
               borderColor: "rgba(190, 56, 242, 1)",
               tension: 0.3,
-              backgroundColor: createBackgroundGradient(chart.ctx),
+              backgroundColor: createBackgroundGradient(chart.ctx,color),
             },
           ],
         });
-      } else {
-        const sourceHistory = history.balances.map((item) => item.source_balances_history)
-        const validData = {}
-        const datasets = []
-
-        for (let entry of sourceHistory) {
-          for (let line of entry) {
-            if (!(line.provider in validData)) {
-              validData[line.provider] = []
-            }
-            validData[line.provider].push(line.value)
-          }
-        }
-        Object.entries(validData).map(entry => {
+      } else if (!embedded) {
+        Object.entries(history).map(entry => {
           let key = entry[0];
           let value = entry[1];
           datasets.push({
             label: key,
             data: value,
             fill: true,
-            borderColor: "rgba(190, 56, 242, 1)",
+            borderColor: intToRGB(hashCode(key)),
             tension: 0.3,
-            backgroundColor: createBackgroundGradient(chart.ctx),
+            backgroundColor: createBackgroundGradient(chart.ctx,intToRGB(hashCode(key))),
           });
         });
-        console.log(datasets)
         setChartData({
           labels,
-
           datasets: datasets,
+        });
+      } else {
+        setChartData({
+          labels,
+          datasets: [
+            {
+              label: provider,
+              data: history,
+              borderColor: intToRGB(hashCode(provider)),
+              tension: 0.3,
+              elements:{
+                point:{
+                  radius:0
+                }
+              }
+            },
+          ],
         });
       }
     }
@@ -135,7 +162,7 @@ const ChartComponent = ({total, base, history}) => {
     return <Loader/>;
   }
 
-  return (
+  return !embedded ? (
     <div className="info-container">
       {location.pathname !== '/portfolio' ?
         <div className="total-balance">
@@ -158,7 +185,12 @@ const ChartComponent = ({total, base, history}) => {
         {location.pathname !== '/portfolio' ? NotificationComponent() : null}
       </div>
     </div>
-  );
+  ) : <div><Chart
+    type="line"
+    ref={chartRef}
+    options={options}
+    data={chartData}
+  /></div>
 };
 
 export default ChartComponent;

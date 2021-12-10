@@ -136,7 +136,7 @@ const DashboardPage = () => {
   if (!isAuthenticated) {
     return <Redirect to={"/"} />;
   }
-
+  const history = balanceHistory.balances.map((item) => item.balance)
   return (
     isAuthenticated && (
       <div className="main">
@@ -146,7 +146,7 @@ const DashboardPage = () => {
         />
         <SubHeader user={user} />
         {balanceHistory !== "" && (
-          <ChartComponent total={total} base={base} history={balanceHistory} />
+          <ChartComponent total={total} base={base} history={history} />
         )}
         <div style={{ margin: "3% 0" }}>
           <p

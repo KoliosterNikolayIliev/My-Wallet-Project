@@ -4,6 +4,7 @@ import {Redirect} from "react-router";
 
 import "../../styles/dashboard.scss";
 import "../../styles/main_content.scss";
+import "../../styles/portfolio-page.scss";
 import Loader from "../Other/LoaderComponent";
 import {useRecoilState} from "recoil";
 import {getUser} from "../../utils/account";
@@ -39,7 +40,6 @@ const PortfolioPage = () => {
   const HistoricalBalances = async () => {
     const token = await getAccessTokenSilently();
     const assets = await getAssets(token);
-    console.log(assets)
     const balanceHistory = assets.balance_history
     window.sessionStorage.setItem(
       "balanceHistory",
@@ -65,6 +65,18 @@ const PortfolioPage = () => {
   const currentBalances = balanceHistory.balances[balanceHistory.balances.length - 1]
   const currentSourceBalances = currentBalances.source_balances_history
   const currentTotalBalance = currentBalances.balance
+  const history = balanceHistory.balances.map((item) => item.source_balances_history)
+  const validData = {}
+
+  for (let entry of history) {
+    for (let line of entry) {
+      if (!(line.provider in validData)) {
+        validData[line.provider] = []
+      }
+      validData[line.provider].push(line.value)
+    }
+  }
+  console.log(validData.coinbase)
   return (
     isAuthenticated && (
       <div className="main">
@@ -73,12 +85,12 @@ const PortfolioPage = () => {
           username={user.nickname ? user.nickname : user.name}
         />
         {balanceHistory !== "" && (
-          <ChartComponent total={currentTotalBalance} base={base} history={balanceHistory} />
+          <ChartComponent total={currentTotalBalance} base={base} portfolio={true} history={validData} />
         )}
         <div className="transactions-table">
           <div className="headings">
             <p>Sources</p>
-            <p>+</p>
+            {/*<p>+</p>*/}
             <p>%PORTFOLIO</p>
             <p>VALUE-1M</p>
             <p>LATEST VALUE</p>
@@ -94,10 +106,10 @@ const PortfolioPage = () => {
                       {element.provider}
                     </p>
 
-                    {/* Unknown */}
-                    <p className="transaction-source">
-                      ^
-                    </p>
+                    {/*/!* Unknown *!/*/}
+                    {/*<p className="transaction-source">*/}
+                    {/*  ^*/}
+                    {/*</p>*/}
 
                     {/* percentage */}
                     <p>
@@ -114,7 +126,15 @@ const PortfolioPage = () => {
                       {base} {element.value.toFixed(2)}
                     </p>
                     {/* performance*/}
-                    <p>GRAPH</p>
+                    <p>{balanceHistory !== "" && (
+                      <ChartComponent
+                        total={currentTotalBalance}
+                        base={base}
+                        history={validData[element.provider]}
+                        portfolio={true}
+                        embedded={true}
+                        provider={element.provider}/>
+                    )}</p>
                   </div>
                 </li>
               );
