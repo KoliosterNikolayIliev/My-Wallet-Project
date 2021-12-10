@@ -41,7 +41,7 @@ function intToRGB(i){
     .toString(16)
     .toUpperCase();
 
-  return "#"+"00000".substring(0, 6 - c.length) + c;
+  return "#"+"00000".substring(0, 6 - c.length) + c+'52';
 }
 
 
@@ -59,10 +59,10 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
     });
 
   const createBackgroundGradient = (ctx,color) => {
-    const gradient = ctx.createLinearGradient(0, 0, 0, 400, 0.1);
-    gradient.addColorStop(0, color);
-    gradient.addColorStop(0.7, "rgba(190,56,242,0)");
-    gradient.addColorStop(1, "rgba(0,0,0,0)");
+    const gradient = ctx.createLinearGradient(0, 0, 0, 450, 0.1);
+    gradient.addColorStop(0.1, color);
+    gradient.addColorStop(0.01, color);
+    gradient.addColorStop(0.85, "white");
 
     return gradient;
   };
