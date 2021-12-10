@@ -126,7 +126,7 @@ const PortfolioPage = () => {
                       {base} {element.value.toFixed(2)}
                     </p>
                     {/* performance*/}
-                    <p>{balanceHistory !== "" && (
+                    <p className={'small-chart-container'}>{balanceHistory !== "" && (
                       <ChartComponent
                         total={currentTotalBalance}
                         base={base}
