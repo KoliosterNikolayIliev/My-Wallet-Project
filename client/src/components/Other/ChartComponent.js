@@ -36,16 +36,16 @@ function hashCode(str) {
   return hash;
 }
 
-function intToRGB(i){
+function intToRGB(i) {
   let c = (i & 0x00FFFFFF)
     .toString(16)
     .toUpperCase();
 
-  return "#"+"00000".substring(0, 6 - c.length) + c+'52';
+  return "#" + "00000".substring(0, 6 - c.length) + c;
 }
 
 
-const ChartComponent = ({total, base, history, portfolio = false, embedded = false, provider=''}) => {
+const ChartComponent = ({total, base, history, portfolio = false, embedded = false, provider = ''}) => {
   const location = useLocation();
   const chartRef = useRef(null);
   const [chartData, setChartData] = useState({
@@ -58,9 +58,13 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
       return i + 1;
     });
 
-  const createBackgroundGradient = (ctx,color) => {
+  const createBackgroundGradient = (ctx, color) => {
     const gradient = ctx.createLinearGradient(0, 0, 0, 450, 0.1);
+    if (color.startsWith('#')) {
+      color = color + '52'
+    }
     gradient.addColorStop(0.1, color);
+    gradient.addColorStop(0.02, color);
     gradient.addColorStop(0.01, color);
     gradient.addColorStop(0.85, "white");
 
@@ -105,7 +109,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
     const chart = chartRef.current;
 
     if (chart) {
-      let color="rgba(190,56,242,0.4)"
+      let color = "rgba(190,56,242,0.4)"
       if (!portfolio) {
         setChartData({
           labels,
@@ -116,7 +120,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
               fill: true,
               borderColor: "rgba(190, 56, 242, 1)",
               tension: 0.3,
-              backgroundColor: createBackgroundGradient(chart.ctx,color),
+              backgroundColor: createBackgroundGradient(chart.ctx, color),
             },
           ],
         });
@@ -130,7 +134,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
             fill: true,
             borderColor: intToRGB(hashCode(key)),
             tension: 0.3,
-            backgroundColor: createBackgroundGradient(chart.ctx,intToRGB(hashCode(key))),
+            backgroundColor: createBackgroundGradient(chart.ctx, intToRGB(hashCode(key))),
           });
         });
         setChartData({
@@ -146,9 +150,9 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
               data: history,
               borderColor: intToRGB(hashCode(provider)),
               tension: 0.3,
-              elements:{
-                point:{
-                  radius:0
+              elements: {
+                point: {
+                  radius: 0
                 }
               }
             },
