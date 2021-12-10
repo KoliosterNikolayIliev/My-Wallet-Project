@@ -4,6 +4,7 @@ import {Redirect} from "react-router";
 
 import "../../styles/dashboard.scss";
 import "../../styles/main_content.scss";
+import "../../styles/portfolio-page.scss";
 import Loader from "../Other/LoaderComponent";
 import {useRecoilState} from "recoil";
 import {getUser} from "../../utils/account";
@@ -89,7 +90,7 @@ const PortfolioPage = () => {
         <div className="transactions-table">
           <div className="headings">
             <p>Sources</p>
-            <p>+</p>
+            {/*<p>+</p>*/}
             <p>%PORTFOLIO</p>
             <p>VALUE-1M</p>
             <p>LATEST VALUE</p>
@@ -105,10 +106,10 @@ const PortfolioPage = () => {
                       {element.provider}
                     </p>
 
-                    {/* Unknown */}
-                    <p className="transaction-source">
-                      ^
-                    </p>
+                    {/*/!* Unknown *!/*/}
+                    {/*<p className="transaction-source">*/}
+                    {/*  ^*/}
+                    {/*</p>*/}
 
                     {/* percentage */}
                     <p>

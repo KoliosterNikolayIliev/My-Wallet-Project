@@ -146,6 +146,11 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
               data: history,
               borderColor: intToRGB(hashCode(provider)),
               tension: 0.3,
+              elements:{
+                point:{
+                  radius:0
+                }
+              }
             },
           ],
         });
