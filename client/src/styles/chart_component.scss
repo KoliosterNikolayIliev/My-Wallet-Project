@@ -19,8 +19,8 @@
     font-weight: 700;
     padding: 0;
     margin: 0;
-    font-size: 150%;
     padding-left: 3%;
+    font-size: 40px;
   }
 
   .total-balance-text {
@@ -68,7 +68,7 @@
     padding-bottom: 5%;
     height: 40vh;
     width: 100%;
-   
+
 
     img {
       object-fit: cover;
@@ -113,4 +113,5 @@
 canvas
 {
   width: 100% !important;
+  padding-left: 1%;
 }
