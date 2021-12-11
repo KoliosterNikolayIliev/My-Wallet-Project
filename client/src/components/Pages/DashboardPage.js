@@ -165,7 +165,7 @@ const DashboardPage = () => {
         {balanceHistory !== "" && (
           <ChartComponent total={total} base={base} history={history} />
         )}
-        <div style={{ margin: "3% 0" }}>
+        <div style={{paddingTop:'3%', paddingBottom:'3%'}}>
           <p
             style={{ display: "inline", paddingRight: "20px" }}
             className="add-source-font"

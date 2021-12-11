@@ -167,25 +167,27 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
   }
 
   return !embedded ? (
-
-      <div className="chart-container">
-        {/*{location.pathname !== '/portfolio' ?*/}
-        {/*  <div className="total-balance">*/}
-        {/*    <div className="total-balance-text">*/}
-        {/*      <p className="total-balance-title">Total Balance</p>*/}
-        {/*      <p className="total-balance-base">{base}</p>*/}
-        {/*    </div>*/}
-        {/*    <p className="total-balance-value">{Number(Number(total).toFixed(1)).toLocaleString()}</p>*/}
-        {/*  </div> : null}*/}
-        <div className="chart">
-          <Chart
-            type="line"
-            ref={chartRef}
-            options={options}
-            data={chartData}
-          />
+    <div className="chart-container">
+      <div className={'balance-chart-container'}>
+        {location.pathname !== '/portfolio' ?
+          <div className="total-balance">
+            <div className="total-balance-text">
+              <p className="total-balance-title">Total Balance</p>
+              <p className="total-balance-base">{base}</p>
+            </div>
+            <p className="total-balance-value">{Number(Number(total).toFixed(1)).toLocaleString()}</p>
+          </div> : null}
+        <div className={'only-chart'}>
+          <div className="chart">
+            <Chart
+              type="line"
+              ref={chartRef}
+              options={options}
+              data={chartData}
+            />
+          </div>
         </div>
-      
+      </div>
       {location.pathname !== '/portfolio' ? NotificationComponent() : null}
     </div>
   ) : <div><Chart

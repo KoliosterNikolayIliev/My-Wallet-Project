@@ -2,27 +2,25 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Inter:wght@500&family=Poppins:wght@500&display=swap");
 
-//.info-container {
-//  display: flex;
-//  flex-direction: column;
-//  align-items: flex-start;
-//  justify-content: space-between;
-//  margin-left: 5%;
-//}
+
 .total-balance {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 100%;
+  background: #ffffff;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+
 
 
   .total-balance-value {
     font-family: "DM Sans", "sans-serif";
     font-weight: 700;
-    font-size: 40px;
     padding: 0;
     margin: 0;
+    font-size: 150%;
+    padding-left: 3%;
   }
 
   .total-balance-text {
@@ -30,6 +28,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    padding-top: 3%;
 
     .total-balance-title {
       font-family: "Poppins", "sans-serif";
@@ -37,6 +36,7 @@
       padding: 0;
       font-size: 18px;
       font-weight: 500;
+      padding-left: 3%;
     }
 
     .total-balance-base {
@@ -58,21 +58,20 @@
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  //width: 100%;
-  //height: 100%;
 
 
   .chart {
-    flex-basis: 74%;
     box-shadow: 0 23px 44px 0 #b0b7c324;
     background: #ffffff;
-    border-radius: 8px;
-    height: 40%;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding-bottom: 5%;
+    height: 40vh;
 
     img {
       object-fit: cover;
       width: 100%;
-      height: auto;
+      height: 100%;
     }
   }
 
@@ -105,3 +104,6 @@
   }
 }
 
+.balance-chart-container{
+  flex-basis: 74%;
+}
