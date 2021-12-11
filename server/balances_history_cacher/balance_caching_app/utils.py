@@ -14,6 +14,7 @@ def add_balance(balances_history, data):
         'source_balances_history': []
     }
     balance_not_exist = True
+    balance_need_update=False
     new_balance = validated_balance_data['balance']
     new_timestamp = str(validated_balance_data['timestamp']).split(' ')[0]
 
@@ -25,11 +26,12 @@ def add_balance(balances_history, data):
             balance_not_exist = False
             balance['timestamp'] = validated_balance_data['timestamp']
         if trunc(current_balance) != trunc(new_balance) and current_timestamp == new_timestamp:
-            balance['timestamp'] = validated_balance_data['timestamp']
-            balance['balance'] = new_balance
-            balance_not_exist = False
+            balance_need_update=True
 
-    if balance_not_exist:
+    if balance_need_update:
+        balances_history.pop()
+
+    if balance_not_exist or balance_need_update:
         source_balances_list = data['source_balances']
         it = iter(source_balances_list)
         validated_source_data = tuple(zip(it, it))

@@ -61,13 +61,32 @@ const PortfolioPage = () => {
   if (isLoading || balanceHistory === "" || !balanceHistory) {
     return Loader();
   }
-
+  const date = new Date();
+  const firstDayOfTheMonth = new Date(date.getFullYear(), date.getMonth(), 2).toISOString()
   const currentBalances = balanceHistory.balances[balanceHistory.balances.length - 1]
+  const firstDayOfTheMonthBalance = balanceHistory.balances.filter(
+    (element) => element.timestamp.slice(0, 10) === firstDayOfTheMonth.slice(0, 10))[0].source_balances_history
   const currentSourceBalances = currentBalances.source_balances_history
   const currentTotalBalance = currentBalances.balance
   const history = balanceHistory.balances.map((item) => item.source_balances_history)
   const validData = {}
+  const extendedCurrentSourceBalance=[]
 
+  for (let obj of currentSourceBalances) {
+    let addedValue=firstDayOfTheMonthBalance.filter((entry)=>entry.provider===obj.provider)
+    if (addedValue.length>0){
+      addedValue=addedValue[0].value
+    }else{addedValue=0}
+
+    let newObj={
+      provider:obj.provider,
+      value:obj.value,
+      startMonthValue:addedValue
+    }
+    extendedCurrentSourceBalance.push(newObj)
+  }
+
+  // console.log(extendedCurrentSourceBalance)
   for (let entry of history) {
     for (let line of entry) {
       if (!(line.provider in validData)) {
@@ -76,7 +95,7 @@ const PortfolioPage = () => {
       validData[line.provider].push(line.value)
     }
   }
-  console.log(validData.coinbase)
+  // console.log(validData)
   return (
     isAuthenticated && (
       <div className="main">
@@ -85,7 +104,7 @@ const PortfolioPage = () => {
           username={user.nickname ? user.nickname : user.name}
         />
         {balanceHistory !== "" && (
-          <ChartComponent total={currentTotalBalance} base={base} portfolio={true} history={validData} />
+          <ChartComponent total={currentTotalBalance} base={base} portfolio={true} history={validData}/>
         )}
         <div className="transactions-table">
           <div className="headings">
@@ -97,13 +116,13 @@ const PortfolioPage = () => {
             <p>PERFORMANCE</p>
           </div>
           <ul>
-            {currentSourceBalances.map((element) => {
+            {extendedCurrentSourceBalance.map((element) => {
               return (
                 <li>
                   <div className="transaction-row">
                     {/* Source */}
                     <p className="transaction-date">
-                      {element.provider}
+                      {element.provider.includes('_')?element.provider.replace('_',' ').toUpperCase():element.provider.toUpperCase()}
                     </p>
 
                     {/*/!* Unknown *!/*/}
@@ -113,17 +132,17 @@ const PortfolioPage = () => {
 
                     {/* percentage */}
                     <p>
-                      {((element.value/currentTotalBalance)*100).toFixed(2)}%
+                      {((element.value / currentTotalBalance) * 100).toFixed(2)}%
                     </p>
 
                     {/* Value 1M */}
                     <p>
-                      1-M value TODO
+                      {base} {Number(Number(element.startMonthValue).toFixed(1)).toLocaleString()}
                     </p>
 
                     {/* value */}
                     <p>
-                      {base} {element.value.toFixed(2)}
+                      {base} {Number(Number(element.value).toFixed(1)).toLocaleString()}
                     </p>
                     {/* performance*/}
                     <p className={'small-chart-container'}>{balanceHistory !== "" && (
