@@ -61,12 +61,14 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
   const createBackgroundGradient = (ctx, color) => {
     const gradient = ctx.createLinearGradient(0, 0, 0, 450, 0.1);
     if (color.startsWith('#')) {
-      color = color + '52'
+      color = color + 'FC'
     }
-    gradient.addColorStop(0.1, color);
-    gradient.addColorStop(0.02, color);
-    gradient.addColorStop(0.01, color);
-    gradient.addColorStop(0.85, "white");
+    else{
+      console.log(color)
+    }
+    gradient.addColorStop(0, color);
+    gradient.addColorStop(0.5, "white");
+
 
     return gradient;
   };
@@ -109,7 +111,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
     const chart = chartRef.current;
 
     if (chart) {
-      let color = "rgba(190,56,242,0.4)"
+      let color = "rgba(190,56,242,0)"
       if (!portfolio) {
         setChartData({
           labels,
