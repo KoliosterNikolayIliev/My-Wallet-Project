@@ -71,11 +71,13 @@ const PortfolioPage = () => {
   const history = balanceHistory.balances.map((item) => item.source_balances_history)
   const validData = {}
   const extendedCurrentSourceBalance=[]
+
   for (let obj of currentSourceBalances) {
     let addedValue=firstDayOfTheMonthBalance.filter((entry)=>entry.provider===obj.provider)
     if (addedValue.length>0){
       addedValue=addedValue[0].value
     }else{addedValue=0}
+
     let newObj={
       provider:obj.provider,
       value:obj.value,
@@ -120,7 +122,7 @@ const PortfolioPage = () => {
                   <div className="transaction-row">
                     {/* Source */}
                     <p className="transaction-date">
-                      {element.provider}
+                      {element.provider.includes('_')?element.provider.replace('_',' ').toUpperCase():element.provider.toUpperCase()}
                     </p>
 
                     {/*/!* Unknown *!/*/}
@@ -135,12 +137,12 @@ const PortfolioPage = () => {
 
                     {/* Value 1M */}
                     <p>
-                      {base} {element.startMonthValue.toFixed(2)}
+                      {base} {Number(Number(element.startMonthValue).toFixed(1)).toLocaleString()}
                     </p>
 
                     {/* value */}
                     <p>
-                      {base} {element.value.toFixed(2)}
+                      {base} {Number(Number(element.value).toFixed(1)).toLocaleString()}
                     </p>
                     {/* performance*/}
                     <p className={'small-chart-container'}>{balanceHistory !== "" && (
