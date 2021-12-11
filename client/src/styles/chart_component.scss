@@ -67,6 +67,8 @@
     border-bottom-right-radius: 8px;
     padding-bottom: 5%;
     height: 40vh;
+    width: 100%;
+   
 
     img {
       object-fit: cover;
@@ -106,4 +108,9 @@
 
 .balance-chart-container{
   flex-basis: 74%;
+}
+
+canvas
+{
+  width: 100% !important;
 }
