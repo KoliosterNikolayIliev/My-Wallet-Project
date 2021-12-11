@@ -73,6 +73,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
   const datasets = []
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       x: {
         grid: {
@@ -91,7 +92,6 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
       },
       title: {
         display: true,
-        text: "Historical Balance Chart",
       },
     },
   };
@@ -167,17 +167,16 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
   }
 
   return !embedded ? (
-    <div className="info-container">
-      {location.pathname !== '/portfolio' ?
-        <div className="total-balance">
-          <div className="total-balance-text">
-            <p className="total-balance-title">Total Balance</p>
-            <p className="total-balance-base">{base}</p>
-          </div>
-          <p className="total-balance-value">{Number(Number(total).toFixed(1)).toLocaleString()}</p>
-        </div> : null}
 
       <div className="chart-container">
+        {/*{location.pathname !== '/portfolio' ?*/}
+        {/*  <div className="total-balance">*/}
+        {/*    <div className="total-balance-text">*/}
+        {/*      <p className="total-balance-title">Total Balance</p>*/}
+        {/*      <p className="total-balance-base">{base}</p>*/}
+        {/*    </div>*/}
+        {/*    <p className="total-balance-value">{Number(Number(total).toFixed(1)).toLocaleString()}</p>*/}
+        {/*  </div> : null}*/}
         <div className="chart">
           <Chart
             type="line"
@@ -186,8 +185,8 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
             data={chartData}
           />
         </div>
-        {location.pathname !== '/portfolio' ? NotificationComponent() : null}
-      </div>
+      
+      {location.pathname !== '/portfolio' ? NotificationComponent() : null}
     </div>
   ) : <div><Chart
     type="line"
@@ -196,5 +195,6 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
     data={chartData}
   /></div>
 };
+
 
 export default ChartComponent;
