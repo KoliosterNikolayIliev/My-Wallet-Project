@@ -1,6 +1,5 @@
 import datetime
 import os
-from pprint import pprint
 
 import requests
 
@@ -21,7 +20,7 @@ def cache_balance(cache_balance_data, data, user_data, total_gbp, internal):
     try:
         response_from_balance_cache = requests.post(url + 'balances/add/', data=valid_data).json()
         if not internal:
-            pprint(response_from_balance_cache)
+
             if response_from_balance_cache == {'source_balances': ['This field is required.']}:
                 response_from_balance_cache = {
                     'balances': [{
@@ -37,12 +36,9 @@ def cache_balance(cache_balance_data, data, user_data, total_gbp, internal):
                         'timestamp': datetime.datetime.utcnow().isoformat()}]}
             data['balance_history'] = response_from_balance_cache
 
-            # '{'total': 0, 'balance_history': {'source_balances': []}}'
     except Exception as e:
         print('Connection to balance cashing service failed:' + str(e))
 
     if internal:
         return valid_data
     return data
-# '2021-12-12T20:27:05.618000'
-# '2021-12-12T21:34:44.917591'
