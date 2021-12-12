@@ -127,7 +127,7 @@ const PortfolioPage = () => {
                   <li>
                     <div className="portfolio-table-row">
                       {/* Source */}
-                      <p className="portfolio-source-name">
+                      <p className="portfolio-source-name" style={{color:intToRGB(hashCode(element.provider))}}>
                         {element.provider.includes('_') ? element.provider.replace('_', ' ') : element.provider}
                       </p>
 
