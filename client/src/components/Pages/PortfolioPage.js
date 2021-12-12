@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import {Redirect} from "react-router";
+import {buildStyles, CircularProgressbar} from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 import "../../styles/dashboard.scss";
 import "../../styles/main_content.scss";
@@ -11,7 +13,7 @@ import {getUser} from "../../utils/account";
 import Header from "../Other/HeaderComponent";
 import {balanceHistoryAtom, baseAtom} from "../../recoil";
 import {getAssets, getHistoricalBalances} from "../../utils/portfolio";
-import ChartComponent from "../Other/ChartComponent";
+import ChartComponent, {hashCode, intToRGB} from "../Other/ChartComponent";
 import {getTokenWithErrorHandling} from "./DashboardPage";
 
 // Dashboard page to be filled in with user account data
@@ -135,7 +137,17 @@ const PortfolioPage = () => {
                       {/*</p>*/}
 
                       {/* percentage */}
-                      <p>
+                      <p style={{display:'flex', alignItems:'center'}}>
+                        <div style={{ width: 20, height: 20, marginRight:'4%', }}><CircularProgressbar
+                          value={((element.value / currentTotalBalance) * 100).toFixed(2)} strokeWidth={15}
+                          styles={buildStyles(
+                            {
+                              pathColor:intToRGB(hashCode(element.provider)),
+                              trailColor:intToRGB(hashCode(element.provider))+'1A',
+                              }
+                          )}
+                        /></div>
+
                         {((element.value / currentTotalBalance) * 100).toFixed(2)}%
                       </p>
 
