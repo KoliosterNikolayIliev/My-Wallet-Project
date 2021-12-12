@@ -67,14 +67,20 @@ const PortfolioPage = () => {
   const date = new Date();
   const firstDayOfTheMonth = new Date(date.getFullYear(), date.getMonth(), 2).toISOString()
   const currentBalances = balanceHistory.balances[balanceHistory.balances.length - 1]
-  const firstDayOfTheMonthBalance = balanceHistory.balances.filter(
-    (element) => element.timestamp.slice(0, 10) === firstDayOfTheMonth.slice(0, 10))[0].source_balances_history
+  let firstDayOfTheMonthBalanceList = balanceHistory.balances.filter(
+    (element) => element.timestamp.slice(0, 10) === firstDayOfTheMonth.slice(0, 10))[0]
+
+  if (!firstDayOfTheMonthBalanceList){
+    firstDayOfTheMonthBalanceList={'source_balances_history':[{provider:'None',value:0}]}
+  }
+  const firstDayOfTheMonthBalance=firstDayOfTheMonthBalanceList.source_balances_history
+  // console.log(firstDayOfTheMonthBalance)
   const currentSourceBalances = currentBalances.source_balances_history
   const currentTotalBalance = currentBalances.balance
   const history = balanceHistory.balances.map((item) => item.source_balances_history)
   const validData = {}
   const extendedCurrentSourceBalance = []
-
+  // console.log(currentSourceBalances)
   for (let obj of currentSourceBalances) {
     let addedValue = firstDayOfTheMonthBalance.filter((entry) => entry.provider === obj.provider)
     if (addedValue.length > 0) {
@@ -111,7 +117,7 @@ const PortfolioPage = () => {
         {balanceHistory !== "" && (
           <ChartComponent total={currentTotalBalance} base={base} portfolio={true} history={validData}/>
         )}
-        <div className="portfolio-table">
+        <div className="portfolio-table" >
           <div className="table-container">
             <div className="portfolio-headings">
               <p>sources</p>
@@ -125,7 +131,7 @@ const PortfolioPage = () => {
               {extendedCurrentSourceBalance.map((element) => {
                 return (
                   <li>
-                    <div className="portfolio-table-row">
+                    <div className="portfolio-table-row" style={element.provider==='None'?{display:'none'}:{display:'flex'}}>
                       {/* Source */}
                       <p className="portfolio-source-name" style={{color:intToRGB(hashCode(element.provider))}}>
                         {element.provider.includes('_') ? element.provider.replace('_', ' ') : element.provider}

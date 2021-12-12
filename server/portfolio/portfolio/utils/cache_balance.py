@@ -27,12 +27,12 @@ def cache_balance(cache_balance_data, data, user_data, total_gbp, internal):
                     'balances': [{
                         'balance': 0,
                         'source_balances_history': [
-                            {'provider': 'Wise', 'value': 0},
+                            {'provider': 'None', 'value': 0},
                         ],
                         'timestamp': datetime.datetime.utcnow().isoformat()},{
                         'balance': 0,
                         'source_balances_history': [
-                            {'provider': 'Wise', 'value': 0},
+                            {'provider': 'None', 'value': 0},
                         ],
                         'timestamp': datetime.datetime.utcnow().isoformat()}]}
             data['balance_history'] = response_from_balance_cache
@@ -44,3 +44,5 @@ def cache_balance(cache_balance_data, data, user_data, total_gbp, internal):
     if internal:
         return valid_data
     return data
+# '2021-12-12T20:27:05.618000'
+# '2021-12-12T21:34:44.917591'
