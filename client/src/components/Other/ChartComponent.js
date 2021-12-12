@@ -84,7 +84,9 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
       },
       y: {
         grid: {
-          display: false,
+          display: true,
+          borderDash:[3]
+
         },
       },
     },
@@ -98,11 +100,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
     },
   };
 
-  if (portfolio) {
-    options.plugins.title.text = "Portfolio performance"
-  }
   if (embedded) {
-    delete options.plugins.title.text
     options.scales.x.display = false
     options.scales.y.display = false
   }
@@ -122,7 +120,8 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
               fill: true,
               borderColor: "rgba(190, 56, 242, 1)",
               tension: 0.3,
-              backgroundColor: createBackgroundGradient(chart.ctx, color),
+              backgroundColor:"transparent"
+              // backgroundColor: createBackgroundGradient(chart.ctx, color),
             },
           ],
         });
@@ -136,7 +135,8 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
             fill: true,
             borderColor: intToRGB(hashCode(key)),
             tension: 0.3,
-            backgroundColor: createBackgroundGradient(chart.ctx, intToRGB(hashCode(key))),
+            backgroundColor:"transparent"
+            // backgroundColor: createBackgroundGradient(chart.ctx, intToRGB(hashCode(key))),
           });
         });
         setChartData({
@@ -169,7 +169,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
   }
 
   return !embedded ? (
-    <div className="chart-container">
+    <div className={location.pathname !== '/portfolio'?"chart-container":"portfolio-chart-container"}>
       <div className={'balance-chart-container'}>
         {location.pathname !== '/portfolio' ?
           <div className="total-balance">
@@ -178,7 +178,9 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
               <p className="total-balance-base">{base}</p>
             </div>
             <p className="total-balance-value">{Number(Number(total).toFixed(1)).toLocaleString()}</p>
-          </div> : null}
+          </div> :
+          <p className="portfolio-chart-title">Portfolio performance</p>
+          }
         <div className={'only-chart'}>
           <div className="chart">
             <Chart

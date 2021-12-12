@@ -11,6 +11,7 @@
   background: #ffffff;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  padding-left: 3.5%;
 
 
 
@@ -19,7 +20,6 @@
     font-weight: 700;
     padding: 0;
     margin: 0;
-    padding-left: 3%;
     font-size: 40px;
   }
 
@@ -36,7 +36,7 @@
       padding: 0;
       font-size: 18px;
       font-weight: 500;
-      padding-left: 3%;
+
     }
 
     .total-balance-base {
@@ -58,6 +58,7 @@
   display: flex;
   justify-content: space-between;
   align-items: stretch;
+
 
 
   .chart {
@@ -108,10 +109,29 @@
 
 .balance-chart-container{
   flex-basis: 74%;
+  background: #FFFFFF;
+  border-radius: 8px;
 }
 
 canvas
 {
   width: 100% !important;
-  padding-left: 1%;
+}
+.portfolio-chart-container{
+margin-top: 2%;
+}
+.chart{
+  padding: 0% 1% 5% 1%;
+  height: 40vh;
+}
+.portfolio-chart-title{
+  font-family: "Manrope", "sans-serif";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 28px;
+  color: #2E2C34;
+margin: 0;
+  padding: 3% 0 0 3%;
+
 }
