@@ -30,7 +30,7 @@ const PortfolioPage = () => {
 
   const getBase = async () => {
     if (!window.sessionStorage.getItem("base")) {
-      const token = await getTokenWithErrorHandling(getAccessTokenSilently,loginWithRedirect);
+      const token = await getTokenWithErrorHandling(getAccessTokenSilently, loginWithRedirect);
       const response = await getUser(token);
       setBase(response.base_currency);
     } else {
@@ -71,18 +71,20 @@ const PortfolioPage = () => {
   const currentTotalBalance = currentBalances.balance
   const history = balanceHistory.balances.map((item) => item.source_balances_history)
   const validData = {}
-  const extendedCurrentSourceBalance=[]
+  const extendedCurrentSourceBalance = []
 
   for (let obj of currentSourceBalances) {
-    let addedValue=firstDayOfTheMonthBalance.filter((entry)=>entry.provider===obj.provider)
-    if (addedValue.length>0){
-      addedValue=addedValue[0].value
-    }else{addedValue=0}
+    let addedValue = firstDayOfTheMonthBalance.filter((entry) => entry.provider === obj.provider)
+    if (addedValue.length > 0) {
+      addedValue = addedValue[0].value
+    } else {
+      addedValue = 0
+    }
 
-    let newObj={
-      provider:obj.provider,
-      value:obj.value,
-      startMonthValue:addedValue
+    let newObj = {
+      provider: obj.provider,
+      value: obj.value,
+      startMonthValue: addedValue
     }
     extendedCurrentSourceBalance.push(newObj)
   }
@@ -107,59 +109,61 @@ const PortfolioPage = () => {
         {balanceHistory !== "" && (
           <ChartComponent total={currentTotalBalance} base={base} portfolio={true} history={validData}/>
         )}
-        <div className="transactions-table">
-          <div className="headings">
-            <p>Sources</p>
-            {/*<p>+</p>*/}
-            <p>%PORTFOLIO</p>
-            <p>VALUE-1M</p>
-            <p>LATEST VALUE</p>
-            <p>PERFORMANCE</p>
+        <div className="portfolio-table">
+          <div className="table-container">
+            <div className="portfolio-headings">
+              <p>sources</p>
+              {/*<p>+</p>*/}
+              <p>%PORTFOLIO</p>
+              <p>VALUE-1M</p>
+              <p>LATEST VALUE</p>
+              <p>PERFORMANCE</p>
+            </div>
+            <ul>
+              {extendedCurrentSourceBalance.map((element) => {
+                return (
+                  <li>
+                    <div className="portfolio-table-row">
+                      {/* Source */}
+                      <p className="portfolio-source-name">
+                        {element.provider.includes('_') ? element.provider.replace('_', ' ') : element.provider}
+                      </p>
+
+                      {/*/!* Unknown *!/*/}
+                      {/*<p className="transaction-source">*/}
+                      {/*  ^*/}
+                      {/*</p>*/}
+
+                      {/* percentage */}
+                      <p>
+                        {((element.value / currentTotalBalance) * 100).toFixed(2)}%
+                      </p>
+
+                      {/* Value 1M */}
+                      <p>
+                        {base} {Number(Number(element.startMonthValue).toFixed(1)).toLocaleString()}
+                      </p>
+
+                      {/* value */}
+                      <p>
+                        {base} {Number(Number(element.value).toFixed(1)).toLocaleString()}
+                      </p>
+                      {/* performance*/}
+                      <p className={'small-chart-container'}>{balanceHistory !== "" && (
+                        <ChartComponent
+                          total={currentTotalBalance}
+                          base={base}
+                          history={validData[element.provider]}
+                          portfolio={true}
+                          embedded={true}
+                          provider={element.provider}/>
+                      )}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
-          <ul>
-            {extendedCurrentSourceBalance.map((element) => {
-              return (
-                <li>
-                  <div className="transaction-row">
-                    {/* Source */}
-                    <p className="transaction-date">
-                      {element.provider.includes('_')?element.provider.replace('_',' ').toUpperCase():element.provider.toUpperCase()}
-                    </p>
-
-                    {/*/!* Unknown *!/*/}
-                    {/*<p className="transaction-source">*/}
-                    {/*  ^*/}
-                    {/*</p>*/}
-
-                    {/* percentage */}
-                    <p>
-                      {((element.value / currentTotalBalance) * 100).toFixed(2)}%
-                    </p>
-
-                    {/* Value 1M */}
-                    <p>
-                      {base} {Number(Number(element.startMonthValue).toFixed(1)).toLocaleString()}
-                    </p>
-
-                    {/* value */}
-                    <p>
-                      {base} {Number(Number(element.value).toFixed(1)).toLocaleString()}
-                    </p>
-                    {/* performance*/}
-                    <p className={'small-chart-container'}>{balanceHistory !== "" && (
-                      <ChartComponent
-                        total={currentTotalBalance}
-                        base={base}
-                        history={validData[element.provider]}
-                        portfolio={true}
-                        embedded={true}
-                        provider={element.provider}/>
-                    )}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
         </div>
       </div>
     )
