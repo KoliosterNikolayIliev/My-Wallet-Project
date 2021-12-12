@@ -119,6 +119,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
               data: history,
               fill: true,
               borderColor: "rgba(190, 56, 242, 1)",
+              borderWidth:2,
               tension: 0.3,
               backgroundColor:"transparent"
               // backgroundColor: createBackgroundGradient(chart.ctx, color),
@@ -134,6 +135,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
             data: value,
             fill: true,
             borderColor: intToRGB(hashCode(key)),
+            borderWidth:2,
             tension: 0.3,
             backgroundColor:"transparent"
             // backgroundColor: createBackgroundGradient(chart.ctx, intToRGB(hashCode(key))),
@@ -151,6 +153,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
               label: provider,
               data: history,
               borderColor: intToRGB(hashCode(provider)),
+              borderWidth:1,
               tension: 0.3,
               elements: {
                 point: {
