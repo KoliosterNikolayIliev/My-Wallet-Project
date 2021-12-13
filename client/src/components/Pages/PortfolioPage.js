@@ -144,7 +144,7 @@ const PortfolioPage = () => {
 
                       {/* percentage */}
                       <p style={{display:'flex', alignItems:'center'}}>
-                        <div style={{ width: 20, height: 20, marginRight:'4%', }}><CircularProgressbar
+                        <span style={{ width: 20, height: 20, marginRight:'4%', }}><CircularProgressbar
                           value={((element.value / currentTotalBalance) * 100).toFixed(2)} strokeWidth={15}
                           styles={buildStyles(
                             {
@@ -152,7 +152,7 @@ const PortfolioPage = () => {
                               trailColor:intToRGB(hashCode(element.provider))+'1A',
                               }
                           )}
-                        /></div>
+                        /></span>
 
                         {((element.value / currentTotalBalance) * 100).toFixed(2)}%
                       </p>
