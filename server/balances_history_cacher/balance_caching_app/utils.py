@@ -85,14 +85,15 @@ def add_null_balances(data, today):
     return data
 
 def fill_missing_days(data):
-    for i in range(0, len(data)):
-        if i != 0:
-            current_date = data[i]['timestamp'].day
-            prev_date = data[i - 1]['timestamp'].day
+    index = 0
+    for day in range(data[0]['timestamp'].day, data[-1]['timestamp'].day):
+        if index > 0:
+            current_date = data[index]['timestamp']
+            prev_date = data[index - 1]['timestamp']
 
-            if current_date - prev_date > 1:
-                template_object = data[i-1].copy()
-                template_object['timestamp'] = datetime(2021, 12, prev_date + 1, 0, 0, 0, 0)
-                data.insert(i, template_object)
-    
+            if current_date.day - prev_date.day > 1:
+                template_object = data[index - 1].copy()
+                template_object['timestamp'] = prev_date.replace(day=prev_date.day + 1)
+                data.insert(index, template_object)
+        index += 1
     return data
