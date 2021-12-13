@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from django.utils import timezone
 from datetime import datetime
 from math import trunc
@@ -71,17 +73,16 @@ def add_null_balances(data, today):
         if len(data) == today:
             break
         
-        prev_date = data[0]['timestamp'].day - 1
+        prev_date = data[0]['timestamp'].replace(day=data[0]['timestamp'].day - 1)
 
-        template_object = data[0].copy()
+        template_object = deepcopy(data[-1])
         template_object['balance'] = 0
 
         for source in template_object['source_balances_history']:
             source['value'] = 0
 
-        template_object['timestamp'] = datetime(2021, 12, prev_date, 0, 0, 0, 0)
+        template_object['timestamp'] = prev_date
         data.insert(0, template_object)
-
     return data
 
 def fill_missing_days(data):
