@@ -11,8 +11,8 @@ import Loader from "../Other/LoaderComponent";
 import {useRecoilState} from "recoil";
 import {getUser} from "../../utils/account";
 import Header from "../Other/HeaderComponent";
-import {balanceHistoryAtom, baseAtom} from "../../recoil";
-import {getAssets, getHistoricalBalances} from "../../utils/portfolio";
+import {balanceHistoryAtom, baseAtom, recentTransactionsAtom} from "../../recoil";
+import {getAllRecentTransactions, getAssets, getHistoricalBalances} from "../../utils/portfolio";
 import ChartComponent, {hashCode, intToRGB} from "../Other/ChartComponent";
 import {getTokenWithErrorHandling} from "./DashboardPage";
 
@@ -22,6 +22,9 @@ const PortfolioPage = () => {
 
   const [balanceHistory, setBalanceHistory] = useRecoilState(
     balanceHistoryAtom
+  );
+  const [recentTransactions, setRecentTransactions] = useRecoilState(
+    recentTransactionsAtom
   );
   const [base, setBase] = useRecoilState(baseAtom);
 
@@ -50,10 +53,24 @@ const PortfolioPage = () => {
     );
     setBalanceHistory(balanceHistory);
   };
+  const getTransactions = async () => {
+    const token = await getAccessTokenSilently();
+    const transactions = await getAllRecentTransactions(token);
+
+    window.sessionStorage.setItem(
+      "recentTransactions",
+      JSON.stringify(transactions.content)
+    );
+    setRecentTransactions(transactions.content);
+  };
+
 
   useEffect(() => {
     if (balanceHistory === "" || !balanceHistory) {
       HistoricalBalances();
+    }
+    if (recentTransactions === "" || !recentTransactions) {
+      getTransactions();
     }
     if (base === "" || !base) {
       getBase();
@@ -70,10 +87,10 @@ const PortfolioPage = () => {
   let firstDayOfTheMonthBalanceList = balanceHistory.balances.filter(
     (element) => element.timestamp.slice(0, 10) === firstDayOfTheMonth.slice(0, 10))[0]
 
-  if (!firstDayOfTheMonthBalanceList){
-    firstDayOfTheMonthBalanceList={'source_balances_history':[{provider:'None',value:0}]}
+  if (!firstDayOfTheMonthBalanceList) {
+    firstDayOfTheMonthBalanceList = {'source_balances_history': [{provider: 'None', value: 0}]}
   }
-  const firstDayOfTheMonthBalance=firstDayOfTheMonthBalanceList.source_balances_history
+  const firstDayOfTheMonthBalance = firstDayOfTheMonthBalanceList.source_balances_history
   // console.log(firstDayOfTheMonthBalance)
   const currentSourceBalances = currentBalances.source_balances_history
   const currentTotalBalance = currentBalances.balance
@@ -117,7 +134,7 @@ const PortfolioPage = () => {
         {balanceHistory !== "" && (
           <ChartComponent total={currentTotalBalance} base={base} portfolio={true} history={validData}/>
         )}
-        <div className="portfolio-table" >
+        <div className="portfolio-table">
           <div className="table-container">
             <div className="portfolio-headings">
               <p>sources</p>
@@ -131,9 +148,10 @@ const PortfolioPage = () => {
               {extendedCurrentSourceBalance.map((element) => {
                 return (
                   <li>
-                    <div className="portfolio-table-row" style={element.provider==='None'?{display:'none'}:{display:'flex'}}>
+                    <div className="portfolio-table-row"
+                         style={element.provider === 'None' ? {display: 'none'} : {display: 'flex'}}>
                       {/* Source */}
-                      <p className="portfolio-source-name" style={{color:intToRGB(hashCode(element.provider))}}>
+                      <p className="portfolio-source-name" style={{color: intToRGB(hashCode(element.provider))}}>
                         {element.provider.includes('_') ? element.provider.replace('_', ' ') : element.provider}
                       </p>
 
@@ -143,14 +161,14 @@ const PortfolioPage = () => {
                       {/*</p>*/}
 
                       {/* percentage */}
-                      <p style={{display:'flex', alignItems:'center'}}>
-                        <span style={{ width: 20, height: 20, marginRight:'4%', }}><CircularProgressbar
+                      <p style={{display: 'flex', alignItems: 'center'}}>
+                        <span style={{width: 20, height: 20, marginRight: '4%',}}><CircularProgressbar
                           value={((element.value / currentTotalBalance) * 100).toFixed(2)} strokeWidth={15}
                           styles={buildStyles(
                             {
-                              pathColor:intToRGB(hashCode(element.provider)),
-                              trailColor:intToRGB(hashCode(element.provider))+'1A',
-                              }
+                              pathColor: intToRGB(hashCode(element.provider)),
+                              trailColor: intToRGB(hashCode(element.provider)) + '1A',
+                            }
                           )}
                         /></span>
 
