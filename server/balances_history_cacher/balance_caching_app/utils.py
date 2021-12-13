@@ -75,7 +75,7 @@ def add_null_balances(data, today):
         
         prev_date = data[0]['timestamp'].replace(day=data[0]['timestamp'].day - 1)
 
-        template_object = deepcopy(data[-1])
+        template_object = deepcopy(data[0])
         template_object['balance'] = 0
 
         for source in template_object['source_balances_history']:
@@ -98,3 +98,21 @@ def fill_missing_days(data):
                 data.insert(index, template_object)
         index += 1
     return data
+
+
+def fix_source_balances(data):
+    valid_sources = [source['provider'] for source in data[-1]['source_balances_history']]
+    for obj in data:
+        source_balances = []
+        obj_source_balances = {el['provider']: el['value'] for el in obj['source_balances_history']}
+        for valid_source in valid_sources:
+            if valid_source in obj_source_balances:
+                source_balances.append(
+                    {'provider': valid_source, 'value': obj_source_balances[valid_source]}
+                )
+                continue
+            source_balances.append(
+                {'provider': valid_source, 'value': 0}
+            )
+
+        obj['source_balances_history'] = source_balances
