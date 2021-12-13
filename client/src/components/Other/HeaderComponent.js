@@ -1,20 +1,22 @@
-import React, { Fragment } from "react";
+import React, {Fragment} from "react";
 import "../../styles/header.scss";
 import logo from "../../images/logo.svg";
 import arrow_down from "../../images/Vector_down.svg";
 import BaseCurrencyDropDownList from "./BaseCurrencyDropDownList";
 import LogOutButton from "../Buttons/LogOutButton";
 
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
-import { styled } from "@mui/material/styles";
-import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import {styled} from "@mui/material/styles";
+import Tooltip, {tooltipClasses} from "@mui/material/Tooltip";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Button from "@mui/material/Button";
+import {useLocation} from "react-router-dom";
 
-const Header = ({ baseSymbol, username }) => {
+const Header = ({baseSymbol, username}) => {
   const [open, setOpen] = React.useState(false);
-
+  const location = useLocation();
+  const border='border-bottom: 3px solid #9031db;'
   const handleTooltipClose = () => {
     setOpen(false);
   };
@@ -27,22 +29,26 @@ const Header = ({ baseSymbol, username }) => {
     <nav className="header">
       <div className="menu-image-container">
         <div className="img-container">
-          <img src={logo} alt="" />
+          <img src={logo} alt=""/>
         </div>
-        <div className="borderline" />
+        <div className="borderline"/>
         <ul className="menu-rooter">
-          <li>
-            <Link className="header-link" to={"/"}>
+          <li style={location.pathname === "/dashboard" ? {border: border} : {border: 'none'}}>
+            <Link className="header-link"
+                  style={location.pathname === "/dashboard" ? {color: '#9031db'} : {color: '#969aa4'}} to={"/"}>
               <p>Overview</p>
             </Link>
           </li>
-          <li>
-            <Link className="header-link" to={"/portfolio"}>
+          <li style={location.pathname === "/portfolio" ? {border: border} : {border: 'none'}}>
+            <Link className="header-link"
+                  style={location.pathname === "/portfolio" ? {color: '#9031db'} : {color: '#969aa4'}}
+                  to={"/portfolio"}>
               <p>Portfolio</p>
             </Link>
           </li>
-          <li>
-            <Link className="header-link" to={"/cashflow"}>
+          <li style={location.pathname === "/cashflow" ? {border: border} : {border: 'none'}}>
+            <Link className="header-link"
+                  style={location.pathname === "/cashflow" ? {color: '#9031db'} : {color: '#969aa4'}} to={"/cashflow"}>
               <p>Cashflow</p>
             </Link>
           </li>
@@ -50,7 +56,7 @@ const Header = ({ baseSymbol, username }) => {
       </div>
       <div className="user-container">
         {/*<button className="base-currency">USD <img src={arrow} alt="arrow"/></button>*/}
-        <BaseCurrencyDropDownList baseSymbol={baseSymbol} />
+        <BaseCurrencyDropDownList baseSymbol={baseSymbol}/>
         <a className="nav-link" href="#">
           <svg
             width="18"
@@ -121,12 +127,12 @@ const Header = ({ baseSymbol, username }) => {
                 disableTouchListener
                 title={
                   <Fragment>
-                    <LogOutButton />
+                    <LogOutButton/>
                   </Fragment>
                 }
               >
                 <Button onClick={handleTooltipOpen}>
-                  <img src={arrow_down} alt="user_menu" />
+                  <img src={arrow_down} alt="user_menu"/>
                 </Button>
               </Tooltip>
             </div>
