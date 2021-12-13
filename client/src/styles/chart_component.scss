@@ -2,88 +2,90 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Inter:wght@500&family=Poppins:wght@500&display=swap");
 
-.info-container {
+
+.total-balance {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  margin-left: 5%;
+  justify-content: flex-start;
+  background: #ffffff;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding-left: 3.5%;
 
-  .total-balance {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
+
+
+  .total-balance-value {
+    font-family: "DM Sans", "sans-serif";
+    font-weight: 700;
+    padding: 0;
+    margin: 0;
+    font-size: 40px;
+  }
+
+  .total-balance-text {
     width: 100%;
-    margin-bottom: 2%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 3%;
 
-    .total-balance-value {
-      font-family: "DM Sans", "sans-serif";
-      font-weight: 700;
-      font-size: 40px;
-      padding: 0;
+    .total-balance-title {
+      font-family: "Poppins", "sans-serif";
       margin: 0;
+      padding: 0;
+      font-size: 18px;
+      font-weight: 500;
+
     }
 
-    .total-balance-text {
-      width: 100%;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      .total-balance-title {
-        font-family: "Poppins", "sans-serif";
-        margin: 0;
-        padding: 0;
-        font-size: 18px;
-        font-weight: 500;
-      }
-
-      .total-balance-base {
-        font-family: "Inter", "sans-serif";
-        font-size: 8px;
-        font-weight: 600;
-        height: 5%;
-        background-color: #be38f2;
-        color: #ffffff;
-        padding: 0.4%;
-        margin-left: 0.5%;
-        border-radius: 8px;
-      }
+    .total-balance-base {
+      font-family: "Inter", "sans-serif";
+      font-size: 8px;
+      font-weight: 600;
+      height: 5%;
+      background-color: #be38f2;
+      color: #ffffff;
+      padding: 0.4%;
+      margin-left: 0.5%;
+      border-radius: 8px;
     }
   }
 }
 
+
 .chart-container {
   display: flex;
-  justify-content: space-evenly;
-  align-items: flex-start;
-  width: 100%;
-  height: 100%;
+  justify-content: space-between;
+  align-items: stretch;
+
+
 
   .chart {
-    flex-basis: 60%;
     box-shadow: 0 23px 44px 0 #b0b7c324;
     background: #ffffff;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding-bottom: 5%;
+    height: 40vh;
+    width: 100%;
+
 
     img {
       object-fit: cover;
       width: 100%;
-      height: auto;
+      height: 100%;
     }
   }
 
   .notifications {
     box-shadow: 0 23px 44px 0 #b0b7c324;
     background: #ffffff;
-    flex-basis: 20%;
+    flex-basis: 24.5%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     padding: 1%;
-    height: 100%;
-    min-height: 260px;
-    width: 100%;
     border-radius: 8px;
 
     .notifications-title {
@@ -103,4 +105,33 @@
       text-align: center;
     }
   }
+}
+
+.balance-chart-container{
+  flex-basis: 74%;
+  background: #FFFFFF;
+  border-radius: 8px;
+}
+
+canvas
+{
+  width: 100% !important;
+}
+.portfolio-chart-container{
+margin-top: 2%;
+}
+.chart{
+  padding: 0% 1% 5% 1%;
+  height: 40vh;
+}
+.portfolio-chart-title{
+  font-family: "Manrope", "sans-serif";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 28px;
+  color: #2E2C34;
+margin: 0;
+  padding: 3% 0 0 3%;
+
 }

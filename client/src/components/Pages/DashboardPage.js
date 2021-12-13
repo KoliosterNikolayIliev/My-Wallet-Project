@@ -30,6 +30,22 @@ import {
 } from "../../recoil";
 
 // Dashboard page to be filled in with user account data
+export async function getTokenWithErrorHandling(getAccessTokenSilently,loginWithRedirect){
+  let token;
+  try {
+    token = await getAccessTokenSilently();
+  } catch (e) {
+    if (e.error === 'login_required') {
+      loginWithRedirect();
+    }
+    if (e.error === 'consent_required') {
+      loginWithRedirect();
+    }
+    throw e;
+  }
+  return token
+}
+
 const DashboardPage = () => {
   const [groups, setGroups] = useState({});
   const [transactions, setTransactions] = useState({});
@@ -43,13 +59,14 @@ const DashboardPage = () => {
 
   const [loading, setLoading] = useState(true);
 
-  const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
+  const { user, isAuthenticated, isLoading, getAccessTokenSilently,loginWithRedirect } =
     useAuth0();
 
   useEffect(() => {
     const getUserData = async () => {
       if (!window.sessionStorage.getItem("base")) {
-        const token = await getAccessTokenSilently();
+
+        const token = await getTokenWithErrorHandling(getAccessTokenSilently,loginWithRedirect);
         console.log(token);
         const response = await getUser(token);
         setBase(response.base_currency);
@@ -148,7 +165,7 @@ const DashboardPage = () => {
         {balanceHistory !== "" && (
           <ChartComponent total={total} base={base} history={history} />
         )}
-        <div style={{ margin: "3% 0" }}>
+        <div style={{paddingTop:'3%', paddingBottom:'3%'}}>
           <p
             style={{ display: "inline", paddingRight: "20px" }}
             className="add-source-font"

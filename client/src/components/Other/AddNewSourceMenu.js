@@ -9,7 +9,7 @@ const AddNewSourceMenu = ({modalFunc}) => {
   return (
     <div style={{display: 'inline'}} className='modal'>
       <Popup
-        trigger={<button className='add-new-source add-source-font'>+ Add new source</button>}
+        trigger={<button id={'add-source-btn'} className='add-new-source add-source-font'>+ Add new source</button>}
       >
         <div className='menu-item' onClick={() => modalFunc('banks')}>
           <ListItemIcon className='icon-container'>

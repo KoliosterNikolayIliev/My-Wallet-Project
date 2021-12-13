@@ -12,6 +12,7 @@ import Header from "../Other/HeaderComponent";
 import {balanceHistoryAtom, baseAtom} from "../../recoil";
 import {getAssets, getHistoricalBalances} from "../../utils/portfolio";
 import ChartComponent from "../Other/ChartComponent";
+import {getTokenWithErrorHandling} from "./DashboardPage";
 
 // Dashboard page to be filled in with user account data
 const PortfolioPage = () => {
@@ -25,11 +26,11 @@ const PortfolioPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
 
-  const {isAuthenticated, user, loading, getAccessTokenSilently} = useAuth0();
+  const {isAuthenticated, user, loading, getAccessTokenSilently, loginWithRedirect} = useAuth0();
 
   const getBase = async () => {
     if (!window.sessionStorage.getItem("base")) {
-      const token = await getAccessTokenSilently();
+      const token = await getTokenWithErrorHandling(getAccessTokenSilently,loginWithRedirect);
       const response = await getUser(token);
       setBase(response.base_currency);
     } else {

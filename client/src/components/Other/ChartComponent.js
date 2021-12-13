@@ -61,18 +61,21 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
   const createBackgroundGradient = (ctx, color) => {
     const gradient = ctx.createLinearGradient(0, 0, 0, 450, 0.1);
     if (color.startsWith('#')) {
-      color = color + '52'
+      color = color + 'FC'
     }
-    gradient.addColorStop(0.1, color);
-    gradient.addColorStop(0.02, color);
-    gradient.addColorStop(0.01, color);
-    gradient.addColorStop(0.85, "white");
+    else{
+      console.log(color)
+    }
+    gradient.addColorStop(0, color);
+    gradient.addColorStop(0.5, "white");
+
 
     return gradient;
   };
   const datasets = []
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       x: {
         grid: {
@@ -81,7 +84,9 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
       },
       y: {
         grid: {
-          display: false,
+          display: true,
+          borderDash:[3]
+
         },
       },
     },
@@ -91,16 +96,11 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
       },
       title: {
         display: true,
-        text: "Historical Balance Chart",
       },
     },
   };
 
-  if (portfolio) {
-    options.plugins.title.text = "Portfolio performance"
-  }
   if (embedded) {
-    delete options.plugins.title.text
     options.scales.x.display = false
     options.scales.y.display = false
   }
@@ -109,7 +109,7 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
     const chart = chartRef.current;
 
     if (chart) {
-      let color = "rgba(190,56,242,0.4)"
+      let color = "rgba(190,56,242,0)"
       if (!portfolio) {
         setChartData({
           labels,
@@ -120,7 +120,8 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
               fill: true,
               borderColor: "rgba(190, 56, 242, 1)",
               tension: 0.3,
-              backgroundColor: createBackgroundGradient(chart.ctx, color),
+              backgroundColor:"transparent"
+              // backgroundColor: createBackgroundGradient(chart.ctx, color),
             },
           ],
         });
@@ -134,7 +135,8 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
             fill: true,
             borderColor: intToRGB(hashCode(key)),
             tension: 0.3,
-            backgroundColor: createBackgroundGradient(chart.ctx, intToRGB(hashCode(key))),
+            backgroundColor:"transparent"
+            // backgroundColor: createBackgroundGradient(chart.ctx, intToRGB(hashCode(key))),
           });
         });
         setChartData({
@@ -167,27 +169,30 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
   }
 
   return !embedded ? (
-    <div className="info-container">
-      {location.pathname !== '/portfolio' ?
-        <div className="total-balance">
-          <div className="total-balance-text">
-            <p className="total-balance-title">Total Balance</p>
-            <p className="total-balance-base">{base}</p>
+    <div className={location.pathname !== '/portfolio'?"chart-container":"portfolio-chart-container"}>
+      <div className={'balance-chart-container'}>
+        {location.pathname !== '/portfolio' ?
+          <div className="total-balance">
+            <div className="total-balance-text">
+              <p className="total-balance-title">Total Balance</p>
+              <p className="total-balance-base">{base}</p>
+            </div>
+            <p className="total-balance-value">{Number(Number(total).toFixed(1)).toLocaleString()}</p>
+          </div> :
+          <p className="portfolio-chart-title">Portfolio performance</p>
+          }
+        <div className={'only-chart'}>
+          <div className="chart">
+            <Chart
+              type="line"
+              ref={chartRef}
+              options={options}
+              data={chartData}
+            />
           </div>
-          <p className="total-balance-value">{Number(Number(total).toFixed(1)).toLocaleString()}</p>
-        </div> : null}
-
-      <div className="chart-container">
-        <div className="chart">
-          <Chart
-            type="line"
-            ref={chartRef}
-            options={options}
-            data={chartData}
-          />
         </div>
-        {location.pathname !== '/portfolio' ? NotificationComponent() : null}
       </div>
+      {location.pathname !== '/portfolio' ? NotificationComponent() : null}
     </div>
   ) : <div><Chart
     type="line"
@@ -196,5 +201,6 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
     data={chartData}
   /></div>
 };
+
 
 export default ChartComponent;

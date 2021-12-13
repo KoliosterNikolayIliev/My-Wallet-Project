@@ -52,7 +52,7 @@ const SubHeader = ({ user }) => {
         <p>Good morning, {user.name}</p>
         <p>Have you added your investment? </p>
         <span>
-          <a href="#">Add now</a>
+          <a href="#add-source-btn">Add now</a>
         </span>
       </div>
       <div>
