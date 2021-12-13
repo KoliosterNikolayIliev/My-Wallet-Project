@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from django.utils import timezone
 from datetime import datetime
 from math import trunc
@@ -71,28 +73,46 @@ def add_null_balances(data, today):
         if len(data) == today:
             break
         
-        prev_date = data[0]['timestamp'].day - 1
+        prev_date = data[0]['timestamp'].replace(day=data[0]['timestamp'].day - 1)
 
-        template_object = data[0].copy()
+        template_object = deepcopy(data[0])
         template_object['balance'] = 0
 
         for source in template_object['source_balances_history']:
             source['value'] = 0
 
-        template_object['timestamp'] = datetime(2021, 12, prev_date, 0, 0, 0, 0)
+        template_object['timestamp'] = prev_date
         data.insert(0, template_object)
-
     return data
 
 def fill_missing_days(data):
-    for i in range(0, len(data)):
-        if i != 0:
-            current_date = data[i]['timestamp'].day
-            prev_date = data[i - 1]['timestamp'].day
+    index = 0
+    for day in range(data[0]['timestamp'].day, data[-1]['timestamp'].day):
+        if index > 0:
+            current_date = data[index]['timestamp']
+            prev_date = data[index - 1]['timestamp']
 
-            if current_date - prev_date > 1:
-                template_object = data[i-1].copy()
-                template_object['timestamp'] = datetime(2021, 12, prev_date + 1, 0, 0, 0, 0)
-                data.insert(i, template_object)
-    
+            if current_date.day - prev_date.day > 1:
+                template_object = data[index - 1].copy()
+                template_object['timestamp'] = prev_date.replace(day=prev_date.day + 1)
+                data.insert(index, template_object)
+        index += 1
     return data
+
+
+def fix_source_balances(data):
+    valid_sources = [source['provider'] for source in data[-1]['source_balances_history']]
+    for obj in data:
+        source_balances = []
+        obj_source_balances = {el['provider']: el['value'] for el in obj['source_balances_history']}
+        for valid_source in valid_sources:
+            if valid_source in obj_source_balances:
+                source_balances.append(
+                    {'provider': valid_source, 'value': obj_source_balances[valid_source]}
+                )
+                continue
+            source_balances.append(
+                {'provider': valid_source, 'value': 0}
+            )
+
+        obj['source_balances_history'] = source_balances
