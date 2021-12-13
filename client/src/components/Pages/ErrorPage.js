@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Redirect } from "react-router";
 
+import "../../styles/error.scss";
+
 const ErrorPage = () => {
 	const [reloaded, setReloaded] = useState(false);
 	return (
-		<div>
+		<div className="body">
 			{reloaded ? (
 				<Redirect to="/dashboard" />
 			) : (
 				<div className="error-page">
-					<h1 className="heding">Ooops</h1>
-					<p className="body">
+					<h1 className="heading">Ooops</h1>
+					<p className="content">
 						Something went wrong! Try{" "}
 						<button
 							className="reload-button"
