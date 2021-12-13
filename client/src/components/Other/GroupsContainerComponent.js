@@ -56,8 +56,9 @@ const GroupsContainerComponent = ({
 	if (isLoading || balanceHistory === "" || !balanceHistory) {
 		return Loader();
 	}
-
-	const yesterdayIndex = balanceHistory["balances"].length - 2;
+	let yesterdayIndex = 0;
+	if(balanceHistory["balances"].length>1){
+		yesterdayIndex = balanceHistory["balances"].length - 2;}
 
 	const source_balances_history =
 		balanceHistory["balances"][yesterdayIndex]["source_balances_history"];

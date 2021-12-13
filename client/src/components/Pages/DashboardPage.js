@@ -154,6 +154,7 @@ const DashboardPage = () => {
     return <Redirect to={"/"} />;
   }
   const history = balanceHistory.balances.map((item) => item.balance)
+  
   return (
     isAuthenticated && (
       <div className="main">
@@ -174,7 +175,7 @@ const DashboardPage = () => {
           </p>
           <AddNewSourceComponent />
         </div>
-        <div className="dashboard-container">
+        <div className="dashboard-container" style={Object.entries(groups).length===0?{display:'none'}:{display:'flex'}}>
           <GroupsContainerComponent
             baseSymbol={base}
             data={groups}

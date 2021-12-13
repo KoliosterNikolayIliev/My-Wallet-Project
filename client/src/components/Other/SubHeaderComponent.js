@@ -4,6 +4,7 @@ import "../../styles/subheader.scss";
 const SubHeader = ({ user }) => {
   const [date, setDate] = useState(null);
   const [day, setDay] = useState(null);
+  const [greeting, setGreeting] = useState(null);
 
   const monthNames = {
     1: "January",
@@ -42,14 +43,26 @@ const SubHeader = ({ user }) => {
 
     const year = today.getFullYear();
 
+    let hour = today.getHours();
+    let greeting = 'Good morning'
+    if (hour>10){
+      greeting='Good day'
+    }
+    if (hour>17){
+      greeting='Good evening'
+    }
+    console.log(hour)
+    console.log(greeting)
+
     setDate(`${dayOfMonth} ${month} ${year}`);
     setDay(day);
+    setGreeting(greeting)
   }, []);
 
   return (
     <div className="subheader">
       <div>
-        <p>Good morning, {user.name}</p>
+        <p>{greeting}, {user.name}</p>
         <p>Have you added your investment? </p>
         <span>
           <a href="#add-source-btn">Add now</a>
