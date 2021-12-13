@@ -28,6 +28,7 @@ import {
   baseAtom,
   balanceHistoryAtom,
 } from "../../recoil";
+import loginCacheClear from "../../utils/clearCacheOnLogin";
 
 // Dashboard page to be filled in with user account data
 export async function getTokenWithErrorHandling(getAccessTokenSilently,loginWithRedirect){
@@ -36,10 +37,10 @@ export async function getTokenWithErrorHandling(getAccessTokenSilently,loginWith
     token = await getAccessTokenSilently();
   } catch (e) {
     if (e.error === 'login_required') {
-      loginWithRedirect();
+      loginCacheClear(loginWithRedirect);
     }
     if (e.error === 'consent_required') {
-      loginWithRedirect();
+      loginCacheClear(loginWithRedirect);
     }
     throw e;
   }
@@ -153,7 +154,14 @@ const DashboardPage = () => {
   if (!isAuthenticated) {
     return <Redirect to={"/"} />;
   }
-  const history = balanceHistory.balances.map((item) => item.balance)
+  let history=''
+  try{
+    history = balanceHistory.balances.map((item) => item.balance)
+  }catch (error){
+    window.sessionStorage.clear()
+    window.location.reload()
+  }
+
   
   return (
     isAuthenticated && (
