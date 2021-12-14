@@ -27,6 +27,7 @@
   flex-wrap: wrap;
   flex-basis: 74%;
   grid-gap: 2%;
+  max-height: 80vh;
   background: transparent;
 }
 .has-transactions:hover {
@@ -45,9 +46,9 @@
     font-weight: 600;
     font-size: 16px;
     border-bottom: 1px solid #f2f2f2;
-    padding-bottom: 5%;
-    padding-left: 10%;
-    margin-bottom: 0;
+    padding-bottom: 6%;
+    text-align: center;
+    width: 96%;
   }
   .transaction-text {
     display: flex;
@@ -91,8 +92,6 @@
   display: flex;
   flex-direction: column;
   flex-basis: 32%;
-  min-height: 48%;
-  max-height: 50%;
   align-items: center;
   ul {
     padding-top: 5%;
@@ -137,7 +136,6 @@
   overflow: hidden;
   width: 100%;
   ul {
-    flex-basis: 83%;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -386,6 +384,7 @@ ul {
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
+  width: 100%;
   ul {
     display: flex;
     flex-direction: column;
@@ -487,3 +486,4 @@ ul {
 #root > div > div.dashboard-container > div.transactions.data-source.recent-transactions{
   flex-basis: 24.5%;
 }
+
