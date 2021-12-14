@@ -1,124 +1,124 @@
 version: "3.8"
 
 services:
-  client:
-    build:
-      context: ./client
+    # client:
+    #   build:
+    #     context: ./client
 
-    command:
-      - npm
-      - start
+    #   command:
+    #     - npm
+    #     - start
 
-    ports:
-      - "3000:3000"
+    #   ports:
+    #     - "3000:3000"
 
-    env_file:
-      - data.env
+    #   env_file:
+    #     - data.env
 
-  custom-assets:
-    build:
-      context: ./server/custom_assets
+    custom-assets:
+        build:
+            context: ./server/custom_assets
 
-    command:
-      - python
-      - manage.py
-      - runserver
-      - 0.0.0.0:8000
+        command:
+            - python
+            - manage.py
+            - runserver
+            - 0.0.0.0:8000
 
-    ports:
-      - "8000:8000"
+        ports:
+            - "8000:8000"
 
-    env_file:
-      - data.env
+        env_file:
+            - data.env
 
-  assets:
-    build:
-      context: ./server/assets_v2
+    assets:
+        build:
+            context: ./server/assets_v2
 
-    command:
-      - flask
-      - run
-      - --host=0.0.0.0
+        command:
+            - flask
+            - run
+            - --host=0.0.0.0
 
-    ports:
-      - "5000:5000"
+        ports:
+            - "5007:5007"
 
-    environment:
-      - FLASK_APP=assets
-      - FLASK_ENV=development
+        environment:
+            - FLASK_APP=assets
+            - FLASK_ENV=development
 
-    env_file:
-      - data.env
+        env_file:
+            - data.env
 
-  portfolio:
-    build:
-      context: ./server/portfolio
+    portfolio:
+        build:
+            context: ./server/portfolio
 
-    command:
-      - flask
-      - run
-      - --host=0.0.0.0
-      - --port=5001
+        command:
+            - flask
+            - run
+            - --host=0.0.0.0
+            - --port=5001
 
-    ports:
-      - "5001:5001"
+        ports:
+            - "5001:5001"
 
-    environment:
-      - FLASK_APP=portfolio
-      - FLASK_ENV=development
+        environment:
+            - FLASK_APP=portfolio
+            - FLASK_ENV=development
 
-    env_file:
-      - data.env
+        env_file:
+            - data.env
 
-  reference:
-    build:
-      context: ./server/reference
+    reference:
+        build:
+            context: ./server/reference
 
-    command:
-      - flask
-      - run
-      - --host=0.0.0.0
-      - --port=5002
+        command:
+            - flask
+            - run
+            - --host=0.0.0.0
+            - --port=5002
 
-    ports:
-      - "5002:5002"
+        ports:
+            - "5002:5002"
 
-    environment:
-      - FLASK_APP=reference
-      - FLASK_ENV=development
+        environment:
+            - FLASK_APP=reference
+            - FLASK_ENV=development
 
-    env_file:
-      - data.env
+        env_file:
+            - data.env
 
-  account:
-    build:
-      context: ./server/account/account
+    account:
+        build:
+            context: ./server/account/account
 
-    command:
-      - python
-      - manage.py
-      - runserver
-      - 0.0.0.0:8001
+        command:
+            - python
+            - manage.py
+            - runserver
+            - 0.0.0.0:8001
 
-    ports:
-      - "8001:8001"
+        ports:
+            - "8001:8001"
 
-    env_file:
-      - data.env
+        env_file:
+            - data.env
 
-  balance-cache:
-    build:
-      context: ./server/balances_history_cacher
+    balance-cache:
+        build:
+            context: ./server/balances_history_cacher
 
-    command:
-      - python
-      - manage.py
-      - runserver
-      - --noreload
-      - 0.0.0.0:8009
+        command:
+            - python
+            - manage.py
+            - runserver
+            - --noreload
+            - 0.0.0.0:8009
 
-    ports:
-      - "8009:8009"
+        ports:
+            - "8009:8009"
 
-    env_file:
-      - data.env
+        env_file:
+            - data.env

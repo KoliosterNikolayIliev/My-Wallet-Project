@@ -34,7 +34,7 @@ function App() {
 						{isAuthenticated ? (
 							<Redirect to="/dashboard" />
 						) : (
-							loginCacheClear(loginWithRedirect)
+							<LandingPage />
 						)}
 					</Route>
 
