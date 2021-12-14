@@ -5,6 +5,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 2%;
+  align-items: stretch;
 }
 
 .nav-link {
@@ -21,11 +22,12 @@
 //}
 .data-source-container {
   display: flex;
-  grid-gap: 5%;
   overflow-y: auto;
-  max-height: 800px;
+  //height: fit-content;
   flex-wrap: wrap;
   flex-basis: 74%;
+  grid-gap: 2%;
+  background: transparent;
 }
 .has-transactions:hover {
   color: aqua;
@@ -88,8 +90,9 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  width: 30%;
-  height: 47%;
+  flex-basis: 32%;
+  min-height: 48%;
+  max-height: 50%;
   ul {
     padding-top: 5%;
     .asset-root:nth-child(odd) {
@@ -387,8 +390,8 @@ ul {
 }
 
 .transactions {
-  flex-basis: 24.5%;
-  height: 800px;
+  //flex-basis: 24.5%;
+  //height: 800px;
 }
 
 .add-source-font {
@@ -453,4 +456,7 @@ ul {
   width: 50%;
   height: 30px;
   border-radius: 20px;
+}
+#root > div > div.dashboard-container > div.transactions.data-source.recent-transactions{
+  flex-basis: 24.5%;
 }
