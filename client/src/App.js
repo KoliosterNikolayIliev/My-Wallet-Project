@@ -30,8 +30,13 @@ function App() {
 				<Switch>
 					{/* If the user is logged in directly redirect them to the dashboard, otherwise show the landing page */}
 					<Route path="/" exact>
-						{isAuthenticated ? (<Redirect to="/dashboard" />) : (<Redirect to="/dashboard")}
+						{isAuthenticated ? (
+							<Redirect to="/dashboard" />
+						) : (
+							<Redirect to="/dashboard" />
+						)}
 					</Route>
+
 					<Route path="/dashboard" exact component={DashboardPage} />
 					<Route path="/profile" exact component={ProfilePage} />
 					<Route path="/portfolio" exact component={PortfolioPage} />
@@ -41,7 +46,6 @@ function App() {
 			</Router>
 		</RecoilRoot>
 	);
-
 }
 
 export default App;
