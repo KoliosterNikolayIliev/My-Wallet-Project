@@ -15,7 +15,7 @@ const HoldingComponent = ({
           onClick={() => getTransactionsFunc(account.provider, account.id)}
         >
           <p className="data-source-asset">{data.symbol}</p>
-          <p className="data-source-asset">
+          <p className="data-source-asset-value">
             {Number(data.base_currency.toFixed(1)).toLocaleString()} {baseSymbol}
           </p>
         </div>
@@ -25,12 +25,10 @@ const HoldingComponent = ({
           className="asset-line"
           onClick={() => getTransactionsFunc(account.provider, account.id)}
         >
-          <li className="data-source-asset">
-            <p>{data.symbol}</p>{" "}
-            <p>
+            <p className={'data-source-asset'}>{data.symbol}</p>{" "}
+            <p className={'data-source-asset-value'}>
               {Number(data.base_currency.toFixed(1)).toLocaleString()} {baseSymbol}
             </p>
-          </li>
         </div>
       )}
     </div>
