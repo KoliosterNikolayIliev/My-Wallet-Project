@@ -8,6 +8,7 @@ import { balanceHistoryAtom } from "../../recoil";
 import { getAssets } from "../../utils/portfolio";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loader from "./LoaderComponent";
+import {log10} from "chart.js/helpers";
 
 const GroupsContainerComponent = ({
 	data,
@@ -61,7 +62,6 @@ const GroupsContainerComponent = ({
 
 	const source_balances_history =
 		balanceHistory["balances"][yesterdayIndex]["source_balances_history"];
-
 	return (
 		<div className="data-source-container">
 			{Object.entries(data).map(([key, value]) => {
@@ -95,7 +95,7 @@ const GroupsContainerComponent = ({
 								{Number(value.total.toFixed(1)).toLocaleString()} {baseSymbol}
 							</p>
 							{value.total !== source_previous_balance ? (
-								value.total < source_previous_balance ? (
+								value.total > source_previous_balance ? (
 									<p className="data-source-change positive">
 										<svg
 											width="16"
