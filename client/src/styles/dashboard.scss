@@ -93,6 +93,7 @@
   flex-basis: 32%;
   min-height: 48%;
   max-height: 50%;
+  align-items: center;
   ul {
     padding-top: 5%;
     .asset-root:nth-child(odd) {
@@ -101,7 +102,7 @@
     .asset-root {
       :hover {
         .data-source-asset {
-          color: #9031db;
+          //color: #9031db;
         }
       }
     }
@@ -112,10 +113,20 @@
       font-size: 14px;
     }
     .data-source-asset {
-      cursor: pointer;
+      //cursor: pointer;
       transition: 0.3s;
     }
   }
+}
+.data-source-asset{
+  padding-left: 2%;
+  flex-basis: 68%;
+  //overflow: hidden;
+  //text-overflow: ellipsis;
+}
+.data-source-asset-value{
+  flex-basis: 30%;
+
 }
 
 .data-source-content {
@@ -124,6 +135,7 @@
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
+  width: 100%;
   ul {
     flex-basis: 83%;
     overflow: hidden;
@@ -137,29 +149,41 @@
 
 .asset-root {
   border-radius: 12px;
-  margin-left: 2%;
-  margin-right: 2%;
   display: flex;
-  justify-content: center;
+
+  width: 95%;
+  align-self: center;
 }
 
 .asset-line {
   display: flex;
   justify-content: space-between;
-  width: 75%;
+  width: 100%;
   align-items: center;
+}
+.data-source p{
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.data-source p:hover{
+  cursor: e-resize;
+  overflow: initial;
+  text-overflow: initial;
 }
 
 .data-source-header {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #f2f2f2;
+  width: 95%;
   .data-source-name {
-    border-right: 1px solid #f2f2f2;
-    padding-right: 5%;
+    //border-right: 1px solid #f2f2f2;
+    padding-left: 2%;
+    text-align: left;
     font-family: "Manrope", "sans-serif";
     font-weight: 400;
+    //font-size: 0.9em;
   }
   svg {
     margin-right: 5px;
@@ -177,19 +201,22 @@
     font-size: 14px;
     font-family: "Inter", "sans-serif";
     margin: 16px 0;
+    text-align: right;
   }
   .neutral {
     color: #84818a;
     font-weight: 600;
     font-size: 14px;
     font-family: "Inter", "sans-serif";
+    text-align: right;
   }
 }
 
 .data-source-total {
   font-family: "Inter", "sans-serif";
   font-weight: 600;
-  font-size: 16px;
+  //font-size: 0.9em;
+  text-align: center;
 }
 
 .expand-button {
