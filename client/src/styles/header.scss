@@ -52,11 +52,15 @@ ul {
 .k-i-arrow-s::before {
   content: url("../images/double-arrow.svg");
 }
-
+.menu-border-true{
+  border-bottom: 3px solid #9031db;
+}
+.menu-border-false{
+  border-bottom: 3px solid white;
+}
 .menu-rooter li{
   display: flex;
   height: 100%;
-  border-bottom: 3px solid #9031db;
   align-items: center;
 }
 //.header-link{
