@@ -15,12 +15,13 @@ import {
 } from "react-router-dom";
 
 import { RecoilRoot, atom } from "recoil";
+import loginCacheClear from "./utils/clearCacheOnLogin";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
 // Simple Home page to display the log in button and user info if the user is logged in
 function App() {
-	const { isAuthenticated } = useAuth0();
+	const { isAuthenticated, loginWithRedirect } = useAuth0();
 
 	return (
 		<RecoilRoot>
@@ -33,7 +34,7 @@ function App() {
 						{isAuthenticated ? (
 							<Redirect to="/dashboard" />
 						) : (
-							<Redirect to="/dashboard" />
+							loginCacheClear(loginWithRedirect)
 						)}
 					</Route>
 
