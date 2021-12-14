@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter&family=Manrope:wght@400;500;700&display=swap");
+
+.body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: 100vw;
+
+	.error-page {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.heading {
+			font-size: 46px;
+			font-family: "Inter", sans-serif;
+			font-weight: 700;
+		}
+
+		.content {
+			font-size: 20px;
+			font-family: "Inter", sans-serif;
+			font-weight: 400;
+		}
+
+		.reload-button {
+			background: none;
+			color: #9031db;
+			border: none;
+			padding: 0;
+			font: inherit;
+			cursor: pointer;
+			outline: inherit;
+			transition-duration: 0.3s;
+		}
+	}
+	.reload-button:hover {
+		color: #a664d8;
+	}
+}
