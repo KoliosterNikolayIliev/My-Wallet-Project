@@ -64,6 +64,7 @@ const GroupsContainerComponent = ({
 		balanceHistory["balances"][yesterdayIndex]["source_balances_history"];
 
 	return (
+		<div>
 		<div className="data-source-container">
 			{Object.entries(data).map(([key, value]) => {
 				source = key;
@@ -232,6 +233,7 @@ const GroupsContainerComponent = ({
 					</div>
 				);
 			})}
+		</div>
 		</div>
 	);
 };

@@ -5,7 +5,11 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 2%;
-  align-items: stretch;
+  align-content: stretch;
+}
+.dashboard-container>div{
+  height: 800px;
+
 }
 
 .nav-link {
@@ -16,18 +20,16 @@
     }
   }
 }
-//.dashboard-container div:nth-child(2){
-//  width: 315px;
-//
-//}
+.dashboard-container>div{
+  flex-basis: 74%;
+}
 .data-source-container {
   display: flex;
   overflow-y: auto;
   //height: fit-content;
   flex-wrap: wrap;
-  flex-basis: 74%;
   grid-gap: 2%;
-  max-height: 80vh;
+  height: 100%;
   background: transparent;
 }
 .has-transactions:hover {
@@ -47,7 +49,8 @@
     font-size: 16px;
     border-bottom: 1px solid #f2f2f2;
     padding-bottom: 6%;
-    text-align: center;
+    padding-left: 2%;
+    text-align: left;
     width: 96%;
   }
   .transaction-text {
@@ -73,7 +76,7 @@
     padding-top: 5%;
     padding-bottom: 5%;
     display: flex;
-    width: 80%;
+    width: 100%;
     justify-content: space-between;
     align-items: center;
   }
@@ -92,6 +95,8 @@
   display: flex;
   flex-direction: column;
   flex-basis: 32%;
+  max-height: 400px;
+  height: 49%;
   align-items: center;
   ul {
     padding-top: 5%;
@@ -378,6 +383,12 @@
 ul {
   padding: 0;
 }
+.recent-transactions-container li svg{
+  flex-basis: 20%;
+}
+.recent-transactions-container li div{
+  flex-basis: 40%;
+}
 
 .recent-transactions-container {
   display: flex;
@@ -389,7 +400,6 @@ ul {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex-basis: 80%;
     li:nth-child(n + 10) {
       display: none;
     }
@@ -398,6 +408,7 @@ ul {
     padding-bottom: 10%;
   }
   .amount-text {
+    padding-right: 5%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -485,5 +496,10 @@ ul {
 }
 #root > div > div.dashboard-container > div.transactions.data-source.recent-transactions{
   flex-basis: 24.5%;
+  //height: 100%;
+  max-height: initial;
 }
-
+#root > div > div.dashboard-container > div.transactions.data-source.recent-transactions div{
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
