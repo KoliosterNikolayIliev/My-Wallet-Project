@@ -3,6 +3,7 @@ ul {
   margin: 0;
 }
 
+
 .header {
   background: #ffffff;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.07);
@@ -19,7 +20,10 @@ ul {
   flex-basis: 50%;
   display: flex;
   justify-content: space-between;
-  padding: 2% 0;
+  //padding: 2% 0;
+}
+.header-link p{
+  margin:0
 }
 
 .header-link {
@@ -49,12 +53,21 @@ ul {
   content: url("../images/double-arrow.svg");
 }
 
+.menu-rooter li{
+  display: flex;
+  height: 100%;
+  border-bottom: 3px solid #9031db;
+  align-items: center;
+}
+//.header-link{
+//  vertical-align: center;
+//}
 .menu-rooter {
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
   flex-basis: 62%;
   align-items: center;
+  height: 90px;
 }
 
 .menu-rooter a {
@@ -66,8 +79,12 @@ ul {
 
 .img-container {
   flex-basis: 25%;
+  display: flex;
+  align-items: center;
 }
 .borderline {
+  height: 35px;
+  align-self: center;
   border-right: 1px solid;
   border-image: linear-gradient(
       to bottom,
