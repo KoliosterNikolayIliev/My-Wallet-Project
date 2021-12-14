@@ -12,7 +12,6 @@ import Loader from "./LoaderComponent";
 const GroupsContainerComponent = ({
 	data,
 	total,
-	getTransactionsFunc,
 	baseSymbol,
 	user,
 }) => {
@@ -158,9 +157,6 @@ const GroupsContainerComponent = ({
 												provider={account.provider}
 												account={account}
 												type={account.data.accountType}
-												getTransactionsFunc={
-													getTransactionsFunc
-												}
 											/>
 										);
 									})}
@@ -175,9 +171,6 @@ const GroupsContainerComponent = ({
 																nest={false}
 																account={
 																	account
-																}
-																getTransactionsFunc={
-																	getTransactionsFunc
 																}
 																data={holding}
 																baseSymbol={

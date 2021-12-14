@@ -95,22 +95,11 @@
     .asset-root:nth-child(odd) {
       background-color: #f8f8f9;
     }
-    .asset-root {
-      :hover {
-        .data-source-asset {
-          color: #9031db;
-        }
-      }
-    }
     p,
     li {
       font-family: "Inter", "sans-serif";
       font-weight: 500;
       font-size: 14px;
-    }
-    .data-source-asset {
-      cursor: pointer;
-      transition: 0.3s;
     }
   }
 }
