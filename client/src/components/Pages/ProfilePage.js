@@ -55,7 +55,7 @@ const Profile = () => {
           userExperienceFlow: "Aggregation",
         },
         onSuccess: (data) => {
-          console.log(data);
+          console.log('caught');
         },
         onError: (error) => {
           console.log(error);

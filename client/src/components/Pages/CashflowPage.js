@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Redirect } from "react-router";
 import { recentTransactionsAtom, baseAtom } from "../../recoil";
 import { useRecoilState } from "recoil";
 

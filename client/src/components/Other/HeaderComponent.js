@@ -6,7 +6,6 @@ import BaseCurrencyDropDownList from "./BaseCurrencyDropDownList";
 import LogOutButton from "../Buttons/LogOutButton";
 
 import {Link} from "react-router-dom";
-
 import {styled} from "@mui/material/styles";
 import Tooltip, {tooltipClasses} from "@mui/material/Tooltip";
 import ClickAwayListener from "@mui/material/ClickAwayListener";

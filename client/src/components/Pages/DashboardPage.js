@@ -4,7 +4,6 @@ import { Redirect } from "react-router";
 
 import { atom, useRecoilState } from "recoil";
 
-import ProfileButton from "../Buttons/ProfileButton";
 
 import {
   getAssets,
@@ -68,7 +67,6 @@ const DashboardPage = () => {
       if (!window.sessionStorage.getItem("base")) {
 
         const token = await getTokenWithErrorHandling(getAccessTokenSilently,loginWithRedirect);
-        console.log(token);
         const response = await getUser(token);
         setBase(response.base_currency);
       } else {

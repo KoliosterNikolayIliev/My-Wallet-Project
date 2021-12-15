@@ -163,7 +163,6 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
       }
     }
   }, []);
-  // console.log(history.balances.map((item) => item.source_balances_history.map((item)=>item)[2]).map((item=>item.value)))
   if (!history || history === "") {
     return <Loader/>;
   }
