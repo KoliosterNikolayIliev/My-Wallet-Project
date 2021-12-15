@@ -45,7 +45,7 @@ const GroupComponent = ({
               className="asset-line"
             >
               <p className="data-source-asset">{type}</p>{" "}
-              <p className="data-source-asset">
+              <p className="data-source-asset-value">
                 {base_currency} {baseSymbol}
               </p>
             </div>
@@ -53,8 +53,8 @@ const GroupComponent = ({
         {(provider === "custom_assets" || provider === "binance") && (
           <div className="asset-line">
             {custom_asset && <button onClick={() => deleteCustomAssetFunc(currency, custom_asset)}>X</button>}
-            <p>{currency}</p>{" "}
-            <p>
+            <p className={'data-source-asset'}>{currency}</p>{" "}
+            <p className={'data-source-asset-value'}>
               {" "}
               {base_currency} {baseSymbol}
             </p>
@@ -65,7 +65,7 @@ const GroupComponent = ({
             className="asset-line"
           >
             <p className="data-source-asset">{currency}</p>{" "}
-            <p className="data-source-asset">
+            <p className="data-source-asset-value">
               {" "}
               {base_currency} {baseSymbol}
             </p>

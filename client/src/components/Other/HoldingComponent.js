@@ -13,7 +13,7 @@ const HoldingComponent = ({
           className="asset-line"
         >
           <p className="data-source-asset">{data.symbol}</p>
-          <p className="data-source-asset">
+          <p className="data-source-asset-value">
             {Number(data.base_currency.toFixed(1)).toLocaleString()} {baseSymbol}
           </p>
         </div>
@@ -22,12 +22,10 @@ const HoldingComponent = ({
         <div
           className="asset-line"
         >
-          <li className="data-source-asset">
-            <p>{data.symbol}</p>{" "}
-            <p>
+            <p className={'data-source-asset'}>{data.symbol}</p>{" "}
+            <p className={'data-source-asset-value'}>
               {Number(data.base_currency.toFixed(1)).toLocaleString()} {baseSymbol}
             </p>
-          </li>
         </div>
       )}
     </div>

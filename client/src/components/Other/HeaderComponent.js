@@ -16,7 +16,6 @@ import {useLocation} from "react-router-dom";
 const Header = ({baseSymbol, username}) => {
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
-  const border='border-bottom: 3px solid #9031db;'
   const handleTooltipClose = () => {
     setOpen(false);
   };
@@ -33,20 +32,20 @@ const Header = ({baseSymbol, username}) => {
         </div>
         <div className="borderline"/>
         <ul className="menu-rooter">
-          <li style={location.pathname === "/dashboard" ? {border: border} : {border: 'none'}}>
+          <li className={location.pathname === "/dashboard"?'menu-border-true':'menu-border-false'}>
             <Link className="header-link"
                   style={location.pathname === "/dashboard" ? {color: '#9031db'} : {color: '#969aa4'}} to={"/"}>
               <p>Overview</p>
             </Link>
           </li>
-          <li style={location.pathname === "/portfolio" ? {border: border} : {border: 'none'}}>
+          <li className={location.pathname === "/portfolio"?'menu-border-true':'menu-border-false'}>
             <Link className="header-link"
                   style={location.pathname === "/portfolio" ? {color: '#9031db'} : {color: '#969aa4'}}
                   to={"/portfolio"}>
               <p>Portfolio</p>
             </Link>
           </li>
-          <li style={location.pathname === "/cashflow" ? {border: border} : {border: 'none'}}>
+          <li className={location.pathname === "/cashflow"?'menu-border-true':'menu-border-false'}>
             <Link className="header-link"
                   style={location.pathname === "/cashflow" ? {color: '#9031db'} : {color: '#969aa4'}} to={"/cashflow"}>
               <p>Cashflow</p>
