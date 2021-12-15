@@ -153,8 +153,10 @@ const DashboardPage = () => {
     return <Redirect to={"/"} />;
   }
   let history=''
+  let timestamps=''
   try{
     history = balanceHistory.balances.map((item) => item.balance)
+    timestamps= balanceHistory.balances.map((item)=>item.timestamp)
   }catch (error){
     window.sessionStorage.clear()
     window.location.reload()
@@ -170,7 +172,7 @@ const DashboardPage = () => {
         />
         <SubHeader user={user} />
         {balanceHistory !== "" && (
-          <ChartComponent total={total} base={base} history={history} />
+          <ChartComponent total={total} base={base} history={history} timestamps={timestamps} />
         )}
         <div style={{paddingTop:'3%', paddingBottom:'3%'}}>
           <p

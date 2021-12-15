@@ -45,7 +45,7 @@ export function intToRGB(i) {
 }
 
 
-const ChartComponent = ({total, base, history, portfolio = false, embedded = false, provider = ''}) => {
+const ChartComponent = ({total, base, history,timestamps, portfolio = false, embedded = false, provider = ''}) => {
   const location = useLocation();
   const chartRef = useRef(null);
   const [chartData, setChartData] = useState({
@@ -106,6 +106,8 @@ const ChartComponent = ({total, base, history, portfolio = false, embedded = fal
     const chart = chartRef.current;
 
     if (chart) {
+      console.log(history)
+      console.log(timestamps)
       let color = "rgba(190,56,242,0.1)"
       if (!portfolio) {
         setChartData({
