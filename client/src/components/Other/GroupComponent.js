@@ -52,7 +52,7 @@ const GroupComponent = ({
           )}
         {(provider === "custom_assets" || provider === "binance") && (
           <div className="asset-line">
-            {custom_asset && <button onClick={() => deleteCustomAssetFunc(currency, custom_asset)}>X</button>}
+            {custom_asset && <button onClick={() => deleteCustomAssetFunc(currency, custom_asset)}>Remove</button>}
             <p className={'data-source-asset'}>{currency}</p>{" "}
             <p className={'data-source-asset-value'}>
               {" "}
