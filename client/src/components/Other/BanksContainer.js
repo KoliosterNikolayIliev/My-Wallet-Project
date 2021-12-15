@@ -7,7 +7,6 @@ function InfoIcon() {
 }
 
 export const BanksContainer = ({data}) => {
-  console.log(data)
   const {getAccessTokenSilently} = useAuth0();
 
   const addBankAccount = async (id) => {

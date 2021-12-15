@@ -17,7 +17,6 @@ const ErrorPage = () => {
 						<button
 							className="reload-button"
 							onClick={() => {
-								console.log("are de");
 								window.sessionStorage.clear();
 								setReloaded(true);
 							}}

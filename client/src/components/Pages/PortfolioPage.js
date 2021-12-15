@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import {useAuth0} from "@auth0/auth0-react";
-import {Redirect} from "react-router";
 import {buildStyles, CircularProgressbar} from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -91,13 +90,11 @@ const PortfolioPage = () => {
     firstDayOfTheMonthBalanceList = {'source_balances_history': [{provider: 'None', value: 0}]}
   }
   const firstDayOfTheMonthBalance = firstDayOfTheMonthBalanceList.source_balances_history
-  // console.log(firstDayOfTheMonthBalance)
   const currentSourceBalances = currentBalances.source_balances_history
   const currentTotalBalance = currentBalances.balance
   const history = balanceHistory.balances.map((item) => item.source_balances_history)
   const validData = {}
   const extendedCurrentSourceBalance = []
-  // console.log(currentSourceBalances)
   for (let obj of currentSourceBalances) {
     let addedValue = firstDayOfTheMonthBalance.filter((entry) => entry.provider === obj.provider)
     if (addedValue.length > 0) {
@@ -114,7 +111,6 @@ const PortfolioPage = () => {
     extendedCurrentSourceBalance.push(newObj)
   }
 
-  // console.log(extendedCurrentSourceBalance)
   for (let entry of history) {
     for (let line of entry) {
       if (!(line.provider in validData)) {
@@ -123,7 +119,6 @@ const PortfolioPage = () => {
       validData[line.provider].push(line.value)
     }
   }
-  // console.log(validData)
   return (
     isAuthenticated && (
       <div className="main">

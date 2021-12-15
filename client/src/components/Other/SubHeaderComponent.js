@@ -51,9 +51,6 @@ const SubHeader = ({ user }) => {
     if (hour>17){
       greeting='Good evening'
     }
-    console.log(hour)
-    console.log(greeting)
-
     setDate(`${dayOfMonth} ${month} ${year}`);
     setDay(day);
     setGreeting(greeting)
