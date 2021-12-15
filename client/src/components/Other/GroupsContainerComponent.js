@@ -8,11 +8,11 @@ import { balanceHistoryAtom } from "../../recoil";
 import { getAssets } from "../../utils/portfolio";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loader from "./LoaderComponent";
+import {log10} from "chart.js/helpers";
 
 const GroupsContainerComponent = ({
 	data,
 	total,
-	getTransactionsFunc,
 	baseSymbol,
 	user,
 }) => {
@@ -62,7 +62,6 @@ const GroupsContainerComponent = ({
 
 	const source_balances_history =
 		balanceHistory["balances"][yesterdayIndex]["source_balances_history"];
-
 	return (
 		<div>
 		<div className="data-source-container">
@@ -97,7 +96,7 @@ const GroupsContainerComponent = ({
 								{Number(value.total.toFixed(1)).toLocaleString()} {baseSymbol}
 							</p>
 							{value.total !== source_previous_balance ? (
-								value.total < source_previous_balance ? (
+								value.total > source_previous_balance ? (
 									<p className="data-source-change positive">
 										<svg
 											width="16"
@@ -159,9 +158,6 @@ const GroupsContainerComponent = ({
 												provider={account.provider}
 												account={account}
 												type={account.data.accountType}
-												getTransactionsFunc={
-													getTransactionsFunc
-												}
 											/>
 										);
 									})}
@@ -176,9 +172,6 @@ const GroupsContainerComponent = ({
 																nest={false}
 																account={
 																	account
-																}
-																getTransactionsFunc={
-																	getTransactionsFunc
 																}
 																data={holding}
 																baseSymbol={

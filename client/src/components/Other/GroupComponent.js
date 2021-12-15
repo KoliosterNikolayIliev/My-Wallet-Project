@@ -5,7 +5,6 @@ const GroupComponent = ({
   source,
   type,
   provider,
-  getTransactionsFunc,
   baseSymbol,
   custom_asset,
   deleteCustomAssetFunc,
@@ -44,7 +43,6 @@ const GroupComponent = ({
           provider !== "coinbase" && (
             <div
               className="asset-line"
-              onClick={() => getTransactionsFunc(provider, account.id)}
             >
               <p className="data-source-asset">{type}</p>{" "}
               <p className="data-source-asset-value">
@@ -65,7 +63,6 @@ const GroupComponent = ({
         {provider === "coinbase" && (
           <div
             className="asset-line"
-            onClick={() => getTransactionsFunc(provider, account.id)}
           >
             <p className="data-source-asset">{currency}</p>{" "}
             <p className="data-source-asset-value">
