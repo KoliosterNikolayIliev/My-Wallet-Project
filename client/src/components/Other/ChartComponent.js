@@ -54,10 +54,9 @@ const ChartComponent = ({total, base, history,timestamps, portfolio = false, emb
 
   const labels =
     // array of days of the month until today
-    Array.from(Array(new Date().getDate()).keys()).map((i) => {
+    Array.from(Array(new Date().getUTCDate()).keys()).map((i) => {
       return i + 1;
     });
-
   const createBackgroundGradient = (ctx, color) => {
     const gradient = ctx.createLinearGradient(0, 0, 0, 450, 0.1);
     if (color.startsWith('#')) {
@@ -101,13 +100,30 @@ const ChartComponent = ({total, base, history,timestamps, portfolio = false, emb
     options.scales.x.display = false
     options.scales.y.display = false
   }
+  function validateOneMonthHistory(history,timestamps){
+    if (history.length==0){
+      return history
+    }
+    const currentMonth = new Date().getUTCMonth()+1
+    let validTimestamps = []
+    for (let timestamp of timestamps){
+      let month=timestamp.slice(5,7)
+      if(month==currentMonth){
+        validTimestamps.push(timestamp)
+      }
+    }
+    if (validTimestamps==0 && history.length>0){
+      history=[history[history.length-1]]
+      return history
+    }
+    history=history.slice(history.length-validTimestamps.length)
+    return history
+  }
 
   useEffect(() => {
     const chart = chartRef.current;
 
     if (chart) {
-      console.log(history)
-      console.log(timestamps)
       let color = "rgba(190,56,242,0.1)"
       if (!portfolio) {
         setChartData({
@@ -115,7 +131,7 @@ const ChartComponent = ({total, base, history,timestamps, portfolio = false, emb
           datasets: [
             {
               label: "Balance",
-              data: history,
+              data: validateOneMonthHistory(history,timestamps),
               fill: true,
               borderColor: "rgba(190, 56, 242, 1)",
               borderWidth:2,
@@ -131,7 +147,7 @@ const ChartComponent = ({total, base, history,timestamps, portfolio = false, emb
           let value = entry[1];
           datasets.push({
             label: key,
-            data: value,
+            data: validateOneMonthHistory(value,timestamps),
             fill: true,
             borderColor: intToRGB(hashCode(key)),
             borderWidth:2,
@@ -150,7 +166,7 @@ const ChartComponent = ({total, base, history,timestamps, portfolio = false, emb
           datasets: [
             {
               label: provider,
-              data: history,
+              data: validateOneMonthHistory(history,timestamps),
               borderColor: intToRGB(hashCode(provider)),
               borderWidth:1,
               tension: 0.3,
