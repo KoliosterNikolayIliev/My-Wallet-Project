@@ -5,14 +5,12 @@ const HoldingComponent = ({
   baseSymbol,
   nest,
   account,
-  getTransactionsFunc,
 }) => {
   return (
     <div className="asset-root">
       {!nest && (
         <div
           className="asset-line"
-          onClick={() => getTransactionsFunc(account.provider, account.id)}
         >
           <p className="data-source-asset">{data.symbol}</p>
           <p className="data-source-asset-value">
@@ -23,7 +21,6 @@ const HoldingComponent = ({
       {nest && (
         <div
           className="asset-line"
-          onClick={() => getTransactionsFunc(account.provider, account.id)}
         >
             <p className={'data-source-asset'}>{data.symbol}</p>{" "}
             <p className={'data-source-asset-value'}>
