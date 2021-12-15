@@ -4,7 +4,6 @@ import { Redirect } from "react-router";
 
 import { atom, useRecoilState } from "recoil";
 
-import ProfileButton from "../Buttons/ProfileButton";
 
 import {
   getAssets,
