@@ -85,7 +85,7 @@ const PortfolioPage = () => {
   const currentBalances = balanceHistory.balances[balanceHistory.balances.length - 1]
   let firstDayOfTheMonthBalanceList = balanceHistory.balances.filter(
     (element) => element.timestamp.slice(0, 10) === firstDayOfTheMonth.slice(0, 10))[0]
-
+  const timestamps= balanceHistory.balances.map((item)=>item.timestamp)
   if (!firstDayOfTheMonthBalanceList) {
     firstDayOfTheMonthBalanceList = {'source_balances_history': [{provider: 'None', value: 0}]}
   }
@@ -127,7 +127,7 @@ const PortfolioPage = () => {
           username={user.nickname ? user.nickname : user.name}
         />
         {balanceHistory !== "" && (
-          <ChartComponent total={currentTotalBalance} base={base} portfolio={true} history={validData}/>
+          <ChartComponent total={currentTotalBalance} base={base} portfolio={true} history={validData} timestamps={timestamps}/>
         )}
         <div className="portfolio-table">
           <div className="table-container">
@@ -187,6 +187,7 @@ const PortfolioPage = () => {
                           history={validData[element.provider]}
                           portfolio={true}
                           embedded={true}
+                          timestamps={timestamps}
                           provider={element.provider}/>
                       )}</p>
                     </div>

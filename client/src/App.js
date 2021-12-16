@@ -15,13 +15,20 @@ import {
 } from "react-router-dom";
 
 import { RecoilRoot, atom } from "recoil";
-
 import { useAuth0 } from "@auth0/auth0-react";
+import UnsupportedResolution from "./components/Pages/UnsupportedResolution";
 
 // Simple Home page to display the log in button and user info if the user is logged in
 function App() {
 	const { isAuthenticated } = useAuth0();
 
+	function getWindowDimensions() {
+		return  window.innerWidth;
+	}
+
+	if (getWindowDimensions() < 780) {
+		return <UnsupportedResolution/>
+	}
 	return (
 		<RecoilRoot>
 			{/* Wrap app in a router to handle routing */}
