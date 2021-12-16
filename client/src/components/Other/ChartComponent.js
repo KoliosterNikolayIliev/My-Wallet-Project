@@ -4,28 +4,14 @@ import Loader from "./LoaderComponent";
 import {useLocation} from "react-router-dom";
 import {
   Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
+  registerables
 } from "chart.js";
 
-import {Chart, Line} from "react-chartjs-2";
+import {Chart} from "react-chartjs-2";
 import NotificationComponent from "./NotificationComponent";
 
 ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Title,
-  Tooltip,
-  Legend
+  ...registerables
 );
 
 export function hashCode(str) {
