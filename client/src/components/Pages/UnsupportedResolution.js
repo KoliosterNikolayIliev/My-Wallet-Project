@@ -19,7 +19,7 @@ const UnsupportedResolution = () => {
           height: 'auto'
         }} src={unsupportedImg} alt="Unsupported!"/>
       </div>
-      <h2 style={{color: '#9031db',textAlign:'center'}}>We're sure you have a bigger screen !!! &#128513;</h2>
+      <h2 style={{color: '#9031db',textAlign:'center'}}>We're sure you can afford bigger screen !!! &#128513;</h2>
     </div>
   );
 };
